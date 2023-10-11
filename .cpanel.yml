@@ -5,3 +5,5 @@ deployment:
     - /bin/cp -R /home/cayi7350/www/* $DEPLOYPATH
     - cd $DEPLOYPATH
     - composer install
+    - npm install
+    - npm run build
