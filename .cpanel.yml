@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/cayi7350/www/
+    - /bin/cp -R /home/cayi7350/www/* $DEPLOYPATH
+    - cd $DEPLOYPATH
+    - composer install
