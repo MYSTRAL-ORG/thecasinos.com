@@ -1,7 +1,5 @@
 ---
 deployment:
   tasks:
-    - /bin/cd /home/cayi7350/thecasinos.com
+    - cd /home/cayi7350/thecasinos.com
     - git pull
-    - /opt/alt/alt-nodejs16/root/usr/bin/npm install
-    - /opt/alt/alt-nodejs16/root/usr/bin/npm run build
