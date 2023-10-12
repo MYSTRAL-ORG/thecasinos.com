@@ -4,3 +4,4 @@ deployment:
     - cd /home/cayi7350/thecasinos.com
     - git pull
     - /opt/cpanel/composer/bin/composer install
+    - npm install
