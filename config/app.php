@@ -56,8 +56,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-    'mapkit_url' => env('MAPKIT_URL', 'http://localhost'),
-    'mapkit_api_key' => env('MAPKIT_API_KEY', 'http://localhost'),
+    'google_key' => env('GOOGLE_KEY', ''),
+
 
     'asset_url' => env('ASSET_URL'),
 

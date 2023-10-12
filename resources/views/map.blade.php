@@ -15,3 +15,6 @@
 
 
 </div>
+<meta name="_googleSessionToken" content="{{ $sessionGoogle}}"/>
+
+<meta name="_googleKey" content="{{ config('app.google_key')}}"/>

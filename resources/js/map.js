@@ -23,6 +23,7 @@ import {createXYZ} from "ol/tilegrid.js";
 import TileGrid from "ol/tilegrid/TileGrid.js";
 import Geolocation from 'ol/Geolocation.js';
 import {containsCoordinate} from "ol/extent.js";
+import {Attribution, Control} from "ol/control.js";
 
 $(document).ready(function() {
 
@@ -47,7 +48,7 @@ function generatedStyle(feature, resolution, sel) {
                 displacement: [0, 0],
                 stroke: new Stroke({
                     width: 2,
-                    color: sel ? 'red' : '#fff'
+                    color: sel ? '#ed5c56' : '#fff'
                 })
             })
         });
@@ -84,13 +85,18 @@ function getFeatureStyle (feature, resolution, sel) {
         style: generatedStyle,
     });
 
-
+const sessionGoogle= $('meta[name="_googleSessionToken"]').attr('content');
+const sessionGoogleKey= $('meta[name="_googleKey"]').attr('content');
 const  googleBase = new TileLayer({
     source: new  XYZ({
-        url: 'https://mt{0-3}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&key=AIzaSyDc0lLAd3NAvGrE3TIGiceh9UmSZ-ChDJ8',
+       // url: 'https://mt{0-3}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&scale=2&key=AIzaSyDc0lLAd3NAvGrE3TIGiceh9UmSZ-ChDJ8',
       // url:'https://sat-cdn1.apple-mapkit.com/tile?style=7&size=1&scale=1&z=4&x={x}&y={y}&v={z}2&accessKey='+accesKey
+       // url: 'https://tile.googleapis.com/v1/2dtiles/{x}/{y}/{z}?style=7&size=1&scale=1&key=AJVsH2zGQIkWpBGEyZa5oSamWrBDNP4_iBKcSkJjjHKYJvJPKnH33qHcOl3uwkrFgCXEXqLfSpym8qrwOscn7nE7VQ',
+        url :"https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}/?session="+sessionGoogle+"&key="+sessionGoogleKey,
          crossOrigin: 'anonymous',
-    }),
+
+        tilePixelRatio:2
+    })
 });
 
  const map = new Map({
@@ -100,10 +106,12 @@ const  googleBase = new TileLayer({
      preload:Infinity,
     view: new View({
         projection: 'EPSG:4326',
-        //center: [55.43748378753663,-20.887823295315904],
-        center: [0,0],
-        zoom: 9,
-    })
+        center: [-115.1352,36.1450],
+        //center: [0,0],
+       // -115.1352,36.1450
+        zoom: 14,
+    }),
+     controls: []
 });
 
     const geolocation = new Geolocation({
@@ -121,7 +129,7 @@ const  googleBase = new TileLayer({
         map.getView().setCenter(geolocation.getPosition());
     });
 
-    geolocation.setTracking(true);
+   // geolocation.setTracking(true);
 
 // Check if GeoJSON data is in local storage
 
@@ -190,6 +198,40 @@ const  googleBase = new TileLayer({
             // Append the new div to the gallery div
             $galleryDiv.append($childElement)
         });
+
+       //reload my div gallery to avoid dirty cache
+
+        $(".see-more").click(function() {
+            const block = $(this).closest(".block");
+
+            // Si le bloc actuel est déjà étendu, fermez-le
+            if (block.hasClass("expanded")) {
+                block.removeClass("expanded");
+                $(this).text("See more");
+                // Montrez tous les blocs, y compris celui qui était caché précédemment
+                $(".block").show();
+                return; // Terminez l'exécution du gestionnaire d'événements
+            }
+
+            // Fermer tous les blocs étendus
+            $(".block.expanded").removeClass("expanded").find(".see-more").text("See more");
+
+            // Montrez tous les blocs (pour vous assurer que le bloc précédemment caché est à nouveau visible)
+            $(".block").show();
+
+            // Étendez le bloc actuellement cliqué
+            block.addClass("expanded");
+            $(this).text("See less");
+
+            if (block.is(":last-child")) {
+                // Si le bloc est le dernier bloc, cachez le premier bloc
+                $(".block").first().hide();
+            } else {
+                // Sinon, cachez le dernier bloc
+                $(".block").last().hide();
+            }
+        });
+
     }
 
 
@@ -222,10 +264,10 @@ const  googleBase = new TileLayer({
 
 
         casinoVectorLayer6.getSource().clear();
-        let radius = 84;
+        let radius = 74;
         first6Features.forEach(function(feature) {
 
-            feature.set('radius',  (radius > 50 )? radius : 44);
+            feature.set('radius',  (radius > 40 )? radius : 44);
             radius -= 10;
             casinoVectorLayer6.getSource().addFeature(feature);
         });
@@ -255,36 +297,7 @@ map.addInteraction(select);
 });*/
 
 
-    $(".see-more").click(function() {
-        const block = $(this).closest(".block");
 
-        // Si le bloc actuel est déjà étendu, fermez-le
-        if (block.hasClass("expanded")) {
-            block.removeClass("expanded");
-            $(this).text("See more");
-            // Montrez tous les blocs, y compris celui qui était caché précédemment
-            $(".block").show();
-            return; // Terminez l'exécution du gestionnaire d'événements
-        }
-
-        // Fermer tous les blocs étendus
-        $(".block.expanded").removeClass("expanded").find(".see-more").text("See more");
-
-        // Montrez tous les blocs (pour vous assurer que le bloc précédemment caché est à nouveau visible)
-        $(".block").show();
-
-        // Étendez le bloc actuellement cliqué
-        block.addClass("expanded");
-        $(this).text("See less");
-
-        if (block.is(":last-child")) {
-            // Si le bloc est le dernier bloc, cachez le premier bloc
-            $(".block").first().hide();
-        } else {
-            // Sinon, cachez le dernier bloc
-            $(".block").last().hide();
-        }
-    });
 });
 
 

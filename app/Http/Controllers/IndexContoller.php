@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 use App\Models\SourceCasino;
+use App\services\GoogleService;
 use App\services\LocationService;
 use Carbon\Carbon;
 use Goutte\Client;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Storage;
@@ -13,11 +15,25 @@ use Symfony\Component\DomCrawler\Crawler;
 
 class IndexContoller extends Controller
 {
-    function index(Request $request, LocationService $locationService)
+    function index(Request $request, LocationService $locationService,GoogleService $googleService)
     {
 
 
         try {
+
+            $sessionGoogle = Cache::get('app.sessionGoogle');
+
+            if(!$sessionGoogle){
+
+                $jsonGoogleSessionJson=  $googleService->createSession();
+                $jsonGoogleSession =$jsonGoogleSessionJson['session'];
+                Cache::put('app.sessionGoogle', $jsonGoogleSession , (new Carbon(intval($jsonGoogleSessionJson['expiry'])))->subDay());
+                $sessionGoogle =$jsonGoogleSession;
+            }
+
+
+
+
 
           /*  $lon =null;
             $lat = null;
@@ -32,10 +48,11 @@ class IndexContoller extends Controller
             $ip=   \Request::ip();
 */
 
-        } catch (\Exception $e) {
+       } catch (\Exception $e) {
            Log::info('Error', ['message' => $e->getMessage()]);
         }finally {
-            return view('welcome');
+            return view('welcome',compact('sessionGoogle'));
+
         }
     }
 
