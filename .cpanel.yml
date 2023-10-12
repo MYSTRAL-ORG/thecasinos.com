@@ -3,3 +3,4 @@ deployment:
   tasks:
     - cd /home/cayi7350/thecasinos.com
     - git pull
+    - composer install
