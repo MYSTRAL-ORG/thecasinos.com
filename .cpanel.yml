@@ -1,9 +1,8 @@
 ---
 deployment:
   tasks:
-    - export DEPLOYPATH=/home/cayi7350/www/
-    - /bin/cp -R /home/cayi7350/www/* $DEPLOYPATH
-    - cd $DEPLOYPATH
+    - /bin/cd /home/cayi7350/thecasinos.com
+    - git pull
     - composer install
     - npm install
     - npm run build
