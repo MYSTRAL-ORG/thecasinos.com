@@ -4,5 +4,7 @@ deployment:
     - export PATH="$PATH:/opt/alt/alt-nodejs16/root/usr/bin/"
     - cd /home/cayi7350/thecasinos.com
     - git pull
-    - /opt/cpanel/composer/bin/composer install
+    - composer install
     - npm install
+    - npm run build
+    - php artisan app:clean
