@@ -31,14 +31,23 @@ $(document).ready(function() {
 let styleCache = {};
 
 
-function generatedStyle(feature, resolution, sel) {
+function generatedStyle(feature,  resolution , sel) {
 
-    const img = feature.get("imgurl");
-    let style = styleCache[img];
-    if (!style || sel) {
+    let img = feature.get("imgurl");
+
+    let style = styleCache[(img)? img : "icon-the-casinos"];
+    if (!style || sel ) {
+        let imgUrl;
+        if(img){
+            imgUrl=   'img/casino/' + feature.getId() + '.jpg';
+        }else{
+            imgUrl=   'img/icons/icon-the-casinos.png';
+        }
+
         styleCache[img] = style = new  Style ({
             image: new Photo({
-                src:   'img/casino/' + feature.getId() + '.jpg',
+                transparent: true,
+                src:   imgUrl,
                 radius:  feature.get('radius'),
                 kind: 'circle',
                 crop: true,
@@ -48,7 +57,7 @@ function generatedStyle(feature, resolution, sel) {
                 displacement: [0, 0],
                 stroke: new Stroke({
                     width: 2,
-                    color: sel ? '#ed5c56' : '#fff'
+                    color: sel  ? '#ed5c56' : '#fff'
                 })
             })
         });
@@ -56,27 +65,8 @@ function generatedStyle(feature, resolution, sel) {
     return [style];
 }
 
-// Vector styled
-function getFeatureStyle (feature, resolution, sel) {
-
-    const lstFeature  = feature.getProperties().features;
-    if(lstFeature.length >0){
-      return   generatedStyle(lstFeature[0], resolution, sel);
-    }else{
-      return   generatedStyle(feature, resolution, sel);
-    }
-}
 
 
-
-/*const clusterSource = new Cluster({
-
-    distance: 200,
-    minDistance: 200,
-    source: vectorSourceCasinovectorSourceCasino
-
-
-});*/
 
 
 
@@ -160,7 +150,7 @@ if(lon && lat){
         // Process and display features as needed
     } else {
         // Fetch GeoJSON data from the server
-        fetch( appUrl+'/casinos.json')
+        fetch( '/casinos.json')
             .then(function(response) {
                 return response.json();
             })
@@ -293,24 +283,14 @@ if(lon && lat){
 
 const select = new  Select({
     condition:  click,
+    multi:false,
     style: function (feature, resolution) {
-        return generatedStyle(feature, resolution, true);
+        return generatedStyle(feature, resolution);
     }
 })
 map.addInteraction(select);
 
 // onselect
-/*select.getFeatures().on(['add','remove'], function(e) {
-    if (e.type=="add") {
-        var info = $("#select").html("<p>Selection:</p>");
-        var el = e.element;
-        $("<h3>").text(el.get("title")).appendTo(info);
-        $("<img>").attr('src',el.get("img")).appendTo(info);
-        $("<p>").text(el.get("description")).appendTo(info);
-        $("<p>").addClass('copy').html("&copy; "+el.get("copy")).appendTo(info);
-    }
-    else $("#select").html("<p>Select an image.</p>");
-});*/
 
 
 
