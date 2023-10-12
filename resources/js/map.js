@@ -87,6 +87,7 @@ function getFeatureStyle (feature, resolution, sel) {
 
 const sessionGoogle= $('meta[name="_googleSessionToken"]').attr('content');
 const sessionGoogleKey= $('meta[name="_googleKey"]').attr('content');
+
 const  googleBase = new TileLayer({
     source: new  XYZ({
        // url: 'https://mt{0-3}.google.com/vt/lyrs=y&x={x}&y={y}&z={z}&scale=2&key=AIzaSyDc0lLAd3NAvGrE3TIGiceh9UmSZ-ChDJ8',
@@ -99,18 +100,33 @@ const  googleBase = new TileLayer({
     })
 });
 
+
+let lon= $('meta[name="_lon"]').attr('content');
+let lat= $('meta[name="_lat"]').attr('content');
+
+    let viewClient=null;
+if(lon && lat){
+   viewClient =  new View({
+        projection: 'EPSG:4326',
+        center: [ Number(lon),Number(lat) ],
+        //center: [0,0],
+        // -115.1352,36.1450
+        zoom: 9,
+    });
+}else{
+    viewClient = new View({
+       projection: 'EPSG:4326',
+       center: [0,0],
+        zoom: 0,
+   });
+}
+
  const map = new Map({
     layers: [googleBase,casinoVectorLayer6],
     target: 'map',
      useInterimTilesOnError: false,
      preload:Infinity,
-    view: new View({
-        projection: 'EPSG:4326',
-        center: [-115.1352,36.1450],
-        //center: [0,0],
-       // -115.1352,36.1450
-        zoom: 14,
-    }),
+    view: viewClient,
      controls: []
 });
 

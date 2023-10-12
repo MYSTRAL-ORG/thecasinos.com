@@ -25,3 +25,8 @@
 <meta name="_appUrl" content="{{ config('app.url')}}"/>
 
 
+<meta name="_lon" content="{{ $lon }}"/>
+<meta name="_lat" content="{{ $lat }}"/>
+
+
+

@@ -35,23 +35,23 @@ class IndexContoller extends Controller
 
 
 
-          /*  $lon =null;
+            $lon =null;
             $lat = null;
             $ip= null;
-            $externalIP = file_get_contents('https://geo.ipify.org/api/v2/country?apiKey=at_79U750U55UuikT4oBjHDsZbwv8ZSv&ipAddress=2a01:cb22:8d1:1800:78ff:811a:5ddd:535e'.Request::ip());
+            //$externalIP = file_get_contents('https://geo.ipify.org/api/v2/country?apiKey=at_79U750U55UuikT4oBjHDsZbwv8ZSv&ipAddress=2a01:cb22:8d1:1800:78ff:811a:5ddd:535e'.Request::ip());
 
-            $externalIPData = json_decode($externalIP);
-            $location = Location::get($externalIPData->ip);
+            //$externalIPData = json_decode($externalIP);
+            $location = Location::get(Request::ip());
 
             $lon = $location->longitude;
             $lat = $location->latitude;
-            $ip=   \Request::ip();
-*/
+
+
 
        } catch (\Exception $e) {
            Log::info('Error', ['message' => $e->getMessage()]);
         }finally {
-            return view('welcome',compact('sessionGoogle'));
+            return view('welcome',compact('sessionGoogle', 'lon','lat'));
 
         }
     }
