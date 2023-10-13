@@ -11,7 +11,10 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@originjs/vite-plugin-commonjs": "^1.0.3",
         "jquery": "^3.7.1",
+        "jquery-ui": "^1.13.2",
+        "jquery-ui-dist": "^1.13.2",
         "ol": "^8.1.0",
         "ol-ext": "^4.0.11"
     }

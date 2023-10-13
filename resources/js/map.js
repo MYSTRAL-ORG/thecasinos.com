@@ -13,6 +13,8 @@ import $ from "jquery";
 import Geolocation from 'ol/Geolocation.js';
 import {containsCoordinate} from "ol/extent.js";
 import element from "ol-ext/util/element.js";
+import Popup from "ol-ext/overlay/Popup.js";
+
 
 
 
@@ -93,11 +95,11 @@ $(document).ready(function () {
 
     const googleBase = new TileLayer({
         source: new XYZ({
-             url: 'https://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}&scale=2&key=AIzaSyDc0lLAd3NAvGrE3TIGiceh9UmSZ-ChDJ8',
+             url: 'https://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}&scale=2',
             // url:'https://sat-cdn1.apple-mapkit.com/tile?style=7&size=1&scale=1&z=4&x={x}&y={y}&v={z}2&accessKey='+accesKey
             // url: 'https://tile.googleapis.com/v1/2dtiles/{x}/{y}/{z}?style=7&size=1&scale=1&key=AJVsH2zGQIkWpBGEyZa5oSamWrBDNP4_iBKcSkJjjHKYJvJPKnH33qHcOl3uwkrFgCXEXqLfSpym8qrwOscn7nE7VQ',
            // url: "https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}/?session=" + sessionGoogle + "&key=" + sessionGoogleKey,
-            crossOrigin: 'anonymous',
+
 
             tilePixelRatio: 2
         })
@@ -132,6 +134,11 @@ $(document).ready(function () {
         view: viewClient,
         controls: []
     });
+
+
+
+
+
 
     const geolocation = new Geolocation({
         // enableHighAccuracy must be set to true to have the heading value.
@@ -331,8 +338,48 @@ $(document).ready(function () {
     }
 
 
+    let inputElement = document.getElementById('search-casino');
+    let resultsList = document.getElementById('autocompleteResults');
+    inputElement.addEventListener('input', function() {
+        let searchText = inputElement.value;
+        let results = searchFeatures(searchText);
+        displayResults(results);
+    });
 
+    function searchFeatures(searchText) {
+        searchText = searchText.toLowerCase();
 
+        let foundFeatures = [];
+
+        for (let i = 0; i < allCasinosFeatures.length; i++) {
+            const feature = allCasinosFeatures[i];
+            const name = feature.get("name").toLowerCase();
+
+            if (name.includes(searchText)) {
+                foundFeatures.push(feature);
+
+                if (foundFeatures.length >= 10) {
+                    break; // Quit the loop when 10 elements are found
+                }
+            }
+        }
+
+        return foundFeatures;
+    }
+
+    function displayResults(results) {
+        resultsList.innerHTML = '';
+        results.forEach(function (result) {
+            let li = document.createElement('li');
+            li.className = "list-group-item list-group-item-light";
+            li.textContent = result.get("name");
+            li.addEventListener('click', function () {
+                const featureGeometry = result.getGeometry();
+                map.getView().fit(featureGeometry, {padding: [20, 20, 20, 20]});
+            });
+            resultsList.appendChild(li);
+        });
+    }
 });
 
 
