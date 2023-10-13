@@ -15,8 +15,8 @@ class IndexContoller extends Controller
     function index(Request $request, LocationService $locationService, GoogleService $googleService)
     {
 
-        $lon = 0;
-        $lat = 0;
+        $lon = -115.1352;
+        $lat = 36.1450;
      try {
             $sessionGoogle = Cache::get('app.sessionGoogle');
 
@@ -31,14 +31,14 @@ class IndexContoller extends Controller
 
             $location = $request->session()->get('location');
 
-            if (!$location) {
+           /* if (!$location) {
                 $locationJson = $googleService->geoLocaliseIp();
                 $request->session()->put('location', $locationJson);
                 $location = $locationJson;
             }
 
             $lon = $location->location->lng;
-            $lat = $location->location->lat;
+            $lat = $location->location->lat;*/
 
             $directory = public_path('/img/casinos/randomCasinos');
             $files = File::allFiles($directory);
