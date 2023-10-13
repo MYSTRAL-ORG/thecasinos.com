@@ -2,12 +2,15 @@
 
 namespace App\services;
 
+use App\Models\Casino;
 use App\Models\SourceCasino;
 use Carbon\Carbon;
 use Goutte\Client;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
+use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
 class ImagesService
 {
@@ -31,6 +34,30 @@ class ImagesService
         }
 
         return 'Images compressed successfully!';
+    }
+
+    public function renameImages()
+    {
+
+
+        $records  = Casino::whereNotNull('img_url')->get();
+
+        foreach ($records as $casino) {
+            Log::info('fdsqffdsfqfsd');
+            $storage_image_path = public_path('/img/casino/' . $casino->id . ".jpg");
+
+            $new_storage_image_path = public_path('/img/casino/' . $casino->img_url);
+
+
+            if (File::exists($storage_image_path)) {
+
+                File::move($storage_image_path, $new_storage_image_path);
+
+            }
+
+        }
+
+
     }
 
 }

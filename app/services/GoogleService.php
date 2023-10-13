@@ -7,9 +7,16 @@ use GuzzleHttp\Client;
 class GoogleService
 {
 
-    public function createSession()
+    private Client $client;
+
+    public function __construct(Client $client)
     {
-        $client = new Client();
+        $this->client = $client;
+    }
+
+    public function createSessionApiMapTile()
+    {
+
 
         $url = 'https://tile.googleapis.com/v1/createSession?key='.config('app.google_key');
         // function to creation     session url
@@ -44,14 +51,25 @@ class GoogleService
             'Content-Type' => 'application/json',
         ];
 
-        $response = $client->post($url, [
+        $response = $this->client->post($url, [
             'json' => $data,
             'headers' => $headers,
         ]);
 
-        $body = $response->getBody()->getContents();
+        return json_decode($response->getBody()->getContents());
+    }
 
-        // Traitement de la réponse (par exemple, retourner la réponse ou effectuer d'autres opérations)
-        return json_decode($body, true);
+    function geoLocaliseIp(){
+        $response = $this->client->post('https://www.googleapis.com/geolocation/v1/geolocate', [
+            'headers' => [
+                'Content-Type' => 'application/json',
+            ],
+            'query' => ['key' => config('app.google_key')],
+            'json' => [
+                'considerIp' => true,
+            ],
+        ]);
+
+        return json_decode($response->getBody()->getContents());
     }
 }
