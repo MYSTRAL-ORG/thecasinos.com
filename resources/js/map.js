@@ -58,9 +58,9 @@ $(document).ready(function () {
                     kind: "circle",
                     crop: true,
                     shadow: 5,
-                    /*onload: function () {
+                    onload: function () {
                         casinoVectorLayer6.changed();
-                    },*/
+                    },
                     displacement: [0, 0],
                     stroke: new Stroke({
                         width: 2,
