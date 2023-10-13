@@ -1,3 +1,7 @@
 .google-attribution-class img {
     margin-right: 5px; /* Add some spacing to the right of the image */
 }
+
+ul#autocompleteResults{
+    z-index:1;
+}

@@ -3,7 +3,8 @@
 
 <header> <a href="https://www.thecasinos.com/index2.php"><img src="img/logo-dark.png" alt="Logo"></a>
     <div class="search-bar">
-        <input type="text" placeholder="Search...">
+        <input id="search-casino" type="text" placeholder="Search...">
+        <ul class="list-group" id="autocompleteResults"></ul>
         <button class="search-btn">
             <img src="/img/icons/zoom.png" alt="Search Icon" />
         </button>
