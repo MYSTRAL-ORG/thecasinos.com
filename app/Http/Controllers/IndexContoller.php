@@ -14,6 +14,9 @@ class IndexContoller extends Controller
 {
     function index(Request $request, LocationService $locationService, GoogleService $googleService)
     {
+
+        $lon = 0;
+        $lat = 0;
      try {
             $sessionGoogle = Cache::get('app.sessionGoogle');
 
