@@ -348,21 +348,24 @@ $(document).ready(function () {
 
     function searchFeatures(searchText) {
         searchText = searchText.toLowerCase();
-
         let foundFeatures = [];
+if(searchText !=""){
 
-        for (let i = 0; i < allCasinosFeatures.length; i++) {
-            const feature = allCasinosFeatures[i];
-            const name = feature.get("name").toLowerCase();
 
-            if (name.includes(searchText)) {
-                foundFeatures.push(feature);
+    for (let i = 0; i < allCasinosFeatures.length; i++) {
+        const feature = allCasinosFeatures[i];
+        const name = feature.get("name").toLowerCase();
 
-                if (foundFeatures.length >= 10) {
-                    break; // Quit the loop when 10 elements are found
-                }
+        if (name.includes(searchText)) {
+            foundFeatures.push(feature);
+
+            if (foundFeatures.length >= 10) {
+                break; // Quit the loop when 10 elements are found
             }
         }
+    }
+}
+
 
         return foundFeatures;
     }
@@ -376,6 +379,7 @@ $(document).ready(function () {
             li.addEventListener('click', function () {
                 const featureGeometry = result.getGeometry();
                 map.getView().fit(featureGeometry, {padding: [20, 20, 20, 20]});
+                searchFeatures("");
             });
             resultsList.appendChild(li);
         });

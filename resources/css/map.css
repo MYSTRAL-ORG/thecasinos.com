@@ -5,3 +5,12 @@
 ul#autocompleteResults{
     z-index:1;
 }
+
+.resultsearch {
+    z-index: 1;
+    position: fixed;
+    top: 85px;
+    width: 500px;
+}
+
+

@@ -1016,14 +1016,15 @@ ul {
 }
 
 ul li::before {
-    content: "\25A0"; /* Code Unicode pour un carré */
-    color:  var(--theme-red);
+    /*content: "\25A0"; */
+   /* color:  var(--theme-red);
     display: inline-block;
     width: 1em;
-    margin-left: -1.5em; /* Positionne le carré à gauche */
-    margin-right: 0.5em; /* Espacement entre le carré et le texte */
-    text-align: center;
+    margin-left: -1.5em;
+    margin-right: 0.5em;
+    text-align: center;*/
 }
+
 
 ul li {
     margin-left: 1em; /* Ajoute une marge pour éviter le débordement du carré */
