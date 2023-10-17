@@ -151,9 +151,9 @@ $(document).ready(function () {
 
     let allCasinosFeatures = [];
 
-    const cachedGeoJSON = localStorage.getItem('cachedGeoJSON');
+   // const cachedGeoJSON = localStorage.getItem('cachedGeoJSON');
     const appUrl = $('meta[name="_appUrl"]').attr('content');
-    if (cachedGeoJSON) {
+    if (false == true  ) {
         // Use cached GeoJSON data
         const geoJsonFormat = new GeoJSON();
         allCasinosFeatures = geoJsonFormat.readFeatures(cachedGeoJSON);
@@ -168,7 +168,7 @@ $(document).ready(function () {
                 // Cache the GeoJSON data in local storage
                 const geoJsonFormat = new GeoJSON();
                 allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
-                localStorage.setItem('cachedGeoJSON', JSON.stringify(geojson));
+                //localStorage.setItem('cachedGeoJSON', JSON.stringify(geojson));
                 updateFeaturesOnExtentChange();
                 // Process and display features as needed
             })
