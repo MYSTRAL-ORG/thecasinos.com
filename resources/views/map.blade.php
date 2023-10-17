@@ -1,6 +1,5 @@
 
-@vite('resources/css/map.css')
-@vite('resources/js/map.js')
+
 
 <style>
     #map {
@@ -8,9 +7,11 @@
         width: 100%;
     }
 </style>
+
+
 <div id="map" class="map"></div>
 
-<div id="gallery" class="gallery">
+<div id="gallery" class="gallery container-fluid d-flex justify-content-between ">
 
 
 

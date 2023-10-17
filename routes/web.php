@@ -17,7 +17,7 @@ use App\Http\Controllers\IndexContoller;
 */
 
 //Route::get('/',  [MapkitController::class , 'fetchMapData']);
-Route::get('/', [IndexContoller::class , 'index']);
+Route::get('/', [IndexContoller::class , 'index'])->name('index2');
 
 Route::get('/leaflet', function () {
     return view('leaflet');

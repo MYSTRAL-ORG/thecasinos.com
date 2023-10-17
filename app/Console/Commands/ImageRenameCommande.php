@@ -22,7 +22,7 @@ class ImageRenameCommande extends Command
      */
     public function handle(ImagesService $imagesService)
     {
-        $imagesService->renameImages();
+        $imagesService->getnerateFakeLinkImage();
 
     }
 }
