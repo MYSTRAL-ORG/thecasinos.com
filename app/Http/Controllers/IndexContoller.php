@@ -40,18 +40,15 @@ class IndexContoller extends Controller
             $lon = $location->location->lng;
             $lat = $location->location->lat;*/
 
-            $directory = public_path('/img/casinos/randomCasinos');
-            $files = File::allFiles($directory);
 
 
-            $fileNamesRadomCasinos = collect($files)->map(function ($file) {
-                return $file->getFilename();
-            })->implode('|');
+
+
 
        } catch (\Exception $e) {
             Log::info('Error', ['message' => $e->getMessage()]);
         } finally {
-            return view('index2', compact('sessionGoogle', 'lon', 'lat','fileNamesRadomCasinos'));
+            return view('index2', compact('sessionGoogle', 'lon', 'lat',));
         }
     }
 

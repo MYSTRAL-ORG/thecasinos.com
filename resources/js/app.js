@@ -177,8 +177,7 @@ $(document).ready(function () {
             });
     }
 
-    const lstCasinos = $('meta[name="_fileNamesRadomCasinos"]').attr('content');
-    let lstCasinosArray = lstCasinos.split('|');
+
 
     function generatedDivGallery(lstFeatures) {
         const $galleryDiv = $("#gallery");

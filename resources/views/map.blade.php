@@ -17,6 +17,6 @@
 
 </div>
 <meta name="_googleSessionToken" content="{{ $sessionGoogle}}"/>
-<meta name="_fileNamesRadomCasinos" content="{{ $fileNamesRadomCasinos}}"/>
+
 
 <meta name="_googleKey" content="{{ config('app.google_key')}}"/>
