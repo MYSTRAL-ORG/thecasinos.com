@@ -51,7 +51,7 @@ class IndexContoller extends Controller
        } catch (\Exception $e) {
             Log::info('Error', ['message' => $e->getMessage()]);
         } finally {
-            return view('welcome', compact('sessionGoogle', 'lon', 'lat','fileNamesRadomCasinos'));
+            return view('index2', compact('sessionGoogle', 'lon', 'lat','fileNamesRadomCasinos'));
         }
     }
 

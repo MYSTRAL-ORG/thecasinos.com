@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Casino
- * 
+ *
  * @property int $id
  * @property string|null $id_source
  * @property string|null $name
@@ -53,6 +53,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $twitter
  * @property string|null $toll_free
  * @property string|null $img_url
+ * @property bool|null $has_original_img
  *
  * @package App\Models
  */
@@ -84,7 +85,9 @@ class Casino extends Model
 		'cat_bingo' => 'bool',
 		'cat_slotmachines' => 'bool',
 		'cat_tablegames' => 'bool',
-		'is_scrap' => 'bool'
+		'is_scrap' => 'bool',
+        'has_original_img' => 'bool'
+
 	];
 
 	protected $fillable = [
@@ -127,6 +130,7 @@ class Casino extends Model
 		'facebook',
 		'twitter',
 		'toll_free',
-		'img_url'
+		'img_url',
+        'has_original_img'
 	];
 }

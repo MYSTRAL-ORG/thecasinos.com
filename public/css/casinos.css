@@ -23,7 +23,38 @@ p {
     line-height: 1.5;
 }
 
-header {
+ul {
+    list-style: none !important;
+}
+.search-casino-list {
+    background-color: var(--theme-light-grey);
+    width: inherit;
+    position: absolute;
+    top: 100%;  /* pour le positionner juste en dessous de l'input */
+    left: 0;
+    z-index: 1000;
+
+    border-radius: 20px ;
+    padding: 10px;
+    list-style-type: none;
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.list-items::before {
+    content:none !important;
+    list-style-type: none !important;
+}
+
+.list-items {
+    content:none !important;
+    list-style-type: none !important;
+    padding: 10px 5px;
+}
+.list-items:hover {
+    background-color: #dddddd;
+}
+header{
     background-color: white;
     width: 100%;
     height: 90px;
@@ -40,7 +71,12 @@ header img {
     height: 50px;
 }
 
+#logo{
+    height: 50px;
+}
+
 .search-bar {
+    position: relative;
     display: flex;
     align-items: center;
     background-color: var(--theme-light-grey);
@@ -52,6 +88,8 @@ header img {
 }
 
 .search-bar input {
+    display: block;
+    margin-bottom: 10px;
     flex-grow: 1;
     border: none;
     outline: none;
@@ -186,8 +224,8 @@ body, html {
     background-color: white;
     border-radius: 20px;
     padding: 10px;
-    margin: 20px 10px; /* Margin de droite et gauche de 10px et haut/bas de 20px */
-    width: calc(100%/ 6 - 2*10px - 2*10px);
+    /*margin:  10px; *//* Margin de droite et gauche de 10px et haut/bas de 20px */
+   /* width: calc(100%/ 6 - 2*10px - 2*10px);*/
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -1046,7 +1084,7 @@ ul li {
     position: relative;
     width: 100%;
     height: 250px;
-    background: url('img/main.jpg') no-repeat center center;
+    background: url('/img/main.jpg') no-repeat center center;
     background-size: cover;
     border-bottom: 4px solid  var(--theme-red);
     text-align: center;

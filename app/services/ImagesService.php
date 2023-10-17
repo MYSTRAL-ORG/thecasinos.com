@@ -44,20 +44,64 @@ class ImagesService
 
         foreach ($records as $casino) {
             Log::info('fdsqffdsfqfsd');
-            $storage_image_path = public_path('/img/casino/' . $casino->id . ".jpg");
 
-            $new_storage_image_path = public_path('/img/casino/' . $casino->img_url);
+            //cut $casino->img_url in two strings separated by the string "."
+            $arrayImg = explode(".", $casino->img_url);
 
 
-            if (File::exists($storage_image_path)) {
+          //get $arrayImg length
+                $length = count($arrayImg);
 
-                File::move($storage_image_path, $new_storage_image_path);
+                $storage_image_path = public_path('/img/casino/' . $casino->img_url  );
 
-            }
+                $newFile = '/img/casino/' . str_replace(" ","_",$casino->slug) . "." . $arrayImg[$length-1];
+                $new_storage_image_path = public_path(  $newFile);
+
+
+                if (File::exists($storage_image_path)) {
+
+                    File::move($storage_image_path, $new_storage_image_path);
+
+                }
+                $casino->img_url = $newFile;
+                $casino->save();
+
 
         }
 
 
     }
+
+
+    public function getnerateFakeLinkImage(){
+
+
+        //update model Casino set img_url from random array string a never pic the same string until the end of the array
+        $casinos =  Casino::whereNull('img_url')->get();
+        $directory = public_path('/img/casinos/randomCasinos');
+        $files = File::allFiles($directory);
+        $fileNamesRadomCasinos = collect($files)->map(function ($file) {
+            return $file->getFilename();
+        });
+
+        $randomStringsCount = count($fileNamesRadomCasinos);
+        $index = 0;
+
+        foreach ($casinos as $casino) {
+
+
+                $casino->img_url = $fileNamesRadomCasinos[$index];
+                $index = ($index + 1) % $randomStringsCount;
+
+            $casino->save();
+
+
+
+
+
+        }
+
+    }
+
 
 }
