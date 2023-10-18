@@ -170,7 +170,7 @@ $(document).ready(function () {
             .catch(function (error) {
                 console.error('Error fetching GeoJSON:', error);
             });
-
+console.log("dsq");
     async function fetchData() {
         try {
             const response = await fetch(appUrl+'/casinos.json');
