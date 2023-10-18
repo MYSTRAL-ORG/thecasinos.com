@@ -178,12 +178,12 @@ $(document).ready(function () {
 
             const geoJsonFormat = new GeoJSON();
             allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
-            updateFeaturesOnExtentChange();
+
         } catch (error) {
             console.error('Error:', error);
         }
     }
-    fetchData();
+    fetchData().then(r =>  updateFeaturesOnExtentChange());
 
     function generatedDivGallery(lstFeatures) {
         const $galleryDiv = $("#gallery");
