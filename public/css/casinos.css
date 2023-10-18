@@ -44,12 +44,15 @@ ul {
 .list-items::before {
     content:none !important;
     list-style-type: none !important;
+
 }
 
 .list-items {
     content:none !important;
     list-style-type: none !important;
     padding: 10px 5px;
+    display:flex;
+    font-size: medium;
 }
 .list-items:hover {
     background-color: #dddddd;
@@ -1617,4 +1620,16 @@ ul li {
     padding-left: 0;      /* Supprime le padding par défaut */
     line-height: 1.5;
     font-size:18px;
+}
+
+
+.small-img-search{
+    border-radius: 0.5rem;
+    width: 2rem;
+    height: 2rem;
+    margin-bottom: 0.25rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    max-width: 100%;
+
 }
