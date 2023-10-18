@@ -183,7 +183,7 @@ $(document).ready(function () {
             console.error('Error:', error);
         }
     }
-    fetchData().then(r =>  updateFeaturesOnExtentChange());
+   // fetchData().then(r =>  updateFeaturesOnExtentChange());
 
     function generatedDivGallery(lstFeatures) {
         const $galleryDiv = $("#gallery");
