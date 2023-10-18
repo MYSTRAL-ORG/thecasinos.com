@@ -184,7 +184,7 @@ $(document).ready(function () {
         $galleryDiv.empty();
 
         lstFeatures.forEach(function (feature) {
-            const imageURL =feature.get("imgurl") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
+            const imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
             const location = feature.get('cityname') == undefined ? feature.get('countryname') : feature.get('cityname');
             let $childElement= `
                 <div class="emcapsule col-sm-6 col-lg-2">
@@ -200,7 +200,7 @@ $(document).ready(function () {
                             <img src="/img/icons/location.png" alt="Location Icon" class="location-icon">
                             <span class="city-name">${location}</span>
                             <button class="add-button">see</button>
-                        </div>
+                         </div>
 
                     </span>
                 </div>
@@ -214,6 +214,8 @@ $(document).ready(function () {
             const featureId = $(this).attr("data-id-feature");
             const featureToSelect = casinoVectorLayer6.getSource().getFeatureById(parseInt(featureId));
 
+
+            clearAllSelectionExcept(featureToSelect);
             if($(this).text() === "See more"){
                 select.getFeatures().push(featureToSelect);
             }else{
@@ -225,7 +227,20 @@ $(document).ready(function () {
     }
 
 
+    function clearAllSelectionExcept(featureToKeep) {
+        let selectedFeatures = select.getFeatures();
+
+        selectedFeatures.forEach((feature) => {
+            if (feature !== featureToKeep) {
+                select.getFeatures().remove(feature);
+            }
+        });
+    }
+
     map.on('moveend', updateFeaturesOnExtentChange);
+
+    let first6Features;
+
 
     function updateFeaturesOnExtentChange() {
         // 1. Get the current extent of the map
@@ -246,19 +261,20 @@ $(document).ready(function () {
         });
 
         // 4. Get the first 6 features
-        const first6Features = featuresInExtent.slice(0, 12);
+        const first12Features = featuresInExtent.slice(0, 12);
 
 
         casinoVectorLayer6.getSource().clear();
         let radius = 74;
-        first6Features.forEach(function (feature) {
+        first12Features.forEach(function (feature) {
 
             feature.set('radius', (radius > 40) ? radius : 44);
             radius -= 10;
             casinoVectorLayer6.getSource().addFeature(feature);
         });
 
-        generatedDivGallery(first6Features.slice(0, 6));
+        first6Features = first12Features.slice(0, 6);
+        generatedDivGallery(first6Features);
     }
 
     const select = new Select({
@@ -306,38 +322,30 @@ $(document).ready(function () {
 
     function jqueryActionGallery(element , actionType ) {
         const encapsule = element.closest(".emcapsule");
-
         const allBlock = $(".emcapsule");
 
-
-
-        // Si le bloc actuel est déjà étendu, fermez-le
         if (actionType === "remove") {
-            encapsule.removeClass("expanded col-sm-6 col-lg-3 col-sm-6 col-lg-2");
+            encapsule.removeClass("expanded col-sm-6 col-lg-4 col-sm-6 col-lg-2");
             element.text("See more")
             encapsule.addClass("col-sm-6 col-lg-2");
             allBlock.show();
-
         }else{
-            encapsule.addClass("col-sm-6 col-lg-3");
-            // Montrez tous les blocs (pour vous assurer que le bloc précédemment caché est à nouveau visible)
-            allBlock.show();
 
-            // Étendez le bloc actuellement cliqué
-            encapsule.addClass("expanded");
+            encapsule.addClass(" expanded col-sm-6 col-lg-4");
+            allBlock.show();
             element.text("See less");
 
-            if (encapsule.is(":last-child")) {
-                // Si le bloc est le dernier bloc, cachez le premier bloc
-                $(".emcapsule").first().hide();
-            } else {
-                // Sinon, cachez le dernier bloc
-                $(".emcapsule").last().hide();
+            if(element.attr("data-id-feature")!== undefined){
+                if (encapsule.is(":last-child")) {
+                   // Si le bloc est le dernier bloc, cachez le premier bloc
+                   $(".emcapsule").first().hide();
+                } else {
+                   // Sinon, cachez le dernier bloc
+                   $(".emcapsule").last().hide();
+                }
             }
+
         }
-
-
-
     }
 
     function displayNames(featureID) {
@@ -396,10 +404,13 @@ $(document).ready(function () {
                 //Display matched part in bold
                 // Highlight the matched text
                 const regex = new RegExp(`(${inputElement.value})`, 'gi');
-                let word = name.replace(regex, "<b>$1</b>");
+                let word2Display = name.replace(regex, "<b>$1</b>");
                 //display the value in array
-                listItem.innerHTML = word;
-                lstElement.push(word)  ;
+
+                word2Display = word2Display + " - "+ feature.get("cityname") ?? feature.get("countryname") ;
+
+                listItem.innerHTML = word2Display;
+                lstElement.push(word2Display)  ;
                 document.querySelector(".search-casino-list").appendChild(listItem);
                 if(lstElement.length>=6){
                     $("#search-casino-list").removeClass("d-none");
