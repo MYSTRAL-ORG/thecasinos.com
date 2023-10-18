@@ -155,7 +155,7 @@ $(document).ready(function () {
     const appUrl = $('meta[name="_appUrl"]').attr('content');
 
         // Fetch GeoJSON data from the server
-        fetch('/casinos.json')
+        fetch(appUrl+'/casinos.json')
             .then(function (response) {
                 return response.json();
             })
