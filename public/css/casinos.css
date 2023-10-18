@@ -1625,11 +1625,8 @@ ul li {
 
 .small-img-search{
     border-radius: 0.5rem;
-    width: 2rem;
-    height: 2rem;
-    margin-bottom: 0.25rem;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+    width: 3rem;
+    height: 100% !important;
     max-width: 100%;
 
 }
