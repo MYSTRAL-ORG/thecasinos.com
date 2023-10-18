@@ -155,7 +155,7 @@ $(document).ready(function () {
     const appUrl = $('meta[name="_appUrl"]').attr('content');
 
         // Fetch GeoJSON data from the server
-        fetch(appUrl+'/casinos.json')
+       /* fetch(appUrl+'/casinos.json')
             .then(function (response) {
                 return response.json();
             })
@@ -169,10 +169,21 @@ $(document).ready(function () {
             })
             .catch(function (error) {
                 console.error('Error fetching GeoJSON:', error);
-            });
+            });*/
 
+    async function fetchData() {
+        try {
+            const response = await fetch(appUrl+'/casinos.json');
+            const geojson = await response.json();
 
-
+            const geoJsonFormat = new GeoJSON();
+            allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
+            updateFeaturesOnExtentChange();
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+    fetchData();
 
     function generatedDivGallery(lstFeatures) {
         const $galleryDiv = $("#gallery");
