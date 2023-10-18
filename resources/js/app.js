@@ -171,7 +171,7 @@ $(document).ready(function () {
                 console.error('Error fetching GeoJSON:', error);
             });*/
 
-    async function fetchData() {
+   /* async function fetchData() {
         try {
             const response = await fetch(appUrl+'/casinos.json');
             const geojson = await response.json();
@@ -182,7 +182,7 @@ $(document).ready(function () {
         } catch (error) {
             console.error('Error:', error);
         }
-    }
+    }*/
    // fetchData().then(r =>  updateFeaturesOnExtentChange());
 
     function generatedDivGallery(lstFeatures) {
