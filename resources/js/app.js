@@ -325,13 +325,13 @@ $(document).ready(function () {
         const allBlock = $(".emcapsule");
 
         if (actionType === "remove") {
-            encapsule.removeClass("expanded col-sm-6 col-lg-4 col-sm-6 col-lg-2");
+            encapsule.removeClass("expanded  col-lg-4 col-sm-12 ");
             element.text("See more")
             encapsule.addClass("col-sm-6 col-lg-2");
             allBlock.show();
         }else{
 
-            encapsule.addClass(" expanded col-sm-6 col-lg-4");
+            encapsule.addClass(" expanded col-sm-12 col-lg-4");
             allBlock.show();
             element.text("See less");
 
@@ -392,22 +392,28 @@ $(document).ready(function () {
                     const zoom = view.getZoom();
                     view.animate({
                         center: feature.getGeometry().getCoordinates(),
-                        zoom: 8,  // Zoom in by 2 levels. Adjust as needed.
-                        duration: 1000   // Duration of animation in milliseconds. Adjust as needed.
+                        zoom: 8
+                    },function() {  // This is the callback after animation completes
+                        select.getFeatures().push(feature);
                     });
-                    $("#search-casino-list").addClass("d-none");
-                    select.getFeatures().clear();
-                    select.getFeatures().push(feature);
 
+                    select.getFeatures().clear();
+                    $("#search-casino-list").addClass("d-none");
                     removeElements();
                 });
                 //Display matched part in bold
                 // Highlight the matched text
+
+                const imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
+                let word2Display =  '<img class="small-img-search" src="'+imageURL+'" alt="Description of Image">' ;
                 const regex = new RegExp(`(${inputElement.value})`, 'gi');
-                let word2Display = name.replace(regex, "<b>$1</b>");
+                const name2display = name.replace(regex, "<b>$1</b>");
+                const cityOrCountry=  feature.get("cityname") ?? feature.get("countryname") ;
+                word2Display+= ' <div class="d-lg-table">                   <div>'+name2display+' </div>                    <div class="text-secondary"> '+cityOrCountry+'  </div>                                    </div>';
+
                 //display the value in array
 
-                word2Display = word2Display + " - "+ feature.get("cityname") ?? feature.get("countryname") ;
+
 
                 listItem.innerHTML = word2Display;
                 lstElement.push(word2Display)  ;
