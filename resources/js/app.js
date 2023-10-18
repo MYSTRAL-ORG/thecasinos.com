@@ -153,14 +153,9 @@ $(document).ready(function () {
 
    // const cachedGeoJSON = localStorage.getItem('cachedGeoJSON');
     const appUrl = $('meta[name="_appUrl"]').attr('content');
-    if (false == true  ) {
-        // Use cached GeoJSON data
-        const geoJsonFormat = new GeoJSON();
-        allCasinosFeatures = geoJsonFormat.readFeatures(cachedGeoJSON);
-        // Process and display features as needed
-    } else {
+
         // Fetch GeoJSON data from the server
-        fetch(appUrl+'/casinos.json')
+        fetch('/casinos.json')
             .then(function (response) {
                 return response.json();
             })
@@ -175,7 +170,7 @@ $(document).ready(function () {
             .catch(function (error) {
                 console.error('Error fetching GeoJSON:', error);
             });
-    }
+
 
 
 
