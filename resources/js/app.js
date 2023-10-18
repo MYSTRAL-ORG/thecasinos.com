@@ -341,7 +341,7 @@ console.log("dsq");
             allBlock.show();
             element.text("See less");
 
-            if(element.attr("data-id-feature")!== undefined){
+            if(allBlock.length === 6 && element.attr("data-id-feature")!== undefined){
                 if (encapsule.is(":last-child")) {
                    // Si le bloc est le dernier bloc, cachez le premier bloc
                    $(".emcapsule").first().hide();
