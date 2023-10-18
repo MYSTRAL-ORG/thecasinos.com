@@ -398,7 +398,7 @@ console.log("dsq");
                     const zoom = view.getZoom();
                     view.animate({
                         center: feature.getGeometry().getCoordinates(),
-                        zoom: 14
+                        zoom: 18
                     },function() {  // This is the callback after animation completes
                         select.getFeatures().push(feature);
                     });
