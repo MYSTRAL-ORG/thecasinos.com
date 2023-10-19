@@ -412,7 +412,7 @@ console.log("dsq");
 
                 const imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
                 let word2Display =  '<img class="small-img-search" src="'+imageURL+'" alt="Description of Image">' ;
-                const regex = new RegExp(`(${inputElement.value})`, 'gi');
+                const regex = new RegExp(```(${inputElement.value})`, 'gi');
                 const name2display = name.replace(regex, "<b>$1</b>");
                 const cityOrCountry=  feature.get("cityname") ?? feature.get("countryname") ;
                 word2Display+= ' <div class="d-lg-table">                   <div>'+name2display+' </div>                    <div class="text-secondary"> '+cityOrCountry+'  </div>                                    </div>';

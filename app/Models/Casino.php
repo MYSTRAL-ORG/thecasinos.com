@@ -54,8 +54,63 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $toll_free
  * @property string|null $img_url
  * @property bool|null $has_original_img
- *
+ * @property string|null $owners
+ * @property bool|null $always_open
+ * @property string|null $poker_room_name
+ * @property int|null $table_games
+ * @property string|null $hotel_name
  * @package App\Models
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereAlwaysOpen($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatBingo($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatCasino($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatGreyhounds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatHorseracing($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatOfftrack($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatPoker($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatSimulcasting($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatSlotmachines($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatSportsbook($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCatTablegames($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCityName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCityTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCountryIsoCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCountryName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereCountryTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereFacebook($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereGamingMachines($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereHasOriginalImg($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereHotelName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereHotels($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereIdSource($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereImgUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereIsScrap($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereJaialai($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereLocationLatitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereLocationLongitude($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereOpened($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereOwners($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino wherePokerRoomName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino wherePokerTables($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereRestaurants($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereShops($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereSpas($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereSquareFootage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereStateName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereStateTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereTableGames($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereTelephone($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereTollFree($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereTwitter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereVenues($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereWebsite($value)
+ * @mixin \Eloquent
  */
 class Casino extends Model
 {
@@ -86,8 +141,9 @@ class Casino extends Model
 		'cat_slotmachines' => 'bool',
 		'cat_tablegames' => 'bool',
 		'is_scrap' => 'bool',
-        'has_original_img' => 'bool'
-
+		'has_original_img' => 'bool',
+		'always_open' => 'bool',
+		'table_games' => 'int'
 	];
 
 	protected $fillable = [
@@ -131,6 +187,11 @@ class Casino extends Model
 		'twitter',
 		'toll_free',
 		'img_url',
-        'has_original_img'
+		'has_original_img',
+		'owners',
+		'always_open',
+		'poker_room_name',
+		'table_games',
+		'hotel_name'
 	];
 }

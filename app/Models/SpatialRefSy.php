@@ -10,14 +10,17 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SpatialRefSy
- * 
+ *
  * @property int $srid
  * @property string|null $auth_name
  * @property int|null $auth_srid
  * @property string|null $srtext
  * @property string|null $proj4text
- *
  * @package App\Models
+ * @method static \Illuminate\Database\Eloquent\Builder|SpatialRefSy newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SpatialRefSy newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|SpatialRefSy query()
+ * @mixin \Eloquent
  */
 class SpatialRefSy extends Model
 {
