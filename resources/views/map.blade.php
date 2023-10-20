@@ -20,3 +20,6 @@
 
 
 <meta name="_googleKey" content="{{ config('app.google_key')}}"/>
+
+<meta name="_lon" content="{{ $lon }}"/>
+<meta name="_lat" content="{{ $lat }}"/>

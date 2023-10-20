@@ -12,10 +12,6 @@ import {Select} from "ol/interaction.js";
 import $ from "jquery";
 import Geolocation from 'ol/Geolocation.js';
 import {containsCoordinate} from "ol/extent.js";
-import element from "ol-ext/util/element.js";
-
-
-
 
 
 $(document).ready(function () {
@@ -205,12 +201,13 @@ console.log("dsq");
                         <div class="location-info">
                             <img src="/img/icons/location.png" alt="Location Icon" class="location-icon">
                             <span class="city-name">${location}</span>
-                            <button class="add-button">see</button>
+                            <button class="add-button" onclick="window.location.href='/casino/${feature.get('countrytitle')}/${feature.get('citytitle')}/${feature.getId()}';">see</button>
                          </div>
 
                     </span>
                 </div>
         `;
+
             $galleryDiv.append($childElement)
         });
 
@@ -412,7 +409,7 @@ console.log("dsq");
 
                 const imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
                 let word2Display =  '<img class="small-img-search" src="'+imageURL+'" alt="Description of Image">' ;
-                const regex = new RegExp(```(${inputElement.value})`, 'gi');
+                const regex = new RegExp(`(${inputElement.value})`, 'gi');
                 const name2display = name.replace(regex, "<b>$1</b>");
                 const cityOrCountry=  feature.get("cityname") ?? feature.get("countryname") ;
                 word2Display+= ' <div class="d-lg-table">                   <div>'+name2display+' </div>                    <div class="text-secondary"> '+cityOrCountry+'  </div>                                    </div>';

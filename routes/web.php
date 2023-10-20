@@ -19,18 +19,9 @@ use App\Http\Controllers\IndexContoller;
 //Route::get('/',  [MapkitController::class , 'fetchMapData']);
 Route::get('/', [IndexContoller::class , 'index'])->name('index2');
 
-Route::get('/leaflet', function () {
-    return view('leaflet');
-});
-
-Route::get('/google', function () {
-    return view('google');
-});
-
-Route::get('/mapKitData',  [CrawlerController::class , 'scrapeTableGames']);
 
 
-Route::get('/mapKitData', [MapkitController::class , 'fetchMapData']);
+Route::get('/casino/{country}/{city}/{id}', [LocationController::class , 'show']) ->where(['id' => '[0-9]+'])->name('casino');
 
 
 

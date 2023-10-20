@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id_casino
  * @property string|null $source_openai
  * @property bool $is_done
+ * @property array|null $source_openai_json
  * @package App\Models
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource newQuery()
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource whereIdCasino($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource whereIsDone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource whereSourceOpenai($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource whereSourceOpenaiJson($value)
  * @mixin \Eloquent
  */
 class CasinoDetailsSource extends Model
@@ -35,12 +37,15 @@ class CasinoDetailsSource extends Model
 	protected $casts = [
 		'id' => 'int',
 		'id_casino' => 'int',
-		'is_done' => 'bool'
+		'is_done' => 'bool',
+		'source_openai_json' => 'json'
 	];
 
 	protected $fillable = [
 		'id',
+        'id_casino' ,
 		'source_openai',
-		'is_done'
+		'is_done',
+		'source_openai_json'
 	];
 }

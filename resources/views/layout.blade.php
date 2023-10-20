@@ -22,7 +22,9 @@
 
     @include('header')
 
-    @include('map')
+    @yield('casino')
+
+    @yield('map')
 
     @include('footer')
 
