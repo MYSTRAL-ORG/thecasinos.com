@@ -6,6 +6,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -38,6 +39,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class CasinoDetail extends Model
 {
+    use HasFactory;
 	protected $table = 'casino_details';
 	public $timestamps = false;
 

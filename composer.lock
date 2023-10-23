@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c243a952c3ea38369ae0995cace3457",
+    "content-hash": "e0b07a152ed38747cff1515b720962c4",
     "packages": [
         {
             "name": "brick/math",
@@ -2036,6 +2036,79 @@
                 "source": "https://github.com/laravel/tinker/tree/v2.8.2"
             },
             "time": "2023-08-15T14:27:00+00:00"
+        },
+        {
+            "name": "laravelcollective/html",
+            "version": "v6.4.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/LaravelCollective/html.git",
+                "reference": "64ddfdcaeeb8d332bd98bef442bef81e39c3910b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/LaravelCollective/html/zipball/64ddfdcaeeb8d332bd98bef442bef81e39c3910b",
+                "reference": "64ddfdcaeeb8d332bd98bef442bef81e39c3910b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/http": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/routing": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/session": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "illuminate/view": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "php": ">=7.2.5"
+            },
+            "require-dev": {
+                "illuminate/database": "^6.0|^7.0|^8.0|^9.0|^10.0",
+                "mockery/mockery": "~1.0",
+                "phpunit/phpunit": "~8.5|^9.5.10"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "6.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Collective\\Html\\HtmlServiceProvider"
+                    ],
+                    "aliases": {
+                        "Form": "Collective\\Html\\FormFacade",
+                        "Html": "Collective\\Html\\HtmlFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Collective\\Html\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Engebretson",
+                    "email": "adam@laravelcollective.com"
+                },
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "HTML and Form Builders for the Laravel Framework",
+            "homepage": "https://laravelcollective.com",
+            "support": {
+                "issues": "https://github.com/LaravelCollective/html/issues",
+                "source": "https://github.com/LaravelCollective/html"
+            },
+            "abandoned": "spatie/laravel-html",
+            "time": "2023-04-25T02:46:11+00:00"
         },
         {
             "name": "league/commonmark",
@@ -7605,6 +7678,68 @@
                 "source": "https://github.com/mockery/mockery"
             },
             "time": "2023-08-09T00:03:52+00:00"
+        },
+        {
+            "name": "mrdebug/crudgen",
+            "version": "1.10.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/misterdebug/crud-generator-laravel.git",
+                "reference": "9fdf6e9cad73fb37e27f94ab7a98aa94fa0cf88a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/misterdebug/crud-generator-laravel/zipball/9fdf6e9cad73fb37e27f94ab7a98aa94fa0cf88a",
+                "reference": "9fdf6e9cad73fb37e27f94ab7a98aa94fa0cf88a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mrdebug\\Crudgen\\CrudgenServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mrdebug\\Crudgen\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonathan Escarem",
+                    "email": "contact@escarem-jonathan.fr"
+                }
+            ],
+            "description": "Create a Laravel Crud in a few seconds",
+            "keywords": [
+                "composer-package",
+                "crud",
+                "crud-generator",
+                "generator",
+                "laravel",
+                "laravel-crud",
+                "laravel-crud-generator",
+                "laravel-package",
+                "laravel10",
+                "laravel8",
+                "laravel9",
+                "rest",
+                "rest-api"
+            ],
+            "support": {
+                "issues": "https://github.com/misterdebug/crud-generator-laravel/issues",
+                "source": "https://github.com/misterdebug/crud-generator-laravel/tree/1.10.5"
+            },
+            "time": "2023-08-30T01:33:00+00:00"
         },
         {
             "name": "myclabs/deep-copy",

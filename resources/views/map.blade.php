@@ -5,6 +5,7 @@
     #map {
         height: 500px;
         width: 100%;
+        position: relative;
     }
 </style>
 

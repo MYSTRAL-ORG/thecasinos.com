@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\CasinoDetailsController;
 use App\Http\Controllers\CrawlerController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MapkitController;
+use App\Models\CasinoDetail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexContoller;
 /*
@@ -24,5 +26,10 @@ Route::get('/', [IndexContoller::class , 'index'])->name('index2');
 Route::get('/casino/{country}/{city}/{id}', [LocationController::class , 'show']) ->where(['id' => '[0-9]+'])->name('casino');
 
 
-
-
+Route::resource('casinodetail', CasinoDetailsController::class);
+Route::post('casinodetail/create', [CasinoDetailsController::class, 'create'])->name('casinodetails.create');
+Route::get('casinodetail/{post}/show', [CasinoDetailsController::class, 'show'])->name('casinodetails.show');
+Route::post('casinodetail/{id}/edit'  , [CasinoDetailsController::class, 'edit'])->name('casinodetails.edit');
+Route::post('casinodetail/destroy', [CasinoDetailsController::class, 'destroy'])->name('casinodetails.destroy');
+Route::post('casinodetail/delete', [CasinoDetailsController::class, 'delete'])->name('casinodetails.delete');
+Route::post('casinodetail/{id}/update', [CasinoDetailsController::class, 'delete'])->name('casinodetails.update');
