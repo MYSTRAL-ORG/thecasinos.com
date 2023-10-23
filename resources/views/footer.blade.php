@@ -6,7 +6,7 @@
                 <img src="/img/logo.png" alt="Logo">
             </a>
         </div>
-        <div class="col-sm-6 col-lg-2 column-description">
+        <div class="col-sm-6 col-lg-3 column-description">
             <p>With TheCasinos.com, enjoy the premier online guide reference. Explore a world of top-tier gaming and enhance your onsite casino journey. Trust in our curated selections to elevate your gaming adventure.</p>
         </div>
         <div class="col-sm-6 col-lg-2 column">
