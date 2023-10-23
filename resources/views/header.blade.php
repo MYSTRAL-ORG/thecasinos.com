@@ -20,7 +20,7 @@
             </button>
         </div>
 
-        <div class="language collapse navbar-collapse  nav_item ">
+        <!-- <div class="language collapse navbar-collapse  nav_item ">
             <div class="dropdown">
                 <button class="btn form-control  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <img src="/img/icons/world.png" alt="World Icon"> EN
@@ -31,7 +31,7 @@
                     <a class="dropdown-item" href="#"><img src="/img/icons/world.png" alt="Brazilian Icon"> BR</a>
                 </ul>
             </div>
-        </div>
+        </div> -->
 
         <div class=" collapse navbar-collapse nav_item  " role="search">
             @if (Route::currentRouteNamed('online'))
