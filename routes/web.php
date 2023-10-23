@@ -23,7 +23,7 @@ Route::get('/', [IndexContoller::class , 'index'])->name('index2');
 
 
 
-Route::get('/{country}/{city}/{id}', [LocationController::class , 'show']) ->where(['id' => '[0-9]+'])->name('casino');
+Route::get('/{country}/{city}/{id}', [LocationController::class , 'show'])->name('casino');
 
 
 Route::resource('casinodetail', CasinoDetailsController::class);

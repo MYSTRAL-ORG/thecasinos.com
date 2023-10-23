@@ -8,12 +8,13 @@ use Illuminate\Http\Request;
 
 class LocationController extends Controller
 {
-    public function show($country, $city, $id)
+    public function show($country, $city, $slug)
     {
+        $casino = Casino::where('slug',$slug)->first();
 
-        $casinoDetail = CasinoDetail::find($id);
+        $casinoDetail = CasinoDetail::find($casino->id)->first();
 
-        $casino = Casino::find($id);
+
 
         if (!$casinoDetail) {
             return abort(404);

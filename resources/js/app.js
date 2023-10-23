@@ -204,7 +204,7 @@ console.log("dsq");
                         <div class="location-info">
                             <img src="/img/icons/location.png" alt="Location Icon" class="location-icon">
                             <span class="city-name">${location}</span>
-                            <button class="add-button" onclick="window.location.href='/${feature.get('countrytitle')}/${feature.get('citytitle')}/${feature.getId()}';">see</button>
+                            <button class="add-button" onclick="window.location.href='/${feature.get('countrytitle')}/${feature.get('citytitle')}/${feature.get('slug')}';">see</button>
                          </div>
 
                     </span>
