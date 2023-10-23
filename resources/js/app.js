@@ -381,8 +381,12 @@ console.log("dsq");
         for (let feature of allCasinosFeatures) {
             //convert input to lowercase and compare with each string
             const name = feature.get("name");
+            const    nameNormalize = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            const  searchNormalize = inputElement.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+
             if (
-                name.toLowerCase().includes(inputElement.value.toLowerCase()) && inputElement.value !== ""
+                nameNormalize.includes(searchNormalize) && inputElement.value !== ""
             ) {
                 //create li element
                 let listItem = document.createElement("li");

@@ -50,7 +50,7 @@ ul {
 .list-items {
     content:none !important;
     list-style-type: none !important;
-    padding: 10px 5px;
+    padding: 10px;
     display:flex;
     font-size: medium;
 }
@@ -416,10 +416,9 @@ body, html {
 
 footer {
     background-color: #222222;
-    width: 100%;
-    display: flex;
-    justify-content: center; /* Modifié pour centrer les éléments */
-    padding: 20px 30px;
+
+
+
     align-items: center; /* Ajouté pour centrer verticalement les éléments */
     gap: 30px; /* Ajouté pour rapprocher les colonnes */
     border-top: 4px solid  var(--theme-red);
@@ -480,10 +479,10 @@ footer img {
 
 .copyright-section {
     background-color: black;
-    background-image: image("img/main.jpg");
+
     color: grey;
-    display: flex;
-    justify-content: space-between; /* Pour séparer le copyright du bouton */
+
+
     align-items: center; /* Pour centrer verticalement les éléments */
     padding: 10px 20px; /* Espace autour des éléments */
 }
@@ -1064,7 +1063,7 @@ ul li::before {
 
 
 ul li {
-    margin-left: 1em; /* Ajoute une marge pour éviter le débordement du carré */
+   /* margin-left: 1em; /* Ajoute une marge pour éviter le débordement du carré */
 }
 
 
@@ -1633,4 +1632,10 @@ ul li {
 }
 .navbar-collapse{
     flex-grow: initial;
+}
+
+
+.navbar-collapse {
+    flex-grow: initial;
+    flex-basis: initial;
 }
