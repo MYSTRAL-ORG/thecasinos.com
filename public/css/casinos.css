@@ -91,7 +91,7 @@ ul {
 
 .search-bar input {
     display: block;
-    margin-bottom: 10px;
+
     flex-grow: 1;
     border: none;
     outline: none;
@@ -1628,9 +1628,7 @@ ul li {
 }
 
 
-::placeholder {
-    text-align: center;
-}
+
 .navbar-collapse{
     flex-grow: initial;
 }
