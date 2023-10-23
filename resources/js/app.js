@@ -187,6 +187,9 @@ console.log("dsq");
 
         lstFeatures.forEach(function (feature) {
             const imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
+            const shortDesc =  feature.get('shortdesc')?? '';
+            const longDesc =  feature.get('longdesc')??'';
+
             const location = feature.get('cityname') == undefined ? feature.get('countryname') : feature.get('cityname');
             let $childElement= `
                 <div class="emcapsule col-sm-6 col-lg-2">
@@ -196,12 +199,12 @@ console.log("dsq");
                             <span data-id-feature="${feature.getId()}"  id="see-more-action-${feature.getId()}"   class="see-more">See more</span>
                         </div>
                         <h3 class="casino-name">${feature.get('name')}</h3>
-                        <p class="short-description">Elegance & Golf Course</p>
-                        <p class="long-description">Wynn Las Vegas is known for its luxury and has a high-end golf course right on the Strip.</p>
+                        <p class="short-description">${shortDesc}</p>
+                        <p class="long-description">${longDesc}</p>
                         <div class="location-info">
                             <img src="/img/icons/location.png" alt="Location Icon" class="location-icon">
                             <span class="city-name">${location}</span>
-                            <button class="add-button" onclick="window.location.href='/casino/${feature.get('countrytitle')}/${feature.get('citytitle')}/${feature.getId()}';">see</button>
+                            <button class="add-button" onclick="window.location.href='/${feature.get('countrytitle')}/${feature.get('citytitle')}/${feature.getId()}';">see</button>
                          </div>
 
                     </span>
@@ -332,12 +335,15 @@ console.log("dsq");
             element.text("See more")
             encapsule.addClass("col-sm-6 col-lg-2");
             allBlock.show();
+            encapsule.find(".long-description").hide();
+            encapsule.find(".short-description").show();
         }else{
 
-            encapsule.addClass(" expanded col-sm-12 col-lg-4");
+            encapsule.addClass(" expanded col-sm-12 col-lg-4 ");
             allBlock.show();
             element.text("See less");
-
+            encapsule.find(".long-description").show();
+            encapsule.find(".short-description").hide();
             if(allBlock.length === 6 && element.attr("data-id-feature")!== undefined){
                 if (encapsule.is(":last-child")) {
                    // Si le bloc est le dernier bloc, cachez le premier bloc
