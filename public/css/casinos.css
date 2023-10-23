@@ -414,18 +414,16 @@ body, html {
     color:white;
 }
 
-footer {
+.footer {
     background-color: #222222;
-
-
-
     align-items: center; /* Ajouté pour centrer verticalement les éléments */
     gap: 30px; /* Ajouté pour rapprocher les colonnes */
     border-top: 4px solid  var(--theme-red);
     font-size: 16px;
+    padding: 20px 30px;
 }
 
-footer img {
+.footer img {
     width: 200px; /* Ajusté à 200px */
     height: auto; /* Ajouté pour conserver les proportions */
 }
@@ -436,15 +434,17 @@ footer img {
 }
 
 .column {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    align-items: start; /* Ajouté pour aligner les liens à gauche dans la colonne */
+    display:flex;
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: start !important;
+
+
 }
 
 .column-description {
     color: #555; /* gris foncé */
-    max-width: 400px; /* ou ajustez selon votre préférence */
+
     text-align: justify;
     padding-right: 20px; /* espace entre le texte et la colonne suivante */
 
