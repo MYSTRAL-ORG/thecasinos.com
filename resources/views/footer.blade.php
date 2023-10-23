@@ -1,7 +1,7 @@
 
-<div class="container-fluid mt-3 mb-3 ">
-    <div class="row justify-content-center  text-center footer">
-        <div class="col-sm-6 col-lg-2 column ">
+<div class="container-fluid   ">
+    <div class="row justify-content-center   footer">
+        <div class="col-sm-6 col-lg-2 column text-center ">
             <a href="https://www.thecasinos.com">
                 <img src="/img/logo.png" alt="Logo">
             </a>
