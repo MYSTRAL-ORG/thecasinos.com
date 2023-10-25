@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import axios from 'axios';
 import fs from 'fs/promises';
-
+import { existsSync, openSync, unlinkSync } from 'fs';
 const openai = new OpenAI({ apiKey: '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' });
 
 
@@ -76,8 +76,11 @@ async function runConversation(casino) {
     const owners = ( casino.owners!= null) ? " '– Owners :"+casino.owners : '';
 
     // Step 1: send the conversation and available functions to GPT
-    const messages = [{"role": "user", "content": `I Need You To Act As A Novel Writer Exceptionally Talented SEO Writes Flawlessly In English. Write In Your Own Words Rather Than Copying And Pasting From Other Sources. Consider perplexity and burstiness when creating content, ensuring high levels of both without sacrificing specificity or context. Use fully detailed paragraphs that captivate the reader. Write In A Conversational Style As If Written By A Human (Employ An Informal Tone, Utilize Personal Pronouns, Engage The Reader, Keep It Simplified, Use The Active Voice, Keep It Brief, Use Rhetorical Questions, and Embed Analogies And Metaphors).
-            Now write a positive 500 words minimum novel from today about the experience of discovering the different aspects of the casino : ${casinoInfo} in the F. Scott Fitzgerald style without mentioning him and giving all the informations below about the casino in the story, here the main datas of the casino that will help you write your novel :
+    const messages = [{"role": "user", "content": `
+    I Need You To Act As A Writer Exceptionally Talented SEO Writes Flawlessly In English. Write In Your Own Words Rather Than Copying And Pasting From Other Sources. Consider perplexity and burstiness when creating content, ensuring high levels of both without sacrificing specificity or context. Use fully detailed paragraphs that captivate the reader. Write In A Conversational Style As If Written By A Human (Employ An Informal Tone, Utilize Personal Pronouns, Engage The Reader, Keep It Simplified, Use The Active Voice, Keep It Brief, Use Rhetorical Questions, and Embed Analogies And Metaphors).
+
+   Now write a positive 1000 words minimum description from today which describes the different aspects of the casino : casinoInfo giving all the informations below about the casino in the description, here the main datas of the casino that will help you write your text :
+            ${casinoInfo}
                 ${open}
                 ${alwaysOpen}
                 ${pokerRoomName}
@@ -87,15 +90,14 @@ async function runConversation(casino) {
                 ${casinoSquare}
                 ${hotelName}
                 ${owners}
-
-
-
             – Game categories: ${listFeatures}
-            Choose a short title for the novel.
 
-            Following the novel I would like you to create 4 paragraphs presenting this casino:
+             Choose a short original title for the novel.
+
+           Following the novel I would like you to create 4 paragraphs (a summary of 100 words maximum) presenting this casino:
             – $Casino_Sumup
             – $Casino_Games
+            - $Casino_Fun_Facts
 
             To finish I would like a short one-line summary (20 words maximum) of the casino and a 2-word summary (exemple : Elegance & )
             – $Casino_Resume_1_line
@@ -103,7 +105,9 @@ async function runConversation(casino) {
 
 
             `}];
+    console.log("MMMMMMMMMMMMMM");
 
+console.log(messages);
     const functions = [
         {
             "name": "get_casino_informations",
@@ -204,6 +208,23 @@ async function runConversation(casino) {
 // Call the function to read and parse the JSON file
 //readJsonFile(filePath).then(r => console.log("good"));
 
+
+const lockFilePath =  'script.lock';
+
+// Check if lock file exists
+if (existsSync(lockFilePath)) {
+    console.log('Script is already running. Exiting...');
+    process.exit();
+}
+
+// Create a lock file
+openSync(lockFilePath, 'w');
+
+
+// Your script logic goes here
+console.log('Script running...');
+
+/*
 axios.get('http://casinos.test/tttt')
     .then(response => {
         setTimeout(() => { console.log('World!'); }, 1000);
@@ -232,5 +253,14 @@ axios.get('http://casinos.test/tttt')
         console.log(error);
     });
 
+*/
 
-
+// Remove the lock file when script is done or when an error occurs
+const cleanup = () => {
+    unlinkSync(lockFilePath);
+};
+process.on('exit', cleanup);
+process.on('SIGINT', cleanup);  // catches ctrl+c event
+process.on('SIGUSR1', cleanup); // catches "kill pid" (for example: nodemon restart)
+process.on('SIGUSR2', cleanup);
+process.on('uncaughtException', cleanup);

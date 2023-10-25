@@ -1,7 +1,11 @@
 <aside class="casino-sidebar">
-	<div class="casino-block-green">
-		<h3>Open 24/7</h3>
-	</div>
+
+    @if($casino->always_open)
+        <div class="casino-block-green">
+            <h3>Open 24/7</h3>
+        </div>
+    @endif
+
 	<div class="casino-block-orange">
 		<h3>Table Games</h3>
 		<h3>Gaming Machine</h3>

@@ -1,4 +1,13 @@
 @extends('layout')
+
+@section('page_title', $casinoDetail->seo_title)
+
+@section('page_description',  $casinoDetail->seo_description)
+
+@section('page_keywords',  $casinoDetail->seo_keywords)
+
+
+
 @section('casino')
 
     <div class="background-section">

@@ -2207,3 +2207,1649 @@ AxiosError: unable to verify the first certificate
     code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
   }
 }
+AxiosError: unable to verify the first certificate
+    at Function.AxiosError.from (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/AxiosError.js:89:14)
+    at RedirectableRequest.handleRequestError (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:593:25)
+    at RedirectableRequest.emit (node:events:513:28)
+    at ClientRequest.eventHandlers.<computed> (/Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/follow-redirects/index.js:14:24)
+    at ClientRequest.emit (node:events:513:28)
+    at TLSSocket.socketErrorListener (node:_http_client:494:9)
+    at TLSSocket.emit (node:events:513:28)
+    at emitErrorNT (node:internal/streams/destroy:157:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': undefined,
+      'User-Agent': 'axios/1.5.1',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'get',
+    url: 'http://casinos.test/tttt',
+    data: undefined
+  },
+  request: <ref *1> Writable {
+    _writableState: WritableState {
+      objectMode: false,
+      highWaterMark: 16384,
+      finalCalled: false,
+      needDrain: false,
+      ending: false,
+      ended: false,
+      finished: false,
+      destroyed: false,
+      decodeStrings: true,
+      defaultEncoding: 'utf8',
+      length: 0,
+      writing: false,
+      corked: 0,
+      sync: true,
+      bufferProcessing: false,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      allBuffers: true,
+      allNoop: true,
+      pendingcb: 0,
+      constructed: true,
+      prefinished: false,
+      errorEmitted: false,
+      emitClose: true,
+      autoDestroy: true,
+      errored: null,
+      closed: false,
+      closeEmitted: false,
+      [Symbol(kOnFinished)]: []
+    },
+    _events: [Object: null prototype] {
+      response: [Function: handleResponse],
+      error: [Function: handleRequestError],
+      socket: [Function: handleRequestSocket]
+    },
+    _eventsCount: 3,
+    _maxListeners: undefined,
+    _options: {
+      maxRedirects: 21,
+      maxBodyLength: Infinity,
+      protocol: 'https:',
+      path: '/tttt',
+      method: 'GET',
+      headers: [Object: null prototype],
+      agents: [Object],
+      auth: null,
+      family: undefined,
+      beforeRedirect: [Function: dispatchBeforeRedirect],
+      beforeRedirects: [Object],
+      hostname: 'casinos.test',
+      port: null,
+      agent: undefined,
+      nativeProtocols: [Object],
+      pathname: '/tttt',
+      slashes: true,
+      hash: null,
+      search: null,
+      query: null,
+      href: 'https://casinos.test/tttt'
+    },
+    _ended: true,
+    _ending: true,
+    _redirectCount: 1,
+    _redirects: [],
+    _requestBodyLength: 0,
+    _requestBodyBuffers: [],
+    _onNativeResponse: [Function (anonymous)],
+    _currentRequest: ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'GET /tttt HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'GET',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/tttt',
+      _ended: false,
+      res: null,
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'https:',
+      _redirectable: [Circular *1],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    _currentUrl: 'https://casinos.test/tttt',
+    _isRedirect: true,
+    [Symbol(kCapture)]: false
+  },
+  cause: Error: unable to verify the first certificate
+      at TLSSocket.onConnectSecure (node:_tls_wrap:1539:34)
+      at TLSSocket.emit (node:events:513:28)
+      at TLSSocket._finishInit (node:_tls_wrap:953:8)
+      at TLSWrap.ssl.onhandshakedone (node:_tls_wrap:734:12) {
+    code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
+  }
+}
+AxiosError: unable to verify the first certificate
+    at Function.AxiosError.from (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/AxiosError.js:89:14)
+    at RedirectableRequest.handleRequestError (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:593:25)
+    at RedirectableRequest.emit (node:events:513:28)
+    at ClientRequest.eventHandlers.<computed> (/Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/follow-redirects/index.js:14:24)
+    at ClientRequest.emit (node:events:513:28)
+    at TLSSocket.socketErrorListener (node:_http_client:494:9)
+    at TLSSocket.emit (node:events:513:28)
+    at emitErrorNT (node:internal/streams/destroy:157:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': undefined,
+      'User-Agent': 'axios/1.5.1',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'get',
+    url: 'http://casinos.test/tttt',
+    data: undefined
+  },
+  request: <ref *1> Writable {
+    _writableState: WritableState {
+      objectMode: false,
+      highWaterMark: 16384,
+      finalCalled: false,
+      needDrain: false,
+      ending: false,
+      ended: false,
+      finished: false,
+      destroyed: false,
+      decodeStrings: true,
+      defaultEncoding: 'utf8',
+      length: 0,
+      writing: false,
+      corked: 0,
+      sync: true,
+      bufferProcessing: false,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      allBuffers: true,
+      allNoop: true,
+      pendingcb: 0,
+      constructed: true,
+      prefinished: false,
+      errorEmitted: false,
+      emitClose: true,
+      autoDestroy: true,
+      errored: null,
+      closed: false,
+      closeEmitted: false,
+      [Symbol(kOnFinished)]: []
+    },
+    _events: [Object: null prototype] {
+      response: [Function: handleResponse],
+      error: [Function: handleRequestError],
+      socket: [Function: handleRequestSocket]
+    },
+    _eventsCount: 3,
+    _maxListeners: undefined,
+    _options: {
+      maxRedirects: 21,
+      maxBodyLength: Infinity,
+      protocol: 'https:',
+      path: '/tttt',
+      method: 'GET',
+      headers: [Object: null prototype],
+      agents: [Object],
+      auth: null,
+      family: undefined,
+      beforeRedirect: [Function: dispatchBeforeRedirect],
+      beforeRedirects: [Object],
+      hostname: 'casinos.test',
+      port: null,
+      agent: undefined,
+      nativeProtocols: [Object],
+      pathname: '/tttt',
+      slashes: true,
+      hash: null,
+      search: null,
+      query: null,
+      href: 'https://casinos.test/tttt'
+    },
+    _ended: true,
+    _ending: true,
+    _redirectCount: 1,
+    _redirects: [],
+    _requestBodyLength: 0,
+    _requestBodyBuffers: [],
+    _onNativeResponse: [Function (anonymous)],
+    _currentRequest: ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'GET /tttt HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'GET',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/tttt',
+      _ended: false,
+      res: null,
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'https:',
+      _redirectable: [Circular *1],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    _currentUrl: 'https://casinos.test/tttt',
+    _isRedirect: true,
+    [Symbol(kCapture)]: false
+  },
+  cause: Error: unable to verify the first certificate
+      at TLSSocket.onConnectSecure (node:_tls_wrap:1539:34)
+      at TLSSocket.emit (node:events:513:28)
+      at TLSSocket._finishInit (node:_tls_wrap:953:8)
+      at TLSWrap.ssl.onhandshakedone (node:_tls_wrap:734:12) {
+    code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
+  }
+}
+AxiosError: unable to verify the first certificate
+    at Function.AxiosError.from (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/AxiosError.js:89:14)
+    at RedirectableRequest.handleRequestError (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:593:25)
+    at RedirectableRequest.emit (node:events:513:28)
+    at ClientRequest.eventHandlers.<computed> (/Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/follow-redirects/index.js:14:24)
+    at ClientRequest.emit (node:events:513:28)
+    at TLSSocket.socketErrorListener (node:_http_client:494:9)
+    at TLSSocket.emit (node:events:513:28)
+    at emitErrorNT (node:internal/streams/destroy:157:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': undefined,
+      'User-Agent': 'axios/1.5.1',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'get',
+    url: 'http://casinos.test/tttt',
+    data: undefined
+  },
+  request: <ref *1> Writable {
+    _writableState: WritableState {
+      objectMode: false,
+      highWaterMark: 16384,
+      finalCalled: false,
+      needDrain: false,
+      ending: false,
+      ended: false,
+      finished: false,
+      destroyed: false,
+      decodeStrings: true,
+      defaultEncoding: 'utf8',
+      length: 0,
+      writing: false,
+      corked: 0,
+      sync: true,
+      bufferProcessing: false,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      allBuffers: true,
+      allNoop: true,
+      pendingcb: 0,
+      constructed: true,
+      prefinished: false,
+      errorEmitted: false,
+      emitClose: true,
+      autoDestroy: true,
+      errored: null,
+      closed: false,
+      closeEmitted: false,
+      [Symbol(kOnFinished)]: []
+    },
+    _events: [Object: null prototype] {
+      response: [Function: handleResponse],
+      error: [Function: handleRequestError],
+      socket: [Function: handleRequestSocket]
+    },
+    _eventsCount: 3,
+    _maxListeners: undefined,
+    _options: {
+      maxRedirects: 21,
+      maxBodyLength: Infinity,
+      protocol: 'https:',
+      path: '/tttt',
+      method: 'GET',
+      headers: [Object: null prototype],
+      agents: [Object],
+      auth: null,
+      family: undefined,
+      beforeRedirect: [Function: dispatchBeforeRedirect],
+      beforeRedirects: [Object],
+      hostname: 'casinos.test',
+      port: null,
+      agent: undefined,
+      nativeProtocols: [Object],
+      pathname: '/tttt',
+      slashes: true,
+      hash: null,
+      search: null,
+      query: null,
+      href: 'https://casinos.test/tttt'
+    },
+    _ended: true,
+    _ending: true,
+    _redirectCount: 1,
+    _redirects: [],
+    _requestBodyLength: 0,
+    _requestBodyBuffers: [],
+    _onNativeResponse: [Function (anonymous)],
+    _currentRequest: ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'GET /tttt HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'GET',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/tttt',
+      _ended: false,
+      res: null,
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'https:',
+      _redirectable: [Circular *1],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    _currentUrl: 'https://casinos.test/tttt',
+    _isRedirect: true,
+    [Symbol(kCapture)]: false
+  },
+  cause: Error: unable to verify the first certificate
+      at TLSSocket.onConnectSecure (node:_tls_wrap:1539:34)
+      at TLSSocket.emit (node:events:513:28)
+      at TLSSocket._finishInit (node:_tls_wrap:953:8)
+      at TLSWrap.ssl.onhandshakedone (node:_tls_wrap:734:12) {
+    code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
+  }
+}
+AxiosError: unable to verify the first certificate
+    at Function.AxiosError.from (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/AxiosError.js:89:14)
+    at RedirectableRequest.handleRequestError (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:593:25)
+    at RedirectableRequest.emit (node:events:513:28)
+    at ClientRequest.eventHandlers.<computed> (/Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/follow-redirects/index.js:14:24)
+    at ClientRequest.emit (node:events:513:28)
+    at TLSSocket.socketErrorListener (node:_http_client:494:9)
+    at TLSSocket.emit (node:events:513:28)
+    at emitErrorNT (node:internal/streams/destroy:157:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': undefined,
+      'User-Agent': 'axios/1.5.1',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'get',
+    url: 'http://casinos.test/tttt',
+    data: undefined
+  },
+  request: <ref *1> Writable {
+    _writableState: WritableState {
+      objectMode: false,
+      highWaterMark: 16384,
+      finalCalled: false,
+      needDrain: false,
+      ending: false,
+      ended: false,
+      finished: false,
+      destroyed: false,
+      decodeStrings: true,
+      defaultEncoding: 'utf8',
+      length: 0,
+      writing: false,
+      corked: 0,
+      sync: true,
+      bufferProcessing: false,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      allBuffers: true,
+      allNoop: true,
+      pendingcb: 0,
+      constructed: true,
+      prefinished: false,
+      errorEmitted: false,
+      emitClose: true,
+      autoDestroy: true,
+      errored: null,
+      closed: false,
+      closeEmitted: false,
+      [Symbol(kOnFinished)]: []
+    },
+    _events: [Object: null prototype] {
+      response: [Function: handleResponse],
+      error: [Function: handleRequestError],
+      socket: [Function: handleRequestSocket]
+    },
+    _eventsCount: 3,
+    _maxListeners: undefined,
+    _options: {
+      maxRedirects: 21,
+      maxBodyLength: Infinity,
+      protocol: 'https:',
+      path: '/tttt',
+      method: 'GET',
+      headers: [Object: null prototype],
+      agents: [Object],
+      auth: null,
+      family: undefined,
+      beforeRedirect: [Function: dispatchBeforeRedirect],
+      beforeRedirects: [Object],
+      hostname: 'casinos.test',
+      port: null,
+      agent: undefined,
+      nativeProtocols: [Object],
+      pathname: '/tttt',
+      slashes: true,
+      hash: null,
+      search: null,
+      query: null,
+      href: 'https://casinos.test/tttt'
+    },
+    _ended: true,
+    _ending: true,
+    _redirectCount: 1,
+    _redirects: [],
+    _requestBodyLength: 0,
+    _requestBodyBuffers: [],
+    _onNativeResponse: [Function (anonymous)],
+    _currentRequest: ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'GET /tttt HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'GET',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/tttt',
+      _ended: false,
+      res: null,
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'https:',
+      _redirectable: [Circular *1],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    _currentUrl: 'https://casinos.test/tttt',
+    _isRedirect: true,
+    [Symbol(kCapture)]: false
+  },
+  cause: Error: unable to verify the first certificate
+      at TLSSocket.onConnectSecure (node:_tls_wrap:1539:34)
+      at TLSSocket.emit (node:events:513:28)
+      at TLSSocket._finishInit (node:_tls_wrap:953:8)
+      at TLSWrap.ssl.onhandshakedone (node:_tls_wrap:734:12) {
+    code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
+  }
+}
+World!
+http://casinos.test/api/openai/1
+World!
+Response
+AxiosError: unable to verify the first certificate
+    at Function.AxiosError.from (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/AxiosError.js:89:14)
+    at RedirectableRequest.handleRequestError (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:593:25)
+    at RedirectableRequest.emit (node:events:513:28)
+    at ClientRequest.eventHandlers.<computed> (/Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/follow-redirects/index.js:14:24)
+    at ClientRequest.emit (node:events:513:28)
+    at TLSSocket.socketErrorListener (node:_http_client:494:9)
+    at TLSSocket.emit (node:events:513:28)
+    at emitErrorNT (node:internal/streams/destroy:157:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'axios/1.5.1',
+      'Content-Length': '3205',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'http://casinos.test/api/openai/1',
+    data: `{"title":"The Shimmering Mirage","novel":"The curtain of time rose on the first day of April in 1992, revealing the magnificent spectacle that is the Luxor Casino. Nestled in the heart of Las Vegas, the beating pulse of city's famed nightlife, Luxor rose like a beacon, its architectural grandeur reminiscent of Egyptian heritage, a testament to the endless allure of human invention. Since that grand opening, the casino's doors have never closed, fostering an atmosphere of ceaseless energy and high stakes that pulses throughout the establishment.|The Luxor Poker Room is the pride of the casino, housing 11 exquisitely crafted tables that are cogs in the well-oiled machine of the casino's games. Players from across the globe gather here, each with their own tale, their own reason to play, their own dreams of victory.|In addition to the poker tables, there are 62 other table games on offer. Not to forget the 1,100 gaming machines that line the floors of Luxor, each a beacon of chance, each capable of changing one's fortunes. The casino's grandeur stretches over 120,000 square feet, an empire of luck, gamble and high stakes.|Above it all, towers the Luxor Las Vegas Hotel, the crowning jewel of the entire establishment. Owned by the prominent VICI Properties Inc., the hotel is a tapestry of luxury and convenience woven seamlessly together. It is here that the winners retire in contentment, and the hopeful rest before a day of triumph.|The Luxor Casino offers the triumvirate of joy for any gamer - poker, sportsbook, and slot machines. It's an intoxicating blend of chance and skill, a dance painted against the backdrop of laughter, clinking coins, and the hum of indistinct chatter.|This then, is the Luxor Casino, the gleaming jewel of Las Vegas, an enduring testament to the spirit of gamesmanship, to the allure of chance, and to the very essence of what it means to play.|","casino_sumup":"Located in the heart of Las Vegas, the Luxor Casino is a magnificent establishment reminiscent of Egyptian grandeur. Opened in 1992, it has been entertaining gamblers non-stop with a wide range of games including poker, sportsbooks, and slot machines. Sprawling over 120,000 square feet, this casino is a haven for gaming enthusiasts.|","casino_games":"The Luxor Casino provides an expansive gaming experience with its 11-table Luxor Poker Room, 62 other table games, and an impressive lineup of 1,100 gaming machines. Owned by the prominent VICI Properties Inc., this casino offers key game categories like Poker, Sportsbook, and Slot Machines that keep the excitement levels high.|","casino_fun_facts":"Did you know that the Luxor Casino has never been closed since its grand opening in 1992? This casino, which is faithfully true to its namesake city in Egypt, is an architectural marvel with its iconic pyramid design. The Luxor is also renowned for its unique sportsbook, providing sports enthusiasts an extraordinary opportunity to place bets on their favorite games while catching all the action live from around the world.|","casino_resume_1_line":"Experience the thrill of gambling amidst time-defying Egyptian grandeur at Luxor Casino.","casino_resume_2_words":"Grandeur & Thrills"}`
+  },
+  request: <ref *1> Writable {
+    _writableState: WritableState {
+      objectMode: false,
+      highWaterMark: 16384,
+      finalCalled: false,
+      needDrain: false,
+      ending: false,
+      ended: false,
+      finished: false,
+      destroyed: false,
+      decodeStrings: true,
+      defaultEncoding: 'utf8',
+      length: 0,
+      writing: false,
+      corked: 0,
+      sync: true,
+      bufferProcessing: false,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      allBuffers: true,
+      allNoop: true,
+      pendingcb: 0,
+      constructed: true,
+      prefinished: false,
+      errorEmitted: false,
+      emitClose: true,
+      autoDestroy: true,
+      errored: null,
+      closed: false,
+      closeEmitted: false,
+      [Symbol(kOnFinished)]: []
+    },
+    _events: [Object: null prototype] {
+      response: [Function: handleResponse],
+      error: [Function: handleRequestError],
+      socket: [Function: handleRequestSocket]
+    },
+    _eventsCount: 3,
+    _maxListeners: undefined,
+    _options: {
+      maxRedirects: 21,
+      maxBodyLength: Infinity,
+      protocol: 'https:',
+      path: '/api/openai/1',
+      method: 'GET',
+      headers: [Object: null prototype],
+      agents: [Object],
+      auth: null,
+      family: undefined,
+      beforeRedirect: [Function: dispatchBeforeRedirect],
+      beforeRedirects: [Object],
+      hostname: 'casinos.test',
+      port: null,
+      agent: undefined,
+      nativeProtocols: [Object],
+      pathname: '/api/openai/1',
+      slashes: true,
+      hash: null,
+      search: null,
+      query: null,
+      href: 'https://casinos.test/api/openai/1'
+    },
+    _ended: true,
+    _ending: true,
+    _redirectCount: 1,
+    _redirects: [],
+    _requestBodyLength: 3205,
+    _requestBodyBuffers: [],
+    _onNativeResponse: [Function (anonymous)],
+    _currentRequest: ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'GET /api/openai/1 HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'GET',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/api/openai/1',
+      _ended: false,
+      res: null,
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'https:',
+      _redirectable: [Circular *1],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    _currentUrl: 'https://casinos.test/api/openai/1',
+    _isRedirect: true,
+    [Symbol(kCapture)]: false
+  },
+  cause: Error: unable to verify the first certificate
+      at TLSSocket.onConnectSecure (node:_tls_wrap:1539:34)
+      at TLSSocket.emit (node:events:513:28)
+      at TLSSocket._finishInit (node:_tls_wrap:953:8)
+      at TLSWrap.ssl.onhandshakedone (node:_tls_wrap:734:12) {
+    code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
+  }
+}
+AxiosError: unable to verify the first certificate
+    at Function.AxiosError.from (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/AxiosError.js:89:14)
+    at RedirectableRequest.handleRequestError (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:593:25)
+    at RedirectableRequest.emit (node:events:513:28)
+    at ClientRequest.eventHandlers.<computed> (/Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/follow-redirects/index.js:14:24)
+    at ClientRequest.emit (node:events:513:28)
+    at TLSSocket.socketErrorListener (node:_http_client:494:9)
+    at TLSSocket.emit (node:events:513:28)
+    at emitErrorNT (node:internal/streams/destroy:157:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': undefined,
+      'User-Agent': 'axios/1.5.1',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'get',
+    url: 'http://casinos.test/tttt',
+    data: undefined
+  },
+  request: <ref *1> Writable {
+    _writableState: WritableState {
+      objectMode: false,
+      highWaterMark: 16384,
+      finalCalled: false,
+      needDrain: false,
+      ending: false,
+      ended: false,
+      finished: false,
+      destroyed: false,
+      decodeStrings: true,
+      defaultEncoding: 'utf8',
+      length: 0,
+      writing: false,
+      corked: 0,
+      sync: true,
+      bufferProcessing: false,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      allBuffers: true,
+      allNoop: true,
+      pendingcb: 0,
+      constructed: true,
+      prefinished: false,
+      errorEmitted: false,
+      emitClose: true,
+      autoDestroy: true,
+      errored: null,
+      closed: false,
+      closeEmitted: false,
+      [Symbol(kOnFinished)]: []
+    },
+    _events: [Object: null prototype] {
+      response: [Function: handleResponse],
+      error: [Function: handleRequestError],
+      socket: [Function: handleRequestSocket]
+    },
+    _eventsCount: 3,
+    _maxListeners: undefined,
+    _options: {
+      maxRedirects: 21,
+      maxBodyLength: Infinity,
+      protocol: 'https:',
+      path: '/tttt',
+      method: 'GET',
+      headers: [Object: null prototype],
+      agents: [Object],
+      auth: null,
+      family: undefined,
+      beforeRedirect: [Function: dispatchBeforeRedirect],
+      beforeRedirects: [Object],
+      hostname: 'casinos.test',
+      port: null,
+      agent: undefined,
+      nativeProtocols: [Object],
+      pathname: '/tttt',
+      slashes: true,
+      hash: null,
+      search: null,
+      query: null,
+      href: 'https://casinos.test/tttt'
+    },
+    _ended: true,
+    _ending: true,
+    _redirectCount: 1,
+    _redirects: [],
+    _requestBodyLength: 0,
+    _requestBodyBuffers: [],
+    _onNativeResponse: [Function (anonymous)],
+    _currentRequest: ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'GET /tttt HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'GET',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/tttt',
+      _ended: false,
+      res: null,
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'https:',
+      _redirectable: [Circular *1],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    _currentUrl: 'https://casinos.test/tttt',
+    _isRedirect: true,
+    [Symbol(kCapture)]: false
+  },
+  cause: Error: unable to verify the first certificate
+      at TLSSocket.onConnectSecure (node:_tls_wrap:1539:34)
+      at TLSSocket.emit (node:events:513:28)
+      at TLSSocket._finishInit (node:_tls_wrap:953:8)
+      at TLSWrap.ssl.onhandshakedone (node:_tls_wrap:734:12) {
+    code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
+  }
+}
+http://casinos.test/api/openai/1
+MMMMMMMMMMMMMM
+[
+  {
+    role: 'user',
+    content: 'I Need You To Act As A Novel Writer Exceptionally Talented SEO Writes Flawlessly In English. Write In Your Own Words Rather Than Copying And Pasting From Other Sources. Consider perplexity and burstiness when creating content, ensuring high levels of both without sacrificing specificity or context. Use fully detailed paragraphs that captivate the reader. Write In A Conversational Style As If Written By A Human (Employ An Informal Tone, Utilize Personal Pronouns, Engage The Reader, Keep It Simplified, Use The Active Voice, Keep It Brief, Use Rhetorical Questions, and Embed Analogies And Metaphors).\n' +
+      '\n' +
+      '            Now write a positive 1000 words minimum novel from today which describes the different aspects of the casino :  Luxor Casino - Las Vegas , Las Vegas in the F. Scott Fitzgerald style without mentioning him and giving all the informations below about the casino in the story, here the main datas of the casino that will help you write your novel :\n' +
+      '                - Casino opened: 1992-04-01\n' +
+      "                 '– Always opened:  yes\n" +
+      "                 '– Poker Room Name :Luxor Poker Room\n" +
+      "                 '– Poker Tables :11\n" +
+      "                 '– Table Games :62\n" +
+      "                 '– Gaming Machines :1100\n" +
+      "                 '– Casino Square :120000\n" +
+      "                 '– Hotel Name :Luxor Las Vegas\n" +
+      "                 '– Owners :VICI Properties Inc.\n" +
+      '            – Game categories: Poker,Sportsbook,Slot Machines\n' +
+      '\n' +
+      '             Choose a short original title for the novel.\n' +
+      '\n' +
+      '            Following the novel I would like you to create 4 paragraphs presenting this casino:\n' +
+      '            – $Casino_Sumup\n' +
+      '            – $Casino_Games\n' +
+      '            - $Casino_Fun_Facts\n' +
+      '\n' +
+      '            To finish I would like a short one-line summary (20 words maximum) of the casino and a 2-word summary (exemple : Elegance & )\n' +
+      '            – $Casino_Resume_1_line\n' +
+      '            – $Casino_Resume_2_words\n' +
+      '\n' +
+      '\n' +
+      '            '
+  }
+]
+World!
+Response
+AxiosError: Request failed with status code 500
+    at settle (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:572:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1358:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'ERR_BAD_RESPONSE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'axios/1.5.1',
+      'Content-Length': '3868',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'http://casinos.test/api/openai/1',
+    data: `{"title":"Luxor's Labyrinth: A Tale of Chance","novel":"In the heart of the scorching desert, a marvel, akin to the ancient pyramids of Egypt, rises amidst the shimmering lights. Luxor Casino, a spectacle that emerged on the first day of April, the year of 1992, has ever since been an oasis of joy and thrill, illuminating the city of Las Vegas around the clock. A beacon of eternal splendor|Among its grandeur, the ever-inviting Luxor Poker Room, elegantly adorned with 11 exquisite tables, each echoing tales of fortune and adventure. Add to that 62 assorted table games, each a maze of endless possibilities and a worthwhile challenge for the valiant hearts|And then there were the gaming machines, no less than a staggering 1100, a testament to the labyrinth of luck and chance. A colossal gaming arena spread across 120,000 square feet is the beating heart of Luxor, throbbing with excitement and anticipation|Above the vibrant casino, the Luxor Las Vegas hotel stands like a grand watchtower, overlooking the energized city beneath. It's under the ownership of the eminent VICI Properties Inc., that the Luxor continues to grow in reputation and grandeur|In the arena of games, poker, sportsbook, and slot machines emerge as the triumphant trio, each attracting gladiators from far and wide, daring them to test their fate and skill in the grand labyrinth of Luxor.","casino_sumup":"Luxor Casino, always open and ever inviting, is a marvel in the heart of Las Vegas. The grand establishment, encompassing a massive stretch of 120,000 sq ft, offers a range of elegant games to its patrons, radiating the vibrant energy of the city|Owned by VICI Properties Inc, and housed under the Luxor Las Vegas hotel, the casino has been a beacon of entertainment and thrill since its inception in 1992. The Luxor Poker Room, adorned with 11 exquisite tables, is one of the intricacies of this labyrinth of fun and fortune|More than a thousand gaming machines and a plethora of table games enrich the entertainment value, beckoning players to delve deeper into the maze. Poker, sportsbook, and slot machines are among the preferred challenges, each providing a unique facet of the Luxor's grandeur","casino_games":"Luxor offers an exquisite array of games, catering to varying tastes. The Luxor Poker Room, a haven for poker enthusiasts, houses 11 elegant tables and is always buzzing with energy. The casino further boasts 62 varied table games, all promising a unique blend of thrill and skill|The prized jewels of Luxor, however, are the numerous gaming machines - a staggering 1100 in number that cater to the eager and adventurous. The game categories of poker, sportsbook, and slot machines offer diverse escapades into the realms of risk and reward","casino_fun_facts":"The Luxor Casino is an architectural marvel aesthetically modeled on the famous Egyptian Pyramids. This unique design houses a vast and energetic casino floor that never sleeps. It is home to the famed Luxor Poker Room, an enduring favorite amongst poker-lovers|Opened in 1992, the casino has served as a beacon of endless gaming and entertainment in Las Vegas. The casino is part of the Luxor Las Vegas hotel, owned by VICI Properties Inc, which also boasts numerous other amenities. The sheer variety of games, the availability of numerous gaming machines, and the promise of an exhilarating gaming experience make Luxor a unique player in the city|The game categories include the popular favourites: poker, sportsbook, and slot machines. Each presents its unique spin on the thrill of gaming, be it the strategic play of poker, the energetic betting of a sportsbook, or the simple and alluring pull of slot machines","casino_resume_1_line":"A never-sleeping grand spectacle of gaming and thrill, spanning a massive 120,000 sq ft in shining Las Vegas","casino_resume_2_words":"Infinite Intrigue"}`
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '3868',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: Socket {
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'casinos.test',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: null,
+      _server: null,
+      parser: null,
+      _httpMessage: [Circular *1],
+      [Symbol(async_id_symbol)]: 578,
+      [Symbol(kHandle)]: [TCP],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: null,
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    _header: 'POST /api/openai/1 HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/x-www-form-urlencoded\r\n' +
+      'User-Agent: axios/1.5.1\r\n' +
+      'Content-Length: 3868\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: casinos.test\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 80,
+      protocol: 'http:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    path: '/api/openai/1',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [Socket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 500,
+      statusMessage: 'Internal Server Error',
+      client: [Socket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'http://casinos.test/api/openai/1',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 20,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'casinos.test',
+    protocol: 'http:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 3868,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'http://casinos.test/api/openai/1',
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kEndCalled)]: true,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 500,
+    statusText: 'Internal Server Error',
+    headers: Object [AxiosHeaders] {
+      server: 'nginx/1.22.1',
+      'content-type': 'application/json',
+      'transfer-encoding': 'chunked',
+      connection: 'close',
+      'x-powered-by': 'PHP/8.2.8',
+      'cache-control': 'no-cache, private',
+      date: 'Wed, 25 Oct 2023 13:17:52 GMT',
+      'x-ratelimit-limit': '60',
+      'x-ratelimit-remaining': '59',
+      'access-control-allow-origin': '*'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'http://casinos.test/api/openai/1',
+      data: `{"title":"Luxor's Labyrinth: A Tale of Chance","novel":"In the heart of the scorching desert, a marvel, akin to the ancient pyramids of Egypt, rises amidst the shimmering lights. Luxor Casino, a spectacle that emerged on the first day of April, the year of 1992, has ever since been an oasis of joy and thrill, illuminating the city of Las Vegas around the clock. A beacon of eternal splendor|Among its grandeur, the ever-inviting Luxor Poker Room, elegantly adorned with 11 exquisite tables, each echoing tales of fortune and adventure. Add to that 62 assorted table games, each a maze of endless possibilities and a worthwhile challenge for the valiant hearts|And then there were the gaming machines, no less than a staggering 1100, a testament to the labyrinth of luck and chance. A colossal gaming arena spread across 120,000 square feet is the beating heart of Luxor, throbbing with excitement and anticipation|Above the vibrant casino, the Luxor Las Vegas hotel stands like a grand watchtower, overlooking the energized city beneath. It's under the ownership of the eminent VICI Properties Inc., that the Luxor continues to grow in reputation and grandeur|In the arena of games, poker, sportsbook, and slot machines emerge as the triumphant trio, each attracting gladiators from far and wide, daring them to test their fate and skill in the grand labyrinth of Luxor.","casino_sumup":"Luxor Casino, always open and ever inviting, is a marvel in the heart of Las Vegas. The grand establishment, encompassing a massive stretch of 120,000 sq ft, offers a range of elegant games to its patrons, radiating the vibrant energy of the city|Owned by VICI Properties Inc, and housed under the Luxor Las Vegas hotel, the casino has been a beacon of entertainment and thrill since its inception in 1992. The Luxor Poker Room, adorned with 11 exquisite tables, is one of the intricacies of this labyrinth of fun and fortune|More than a thousand gaming machines and a plethora of table games enrich the entertainment value, beckoning players to delve deeper into the maze. Poker, sportsbook, and slot machines are among the preferred challenges, each providing a unique facet of the Luxor's grandeur","casino_games":"Luxor offers an exquisite array of games, catering to varying tastes. The Luxor Poker Room, a haven for poker enthusiasts, houses 11 elegant tables and is always buzzing with energy. The casino further boasts 62 varied table games, all promising a unique blend of thrill and skill|The prized jewels of Luxor, however, are the numerous gaming machines - a staggering 1100 in number that cater to the eager and adventurous. The game categories of poker, sportsbook, and slot machines offer diverse escapades into the realms of risk and reward","casino_fun_facts":"The Luxor Casino is an architectural marvel aesthetically modeled on the famous Egyptian Pyramids. This unique design houses a vast and energetic casino floor that never sleeps. It is home to the famed Luxor Poker Room, an enduring favorite amongst poker-lovers|Opened in 1992, the casino has served as a beacon of endless gaming and entertainment in Las Vegas. The casino is part of the Luxor Las Vegas hotel, owned by VICI Properties Inc, which also boasts numerous other amenities. The sheer variety of games, the availability of numerous gaming machines, and the promise of an exhilarating gaming experience make Luxor a unique player in the city|The game categories include the popular favourites: poker, sportsbook, and slot machines. Each presents its unique spin on the thrill of gaming, be it the strategic play of poker, the energetic betting of a sportsbook, or the simple and alluring pull of slot machines","casino_resume_1_line":"A never-sleeping grand spectacle of gaming and thrill, spanning a massive 120,000 sq ft in shining Las Vegas","casino_resume_2_words":"Infinite Intrigue"}`
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '3868',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [Socket],
+      _header: 'POST /api/openai/1 HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/x-www-form-urlencoded\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Content-Length: 3868\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/api/openai/1',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'http:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: {
+      message: 'SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "casino_details_source_pkey"\n' +
+        `DETAIL:  Key (id_casino)=(1) already exists. (Connection: pgsql, SQL: insert into "casino_details_source" ("id_casino", "is_done", "source_openai_json") values (1, 1, {"title":"Luxor's Labyrinth: A Tale of Chance","novel":"In the heart of the scorching desert, a marvel, akin to the ancient pyramids of Egypt, rises amidst the shimmering lights. Luxor Casino, a spectacle that emerged on the first day of April, the year of 1992, has ever since been an oasis of joy and thrill, illuminating the city of Las Vegas around the clock. A beacon of eternal splendor|Among its grandeur, the ever-inviting Luxor Poker Room, elegantly adorned with 11 exquisite tables, each echoing tales of fortune and adventure. Add to that 62 assorted table games, each a maze of endless possibilities and a worthwhile challenge for the valiant hearts|And then there were the gaming machines, no less than a staggering 1100, a testament to the labyrinth of luck and chance. A colossal gaming arena spread across 120,000 square feet is the beating heart of Luxor, throbbing with excitement and anticipation|Above the vibrant casino, the Luxor Las Vegas hotel stands like a grand watchtower, overlooking the energized city beneath. It's under the ownership of the eminent VICI Properties Inc., that the Luxor continues to grow in reputation and grandeur|In the arena of games, poker, sportsbook, and slot machines emerge as the triumphant trio, each attracting gladiators from far and wide, daring them to test their fate and skill in the grand labyrinth of Luxor.","casino_sumup":"Luxor Casino, always open and ever inviting, is a marvel in the heart of Las Vegas. The grand establishment, encompassing a massive stretch of 120,000 sq ft, offers a range of elegant games to its patrons, radiating the vibrant energy of the city|Owned by VICI Properties Inc, and housed under the Luxor Las Vegas hotel, the casino has been a beacon of entertainment and thrill since its inception in 1992. The Luxor Poker Room, adorned with 11 exquisite tables, is one of the intricacies of this labyrinth of fun and fortune|More than a thousand gaming machines and a plethora of table games enrich the entertainment value, beckoning players to delve deeper into the maze. Poker, sportsbook, and slot machines are among the preferred challenges, each providing a unique facet of the Luxor's grandeur","casino_games":"Luxor offers an exquisite array of games, catering to varying tastes. The Luxor Poker Room, a haven for poker enthusiasts, houses 11 elegant tables and is always buzzing with energy. The casino further boasts 62 varied table games, all promising a unique blend of thrill and skill|The prized jewels of Luxor, however, are the numerous gaming machines - a staggering 1100 in number that cater to the eager and adventurous. The game categories of poker, sportsbook, and slot machines offer diverse escapades into the realms of risk and reward","casino_fun_facts":"The Luxor Casino is an architectural marvel aesthetically modeled on the famous Egyptian Pyramids. This unique design houses a vast and energetic casino floor that never sleeps. It is home to the famed Luxor Poker Room, an enduring favorite amongst poker-lovers|Opened in 1992, the casino has served as a beacon of endless gaming and entertainment in Las Vegas. The casino is part of the Luxor Las Vegas hotel, owned by VICI Properties Inc, which also boasts numerous other amenities. The sheer variety of games, the availability of numerous gaming machines, and the promise of an exhilarating gaming experience make Luxor a unique player in the city|The game categories include the popular favourites: poker, sportsbook, and slot machines. Each presents its unique spin on the thrill of gaming, be it the strategic play of poker, the energetic betting of a sportsbook, or the simple and alluring pull of slot machines","casino_resume_1_line":"A never-sleeping grand spectacle of gaming and thrill, spanning a massive 120,000 sq ft in shining Las Vegas","casino_resume_2_words":"Infinite Intrigue"}))`,
+      exception: 'Illuminate\\Database\\UniqueConstraintViolationException',
+      file: '/Users/francois/Documents/DEV-GLOBAL/casinos/vendor/laravel/framework/src/Illuminate/Database/Connection.php',
+      line: 796,
+      trace: [Array]
+    }
+  }
+}
+AxiosError: unable to verify the first certificate
+    at Function.AxiosError.from (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/AxiosError.js:89:14)
+    at RedirectableRequest.handleRequestError (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:593:25)
+    at RedirectableRequest.emit (node:events:513:28)
+    at ClientRequest.eventHandlers.<computed> (/Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/follow-redirects/index.js:14:24)
+    at ClientRequest.emit (node:events:513:28)
+    at TLSSocket.socketErrorListener (node:_http_client:494:9)
+    at TLSSocket.emit (node:events:513:28)
+    at emitErrorNT (node:internal/streams/destroy:157:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:122:3)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': undefined,
+      'User-Agent': 'axios/1.5.1',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'get',
+    url: 'http://casinos.test/tttt',
+    data: undefined
+  },
+  request: <ref *1> Writable {
+    _writableState: WritableState {
+      objectMode: false,
+      highWaterMark: 16384,
+      finalCalled: false,
+      needDrain: false,
+      ending: false,
+      ended: false,
+      finished: false,
+      destroyed: false,
+      decodeStrings: true,
+      defaultEncoding: 'utf8',
+      length: 0,
+      writing: false,
+      corked: 0,
+      sync: true,
+      bufferProcessing: false,
+      onwrite: [Function: bound onwrite],
+      writecb: null,
+      writelen: 0,
+      afterWriteTickInfo: null,
+      buffered: [],
+      bufferedIndex: 0,
+      allBuffers: true,
+      allNoop: true,
+      pendingcb: 0,
+      constructed: true,
+      prefinished: false,
+      errorEmitted: false,
+      emitClose: true,
+      autoDestroy: true,
+      errored: null,
+      closed: false,
+      closeEmitted: false,
+      [Symbol(kOnFinished)]: []
+    },
+    _events: [Object: null prototype] {
+      response: [Function: handleResponse],
+      error: [Function: handleRequestError],
+      socket: [Function: handleRequestSocket]
+    },
+    _eventsCount: 3,
+    _maxListeners: undefined,
+    _options: {
+      maxRedirects: 21,
+      maxBodyLength: Infinity,
+      protocol: 'https:',
+      path: '/tttt',
+      method: 'GET',
+      headers: [Object: null prototype],
+      agents: [Object],
+      auth: null,
+      family: undefined,
+      beforeRedirect: [Function: dispatchBeforeRedirect],
+      beforeRedirects: [Object],
+      hostname: 'casinos.test',
+      port: null,
+      agent: undefined,
+      nativeProtocols: [Object],
+      pathname: '/tttt',
+      slashes: true,
+      hash: null,
+      search: null,
+      query: null,
+      href: 'https://casinos.test/tttt'
+    },
+    _ended: true,
+    _ending: true,
+    _redirectCount: 1,
+    _redirects: [],
+    _requestBodyLength: 0,
+    _requestBodyBuffers: [],
+    _onNativeResponse: [Function (anonymous)],
+    _currentRequest: ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: false,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: 0,
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'GET /tttt HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'GET',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/tttt',
+      _ended: false,
+      res: null,
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'https:',
+      _redirectable: [Circular *1],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    _currentUrl: 'https://casinos.test/tttt',
+    _isRedirect: true,
+    [Symbol(kCapture)]: false
+  },
+  cause: Error: unable to verify the first certificate
+      at TLSSocket.onConnectSecure (node:_tls_wrap:1539:34)
+      at TLSSocket.emit (node:events:513:28)
+      at TLSSocket._finishInit (node:_tls_wrap:953:8)
+      at TLSWrap.ssl.onhandshakedone (node:_tls_wrap:734:12) {
+    code: 'UNABLE_TO_VERIFY_LEAF_SIGNATURE'
+  }
+}
+file:///Users/francois/Documents/DEV-GLOBAL/casinos/public/openai/openai-tets.js:215
+if (fs.existsSync(lockFilePath)) {
+       ^
+
+TypeError: fs.existsSync is not a function
+    at file:///Users/francois/Documents/DEV-GLOBAL/casinos/public/openai/openai-tets.js:215:8
+    at ModuleJob.run (node:internal/modules/esm/module_job:193:25)
+    at async Promise.all (index 0)
+    at async ESMLoader.import (node:internal/modules/esm/loader:530:24)
+    at async loadESM (node:internal/process/esm_loader:91:5)
+    at async handleMainPromise (node:internal/modules/run_main:65:12)
+Script running...
