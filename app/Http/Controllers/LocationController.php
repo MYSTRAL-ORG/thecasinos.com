@@ -12,7 +12,7 @@ class LocationController extends Controller
     {
         $casino = Casino::where('slug',$slug)->first();
 
-        $casinoDetail = CasinoDetail::find($casino->id)->first();
+        $casinoDetail = CasinoDetail::where('id_casino',  $casino->id)->first();
 
 
 
