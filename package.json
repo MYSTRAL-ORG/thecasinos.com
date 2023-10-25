@@ -6,7 +6,7 @@
         "build": "vite build"
     },
     "devDependencies": {
-        "axios": "^1.1.2",
+        "axios": "^1.5.1",
         "laravel-vite-plugin": "^0.8.0",
         "sass": "^1.69.3",
         "vite": "^4.0.0"
@@ -21,6 +21,8 @@
         "jquery-ui-dist": "^1.13.2",
         "n": "^9.2.0",
         "ol": "^8.1.0",
-        "ol-ext": "^4.0.11"
+        "ol-ext": "^4.0.11",
+        "openai": "^4.13.0",
+        "whatwg-fetch": "^3.6.19"
     }
 }

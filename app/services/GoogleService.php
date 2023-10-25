@@ -26,24 +26,9 @@ class GoogleService
             'region' => 'US',
             'mapType'=> 'satellite',
             'imageFormat'=>'jpeg',
-            'scale'=> 'scaleFactor1x',
+            'scale'=> 'scaleFactor2x',
             'layerTypes'=> ['layerRoadmap'],
-            "styles" => [
-                [
-                    "stylers" => [
-                        ["hue" => "#00ffe6"],
-                        ["saturation" => -20],
-                    ],
-                ],
-                [
-                    "featureType" => "road",
-                    "elementType" => "geometry",
-                    "stylers" => [
-                        ["lightness" => 100],
-                        ["visibility" => "simplified"],
-                    ],
-                ],
-            ],
+
 
         ];
 

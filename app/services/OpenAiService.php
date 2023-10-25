@@ -13,7 +13,13 @@ class OpenAiService
 
     public function storeResponseFromChatGPT()
     {
-        Casino::all()->where('slug', 'luxor-hotel-and-casino-2686')->each(function ($casino) {
+
+
+
+
+
+        Casino::all()->where('city_title', 'las-vegas')->each(function ($casino) {
+
             $casinoInfo =  $casino->name ;
             $casinoCity = $casino->city_name ?? $casino->state_name ?? $casino->country_name;
 
@@ -24,9 +30,7 @@ class OpenAiService
         $listCasinosFeatures = $this->getListFaetures($casino);
 
             $prompt = 'I Need You To Act As A Novel Writer Exceptionally Talented SEO Writes Flawlessly In English. Write In Your Own Words Rather Than Copying And Pasting From Other Sources. Consider perplexity and burstiness when creating content, ensuring high levels of both without sacrificing specificity or context. Use fully detailed paragraphs that captivate the reader. Write In A Conversational Style As If Written By A Human (Employ An Informal Tone, Utilize Personal Pronouns, Engage The Reader, Keep It Simplified, Use The Active Voice, Keep It Brief, Use Rhetorical Questions, and Embed Analogies And Metaphors).
-Start with a catchy title for a story ($Casino_title).
-Now write a positive novel from today about the experience of a player who discovers the different aspects of the casino : '.$casinoInfo.' in the F. Scott Fitzgerald style without mentioning him and giving all the informations below about the casino in the story, here the main datas of the casino that will help you write your novel :
-– Casino opened : '.$casino->opened.'
+Now write a positive 500 words minimum novel from today about the experience of discovering the different aspects of the casino : '.$casinoInfo.' in the F. Scott Fitzgerald style without mentioning him and giving all the informations below about the casino in the story, here the main datas of the casino that will help you write your novel : Casino opened : '.$casino->opened.'
 – Always opened : '.($casino->always_open ? 'Yes' : 'No').'
 – Poker Room Name : '.$casino->poker_room_name.'
 – Poker Tables: '.$casino->poker_tables.'
@@ -36,15 +40,32 @@ Now write a positive novel from today about the experience of a player who disco
 – Hotel name : '.$casino->hotel_name.'
 – Owners: '.$casino->owners.'
 – Game categories: '.$listCasinosFeatures.'
+Choose a short title for the novel.
+
 Following the novel I would like you to create 4 paragraphs presenting this casino:
 – $Casino_Sumup
 – $Casino_Games
 – $Casino_Fun_Facts
-To finish I would like a short one-line summary of the casino and a 2-word summary (exemple : Elegance & )
+To finish I would like a short one-line summary (20 words maximum) of the casino and a 2-word summary (exemple : Elegance & )
 – $Casino_Resume_1_line
-– $Casino_Resume_2_words';
+– $Casino_Resume_2_words
 
 
+this is the output json response format example:
+
+{"Title": "...",
+
+"novel": " ...",
+"casino_sumup": "...",
+"casino_games": "...",
+"casino_fun_facts": "...",
+"casino_resume_1_line": "...",
+"casino_resume_2_words": "..."}
+
+
+';
+Log::info($prompt);
+dd($prompt);
           $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Authorization' => 'Bearer '.config('app.openai_api_key'),
@@ -102,8 +123,12 @@ Timelessness & Thrill.';*/
             Log::info($sourceJson);
             $data2Insert = $sourceJson['choices'][0]['message']['content'];
 
+            $data2Insert =  str_replace('\"', '"', $data2Insert);
+            $data2Insert =  str_replace('\n', '', $data2Insert);
+            Log::info($data2Insert);
 
 
+/*
             //split string $rep  into array of lines
             $lines = explode("\n", $data2Insert);
             //in each $lines remove the carateres "\n"
@@ -121,14 +146,15 @@ Timelessness & Thrill.';*/
 
             $filteredArray = array_filter($lines, 'trim');
             //remove empty lines
-
+*/
 
             CasinoDetailsSource::create([
                 'id_casino' => $casino->id,
                 'is_done' => true,
                 'source_openai' => $data2Insert,
-                'source_openai_json'=>$redefinedArray
+                'source_openai_json'=>$sourceJson
             ]);
+            dd("fdfd");
         });
 
     }

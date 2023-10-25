@@ -20,25 +20,25 @@ class IndexContoller extends Controller
    try {
             $sessionGoogle = Cache::get('app.sessionGoogle');
 
-           /* if (!$sessionGoogle) {
+            if (!$sessionGoogle) {
                 $jsonGoogleSessionJson = $googleService->createSessionApiMapTile();
                 $jsonGoogleSession = $jsonGoogleSessionJson->session;
 
                 $expiry = (new Carbon(intval($jsonGoogleSessionJson->expiry)))->subDay();
                 Cache::put('app.sessionGoogle', $jsonGoogleSession, $expiry);
                 $sessionGoogle = $jsonGoogleSession;
-            }*/
+            }
 
             $location = $request->session()->get('location');
 
-           /* if (!$location) {
+             if (!$location) {
                 $locationJson = $googleService->geoLocaliseIp();
                 $request->session()->put('location', $locationJson);
                 $location = $locationJson;
             }
 
             $lon = $location->location->lng;
-            $lat = $location->location->lat;*/
+            $lat = $location->location->lat;
 
 
 

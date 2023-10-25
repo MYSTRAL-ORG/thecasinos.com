@@ -4,6 +4,7 @@ use App\Http\Controllers\CasinoDetailsController;
 use App\Http\Controllers\CrawlerController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MapkitController;
+use App\Http\Controllers\OpenAiController;
 use App\Models\CasinoDetail;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexContoller;
@@ -33,3 +34,7 @@ Route::post('casinodetail/{id}/edit'  , [CasinoDetailsController::class, 'edit']
 Route::post('casinodetail/destroy', [CasinoDetailsController::class, 'destroy'])->name('casinodetails.destroy');
 Route::post('casinodetail/delete', [CasinoDetailsController::class, 'delete'])->name('casinodetails.delete');
 Route::post('casinodetail/{id}/update', [CasinoDetailsController::class, 'delete'])->name('casinodetails.update');
+
+
+
+Route::get('/tttt', [OpenAiController::class , 'getListDataToCompute'])->name('getListDataToCompute');

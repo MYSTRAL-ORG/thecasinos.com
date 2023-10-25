@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $id_casino
- * @property string|null $source_openai
+ * @property array|null $source_openai
  * @property bool $is_done
  * @property array|null $source_openai_json
  * @package App\Models
@@ -38,7 +38,8 @@ class CasinoDetailsSource extends Model
 		'id' => 'int',
 		'id_casino' => 'int',
 		'is_done' => 'bool',
-		'source_openai_json' => 'json'
+		'source_openai_json' => 'json',
+        'source_openai' => 'json',
 	];
 
 	protected $fillable = [
