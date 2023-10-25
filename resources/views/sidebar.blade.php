@@ -13,7 +13,7 @@
 	</div>
 	<div class="casino-block" id="sumup">
 		<h3>To sum up</h3>
-		<img src="/img/casinos/c2.jpeg" alt="Casino presentation" class="image-casino">
+		<img src="/img/casino/{{$casino->img_url}}" alt="Casino presentation" class="image-casino">
 		<p>{!!  $casinoDetail->sumup!!}</p>
 	</div>
 

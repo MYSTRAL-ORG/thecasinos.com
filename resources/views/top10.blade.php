@@ -1,11 +1,10 @@
-<?php include("datas-casinos.php"); ?>
-
-<?php
+@include("datas-casinos")
+@php
 $tableId = uniqid("casino-table-");
 echo '<table class="casino-table" id="' . $tableId . '">';
 echo '<thead>';
 echo '<tr>';
-foreach ($columns as $col) {
+@foreach ($columns as $col) {
     switch ($col) {
         case 'Logo':
             echo "<th class='casino-logo'>Logo</th>";
@@ -69,4 +68,5 @@ echo '</tr>';
 
 echo '</tbody>';
 echo '</table>';
-?>
+
+@endphp
