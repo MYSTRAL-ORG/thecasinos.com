@@ -79,8 +79,8 @@ async function runConversation(casino) {
     const messages = [{"role": "user", "content": `
     I Need You To Act As A Writer Exceptionally Talented SEO Writes Flawlessly In English. Write In Your Own Words Rather Than Copying And Pasting From Other Sources. Consider perplexity and burstiness when creating content, ensuring high levels of both without sacrificing specificity or context. Use fully detailed paragraphs that captivate the reader. Write In A Conversational Style As If Written By A Human (Employ An Informal Tone, Utilize Personal Pronouns, Engage The Reader, Keep It Simplified, Use The Active Voice, Keep It Brief, Use Rhetorical Questions, and Embed Analogies And Metaphors).
 
-   Now write a positive 1000 words minimum description from today which describes the different aspects of the casino : casinoInfo giving all the informations below about the casino in the description, here the main datas of the casino that will help you write your text :
-            ${casinoInfo}
+   Now write a positive 1000 words minimum description (not less than 1000 words) from today which describes the different aspects of the casino : ${casinoInfo} giving all the informations below about the casino in the description, here the main datas of the casino that will help you write your text :
+
                 ${open}
                 ${alwaysOpen}
                 ${pokerRoomName}
@@ -92,9 +92,9 @@ async function runConversation(casino) {
                 ${owners}
             – Game categories: ${listFeatures}
 
-             Choose a short original title for the novel.
+            Choose a short original title for the description.
+            Following the novel I would like you to create 4 paragraphs (a summary of 100 words maximum) presenting this casino:
 
-           Following the novel I would like you to create 4 paragraphs (a summary of 100 words maximum) presenting this casino:
             – $Casino_Sumup
             – $Casino_Games
             - $Casino_Fun_Facts
@@ -105,9 +105,7 @@ async function runConversation(casino) {
 
 
             `}];
-    console.log("MMMMMMMMMMMMMM");
 
-console.log(messages);
     const functions = [
         {
             "name": "get_casino_informations",
@@ -224,7 +222,7 @@ openSync(lockFilePath, 'w');
 // Your script logic goes here
 console.log('Script running...');
 
-/*
+
 axios.get('http://casinos.test/tttt')
     .then(response => {
         setTimeout(() => { console.log('World!'); }, 1000);
@@ -253,7 +251,7 @@ axios.get('http://casinos.test/tttt')
         console.log(error);
     });
 
-*/
+
 
 // Remove the lock file when script is done or when an error occurs
 const cleanup = () => {
