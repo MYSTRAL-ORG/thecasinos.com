@@ -1,0 +1,1293 @@
+http://casinos.test/api/openai/538
+World!
+Response
+{ message: 'Data processed successfully!' }
+http://casinos.test/api/openai/2336
+http://casinos.test/api/openai/2914
+http://casinos.test/api/openai/2915
+http://casinos.test/api/openai/2949
+http://casinos.test/api/openai/3168
+http://casinos.test/api/openai/4623
+http://casinos.test/api/openai/4630
+http://casinos.test/api/openai/4631
+http://casinos.test/api/openai/574
+http://casinos.test/api/openai/4632
+World!
+Response
+{ message: 'Data processed successfully!' }
+Response
+{ message: 'Data processed successfully!' }
+Response
+{ message: 'Data processed successfully!' }
+Response
+{ message: 'Data processed successfully!' }
+Response
+{ message: 'Data processed successfully!' }
+Response
+{ message: 'Data processed successfully!' }
+Response
+{ message: 'Data processed successfully!' }
+Response
+{ message: 'Data processed successfully!' }
+Response
+{ message: 'Data processed successfully!' }
+Response
+{ message: 'Data processed successfully!' }
+http://casinos.test/api/openai/2914
+http://casinos.test/api/openai/2949
+http://casinos.test/api/openai/4631
+http://casinos.test/api/openai/4632
+World!
+Response
+AxiosError: Request failed with status code 500
+    at settle (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:572:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1358:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'ERR_BAD_RESPONSE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'axios/1.5.1',
+      'Content-Length': '1229',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'http://casinos.test/api/openai/4631',
+    data: `{"title":"Dotty's Delight: A Voyage to Tranquility","novel":"In the stillness of the buzzing city of Las Vegas, there resides an institution of solitaire, a haven distinct from the rest - Dotty's Casino. Unbeknownst to many, this venerable gaming establishment is always welcoming, its doors perpetually unhinged and inviting, a beckoning to those in quest of a peculiar leisure.|In contrast to its counterparts, Dotty's Casino affirms no flashy poker rooms, no grandiose tables, no cacophony from revolving machines, and no overwhelming expanse of tangible gaming space. Yet, it encapsulates an unspoken allure, a charm perceptible to those who seek beyond facades.|As you venture in, the categories of games that greet you are few but enough. Poker, the cerebral game of the sage and sly, and slot machines, the chancy companions of the audacious and hopeful, subtly adorn the simplicity of Dotty's.|Despite the lack of obvious lures, Dotty's sparks a soothing euphoria, a whispering hush among the clamor. The lack of flamboyance breeds a rhapsody of calmness. The absence of observable gaming machines and table games allows, an almost ironic, abundance of appreciating the joy of journeying into the tranquility of gaming."}`
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '1229',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: Socket {
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'casinos.test',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: null,
+      _server: null,
+      parser: null,
+      _httpMessage: [Circular *1],
+      [Symbol(async_id_symbol)]: 606,
+      [Symbol(kHandle)]: [TCP],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: null,
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    _header: 'POST /api/openai/4631 HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/x-www-form-urlencoded\r\n' +
+      'User-Agent: axios/1.5.1\r\n' +
+      'Content-Length: 1229\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: casinos.test\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 80,
+      protocol: 'http:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    path: '/api/openai/4631',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [Socket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 500,
+      statusMessage: 'Internal Server Error',
+      client: [Socket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'http://casinos.test/api/openai/4631',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 20,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'casinos.test',
+    protocol: 'http:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 1229,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'http://casinos.test/api/openai/4631',
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kEndCalled)]: true,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 500,
+    statusText: 'Internal Server Error',
+    headers: Object [AxiosHeaders] {
+      server: 'nginx/1.22.1',
+      'content-type': 'application/json',
+      'transfer-encoding': 'chunked',
+      connection: 'close',
+      'x-powered-by': 'PHP/8.2.8',
+      'cache-control': 'no-cache, private',
+      date: 'Wed, 25 Oct 2023 11:24:51 GMT',
+      'x-ratelimit-limit': '60',
+      'x-ratelimit-remaining': '55',
+      'access-control-allow-origin': '*'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'http://casinos.test/api/openai/4631',
+      data: `{"title":"Dotty's Delight: A Voyage to Tranquility","novel":"In the stillness of the buzzing city of Las Vegas, there resides an institution of solitaire, a haven distinct from the rest - Dotty's Casino. Unbeknownst to many, this venerable gaming establishment is always welcoming, its doors perpetually unhinged and inviting, a beckoning to those in quest of a peculiar leisure.|In contrast to its counterparts, Dotty's Casino affirms no flashy poker rooms, no grandiose tables, no cacophony from revolving machines, and no overwhelming expanse of tangible gaming space. Yet, it encapsulates an unspoken allure, a charm perceptible to those who seek beyond facades.|As you venture in, the categories of games that greet you are few but enough. Poker, the cerebral game of the sage and sly, and slot machines, the chancy companions of the audacious and hopeful, subtly adorn the simplicity of Dotty's.|Despite the lack of obvious lures, Dotty's sparks a soothing euphoria, a whispering hush among the clamor. The lack of flamboyance breeds a rhapsody of calmness. The absence of observable gaming machines and table games allows, an almost ironic, abundance of appreciating the joy of journeying into the tranquility of gaming."}`
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '1229',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [Socket],
+      _header: 'POST /api/openai/4631 HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/x-www-form-urlencoded\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Content-Length: 1229\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/api/openai/4631',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'http:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: {
+      message: 'SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "casino_details_source_pkey"\n' +
+        `DETAIL:  Key (id_casino)=(4631) already exists. (Connection: pgsql, SQL: insert into "casino_details_source" ("id_casino", "is_done", "source_openai_json") values (4631, 1, {"title":"Dotty's Delight: A Voyage to Tranquility","novel":"In the stillness of the buzzing city of Las Vegas, there resides an institution of solitaire, a haven distinct from the rest - Dotty's Casino. Unbeknownst to many, this venerable gaming establishment is always welcoming, its doors perpetually unhinged and inviting, a beckoning to those in quest of a peculiar leisure.|In contrast to its counterparts, Dotty's Casino affirms no flashy poker rooms, no grandiose tables, no cacophony from revolving machines, and no overwhelming expanse of tangible gaming space. Yet, it encapsulates an unspoken allure, a charm perceptible to those who seek beyond facades.|As you venture in, the categories of games that greet you are few but enough. Poker, the cerebral game of the sage and sly, and slot machines, the chancy companions of the audacious and hopeful, subtly adorn the simplicity of Dotty's.|Despite the lack of obvious lures, Dotty's sparks a soothing euphoria, a whispering hush among the clamor. The lack of flamboyance breeds a rhapsody of calmness. The absence of observable gaming machines and table games allows, an almost ironic, abundance of appreciating the joy of journeying into the tranquility of gaming."}))`,
+      exception: 'Illuminate\\Database\\UniqueConstraintViolationException',
+      file: '/Users/francois/Documents/DEV-GLOBAL/casinos/vendor/laravel/framework/src/Illuminate/Database/Connection.php',
+      line: 796,
+      trace: [Array]
+    }
+  }
+}
+Response
+AxiosError: Request failed with status code 500
+    at settle (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:572:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1358:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'ERR_BAD_RESPONSE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'axios/1.5.1',
+      'Content-Length': '2000',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'http://casinos.test/api/openai/4632',
+    data: `{"title":"The Hidden Charm","novel":"Stepping into the charm of Dotty's Casino on Nellis, the city sparkles with a different kind of magic - the whirl and bash of chance, the promise of glamorous luck that could change your life in an instant. The sign above the entrance gleams invitingly as the neon lights beckon you inside.|A place that never sleeps, with its doors eternally welcoming everyone who dares to test their luck. The void of distinct tables for poker or any other card game might seem odd, yet, it's the essence of Dotty's, simplicity in an otherwise chaotic world. A place to gather and enjoy life's straightforward pleasures.|The atmosphere is ripe with anticipation, the steady hum of chatter surfacing above the clink of glasses and subtle background tunes. Poker and slot machines are the stars that allure hopefuls, their bright lights and ringings sculpting the symphony of opportunity. But there's an unusual twist, something that sets Dotty's apart - the absence of the usual vista of croupiers and crowded poker tables with resplendent green felt.|Indeed, the casino might be squareless and sans gaming machines, yet it doesn't lose its charm. It all adds to the enigma, a place where card sharks do battle without the fuss, where old friends form new alliances, and emotions run high even when the stakes are low.","casino_sumup":"Dotty's Casino - Nellis, a peculiar corner of Las Vegas that never sleeps. Lack of distinct facilities yet full of eternal charm and a promise of uncomplicated, straightforward pleasures in a world of chaos.","casino_games":"The lack of gaming machines or specific table games might seem strange to some, yet the essence of Dotty's lies just in that. The simplicity of poker rounds and the thrill of slot machines offer an interesting touch of enigma to card sharks and casual gamblers alike.","casino_resume_1_line":"Dotty's - where simplicity breeds charm and anticipation reigns high.","casino_resume_2_words":"Unconventional & Enigmatic"}`
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '2000',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: Socket {
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'casinos.test',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: null,
+      _server: null,
+      parser: null,
+      _httpMessage: [Circular *1],
+      [Symbol(async_id_symbol)]: 654,
+      [Symbol(kHandle)]: [TCP],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: null,
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    _header: 'POST /api/openai/4632 HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/x-www-form-urlencoded\r\n' +
+      'User-Agent: axios/1.5.1\r\n' +
+      'Content-Length: 2000\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: casinos.test\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 80,
+      protocol: 'http:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    path: '/api/openai/4632',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [Socket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 500,
+      statusMessage: 'Internal Server Error',
+      client: [Socket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'http://casinos.test/api/openai/4632',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 20,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'casinos.test',
+    protocol: 'http:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 2000,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'http://casinos.test/api/openai/4632',
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kEndCalled)]: true,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 500,
+    statusText: 'Internal Server Error',
+    headers: Object [AxiosHeaders] {
+      server: 'nginx/1.22.1',
+      'content-type': 'application/json',
+      'transfer-encoding': 'chunked',
+      connection: 'close',
+      'x-powered-by': 'PHP/8.2.8',
+      'cache-control': 'no-cache, private',
+      date: 'Wed, 25 Oct 2023 11:24:53 GMT',
+      'x-ratelimit-limit': '60',
+      'x-ratelimit-remaining': '54',
+      'access-control-allow-origin': '*'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'http://casinos.test/api/openai/4632',
+      data: `{"title":"The Hidden Charm","novel":"Stepping into the charm of Dotty's Casino on Nellis, the city sparkles with a different kind of magic - the whirl and bash of chance, the promise of glamorous luck that could change your life in an instant. The sign above the entrance gleams invitingly as the neon lights beckon you inside.|A place that never sleeps, with its doors eternally welcoming everyone who dares to test their luck. The void of distinct tables for poker or any other card game might seem odd, yet, it's the essence of Dotty's, simplicity in an otherwise chaotic world. A place to gather and enjoy life's straightforward pleasures.|The atmosphere is ripe with anticipation, the steady hum of chatter surfacing above the clink of glasses and subtle background tunes. Poker and slot machines are the stars that allure hopefuls, their bright lights and ringings sculpting the symphony of opportunity. But there's an unusual twist, something that sets Dotty's apart - the absence of the usual vista of croupiers and crowded poker tables with resplendent green felt.|Indeed, the casino might be squareless and sans gaming machines, yet it doesn't lose its charm. It all adds to the enigma, a place where card sharks do battle without the fuss, where old friends form new alliances, and emotions run high even when the stakes are low.","casino_sumup":"Dotty's Casino - Nellis, a peculiar corner of Las Vegas that never sleeps. Lack of distinct facilities yet full of eternal charm and a promise of uncomplicated, straightforward pleasures in a world of chaos.","casino_games":"The lack of gaming machines or specific table games might seem strange to some, yet the essence of Dotty's lies just in that. The simplicity of poker rounds and the thrill of slot machines offer an interesting touch of enigma to card sharks and casual gamblers alike.","casino_resume_1_line":"Dotty's - where simplicity breeds charm and anticipation reigns high.","casino_resume_2_words":"Unconventional & Enigmatic"}`
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '2000',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [Socket],
+      _header: 'POST /api/openai/4632 HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/x-www-form-urlencoded\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Content-Length: 2000\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/api/openai/4632',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'http:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: {
+      message: 'SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "casino_details_source_pkey"\n' +
+        `DETAIL:  Key (id_casino)=(4632) already exists. (Connection: pgsql, SQL: insert into "casino_details_source" ("id_casino", "is_done", "source_openai_json") values (4632, 1, {"title":"The Hidden Charm","novel":"Stepping into the charm of Dotty's Casino on Nellis, the city sparkles with a different kind of magic - the whirl and bash of chance, the promise of glamorous luck that could change your life in an instant. The sign above the entrance gleams invitingly as the neon lights beckon you inside.|A place that never sleeps, with its doors eternally welcoming everyone who dares to test their luck. The void of distinct tables for poker or any other card game might seem odd, yet, it's the essence of Dotty's, simplicity in an otherwise chaotic world. A place to gather and enjoy life's straightforward pleasures.|The atmosphere is ripe with anticipation, the steady hum of chatter surfacing above the clink of glasses and subtle background tunes. Poker and slot machines are the stars that allure hopefuls, their bright lights and ringings sculpting the symphony of opportunity. But there's an unusual twist, something that sets Dotty's apart - the absence of the usual vista of croupiers and crowded poker tables with resplendent green felt.|Indeed, the casino might be squareless and sans gaming machines, yet it doesn't lose its charm. It all adds to the enigma, a place where card sharks do battle without the fuss, where old friends form new alliances, and emotions run high even when the stakes are low.","casino_sumup":"Dotty's Casino - Nellis, a peculiar corner of Las Vegas that never sleeps. Lack of distinct facilities yet full of eternal charm and a promise of uncomplicated, straightforward pleasures in a world of chaos.","casino_games":"The lack of gaming machines or specific table games might seem strange to some, yet the essence of Dotty's lies just in that. The simplicity of poker rounds and the thrill of slot machines offer an interesting touch of enigma to card sharks and casual gamblers alike.","casino_resume_1_line":"Dotty's - where simplicity breeds charm and anticipation reigns high.","casino_resume_2_words":"Unconventional & Enigmatic"}))`,
+      exception: 'Illuminate\\Database\\UniqueConstraintViolationException',
+      file: '/Users/francois/Documents/DEV-GLOBAL/casinos/vendor/laravel/framework/src/Illuminate/Database/Connection.php',
+      line: 796,
+      trace: [Array]
+    }
+  }
+}
+Response
+AxiosError: Request failed with status code 500
+    at settle (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:572:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1358:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'ERR_BAD_RESPONSE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'axios/1.5.1',
+      'Content-Length': '2248',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'http://casinos.test/api/openai/2914',
+    data: `{"title":"Vegas' Underworld Lights","novel":"Here we stand on the brink of an adventure unmatched, in the heart of the desert metropolis known as Las Vegas, where lights brighter than a thousand suns illuminate stories untold. Unseen from the usual glamour and glitz, there exists an eternally inviting oasis, Charlies Down Under. A place where time transcends, always open, always ready to welcome you.|Clustered within these four walls, draped in vibrant ornamentation, is a myriad of gaming machines, 35 to be exact. No need for poker tables or fanciful table games, simply cherries and lemons spinning on a brightly lit screen, radiating alternate pulses of hope and despair.|Let your first coin be the key that opens the floodgates of relentless enthusiasm. Witness the stainless steel lever cranked, the well-oiled gears spinning, setting forth an unpredictable future. The beguiling concoction of poker and slots machines emit an unparalleled allure, teasing the patrons through their audacious racket.|Unbounded by areas, the casino is a marvel in itself. It doesn't need a poker room name or designated spaces; for in Charlies Down Under, the area is not measured in square feet, but in the intensity of pounding hearts and knotted stomach.|It's a thrilling paradox, pulsating in tandem with the heart of Las Vegas. The shrilling ring of coins against metal, mirrored smiles flickering on cherubic faces, silently recite tales of grandeur and gayety. It's a lullaby in chaos, a symphony in cacophony, an enigma of being.","casino_sumup":"Charlies Down Under is a unique casino nestled in the vibrant nightlife of Las Vegas. Always open, the casino offers an intimate yet thrilling experience with its gaming machines.","casino_games":"Featuring 35 gaming machines, Charlies Down Under provides a fascinating blend of poker and slot machines that guarantee a rush of adrenaline with every spin.","casino_fun_facts":"Despite lacking poker rooms or table games, the casino's charm lies in its unabated energy and bustling machines, creating an atmosphere that's both electric and welcoming.","casino_resume_1_line":"Experience the 24/7 thrill of Las Vegas in Charlies Down Under's gaming haven.","casino_resume_2_words":"Non-stop Excitement"}`
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '2248',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: Socket {
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'casinos.test',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: null,
+      _server: null,
+      parser: null,
+      _httpMessage: [Circular *1],
+      [Symbol(async_id_symbol)]: 706,
+      [Symbol(kHandle)]: [TCP],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: null,
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    _header: 'POST /api/openai/2914 HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/x-www-form-urlencoded\r\n' +
+      'User-Agent: axios/1.5.1\r\n' +
+      'Content-Length: 2248\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: casinos.test\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 80,
+      protocol: 'http:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    path: '/api/openai/2914',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [Socket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 500,
+      statusMessage: 'Internal Server Error',
+      client: [Socket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'http://casinos.test/api/openai/2914',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 20,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'casinos.test',
+    protocol: 'http:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 2248,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'http://casinos.test/api/openai/2914',
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kEndCalled)]: true,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 500,
+    statusText: 'Internal Server Error',
+    headers: Object [AxiosHeaders] {
+      server: 'nginx/1.22.1',
+      'content-type': 'application/json',
+      'transfer-encoding': 'chunked',
+      connection: 'close',
+      'x-powered-by': 'PHP/8.2.8',
+      'cache-control': 'no-cache, private',
+      date: 'Wed, 25 Oct 2023 11:25:01 GMT',
+      'x-ratelimit-limit': '60',
+      'x-ratelimit-remaining': '53',
+      'access-control-allow-origin': '*'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'http://casinos.test/api/openai/2914',
+      data: `{"title":"Vegas' Underworld Lights","novel":"Here we stand on the brink of an adventure unmatched, in the heart of the desert metropolis known as Las Vegas, where lights brighter than a thousand suns illuminate stories untold. Unseen from the usual glamour and glitz, there exists an eternally inviting oasis, Charlies Down Under. A place where time transcends, always open, always ready to welcome you.|Clustered within these four walls, draped in vibrant ornamentation, is a myriad of gaming machines, 35 to be exact. No need for poker tables or fanciful table games, simply cherries and lemons spinning on a brightly lit screen, radiating alternate pulses of hope and despair.|Let your first coin be the key that opens the floodgates of relentless enthusiasm. Witness the stainless steel lever cranked, the well-oiled gears spinning, setting forth an unpredictable future. The beguiling concoction of poker and slots machines emit an unparalleled allure, teasing the patrons through their audacious racket.|Unbounded by areas, the casino is a marvel in itself. It doesn't need a poker room name or designated spaces; for in Charlies Down Under, the area is not measured in square feet, but in the intensity of pounding hearts and knotted stomach.|It's a thrilling paradox, pulsating in tandem with the heart of Las Vegas. The shrilling ring of coins against metal, mirrored smiles flickering on cherubic faces, silently recite tales of grandeur and gayety. It's a lullaby in chaos, a symphony in cacophony, an enigma of being.","casino_sumup":"Charlies Down Under is a unique casino nestled in the vibrant nightlife of Las Vegas. Always open, the casino offers an intimate yet thrilling experience with its gaming machines.","casino_games":"Featuring 35 gaming machines, Charlies Down Under provides a fascinating blend of poker and slot machines that guarantee a rush of adrenaline with every spin.","casino_fun_facts":"Despite lacking poker rooms or table games, the casino's charm lies in its unabated energy and bustling machines, creating an atmosphere that's both electric and welcoming.","casino_resume_1_line":"Experience the 24/7 thrill of Las Vegas in Charlies Down Under's gaming haven.","casino_resume_2_words":"Non-stop Excitement"}`
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '2248',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [Socket],
+      _header: 'POST /api/openai/2914 HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/x-www-form-urlencoded\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Content-Length: 2248\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/api/openai/2914',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'http:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: {
+      message: 'SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "casino_details_source_pkey"\n' +
+        `DETAIL:  Key (id_casino)=(2914) already exists. (Connection: pgsql, SQL: insert into "casino_details_source" ("id_casino", "is_done", "source_openai_json") values (2914, 1, {"title":"Vegas' Underworld Lights","novel":"Here we stand on the brink of an adventure unmatched, in the heart of the desert metropolis known as Las Vegas, where lights brighter than a thousand suns illuminate stories untold. Unseen from the usual glamour and glitz, there exists an eternally inviting oasis, Charlies Down Under. A place where time transcends, always open, always ready to welcome you.|Clustered within these four walls, draped in vibrant ornamentation, is a myriad of gaming machines, 35 to be exact. No need for poker tables or fanciful table games, simply cherries and lemons spinning on a brightly lit screen, radiating alternate pulses of hope and despair.|Let your first coin be the key that opens the floodgates of relentless enthusiasm. Witness the stainless steel lever cranked, the well-oiled gears spinning, setting forth an unpredictable future. The beguiling concoction of poker and slots machines emit an unparalleled allure, teasing the patrons through their audacious racket.|Unbounded by areas, the casino is a marvel in itself. It doesn't need a poker room name or designated spaces; for in Charlies Down Under, the area is not measured in square feet, but in the intensity of pounding hearts and knotted stomach.|It's a thrilling paradox, pulsating in tandem with the heart of Las Vegas. The shrilling ring of coins against metal, mirrored smiles flickering on cherubic faces, silently recite tales of grandeur and gayety. It's a lullaby in chaos, a symphony in cacophony, an enigma of being.","casino_sumup":"Charlies Down Under is a unique casino nestled in the vibrant nightlife of Las Vegas. Always open, the casino offers an intimate yet thrilling experience with its gaming machines.","casino_games":"Featuring 35 gaming machines, Charlies Down Under provides a fascinating blend of poker and slot machines that guarantee a rush of adrenaline with every spin.","casino_fun_facts":"Despite lacking poker rooms or table games, the casino's charm lies in its unabated energy and bustling machines, creating an atmosphere that's both electric and welcoming.","casino_resume_1_line":"Experience the 24\\/7 thrill of Las Vegas in Charlies Down Under's gaming haven.","casino_resume_2_words":"Non-stop Excitement"}))`,
+      exception: 'Illuminate\\Database\\UniqueConstraintViolationException',
+      file: '/Users/francois/Documents/DEV-GLOBAL/casinos/vendor/laravel/framework/src/Illuminate/Database/Connection.php',
+      line: 796,
+      trace: [Array]
+    }
+  }
+}
+Response
+AxiosError: Request failed with status code 500
+    at settle (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (file:///Users/francois/Documents/DEV-GLOBAL/casinos/node_modules/axios/lib/adapters/http.js:572:11)
+    at IncomingMessage.emit (node:events:525:35)
+    at endReadableNT (node:internal/streams/readable:1358:12)
+    at processTicksAndRejections (node:internal/process/task_queues:83:21) {
+  code: 'ERR_BAD_RESPONSE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: null },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'axios/1.5.1',
+      'Content-Length': '2879',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'http://casinos.test/api/openai/2949',
+    data: '{"title":"Desert Mirage","novel":"As I slithered through the quicksilver shadows of the elusive Sin City, the luminous facade of Cariba Charlies emerged, a beacon of decadent diversion in the barren desert. Unhurried and unveiled 24/7 like a spectral cathedral, welcoming all who seek refuge in its velvet embrace. Run by the enigmatic PG Enterprise AG, it felt like a clandestine confab, an elaborate performance where the world is reversed, and the outcasts become the kings.| The heart of this clandestine marvel was the exhilarating ensemble of 15 gaming machines that gleamed like constellations. The superstar cast catered to the thrill of Poker, the whimsical rapture of Slot Machines, resounding in harmonic chaos as if a choir in an iron cathedral. All terrestrial concerns seemed trivial as one engaged in this symphony of flashing lights and spinning reels, choreographed in a ballet of chance.| Yet, the absence of poker tables and other table games was conspicuous, like a flawless sonnet without a final line. A testament perhaps to the elusive artistry of this place, a calculated anomaly in a world of norms? The Casino square, equally nonexistent, was replaced by an intimate setting that felt as much a lounge as a gaming den, creating an exclusive fraternity amongst the patrons who basked in the ambience of shared thrill.| As the night skittered onto morning, the ethereal energy of the place never dwindled. An insomniac’s paradise where the moon danced with stars in the reflective sheen of the slot machines. All the worldly tumults vanished, replaced by the endless possibilities that each playful prod at a slot lever could usher.| Cariba Charlies – an enigma, a desert mirage, tempting the audacious and the dreamers into a dance of destiny, a gamble where none lose, all gain.","casino_sumup":"Cariba Charlies, a round-the-clock gaming hotspot managed by PG Enterprise AG, stands proudly amidst the bustling Las Vegas landscape. Showcasing the intimate charm of an exclusive lounge, the casino is a unique getaway for thrill-seekers, minus the typical casino square or gaming tables.","casino_games":"Although devoid of poker tables, Cariba Charlies boasts an impressive array of 15 diverse gaming machines. This enables patrons to immerse in a cathartic dive into the immersive world of poker and slot machines, crafting an atmosphere of endless thrill and excitement in an engaging setting.","casino_fun_facts":"Cariba Charlies uniquely blends exciting gaming opportunities with a laid-back lounge ambience. The absence of table games or a casino square adds to its intimate charm, allowing patrons to experience casino gaming in a novel and welcoming environment.","casino_resume_1_line":"Cariba Charlies: A 24/7 gaming lounge, offering an intimate, exclusive spin on traditional casino gaming.","casino_resume_2_words":"Intimate & Intriguing"}'
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '2879',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: Socket {
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'casinos.test',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: null,
+      _server: null,
+      parser: null,
+      _httpMessage: [Circular *1],
+      [Symbol(async_id_symbol)]: 756,
+      [Symbol(kHandle)]: [TCP],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: null,
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    _header: 'POST /api/openai/2949 HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/x-www-form-urlencoded\r\n' +
+      'User-Agent: axios/1.5.1\r\n' +
+      'Content-Length: 2879\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: casinos.test\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 80,
+      protocol: 'http:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    path: '/api/openai/2949',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [Socket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 500,
+      statusMessage: 'Internal Server Error',
+      client: [Socket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'http://casinos.test/api/openai/2949',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 20,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0,
+      [Symbol(RequestTimeout)]: undefined
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'casinos.test',
+    protocol: 'http:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 2879,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'http://casinos.test/api/openai/2949',
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kEndCalled)]: true,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 500,
+    statusText: 'Internal Server Error',
+    headers: Object [AxiosHeaders] {
+      server: 'nginx/1.22.1',
+      'content-type': 'application/json',
+      'transfer-encoding': 'chunked',
+      connection: 'close',
+      'x-powered-by': 'PHP/8.2.8',
+      'cache-control': 'no-cache, private',
+      date: 'Wed, 25 Oct 2023 11:25:15 GMT',
+      'x-ratelimit-limit': '60',
+      'x-ratelimit-remaining': '59',
+      'access-control-allow-origin': '*'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'http://casinos.test/api/openai/2949',
+      data: '{"title":"Desert Mirage","novel":"As I slithered through the quicksilver shadows of the elusive Sin City, the luminous facade of Cariba Charlies emerged, a beacon of decadent diversion in the barren desert. Unhurried and unveiled 24/7 like a spectral cathedral, welcoming all who seek refuge in its velvet embrace. Run by the enigmatic PG Enterprise AG, it felt like a clandestine confab, an elaborate performance where the world is reversed, and the outcasts become the kings.| The heart of this clandestine marvel was the exhilarating ensemble of 15 gaming machines that gleamed like constellations. The superstar cast catered to the thrill of Poker, the whimsical rapture of Slot Machines, resounding in harmonic chaos as if a choir in an iron cathedral. All terrestrial concerns seemed trivial as one engaged in this symphony of flashing lights and spinning reels, choreographed in a ballet of chance.| Yet, the absence of poker tables and other table games was conspicuous, like a flawless sonnet without a final line. A testament perhaps to the elusive artistry of this place, a calculated anomaly in a world of norms? The Casino square, equally nonexistent, was replaced by an intimate setting that felt as much a lounge as a gaming den, creating an exclusive fraternity amongst the patrons who basked in the ambience of shared thrill.| As the night skittered onto morning, the ethereal energy of the place never dwindled. An insomniac’s paradise where the moon danced with stars in the reflective sheen of the slot machines. All the worldly tumults vanished, replaced by the endless possibilities that each playful prod at a slot lever could usher.| Cariba Charlies – an enigma, a desert mirage, tempting the audacious and the dreamers into a dance of destiny, a gamble where none lose, all gain.","casino_sumup":"Cariba Charlies, a round-the-clock gaming hotspot managed by PG Enterprise AG, stands proudly amidst the bustling Las Vegas landscape. Showcasing the intimate charm of an exclusive lounge, the casino is a unique getaway for thrill-seekers, minus the typical casino square or gaming tables.","casino_games":"Although devoid of poker tables, Cariba Charlies boasts an impressive array of 15 diverse gaming machines. This enables patrons to immerse in a cathartic dive into the immersive world of poker and slot machines, crafting an atmosphere of endless thrill and excitement in an engaging setting.","casino_fun_facts":"Cariba Charlies uniquely blends exciting gaming opportunities with a laid-back lounge ambience. The absence of table games or a casino square adds to its intimate charm, allowing patrons to experience casino gaming in a novel and welcoming environment.","casino_resume_1_line":"Cariba Charlies: A 24/7 gaming lounge, offering an intimate, exclusive spin on traditional casino gaming.","casino_resume_2_words":"Intimate & Intriguing"}'
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '2879',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [Socket],
+      _header: 'POST /api/openai/2949 HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/x-www-form-urlencoded\r\n' +
+        'User-Agent: axios/1.5.1\r\n' +
+        'Content-Length: 2879\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: casinos.test\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      path: '/api/openai/2949',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'casinos.test',
+      protocol: 'http:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kEndCalled)]: true,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: {
+      message: 'SQLSTATE[23505]: Unique violation: 7 ERROR:  duplicate key value violates unique constraint "casino_details_source_pkey"\n' +
+        'DETAIL:  Key (id_casino)=(2949) already exists. (Connection: pgsql, SQL: insert into "casino_details_source" ("id_casino", "is_done", "source_openai_json") values (2949, 1, {"title":"Desert Mirage","novel":"As I slithered through the quicksilver shadows of the elusive Sin City, the luminous facade of Cariba Charlies emerged, a beacon of decadent diversion in the barren desert. Unhurried and unveiled 24\\/7 like a spectral cathedral, welcoming all who seek refuge in its velvet embrace. Run by the enigmatic PG Enterprise AG, it felt like a clandestine confab, an elaborate performance where the world is reversed, and the outcasts become the kings.| The heart of this clandestine marvel was the exhilarating ensemble of 15 gaming machines that gleamed like constellations. The superstar cast catered to the thrill of Poker, the whimsical rapture of Slot Machines, resounding in harmonic chaos as if a choir in an iron cathedral. All terrestrial concerns seemed trivial as one engaged in this symphony of flashing lights and spinning reels, choreographed in a ballet of chance.| Yet, the absence of poker tables and other table games was conspicuous, like a flawless sonnet without a final line. A testament perhaps to the elusive artistry of this place, a calculated anomaly in a world of norms? The Casino square, equally nonexistent, was replaced by an intimate setting that felt as much a lounge as a gaming den, creating an exclusive fraternity amongst the patrons who basked in the ambience of shared thrill.| As the night skittered onto morning, the ethereal energy of the place never dwindled. An insomniac\\u2019s paradise where the moon danced with stars in the reflective sheen of the slot machines. All the worldly tumults vanished, replaced by the endless possibilities that each playful prod at a slot lever could usher.| Cariba Charlies \\u2013 an enigma, a desert mirage, tempting the audacious and the dreamers into a dance of destiny, a gamble where none lose, all gain.","casino_sumup":"Cariba Charlies, a round-the-clock gaming hotspot managed by PG Enterprise AG, stands proudly amidst the bustling Las Vegas landscape. Showcasing the intimate charm of an exclusive lounge, the casino is a unique getaway for thrill-seekers, minus the typical casino square or gaming tables.","casino_games":"Although devoid of poker tables, Cariba Charlies boasts an impressive array of 15 diverse gaming machines. This enables patrons to immerse in a cathartic dive into the immersive world of poker and slot machines, crafting an atmosphere of endless thrill and excitement in an engaging setting.","casino_fun_facts":"Cariba Charlies uniquely blends exciting gaming opportunities with a laid-back lounge ambience. The absence of table games or a casino square adds to its intimate charm, allowing patrons to experience casino gaming in a novel and welcoming environment.","casino_resume_1_line":"Cariba Charlies: A 24\\/7 gaming lounge, offering an intimate, exclusive spin on traditional casino gaming.","casino_resume_2_words":"Intimate & Intriguing"}))',
+      exception: 'Illuminate\\Database\\UniqueConstraintViolationException',
+      file: '/Users/francois/Documents/DEV-GLOBAL/casinos/vendor/laravel/framework/src/Illuminate/Database/Connection.php',
+      line: 796,
+      trace: [Array]
+    }
+  }
+}
+World!

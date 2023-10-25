@@ -1,10 +1,23 @@
-
-
 import OpenAI from "openai";
 import axios from 'axios';
 import fs from 'fs/promises';
 
 const openai = new OpenAI({ apiKey: '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' });
+
+
+
+
+// Define a function to handle API requests with rate limiting
+async function performApiRequest(params) {
+    try {
+        return await openai.chat.completions.create(params);
+    } catch (error) {
+        console.error('API Request Error:', error);
+        throw error;
+    }
+}
+
+
 
 // Example dummy function hard coded to return the same weather
 // In production, this could be your backend API or an external API
@@ -23,7 +36,7 @@ function getCasinoInformations(title, novel,casino_sumup, casino_games, casino_f
 }
 
 
- function getListFaetures(casino)
+function getListFaetures(casino)
 {
     let gameListString = [];
 
@@ -104,7 +117,7 @@ async function runConversation(casino) {
                     },
                     "novel": {
                         "type": "string",
-                        "description": "each paragraph  of  the huge description of the novel separated  by pipe | ",
+                        "description": "each paragraph  of  the huge description of the novel separated  by pipe |",
                     },
                     "casino_sumup": {
                         "type": "string",
@@ -135,19 +148,18 @@ async function runConversation(casino) {
     function replaceAll(string, search, replace) {
         return string.split(search).join(replace);
     }
-    const response = await openai.chat.completions.create({
+    const response = await performApiRequest({
         model: "gpt-4",
         messages: messages,
         functions: functions,
         function_call: "auto",  // auto is default, but we'll be explicit
         temperature: 1,
-       frequency_penalty: 0,
+        frequency_penalty: 0,
         presence_penalty: 0
     });
     let responseMessage = response.choices[0].message;
-    console.log("responseMessage");
-    //responseMessage =  responseMessage.replace(new RegExp( '\n', 'g'), '');
-    // Step 2: check if GPT wanted to call a function
+
+
 
     if (responseMessage.function_call) {
         // Step 3: call the function
@@ -188,8 +200,6 @@ async function runConversation(casino) {
     }
 }
 
-// Define the path to your JSON file
-const filePath = 'casino-all.json';
 
 // Call the function to read and parse the JSON file
 //readJsonFile(filePath).then(r => console.log("good"));
@@ -199,8 +209,8 @@ axios.get('http://casinos.test/tttt')
         setTimeout(() => { console.log('World!'); }, 1000);
         response.data.forEach(casino => {
 
-            if(casino.city_title != undefined && casino.city_title === "las-vegas") {
 
+            console.log('http://casinos.test/api/openai/'+casino.id);
 
                 runConversation(casino).then(
                     (result) => {
@@ -213,8 +223,8 @@ axios.get('http://casinos.test/tttt')
                             });
                     }
                 ).catch(console.error);
-            }
-ret
+
+
         })
 
     })
@@ -222,32 +232,5 @@ ret
         console.log(error);
     });
 
-
-async function readJsonFile(filePath) {
-    try {
-        // Read the file
-        const data = await fs.readFile(filePath, 'utf8');
-
-        // Parse the JSON data
-        const jsonData = JSON.parse(data);
-
-        let result = [];
-        jsonData.features.forEach(feature => {
-            //if(result.length>1) return;
-            if (feature.properties.citytitle === "las-vegas") {
-                result.push(feature);
-
-            }
-        });
-        console.log(data.length)
-        console.log(result.length)
-
-
-
-
-    } catch (error) {
-        console.error('Error reading/parsing JSON file:', error);
-    }
-}
 
 

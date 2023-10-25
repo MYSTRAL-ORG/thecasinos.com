@@ -12,6 +12,7 @@ class OpenAiController extends Controller
     public function create(Request $request, int $id) {
         $data = $request->json()->all(); // Get the JSON data from the request
         Log::info($data);
+
         CasinoDetailsSource::create([
             'id_casino' => $id,
             'is_done' => true,
@@ -23,8 +24,8 @@ class OpenAiController extends Controller
     }
 
     public function getListDataToCompute(){
-        $lstCasinoToCompute = DB::table('casino')->whereNotIn('id',CasinoDetailsSource::where('is_done', '=',true)->pluck('id_casino'))
-            ->get();
+        $lstCasinoToCompute = DB::table('casino')->where('city_title', '=', 'las-vegas')->whereNotIn('id',CasinoDetailsSource::where('is_done', '=',true)
+            ->pluck('id_casino'))->limit(20)->get();
 
         return response()->json($lstCasinoToCompute);
     }

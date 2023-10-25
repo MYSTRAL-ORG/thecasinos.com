@@ -13,19 +13,11 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @property int $id
  * @property int $id_casino
- * @property array|null $source_openai
  * @property bool $is_done
  * @property array|null $source_openai_json
+ * @property string|null $source_openai
+ *
  * @package App\Models
- * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource query()
- * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource whereIdCasino($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource whereIsDone($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource whereSourceOpenai($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetailsSource whereSourceOpenaiJson($value)
- * @mixin \Eloquent
  */
 class CasinoDetailsSource extends Model
 {
@@ -39,14 +31,14 @@ class CasinoDetailsSource extends Model
 		'id_casino' => 'int',
 		'is_done' => 'bool',
 		'source_openai_json' => 'json',
-        'source_openai' => 'json',
+		'source_openai' => 'binary'
 	];
 
 	protected $fillable = [
 		'id',
-        'id_casino' ,
-		'source_openai',
+        'id_casino',
 		'is_done',
-		'source_openai_json'
+		'source_openai_json',
+		'source_openai'
 	];
 }
