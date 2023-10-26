@@ -159,6 +159,7 @@ async function runConversation(casino) {
         frequency_penalty: 0,
         presence_penalty: 0
     });
+
     let responseMessage = response.choices[0].message;
 
 
