@@ -9,7 +9,7 @@
 	<div class="casino-block-orange">@if($casino->cat_tablegames)<h3><i class="fa-solid fa-dice"></i></h3>@endif
         @if($casino->cat_poker)<h3><i class="fa-solid fa-coins"></i>Poker Tables</h3>@endif
         @if($casino->cat_slotmachines)<h3><i class="fa-solid fa-dollar-sign"></i>Gaming Machine</h3>@endif
-        @if($casino->cat_sportsbook)<h3><i class="fa-solid fa-baseball-bat-ball"></i>Sports Book</h3>@endif
+        @if($casino->cat_sportsbook)<h3><i class="fa-solid fa-basketball"></i>Sports Book</h3>@endif
         @if($casino->cat_horseracing)<h3><i class="fa-solid fa-horse"></i>Horse Racing</h3>@endif
         @if($casino->cat_simulcasting)<h3><i class="fa-solid fa-screencast"></i>Simulcast</h3>@endif
         @if($casino->cat_offtrack)<h3><i class="fa-solid fa-shuffle"></i>Off Track</h3>@endif
