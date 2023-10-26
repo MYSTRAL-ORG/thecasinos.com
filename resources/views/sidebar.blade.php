@@ -7,13 +7,32 @@
     @endif
 
 	<div class="casino-block-orange">
+
 		<h3>Table Games</h3>
 		<h3>Gaming Machine</h3>
 		<h3>Poker Tables</h3>
 	</div>
 	<div class="casino-block-purple">
-		<h3>Self parking</h3>
-		<h3>Valet</h3>
+        @if($casino->self_parking)
+		    <h3>Self parking</h3>
+        @endif
+        @if($casino->valet)
+		    <h3>Valet</h3>
+        @endif
+        @if($casino->restaurants)
+                <h3><i class="fa-solid fa-utensils"></i>Restaurants</h3>
+        @endif
+
+        @if($casino->hotels)
+            <h3>Hotels</h3>
+        @endif
+        @if($casino->shops)
+            <h3>Shops</h3>
+        @endif
+        @if($casino->spas)
+            <h3>Spas</h3>
+        @endif
+
 	</div>
 	<div class="casino-block" id="sumup">
 		<h3>To sum up</h3>

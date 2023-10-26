@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 use App\Models\Casino;
+use App\Models\SourceCasino;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -38,9 +39,10 @@ class CasinoCrawler extends Command
      */
     public function handle()
     {
-
-       // $this->extractedDataFromSite();
-        $this->extractedImageFromSite();
+        Log::info("Start scraping");
+        $this->extractedDataFromSite();
+       // $this->extractedImageFromSite();
+        Log::info("End scraping");
 
     }
     function getRandomDelay($minSeconds, $maxSeconds)
@@ -70,12 +72,12 @@ class CasinoCrawler extends Command
      */
     public function extractedDataFromSite(): void
     {
-        $casinos = Casino::all()->where('is_scrap', false)->take(40);
-        foreach ($casinos as $casino) {
+        $casinosSource = SourceCasino::all()->where('done', 0);
+        foreach ($casinosSource as $source) {
 
 
-            $url = $this::$domainName . '/casino/' . $casino->slug;
-            log::info($url);
+            $url = $this::$domainName . '/casino/'.$source->data['slug'];
+
 
             // Créez une instance du client HTTP avec le proxy
             $httpClient = HttpClient::create([
@@ -103,9 +105,12 @@ class CasinoCrawler extends Command
             //  $crawler = $browser->createCrawlerFromContent($url, $contents, "text/html; charset=UTF-8");
             // Utilisez un sélecteur CSS ou XPath pour cibler la valeur "140,000 sq/ft"
             $areaValue = null;
+            $crawlerParking = $this->extractValue($crawler, '//span[contains(text(), "Self parking")]');
+            $areaValue["parking"] = ($crawlerParking == null) ? null : $crawlerParking->nextAll()->text();
+            $crawlerValet = $this->extractValue($crawler, '//span[contains(text(), "Valet")]');
+            $areaValue["valet"] = ($crawlerValet == null) ? null : $crawlerValet->nextAll()->text();
 
-
-            $crawlerTollFree = $this->extractValue($crawler, '//strong[contains(text(), "Toll-free")]');
+           /* $crawlerTollFree = $this->extractValue($crawler, '//strong[contains(text(), "Toll-free")]');
             $areaValue["Toll"] = ($crawlerTollFree == null) ? null : $crawlerTollFree->nextAll()->text();
 
 
@@ -127,14 +132,14 @@ class CasinoCrawler extends Command
 
             $crawlerTwitter = $this->extractValue($crawler, '//strong[contains(text(), "Twitter ")]');
             $areaValue["twitter"] = ($crawlerTwitter == null) ? null : $crawlerTwitter->nextAll()->attr('href');
-
-            /* if($casino->img_url != null){
+*/
+            /* if($source->img_url != null){
 
 
                try {
 
-                   $areaValue["img"] = $this::$domainName.'/assets/images/pop_images/height/600/casinos/'.str_replace(' ', '%20', $casino->img_url);
-                   $this->scrapImage($areaValue["img"] , $casino->id.".jpg" );
+                   $areaValue["img"] = $this::$domainName.'/assets/images/pop_images/height/600/casinosSource/'.str_replace(' ', '%20', $source->img_url);
+                   $this->scrapImage($areaValue["img"] , $source->id.".jpg" );
                } catch (\Exception $e) {
                    Log::info($e->getMessage());
                    return null;
@@ -145,20 +150,35 @@ class CasinoCrawler extends Command
             // $areaValue["adresse"] = $crawler->filter('.mapboxgl-popup-close-button')->text();
             // $this->scrapImage(str_replace(' ', '%20', $this::$domainName.$areaValue["img"]) , "test.jpg");
 
-            Log::info($areaValue);
-            $casino->is_scrap = true;
-            $casino->address = $areaValue["adresse"];
-            $casino->telephone = $areaValue["telephone"];
-            $casino->website = $areaValue["website"];
-            $casino->facebook = $areaValue["facebook"];
-            $casino->twitter = $areaValue["twitter"];
-            $casino->toll_free = $areaValue["Toll"];
-            $casino->save();
+
+           /* $source->is_scrap = true;
+            $source->address = $areaValue["adresse"];
+            $source->telephone = $areaValue["telephone"];
+            $source->website = $areaValue["website"];
+            $source->facebook = $areaValue["facebook"];
+            $source->twitter = $areaValue["twitter"];
+            $source->toll_free = $areaValue["Toll"];
+            $source->save();*/
             // Appliquer un délai aléatoire entre les requêtes
+
+            $source->done = true;
+            $source->save();
+
+            $casino = Casino::where('id_source', $source->data['id'])->first();
+            if($casino!= null){
+                $casino->valet = ($areaValue["valet"]= 'Yes') ? 1 : 0;
+                $casino->self_parking = ($areaValue["parking"]= 'Yes') ? 1 : 0;
+                $casino->save();
+            }
+
+
+
+
+            /*
             $minDelay = 1; // Délai minimum en secondes
             $maxDelay = 10; // Délai maximum en secondes
 
-            sleep($this->getRandomDelay($minDelay, $maxDelay));
+            sleep($this->getRandomDelay($minDelay, $maxDelay));*/
         }
     }
     public function extractedImageFromSite(): void

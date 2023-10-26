@@ -7,6 +7,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -59,7 +60,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $poker_room_name
  * @property int|null $table_games
  * @property string|null $hotel_name
+ * @property bool|null $valet
+ * @property bool|null $self_parking
+ * @property Collection|CasinoDetail[] $casino_details
  * @package App\Models
+ * @property-read int|null $casino_details_count
  * @method static \Illuminate\Database\Eloquent\Builder|Casino newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Casino newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Casino query()
@@ -98,6 +103,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Casino wherePokerRoomName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Casino wherePokerTables($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Casino whereRestaurants($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereSelfParking($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Casino whereShops($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Casino whereSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Casino whereSpas($value)
@@ -108,6 +114,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Casino whereTelephone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Casino whereTollFree($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Casino whereTwitter($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Casino whereValet($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Casino whereVenues($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Casino whereWebsite($value)
  * @mixin \Eloquent
@@ -143,11 +150,13 @@ class Casino extends Model
 		'is_scrap' => 'bool',
 		'has_original_img' => 'bool',
 		'always_open' => 'bool',
-		'table_games' => 'int'
+		'table_games' => 'int',
+		'valet' => 'bool',
+		'self_parking' => 'bool'
 	];
 
 	protected $fillable = [
-		'id_source',
+		'',
 		'name',
 		'slug',
 		'opened',
@@ -192,6 +201,13 @@ class Casino extends Model
 		'always_open',
 		'poker_room_name',
 		'table_games',
-		'hotel_name'
+		'hotel_name',
+		'valet',
+		'self_parking'
 	];
+
+	public function casino_details()
+	{
+		return $this->hasMany(CasinoDetail::class, 'id_casino');
+	}
 }

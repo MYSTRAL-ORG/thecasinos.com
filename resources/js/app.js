@@ -14,7 +14,13 @@ import Geolocation from 'ol/Geolocation.js';
 import {containsCoordinate} from "ol/extent.js";
 
 
+
 $(document).ready(function () {
+    const appUrl = $('meta[name="_appUrl"]').attr('content');
+    const sessionGoogle = $('meta[name="_googleSessionToken"]').attr('content');
+    const sessionGoogleKey = $('meta[name="_googleKey"]').attr('content');
+
+
 
     let styleCache = {};
 
@@ -79,8 +85,7 @@ $(document).ready(function () {
         style: generatedStyle,
     });
 
-    const sessionGoogle = $('meta[name="_googleSessionToken"]').attr('content');
-    const sessionGoogleKey = $('meta[name="_googleKey"]').attr('content');
+
 
     const googleBase = new TileLayer({
         source: new XYZ({
@@ -97,49 +102,160 @@ $(document).ready(function () {
 
     let lon = $('meta[name="_lon"]').attr('content');
     let lat = $('meta[name="_lat"]').attr('content');
+    let zoomCarte= 0;
+    async function callGeolocationBeforeLoad() {
+        fetch('https://www.googleapis.com/geolocation/v1/geolocate?key='+sessionGoogleKey, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                considerIp: true
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                lon = data.location.lat;
+                lat= data.location.lng;
+                zoomCarte= 9;
 
-    let viewClient = null;
-    if (lon && lat) {
-        viewClient = new View({
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            }).finally(() => {
+                initializeMap();
+            })
+    }
+
+
+
+    let map= null;
+    let select= null
+    function initializeMap() {
+        const viewClient = new View({
             projection: 'EPSG:4326',
-            center: [Number(lon), Number(lat)],
-            //center: [0,0],
-            // -115.1352,36.1450
-            zoom: 9,
+            center: [lat, lon],
+            zoom: zoomCarte,
         });
-    } else {
-        viewClient = new View({
-            projection: 'EPSG:4326',
-            center: [0, 0],
-            zoom: 0,
+
+
+        map = new Map({
+            layers: [ googleBase, casinoVectorLayer6],
+            target: 'map',
+            useInterimTilesOnError: false,
+            preload: Infinity,
+            view: viewClient,
+            controls: []
+        });
+        async function fetchData() {
+            try {
+                const response = await fetch(appUrl+'/casinos.json');
+                const geojson = await response.json();
+
+                const geoJsonFormat = new GeoJSON();
+                allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
+                updateFeaturesOnExtentChange();
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+        fetchData();
+        map.on('moveend', updateFeaturesOnExtentChange);
+
+
+
+         select = new Select({
+            condition: click,
+            style: function (feature, resolution) {
+                return generatedStyle(feature, resolution, true);
+            }
+        })
+        map.addInteraction(select);
+
+
+        select.getFeatures().on(['add','remove'], function(e) {
+            jqueryActionGallery($("#see-more-action-"+e.element.getId()),e.type);
+        });
+
+
+
+        let inputElement = document.getElementById('search-casino');
+        let resultsList = document.getElementById('autocompleteResults');
+        inputElement.addEventListener("keyup", (e) => {//loop through above array
+            //Initially remove all elements ( so if user erases a letter or adds new letter then clean previous outputs)
+            removeElements();
+            //create an  empty array
+
+            if(inputElement.value===""){
+                $("#search-casino-list").addClass("d-none");
+            }
+
+
+            let lstElement = [];
+
+            for (let feature of allCasinosFeatures) {
+                //convert input to lowercase and compare with each string
+                const name = feature.get("name");
+                const    nameNormalize = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const  searchNormalize = inputElement.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+
+                if (
+                    nameNormalize.includes(searchNormalize) && inputElement.value !== ""
+                ) {
+                    //create li element
+                    let listItem = document.createElement("li");
+                    //One common class name
+                    listItem.classList.add("list-items");
+                    listItem.style.cursor = "pointer";
+
+                    listItem.addEventListener('click', function() {
+                        const view = map.getView();
+                        const zoom = view.getZoom();
+                        view.animate({
+                            center: feature.getGeometry().getCoordinates(),
+                            zoom: 18
+                        },function() {  // This is the callback after animation completes
+                            select.getFeatures().push(feature);
+                        });
+
+                        select.getFeatures().clear();
+                        $("#search-casino-list").addClass("d-none");
+                        removeElements();
+                    });
+                    //Display matched part in bold
+                    // Highlight the matched text
+
+                    const imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
+                    let word2Display =  '<img class="small-img-search" src="'+imageURL+'" alt="Description of Image">' ;
+                    const regex = new RegExp(`(${inputElement.value})`, 'gi');
+                    const name2display = name.replace(regex, "<b>$1</b>");
+                    const cityOrCountry=  feature.get("cityname") ?? feature.get("countryname") ;
+                    word2Display+= ' <div class="d-lg-table">                   <div>'+name2display+' </div>                    <div class="text-secondary"> '+cityOrCountry+'  </div>                                    </div>';
+
+                    //display the value in array
+
+
+
+                    listItem.innerHTML = word2Display;
+                    lstElement.push(word2Display)  ;
+                    document.querySelector(".search-casino-list").appendChild(listItem);
+                    if(lstElement.length>=6){
+                        $("#search-casino-list").removeClass("d-none");
+                        return;
+                    }
+                }
+            }
         });
     }
 
-    const map = new Map({
-        layers: [ googleBase, casinoVectorLayer6],
-        target: 'map',
-        useInterimTilesOnError: false,
-        preload: Infinity,
-        view: viewClient,
-        controls: []
-    });
 
 
 
 
-    const geolocation = new Geolocation({
-        // enableHighAccuracy must be set to true to have the heading value.
-        trackingOptions: {
-            enableHighAccuracy: true,
-        },
-
-        projection: map.getView().getProjection(),
-    });
 
 
-    geolocation.on('change', function () {
-        map.getView().setCenter(geolocation.getPosition());
-    });
+
 
     // geolocation.setTracking(true);
 
@@ -148,38 +264,11 @@ $(document).ready(function () {
     let allCasinosFeatures = [];
 
    // const cachedGeoJSON = localStorage.getItem('cachedGeoJSON');
-    const appUrl = $('meta[name="_appUrl"]').attr('content');
 
-        // Fetch GeoJSON data from the server
-        fetch(appUrl+'/casinos.json')
-            .then(function (response) {
-                return response.json();
-            })
-            .then(function (geojson) {
-                // Cache the GeoJSON data in local storage
-                const geoJsonFormat = new GeoJSON();
-                allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
-                //localStorage.setItem('cachedGeoJSON', JSON.stringify(geojson));
-                updateFeaturesOnExtentChange();
-                // Process and display features as needed
-            })
-            .catch(function (error) {
-                console.error('Error fetching GeoJSON:', error);
-            });
-console.log("dsq");
-    async function fetchData() {
-        try {
-            const response = await fetch(appUrl+'/casinos.json');
-            const geojson = await response.json();
 
-            const geoJsonFormat = new GeoJSON();
-            allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
-            updateFeaturesOnExtentChange();
-        } catch (error) {
-            console.error('Error:', error);
-        }
-    }
-    fetchData();
+
+
+
 
     function generatedDivGallery(lstFeatures) {
         const $galleryDiv = $("#gallery");
@@ -243,7 +332,7 @@ console.log("dsq");
         });
     }
 
-    map.on('moveend', updateFeaturesOnExtentChange);
+
 
     let first6Features;
 
@@ -283,18 +372,7 @@ console.log("dsq");
         generatedDivGallery(first6Features);
     }
 
-    const select = new Select({
-        condition: click,
-        style: function (feature, resolution) {
-            return generatedStyle(feature, resolution, true);
-        }
-    })
-    map.addInteraction(select);
 
-
-    select.getFeatures().on(['add','remove'], function(e) {
-        jqueryActionGallery($("#see-more-action-"+e.element.getId()),e.type);
-    });
 
 
     //create a function that get randomly string from an array of string and never get the same until  the array
@@ -370,74 +448,7 @@ console.log("dsq");
             console.warn(`Feature with ID ${featureID} not found.`);
         }
     }
-    let inputElement = document.getElementById('search-casino');
-    let resultsList = document.getElementById('autocompleteResults');
-    inputElement.addEventListener("keyup", (e) => {//loop through above array
-        //Initially remove all elements ( so if user erases a letter or adds new letter then clean previous outputs)
-        removeElements();
-        //create an  empty array
 
-        if(inputElement.value===""){
-            $("#search-casino-list").addClass("d-none");
-        }
-
-
-        let lstElement = [];
-
-        for (let feature of allCasinosFeatures) {
-            //convert input to lowercase and compare with each string
-            const name = feature.get("name");
-            const    nameNormalize = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            const  searchNormalize = inputElement.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-
-            if (
-                nameNormalize.includes(searchNormalize) && inputElement.value !== ""
-            ) {
-                //create li element
-                let listItem = document.createElement("li");
-                //One common class name
-                listItem.classList.add("list-items");
-                listItem.style.cursor = "pointer";
-
-                listItem.addEventListener('click', function() {
-                    const view = map.getView();
-                    const zoom = view.getZoom();
-                    view.animate({
-                        center: feature.getGeometry().getCoordinates(),
-                        zoom: 18
-                    },function() {  // This is the callback after animation completes
-                        select.getFeatures().push(feature);
-                    });
-
-                    select.getFeatures().clear();
-                    $("#search-casino-list").addClass("d-none");
-                    removeElements();
-                });
-                //Display matched part in bold
-                // Highlight the matched text
-
-                const imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
-                let word2Display =  '<img class="small-img-search" src="'+imageURL+'" alt="Description of Image">' ;
-                const regex = new RegExp(`(${inputElement.value})`, 'gi');
-                const name2display = name.replace(regex, "<b>$1</b>");
-                const cityOrCountry=  feature.get("cityname") ?? feature.get("countryname") ;
-                word2Display+= ' <div class="d-lg-table">                   <div>'+name2display+' </div>                    <div class="text-secondary"> '+cityOrCountry+'  </div>                                    </div>';
-
-                //display the value in array
-
-
-
-                listItem.innerHTML = word2Display;
-                lstElement.push(word2Display)  ;
-                document.querySelector(".search-casino-list").appendChild(listItem);
-                if(lstElement.length>=6){
-                    $("#search-casino-list").removeClass("d-none");
-                    return;
-                }
-            }
-        }
-    });
 
 
 
@@ -478,7 +489,7 @@ console.log("dsq");
 
    // fixContentHeight();
 
-
+    callGeolocationBeforeLoad();
 });
 
 

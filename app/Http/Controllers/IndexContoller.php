@@ -15,6 +15,7 @@ class IndexContoller extends Controller
     function index(Request $request, LocationService $locationService, GoogleService $googleService)
     {
 
+        //Las Vegas
         $lon = -115.1352;
         $lat = 36.1450;
    try {
@@ -29,16 +30,9 @@ class IndexContoller extends Controller
                 $sessionGoogle = $jsonGoogleSession;
             }
 
-            $location = $request->session()->get('location');
 
-             if (!$location) {
-                $locationJson = $googleService->geoLocaliseIp();
-                $request->session()->put('location', $locationJson);
-                $location = $locationJson;
-            }
 
-            $lon = $location->location->lng;
-            $lat = $location->location->lat;
+         ;
 
 
 

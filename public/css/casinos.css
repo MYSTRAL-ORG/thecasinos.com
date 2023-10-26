@@ -773,7 +773,7 @@ body, html {
     margin-bottom: 0px; /* Supprime la marge inférieure du dernier élément h3 */
 }
 
-.casino-block-purple h3::before, .casino-block-purple-online h3::before {
+.casino-block-purple  h3 i .casino-block-purple-online h3 i {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     position: absolute; /* Position absolue pour l'icône */
@@ -782,33 +782,7 @@ body, html {
     transform: translateY(-50%); /* Centrer verticalement */
 }
 
-.casino-block-purple h3:nth-child(1)::before {
-    content: "\f540"; /* Icône pour "Table Games" */
-}
 
-.casino-block-purple h3:nth-child(2)::before {
-    content: "\f1b9"; /* Icône pour "Slot Machine" (dice) */
-}
-
-.casino-block-purple-online h3:nth-child(1)::before {
-    content: "\f09d"; /* Icône pour "Table Games" */
-}
-
-.casino-block-purple-online h3:nth-child(2)::before {
-    content: "\f09d"; /* Icône pour "Slot Machine" (dice) */
-}
-
-.casino-block-purple-online h3:nth-child(3)::before {
-    content: "\f09d"; /* Icône pour "Table Games" */
-}
-
-.casino-block-purple-online h3:nth-child(4)::before {
-    content: "\f09d"; /* Icône pour "Slot Machine" (dice) */
-}
-
-.casino-block-purple-online h3:nth-child(5)::before {
-    content: "\f09d"; /* Icône pour "Slot Machine" (dice) */
-}
 
 
 .casino-block-cons {
