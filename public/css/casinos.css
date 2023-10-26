@@ -773,17 +773,22 @@ body, html {
     margin-bottom: 0px; /* Supprime la marge inférieure du dernier élément h3 */
 }
 
-.casino-block-purple  h3 i .casino-block-purple-online h3 i {
+h3 i   {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
-    position: absolute; /* Position absolue pour l'icône */
-    left: 10px; /* Distance de l'icône par rapport à la gauche du h3 */
-    top: 50%; /* Centrer verticalement */
+    position: absolute !important; /* Position absolue pour l'icône */
+    left: 10px !important; /* Distance de l'icône par rapport à la gauche du h3 */
+    top: 50% !important; /* Centrer verticalement */
     transform: translateY(-50%); /* Centrer verticalement */
 }
 
+.casino-block-purple:empty {
+    display: none;
+}
 
-
+.casino-block-orange:empty {
+    display: none;
+}
 
 .casino-block-cons {
     margin-bottom: 20px;

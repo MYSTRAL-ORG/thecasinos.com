@@ -185,7 +185,7 @@ async function runConversation(casino) {
             functionArgs.casino_resume_1_line,
             functionArgs.casino_resume_2_words,
         );
-        console.log("Response")
+
 
         return functionResponse;
         /*// Step 4: send the info on the function call and function response to GPT
@@ -230,13 +230,12 @@ axios.get('http://casinos.test/tttt')
         response.data.forEach(casino => {
 
 
-            console.log('http://casinos.test/api/openai/'+casino.id);
 
                 runConversation(casino).then(
                     (result) => {
                         axios.post('http://casinos.test/api/openai/'+casino.id, result)
                             .then(response => {
-                                console.log(response.data);
+
                             })
                             .catch(error => {
                                 console.log(error);

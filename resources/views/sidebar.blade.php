@@ -6,34 +6,39 @@
         </div>
     @endif
 
-	<div class="casino-block-orange">
+	<div class="casino-block-orange">@if($casino->cat_tablegames)<h3><i class="fa-solid fa-dice"></i></h3>@endif
+        @if($casino->cat_poker)<h3><i class="fa-solid fa-coins"></i>Poker Tables</h3>@endif
+        @if($casino->cat_slotmachines)<h3><i class="fa-solid fa-dollar-sign"></i>Gaming Machine</h3>@endif
+        @if($casino->cat_sportsbook)<h3><i class="fa-solid fa-baseball-bat-ball"></i>Sports Book</h3>@endif
+        @if($casino->cat_horseracing)<h3><i class="fa-solid fa-horse"></i>Horse Racing</h3>@endif
+        @if($casino->cat_simulcasting)<h3><i class="fa-solid fa-screencast"></i>Simulcast</h3>@endif
+        @if($casino->cat_offtrack)<h3><i class="fa-solid fa-shuffle"></i>Off Track</h3>@endif
+        @if($casino->cat_greyhounds)<h3><i class="fa-solid fa-dog"></i>Greyhounds</h3>@endif
+        @if($casino->cat_bingo)<h3><i class="fa-solid fa-table-list"></i>Bingo</h3>@endif
+        @if($casino->cat_slotmachines)<h3><i class="fa-solid fa-circle-dollar-to-slot"></i>Slot Machines</h3>@endif</div>
 
-		<h3>Table Games</h3>
-		<h3>Gaming Machine</h3>
-		<h3>Poker Tables</h3>
-	</div>
-	<div class="casino-block-purple">
-        @if($casino->self_parking)
-		    <h3>Self parking</h3>
+
+
+
+	<div class="casino-block-purple">@if($casino->self_parking)
+            <h3><i class="fa-solid fa-square-parking"></i>Self parking</h3>
         @endif
         @if($casino->valet)
-		    <h3>Valet</h3>
+            <h3><i class="fa-solid fa-car"></i>Valet</h3>
         @endif
         @if($casino->restaurants)
-                <h3><i class="fa-solid fa-utensils"></i>Restaurants</h3>
+            <h3><i class=" fa-solid fa-utensils"></i>Restaurants</h3>
         @endif
 
         @if($casino->hotels)
-            <h3>Hotels</h3>
+            <h3><i class="fa-solid fa-hotel"></i>Hotels</h3>
         @endif
         @if($casino->shops)
-            <h3>Shops</h3>
+            <h3><i class="fa-solid fa-shop"></i>Shops</h3>
         @endif
         @if($casino->spas)
-            <h3>Spas</h3>
-        @endif
-
-	</div>
+            <h3><i class="fa-solid fa-spa"></i>Spas</h3>
+        @endif</div>
 	<div class="casino-block" id="sumup">
 		<h3>To sum up</h3>
 		<img src="/img/casino/{{$casino->img_url}}" alt="Casino presentation" class="image-casino">

@@ -45,7 +45,7 @@ class CleanCasinoDetailsOpenAi extends Command
  source_openai_json ->>'casino_fun_facts'   is null or
  source_openai_json ->>'casino_resume_1_line'   is null or
  source_openai_json ->>'casino_resume_2_words'   is null or
-  source_openai_json ->>'novel'   is null or source_openai_json = '[]'");
+  source_openai_json ->>'novel'   is null or source_openai_json = '[]' or LENGTH(source_openai_json ->> 'novel')  <300");
 
     }
 
