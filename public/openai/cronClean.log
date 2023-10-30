@@ -5,10 +5,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-   INFO  No scheduled commands are ready to run.  
-
-
-  2023-10-26 11:52:00 Running ['artisan' app:cleanOpenAi] ......... 299ms DONE
+  2023-10-30 04:52:02 Running ['artisan' app:cleanOpenAi] ......... 379ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -21,7 +18,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 11:56:01 Running ['artisan' app:cleanOpenAi] ......... 300ms DONE
+  2023-10-30 04:56:00 Running ['artisan' app:cleanOpenAi] ......... 317ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -34,7 +31,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:00:00 Running ['artisan' app:cleanOpenAi] ......... 289ms DONE
+  2023-10-30 05:00:00 Running ['artisan' app:cleanOpenAi] ......... 581ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -47,7 +44,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:04:00 Running ['artisan' app:cleanOpenAi] ......... 298ms DONE
+  2023-10-30 05:04:00 Running ['artisan' app:cleanOpenAi] ......... 483ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -60,7 +57,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:08:00 Running ['artisan' app:cleanOpenAi] ......... 322ms DONE
+  2023-10-30 05:08:01 Running ['artisan' app:cleanOpenAi] ......... 346ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -73,7 +70,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:12:00 Running ['artisan' app:cleanOpenAi] ......... 303ms DONE
+  2023-10-30 05:12:01 Running ['artisan' app:cleanOpenAi] ......... 356ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -86,7 +83,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:16:01 Running ['artisan' app:cleanOpenAi] ......... 292ms DONE
+  2023-10-30 05:16:00 Running ['artisan' app:cleanOpenAi] ......... 322ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -99,7 +96,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:20:01 Running ['artisan' app:cleanOpenAi] ......... 291ms DONE
+  2023-10-30 05:20:00 Running ['artisan' app:cleanOpenAi] ......... 356ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -112,7 +109,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:24:00 Running ['artisan' app:cleanOpenAi] ......... 300ms DONE
+  2023-10-30 05:24:00 Running ['artisan' app:cleanOpenAi] ......... 371ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -125,7 +122,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:28:01 Running ['artisan' app:cleanOpenAi] ......... 300ms DONE
+  2023-10-30 05:28:00 Running ['artisan' app:cleanOpenAi] ......... 299ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -138,7 +135,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:32:00 Running ['artisan' app:cleanOpenAi] ......... 354ms DONE
+  2023-10-30 05:32:00 Running ['artisan' app:cleanOpenAi] ......... 314ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -151,7 +148,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:36:00 Running ['artisan' app:cleanOpenAi] ......... 298ms DONE
+  2023-10-30 05:36:01 Running ['artisan' app:cleanOpenAi] ......... 333ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -164,7 +161,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:40:01 Running ['artisan' app:cleanOpenAi] ......... 323ms DONE
+  2023-10-30 05:40:01 Running ['artisan' app:cleanOpenAi] ......... 497ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -177,7 +174,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:44:01 Running ['artisan' app:cleanOpenAi] ......... 477ms DONE
+  2023-10-30 05:44:00 Running ['artisan' app:cleanOpenAi] ......... 367ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -190,7 +187,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:48:00 Running ['artisan' app:cleanOpenAi] ......... 329ms DONE
+  2023-10-30 05:48:00 Running ['artisan' app:cleanOpenAi] ......... 297ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -203,7 +200,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:52:01 Running ['artisan' app:cleanOpenAi] ......... 334ms DONE
+  2023-10-30 05:52:00 Running ['artisan' app:cleanOpenAi] ......... 326ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -216,7 +213,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 12:56:01 Running ['artisan' app:cleanOpenAi] ......... 401ms DONE
+  2023-10-30 05:56:00 Running ['artisan' app:cleanOpenAi] ......... 305ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -229,7 +226,7 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 13:00:00 Running ['artisan' app:cleanOpenAi] ......... 314ms DONE
+  2023-10-30 06:00:01 Running ['artisan' app:cleanOpenAi] ......... 301ms DONE
   ⇂ Clean Open AI Data  
 
 
@@ -242,6 +239,194 @@
    INFO  No scheduled commands are ready to run.  
 
 
-  2023-10-26 13:04:00 Running ['artisan' app:cleanOpenAi] ......... 331ms DONE
+  2023-10-30 06:04:01 Running ['artisan' app:cleanOpenAi] ......... 307ms DONE
   ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:08:00 Running ['artisan' app:cleanOpenAi] ......... 319ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:12:01 Running ['artisan' app:cleanOpenAi] ......... 366ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:16:01 Running ['artisan' app:cleanOpenAi] ......... 324ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:20:00 Running ['artisan' app:cleanOpenAi] ......... 313ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:24:00 Running ['artisan' app:cleanOpenAi] ......... 313ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:28:00 Running ['artisan' app:cleanOpenAi] ......... 311ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:32:00 Running ['artisan' app:cleanOpenAi] ......... 312ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:36:00 Running ['artisan' app:cleanOpenAi] ......... 306ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:40:00 Running ['artisan' app:cleanOpenAi] ......... 314ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:44:01 Running ['artisan' app:cleanOpenAi] ......... 312ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:48:01 Running ['artisan' app:cleanOpenAi] ......... 318ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:52:01 Running ['artisan' app:cleanOpenAi] ......... 309ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 06:56:00 Running ['artisan' app:cleanOpenAi] ......... 297ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+  2023-10-30 07:00:01 Running ['artisan' app:cleanOpenAi] ......... 647ms DONE
+  ⇂ Clean Open AI Data  
+
+
+   INFO  No scheduled commands are ready to run.  
+
+
+   INFO  No scheduled commands are ready to run.  
 

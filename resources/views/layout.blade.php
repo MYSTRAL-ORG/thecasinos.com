@@ -18,7 +18,7 @@
     <title>@yield('page_title')</title>
     <meta name="description" content="@yield('page_description')">
     <meta name="keywords" content="@yield('page_keywords')">
-
+    <title>@yield('context-js')</title>
 </head>
     <body>
 

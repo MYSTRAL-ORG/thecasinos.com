@@ -3,6 +3,7 @@ body {
     margin: 0px;
     font-size: 16px;
     color: #333;
+    background-color: var(--theme-light-grey) !important;
 }
 
 
@@ -566,25 +567,25 @@ body, html {
 
 /* Section feuille */
 .feuille-container {
-    display: flex;
+
     justify-content: center;
     /*background: url('img/carpet.png') repeat;*/
-    background-color: var(--theme-light-grey);
+    background-color: var(--theme-light-grey) !important;
     position: relative;
     padding: 20px 0;
 }
 
 .feuille {
     background-color: white;
-    width: 60%;
-    max-width: 1200px;
+
+
     padding: 40px;
     margin-top: 40px;
     margin-bottom: 40px;
     border-radius: 20px 20px 40px 40px;
-    display: flex;
+
     flex-wrap: wrap;
-    flex-direction: row; /* Les enfants sont en ligne */
+
 }
 
 .feuille > h2 {
@@ -983,7 +984,7 @@ h1 {
     border-radius: 10px;
     padding-top: 10px;
     padding-bottom: 10px;
-    color: white;
+    color: white !important;
     position: relative;
     z-index: 2;
     /*  animation: breathe 4s infinite; */
@@ -1301,7 +1302,7 @@ ul li {
 }
 
 
-.load-more-btn {
+.casino-detail-load-more-btn {
     color: white;
     padding: 10px;
     border: none;
@@ -1315,12 +1316,12 @@ ul li {
     margin: 0 auto; /* Ceci centrera le bouton horizontalement dans la cellule */
 }
 
-.load-more-btn:hover {
+.casino-detail-load-more-btn:hover {
     background-color: white;
     color:#333
 }
 
-.load-less-btn {
+.casino-detail-load-less-btn {
     color: #333;
     padding: 10px;
     border: none;
@@ -1334,7 +1335,7 @@ ul li {
     margin: 0 auto; /* Ceci centrera le bouton horizontalement dans la cellule */
 }
 
-.load-less-btn:hover {
+.casino-detail-load-less-btn:hover {
     background-color:var(--theme-blue);
     color:white
 }

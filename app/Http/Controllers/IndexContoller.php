@@ -18,26 +18,8 @@ class IndexContoller extends Controller
         //Las Vegas
         $lon = -115.1352;
         $lat = 36.1450;
-   try {
-            $sessionGoogle = Cache::get('app.sessionGoogle');
-
-            if (!$sessionGoogle) {
-                $jsonGoogleSessionJson = $googleService->createSessionApiMapTile();
-                $jsonGoogleSession = $jsonGoogleSessionJson->session;
-
-                $expiry = (new Carbon(intval($jsonGoogleSessionJson->expiry)))->subDay();
-                Cache::put('app.sessionGoogle', $jsonGoogleSession, $expiry);
-                $sessionGoogle = $jsonGoogleSession;
-            }
-
-
-
-         ;
-
-
-
-
-
+        try {
+            $sessionGoogle = $googleService->createOrGetSessionApiMapTile();
 
        } catch (\Exception $e) {
             Log::info('Error', ['message' => $e->getMessage()]);

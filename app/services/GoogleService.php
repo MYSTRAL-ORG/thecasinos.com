@@ -2,6 +2,8 @@
 
 namespace App\services;
 
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Intervention\Image\Facades\Image;
 use GuzzleHttp\Client;
 class GoogleService
@@ -14,34 +16,40 @@ class GoogleService
         $this->client = $client;
     }
 
-    public function createSessionApiMapTile()
+    public function createOrGetSessionApiMapTile()
     {
+        $sessionGoogle =  Cache::get('app.sessionGoogle');
 
+        if (!$sessionGoogle) {
 
-        $url = 'https://tile.googleapis.com/v1/createSession?key='.config('app.google_key');
-        // function to creation     session url
+            $url = 'https://tile.googleapis.com/v1/createSession?key='.config('app.google_key');
 
-        $data = [
-            'language' => 'en-US',
-            'region' => 'US',
-            'mapType'=> 'satellite',
-            'imageFormat'=>'jpeg',
-            'scale'=> 'scaleFactor2x',
-            'layerTypes'=> ['layerRoadmap'],
+            $data = [
+                'language' => 'en-US',
+                'region' => 'US',
+                'mapType'=> 'satellite',
+                'imageFormat'=>'jpeg',
+                'scale'=> 'scaleFactor2x',
+                'layerTypes'=> ['layerRoadmap']
+            ];
 
+            $headers = [
+                'Content-Type' => 'application/json',
+            ];
 
-        ];
+            $response = $this->client->post($url, [
+                'json' => $data,
+                'headers' => $headers,
+            ]);
 
-        $headers = [
-            'Content-Type' => 'application/json',
-        ];
+            $repJson = json_decode($response->getBody()->getContents());
+            $expiry = (new Carbon(intval($repJson->expiry)))->subDay();
+            $sessionGoogle = $repJson->session;
+            Cache::put('app.sessionGoogle', $sessionGoogle, $expiry);
 
-        $response = $this->client->post($url, [
-            'json' => $data,
-            'headers' => $headers,
-        ]);
+        }
+        return $sessionGoogle;
 
-        return json_decode($response->getBody()->getContents());
     }
 
     function geoLocaliseIp(){

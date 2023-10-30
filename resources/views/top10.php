@@ -62,8 +62,8 @@ foreach ($data as $key => $casino) {
 // Ligne Load More / Load Less
 echo '<tr>';
 echo '<td colspan="' . count($columns) . '" class="load-more-cell">';
-echo '<button class="load-more-btn">Load More</button>';
-echo '<button class="load-less-btn" style="display: none;">Load Less</button>';
+echo '<button class="casino-detail-load-more-btn">Load More</button>';
+echo '<button class="casino-detail-load-less-btn" style="display: none;">Load Less</button>';
 echo '</td>';
 echo '</tr>';
 

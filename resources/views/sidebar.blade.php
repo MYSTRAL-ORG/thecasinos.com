@@ -60,7 +60,24 @@
 	<div class="casino-block" id="contact">
 		<h3>Contact</h3>
 		<img src="/img/sidebar-contact.jpg" alt="Casino contact" class="image-casino">
-		<p>{{  $casino->telephone   }} <br> {{  $casino->adresse   }} <br> {{  $casino->email   }} <br> {{  $casino->website   }}</p>
+		<p>
+            @if($casino->telephone)
+                <i class="fa-solid fa-phone"></i> &nbsp; <a href="tel:{{  $casino->telephone   }}">{{  $casino->telephone   }}</a>
+                <br>
+            @endif
+            @if($casino->email)
+                <i class="fa-solid fa-envelope"></i> &nbsp; <a href="mailto:{{  $casino->email   }}">{{  $casino->email   }}</a>
+                <br>
+            @endif
+            @if($casino->adresse)
+                <i class="fa-solid fa-map-marker"></i> &nbsp;{{  $casino->adresse   }}
+                <br>
+            @endif
+            @if($casino->website)
+                <i class="fa-solid fa-globe"></i> &nbsp;<a href="{{  $casino->website   }}">{{  $casino->website   }}</a>
+                <br>
+            @endif
+        </p>
 	</div>
 </aside>
 

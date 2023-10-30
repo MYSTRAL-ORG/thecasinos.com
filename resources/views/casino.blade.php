@@ -6,8 +6,10 @@
 
 @section('page_keywords',  $casinoDetail->seo_keywords)
 
+@section('context-js')
 
-
+@endsection
+    <title>@yield('page_title')</title>
 @section('casino')
 
     <div class="background-section">
@@ -17,7 +19,7 @@
                 <div class="inner-circle"></div>
                 <span class="chip-letter">$</span>
             </div>
-            <h1>{{$casino->name}}</h1>
+            <h1 class="h1">{{$casino->name}}</h1>
         </div>
         <div class="overlay">
             <div class="light light1"></div>
@@ -33,16 +35,24 @@
         @include("breadcrumb")
     </div>
 
-    <div class="feuille-container">
-        <section class="feuille">
-            <h2>{{$casinoDetail->title}}</h2>
-            <img src="/img/casino/{{$casino->img_url}}" alt="Description de l'image" class="image-casino">
-            @include("menu-casino")
-            @include("content-casino")
-            @include("sidebar")
-        </section>
+    <div class="container feuille-container ">
+        <div class="row feuille" >
+            <div class="col-lg-12 col-sm-12 ">
+                <h2 class="h2">{{$casinoDetail->title}}</h2>
+                <img src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class="image-casino">
+                @include("menu-casino")
+            </div>
+            <div class="col-lg-8 col-sm-12 ">
+                @include("content-casino")
+            </div>
+            <div class="col-lg-4 col-sm-12">
+                @include("sidebar")
+            </div>
+        </div>
     </div>
-
+    @section('map')
+        @include('map')
+    @endsection
 
 
 
