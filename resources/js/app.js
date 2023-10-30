@@ -119,8 +119,8 @@ $(document).ready(function () {
             })
                 .then(response => response.json())
                 .then(data => {
-                    lon = data.location.lat;
-                    lat= data.location.lng;
+                    lat = data.location.lat;
+                    lon= data.location.lng;
                     zoomCarte= 9;
 
                 })
@@ -133,7 +133,8 @@ $(document).ready(function () {
 
         callGeolocationBeforeLoad();
     }else{
-        zoomCarte= 9;
+        zoomCarte= 19;
+
         initializeMap();
     }
 
@@ -147,7 +148,7 @@ $(document).ready(function () {
 
         const viewClient = new View({
             projection: 'EPSG:4326',
-            center: [Number(lat), Number(lon)],
+            center: [Number(lon), Number(lat)],
             zoom: zoomCarte,
         });
 

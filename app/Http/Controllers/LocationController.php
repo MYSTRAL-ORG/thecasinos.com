@@ -6,6 +6,7 @@ use App\Models\Casino;
 use App\Models\CasinoDetail;
 use App\services\GoogleService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class LocationController extends Controller
 {
@@ -21,8 +22,8 @@ class LocationController extends Controller
         $casino = Casino::where('slug',$slug)->first();
 
         $casinoDetail = CasinoDetail::where('id_casino',  $casino->id)->first();
-        $lon =  (float) $casino->location_longitude;
-        $lat = (float) $casino->location_latitude;
+        $lon = $casino->location_longitude;
+        $lat = $casino->location_latitude;
         $fromIndex= "false";
 
         $sessionGoogle = $googleService->createOrGetSessionApiMapTile();
