@@ -19,7 +19,7 @@
                 <div class="inner-circle"></div>
                 <span class="chip-letter">$</span>
             </div>
-            <h1 class="h1">{{$casino->name}}</h1>
+            <h1 class="h1" >{{$casino->name}}</h1>
         </div>
         <div class="overlay">
             <div class="light light1"></div>

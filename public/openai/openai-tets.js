@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import axios from 'axios';
 import fs from 'fs/promises';
 import { existsSync, openSync, unlinkSync } from 'fs';
-const openai = new OpenAI({ apiKey: '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' });
+const openai = new OpenAI({ apiKey: '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' });
 
 
 
