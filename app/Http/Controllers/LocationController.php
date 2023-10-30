@@ -21,6 +21,9 @@ class LocationController extends Controller
         $casino = Casino::where('slug',$slug)->first();
 
         $casinoDetail = CasinoDetail::where('id_casino',  $casino->id)->first();
+        $lon =  (float) $casino->location_longitude;
+        $lat = (float) $casino->location_latitude;
+        $fromIndex= "false";
 
         $sessionGoogle = $googleService->createOrGetSessionApiMapTile();
 
@@ -28,6 +31,6 @@ class LocationController extends Controller
             return abort(404);
         }
 
-        return view('casino', compact('casinoDetail','casino','sessionGoogle','lon', 'lat'));
+        return view('casino', compact('casinoDetail','casino','sessionGoogle','lon', 'lat', 'fromIndex' ));
     }
 }

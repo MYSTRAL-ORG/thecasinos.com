@@ -567,7 +567,7 @@ body, html {
 
 /* Section feuille */
 .feuille-container {
-
+    max-width: 1200px;
     justify-content: center;
     /*background: url('img/carpet.png') repeat;*/
     background-color: var(--theme-light-grey) !important;
@@ -976,19 +976,20 @@ h3 i   {
 
 
 h1 {
-    font-size: 4em;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    text-align: center;
-    width: 100%;
-    border-radius: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    font-size: 4em !important;
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+    text-align: center !important;
+    width: 100% !important;
+    border-radius: 10px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
     color: white !important;
-    position: relative;
-    z-index: 2;
+    position: relative  !important;
+    z-index: 2  !important;
     /*  animation: breathe 4s infinite; */
-    flex: 1; /* Fait en sorte que le titre occupe tout l'espace restant */
+    flex: 1 !important; /* Fait en sorte que le titre occupe tout l'espace restant */
+    font-weight: bold !important;
 }
 
 @keyframes breathe {
@@ -1001,15 +1002,16 @@ h1 {
 }
 
 h2 {
-    font-size: 2.5em;
-    margin-bottom: 0px;
-    margin-top: 0px;
-    text-align: center;
-    background-color: var(--theme-light-grey);
-    width: 100%;
-    border-radius: 10px;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    font-size: 2.5em !important;
+    margin-bottom: 0px !important;
+    margin-top: 0px !important;
+    text-align: center !important;
+    background-color: var(--theme-light-grey) !important;
+    width: 100% !important;
+    border-radius: 10px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+    font-weight: bold !important;
 }
 
 h3 {

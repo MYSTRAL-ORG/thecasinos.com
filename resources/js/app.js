@@ -36,7 +36,7 @@ $(document).ready(function () {
         let style = styleCache[img+sel];
 
         if (!style ) {
-            let imgUrl ='img/casino/'+img;
+            let imgUrl =appUrl+'/img/casino/'+img;
             let pointer;
             if(!originalImg){
                 pointer = new Icon({
@@ -80,7 +80,7 @@ $(document).ready(function () {
 
     const casinoVectorLayer6 = new VectorLayer({
         source: new VectorSource({
-            attributions: ["<img src='/img/icons/google_on_non_white.png'>"]
+            attributions: ["<img src=`${appurl}/img/icons/google_on_non_white.png`>"]
         }),
         style: generatedStyle,
     });
@@ -89,52 +89,65 @@ $(document).ready(function () {
 
     const googleBase = new TileLayer({
         source: new XYZ({
-            //url: 'https://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}&scale=2',
+           //  url: 'https://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}&scale=2',
             // url:'https://sat-cdn1.apple-mapkit.com/tile?style=7&size=1&scale=1&z=4&x={x}&y={y}&v={z}2&accessKey='+accesKey
             // url: 'https://tile.googleapis.com/v1/2dtiles/{x}/{y}/{z}?style=7&size=1&scale=1&key=AJVsH2zGQIkWpBGEyZa5oSamWrBDNP4_iBKcSkJjjHKYJvJPKnH33qHcOl3uwkrFgCXEXqLfSpym8qrwOscn7nE7VQ',
-            url: "https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}/?session=" + sessionGoogle + "&key=" + sessionGoogleKey,
+           url: "https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}/?session=" + sessionGoogle + "&key=" + sessionGoogleKey,
 
 
             tilePixelRatio: 2
         })
     });
 
-
+    let map= null;
+    let select= null
     let lon = $('meta[name="_lon"]').attr('content');
     let lat = $('meta[name="_lat"]').attr('content');
+    let fromIndex = $('meta[name="_fromIndex"]').attr('content');
     let zoomCarte= 0;
-    async function callGeolocationBeforeLoad() {
-        fetch('https://www.googleapis.com/geolocation/v1/geolocate?key='+sessionGoogleKey, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                considerIp: true
-            })
-        })
-            .then(response => response.json())
-            .then(data => {
-                lon = data.location.lat;
-                lat= data.location.lng;
-                zoomCarte= 9;
 
+    if(fromIndex.toLowerCase() === "true"){
+        async function callGeolocationBeforeLoad() {
+            fetch('https://www.googleapis.com/geolocation/v1/geolocate?key='+sessionGoogleKey, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    considerIp: true
+                })
             })
-            .catch(error => {
-                console.error('Error:', error);
-            }).finally(() => {
+                .then(response => response.json())
+                .then(data => {
+                    lon = data.location.lat;
+                    lat= data.location.lng;
+                    zoomCarte= 9;
+
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                }).finally(() => {
                 initializeMap();
             })
+        }
+
+        callGeolocationBeforeLoad();
+    }else{
+        zoomCarte= 9;
+        initializeMap();
     }
 
 
 
-    let map= null;
-    let select= null
+
+
     function initializeMap() {
+
+
+
         const viewClient = new View({
             projection: 'EPSG:4326',
-            center: [lat, lon],
+            center: [Number(lat), Number(lon)],
             zoom: zoomCarte,
         });
 
@@ -226,7 +239,8 @@ $(document).ready(function () {
                     //Display matched part in bold
                     // Highlight the matched text
 
-                    const imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
+                    let imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
+                     imageURL = appUrl + imageURL;
                     let word2Display =  '<img class="small-img-search" src="'+imageURL+'" alt="Description of Image">' ;
                     const regex = new RegExp(`(${inputElement.value})`, 'gi');
                     const name2display = name.replace(regex, "<b>$1</b>");
@@ -275,7 +289,8 @@ $(document).ready(function () {
         $galleryDiv.empty();
 
         lstFeatures.forEach(function (feature) {
-            const imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
+            let imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
+            imageURL = appUrl + imageURL;
             const shortDesc =  feature.get('shortdesc')?? '';
             const longDesc =  feature.get('longdesc')??'';
 
@@ -291,7 +306,7 @@ $(document).ready(function () {
                         <p class="short-description">${shortDesc}</p>
                         <p class="long-description">${longDesc}</p>
                         <div class="location-info">
-                            <img src="/img/icons/location.png" alt="Location Icon" class="location-icon">
+                            <img src="${appUrl}/img/icons/location.png" alt="Location Icon" class="location-icon">
                             <span class="city-name">${location}</span>
                             <button class="add-button" onclick="window.location.href='/${feature.get('countrytitle')}/${feature.get('citytitle')}/${feature.get('slug')}';">see</button>
                          </div>
@@ -489,7 +504,7 @@ $(document).ready(function () {
 
    // fixContentHeight();
 
-    callGeolocationBeforeLoad();
+
 
     //casino  details page
 

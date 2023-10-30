@@ -24,3 +24,4 @@
 
 <meta name="_lon" content="{{ $lon }}"/>
 <meta name="_lat" content="{{ $lat }}"/>
+<meta name="_fromIndex" content="{{ $fromIndex }}"/>

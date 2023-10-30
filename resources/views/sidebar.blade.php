@@ -60,6 +60,7 @@
 	<div class="casino-block" id="contact">
 		<h3>Contact</h3>
 		<img src="/img/sidebar-contact.jpg" alt="Casino contact" class="image-casino">
+        <br>  <br>
 		<p>
             @if($casino->telephone)
                 <i class="fa-solid fa-phone"></i> &nbsp; <a href="tel:{{  $casino->telephone   }}">{{  $casino->telephone   }}</a>

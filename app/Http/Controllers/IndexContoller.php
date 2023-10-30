@@ -18,13 +18,14 @@ class IndexContoller extends Controller
         //Las Vegas
         $lon = -115.1352;
         $lat = 36.1450;
+        $fromIndex= "true";
         try {
             $sessionGoogle = $googleService->createOrGetSessionApiMapTile();
 
        } catch (\Exception $e) {
             Log::info('Error', ['message' => $e->getMessage()]);
         } finally {
-            return view('index2', compact('sessionGoogle', 'lon', 'lat',));
+            return view('index2', compact('sessionGoogle', 'lon', 'lat', 'fromIndex'));
         }
     }
 
