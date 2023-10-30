@@ -37,15 +37,15 @@
 
     <div class="container feuille-container ">
         <div class="row feuille" >
-            <div class="col-lg-12 col-sm-12 ">
+            <div class="col-lg-12 col-sm-12 pb-2">
                 <h2 class="h2">{{$casinoDetail->title}}</h2>
                 <img src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class="image-casino">
                 @include("menu-casino")
             </div>
-            <div class="col-lg-8 col-sm-12 ">
+            <div class="col-lg-8 col-sm-12 pt-2">
                 @include("content-casino")
             </div>
-            <div class="col-lg-4 col-sm-12">
+            <div class="col-lg-4 col-sm-12 pt-2">
                 @include("sidebar")
             </div>
         </div>
