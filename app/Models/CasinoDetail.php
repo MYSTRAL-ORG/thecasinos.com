@@ -55,6 +55,7 @@ class CasinoDetail extends Model
 	];
 
 	protected $fillable = [
+        'id_casino',
 		'title',
 		'description',
 		'sumup',

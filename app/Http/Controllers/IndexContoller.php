@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Casino;
+use App\Models\Category;
 use App\services\GoogleService;
 use App\services\LocationService;
 use Carbon\Carbon;
@@ -42,12 +43,14 @@ class IndexContoller extends Controller
                 return $query->where('casino.city_title', $city);
             })->paginate(9);
 
+        $category = Category::where('country_title', $country)->get()->first();
+
         $location= $casinos->items()[0]->country_name ;
         if($city != null){
             $location=  $casinos->items()[0]->city_name ;
         }
 
-        return view('category', compact( 'casinos','location'));
+        return view('category', compact( 'casinos','location', 'category'));
 
     }
 
