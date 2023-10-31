@@ -28,6 +28,22 @@ class IndexContoller extends Controller
             return view('index', compact('sessionGoogle', 'lon', 'lat', 'fromIndex'));
         }
     }
+    function category(Request $request, LocationService $locationService, GoogleService $googleService)
+    {
+
+        //Las Vegas
+        $lon = -115.1352;
+        $lat = 36.1450;
+        $fromIndex= "true";
+        try {
+            $sessionGoogle = $googleService->createOrGetSessionApiMapTile();
+
+        } catch (\Exception $e) {
+            Log::info('Error', ['message' => $e->getMessage()]);
+        } finally {
+            return view('category', compact('sessionGoogle', 'lon', 'lat', 'fromIndex'));
+        }
+    }
 
 }
 

@@ -28,6 +28,7 @@
 
     @yield('map')
     @yield('online')
+    @yield('category')
     @include('footer')
 
     </body>
