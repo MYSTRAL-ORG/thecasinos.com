@@ -2,16 +2,13 @@
 @section('page_title', 'TheCasinos.com : Online reference to Onsite experience')
 
 
-@section('map')
-    @include('map')
-@endsection
 @php
     use Illuminate\Support\Str;
 @endphp
 @section('category')
 	<div class="container feuille-container">
 		<section class=" feuille">
-			<h2>List of Casinos in the USA</h2>
+			<h2>List of Casinos in {{ $country}}</h2>
 			<p>Explore our curated list of premier casinos across the USA. Dive into the world of entertainment and luxury, all in one place. From the bustling streets of Las Vegas to the serene resorts of Atlantic City, discover the best gaming destinations. Let the adventure begin and experience the thrill of American casinos!</p>
 			<div class="">
 

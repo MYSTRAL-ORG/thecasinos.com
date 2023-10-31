@@ -11,7 +11,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        @if(!Route::currentRouteNamed('online'))
+        @if(!Route::currentRouteNamed('online') && !Route::currentRouteNamed('category'))
         <div class=" search-bar collapse navbar-collapse  nav_item " >
             <input id="search-casino" class="align-middle  search-bar  "  placeholder="Search..."/>
             <ul id="search-casino-list" class="search-casino-list d-none"></ul>

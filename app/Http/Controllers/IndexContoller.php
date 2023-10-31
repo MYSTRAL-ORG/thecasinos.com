@@ -30,52 +30,23 @@ class IndexContoller extends Controller
             return view('index', compact('sessionGoogle', 'lon', 'lat', 'fromIndex'));
         }
     }
-    function categoryCity(Request $request, LocationService $locationService, GoogleService $googleService , String $city)
+
+
+
+    function category (Request $request, LocationService $locationService, GoogleService $googleService , String $country, String $city =null)
     {
         $casinos = DB::table('casino')
             ->join('casino_details', 'casino.id', '=', 'casino_details.id_casino')
-            ->select('casino.name', 'casino.city_name','casino_details.resume_1_line', 'casino.img_url','casino.city_title','casino.country_title','casino.slug')
-            ->where('casino.city_title', $city)->paginate(9);
+            ->select('casino.name', 'casino.city_name','casino_details.resume_1_line', 'casino.img_url','casino.city_title','casino.country_title','casino.slug','casino.country_name')
+            ->where('casino.country_title', $country)->when($city, function ($query, $city) {
+                return $query->where('casino.city_title', $city);
+            })->paginate(9);
+
+        $country= $casinos->items()[0]->country_name ;
 
 
+        return view('category', compact( 'casinos','country'));
 
-
-
-
-        //Las Vegas
-        $lon = -115.1352;
-        $lat = 36.1450;
-        $fromIndex= "true";
-        try {
-            $sessionGoogle = $googleService->createOrGetSessionApiMapTile();
-
-        } catch (\Exception $e) {
-            Log::info('Error', ['message' => $e->getMessage()]);
-        } finally {
-            return view('category', compact('sessionGoogle', 'lon', 'lat', 'fromIndex','casinos'));
-        }
-    }
-
-
-    function categoryCountry(Request $request, LocationService $locationService, GoogleService $googleService , String $country)
-    {
-        $casinos = DB::table('casino')
-            ->join('casino_details', 'casino.id', '=', 'casino_details.id_casino')
-            ->select('casino.name', 'casino.city_name','casino_details.resume_1_line', 'casino.img_url','casino.city_title','casino.country_title','casino.slug')
-            ->where('casino.country_title', $country)->paginate(9);
-
-        //Las Vegas
-        $lon = -115.1352;
-        $lat = 36.1450;
-        $fromIndex= "true";
-        try {
-            $sessionGoogle = $googleService->createOrGetSessionApiMapTile();
-
-        } catch (\Exception $e) {
-            Log::info('Error', ['message' => $e->getMessage()]);
-        } finally {
-            return view('category', compact('sessionGoogle', 'lon', 'lat', 'fromIndex','casinos'));
-        }
     }
 
 }
