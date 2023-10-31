@@ -42,10 +42,12 @@ class IndexContoller extends Controller
                 return $query->where('casino.city_title', $city);
             })->paginate(9);
 
-        $country= $casinos->items()[0]->country_name ;
+        $location= $casinos->items()[0]->country_name ;
+        if($city != null){
+            $location=  $casinos->items()[0]->city_name ;
+        }
 
-
-        return view('category', compact( 'casinos','country'));
+        return view('category', compact( 'casinos','location'));
 
     }
 
