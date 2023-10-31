@@ -25,6 +25,14 @@ Route::get('/', [IndexContoller::class , 'index'])->name('index');
 Route::get('/online',  function () {
     return view('online');  // 'sample' corresponds to the sample.blade.php view file
 })->name('online');
+
+
+Route::get('/tttt', [OpenAiController::class , 'getListDataToCompute'])->name('getListDataToCompute');
+Route::get('/ttttcat', [OpenAiController::class , 'getListCategoryToCompute'])->name('getListCategoryToCompute');
+
+
+
+
 Route::get('/{country}/{city?}', [IndexContoller::class , 'category'])->name('category');
 
 Route::get('/{country}/{city}/{name}', [LocationController::class , 'show'])->name('casino');
@@ -40,4 +48,3 @@ Route::post('casinodetail/{id}/update', [CasinoDetailsController::class, 'delete
 
 
 
-Route::get('/tttt', [OpenAiController::class , 'getListDataToCompute'])->name('getListDataToCompute');
