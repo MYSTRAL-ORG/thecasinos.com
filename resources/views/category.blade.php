@@ -14,80 +14,23 @@
 			<h2>List of Casinos in the USA</h2>
 			<p>Explore our curated list of premier casinos across the USA. Dive into the world of entertainment and luxury, all in one place. From the bustling streets of Las Vegas to the serene resorts of Atlantic City, discover the best gaming destinations. Let the adventure begin and experience the thrill of American casinos!</p>
 			<div class="">
-			@php
-				// Tableau des casinos avec leurs informations
-				$casinos = [
-					[
-						'name' => 'Bellagio',
-						'location' => 'Las Vegas',
-						'description' => 'Experience luxury and excitement at the Bellagio Casino in Las Vegas. With its stunning fountains, world-class dining, and vibrant nightlife, Bellagio is a top destination for those seeking the best in entertainment.',
-						'image' => 'img/casinos/c2.jpeg' // Remplacez par le chemin réel de l'image du casino
-					],
-					[
-						'name' => 'The Venetian',
-						'location' => 'Las Vegas',
-						'description' => 'Step into the Venetian and be transported to the romantic streets of Venice. Enjoy world-class shopping, gondola rides, and an array of gaming options at this iconic Las Vegas resort.',
-						'image' => 'img/casinos/c3.jpeg' // Remplacez par le chemin réel de l'image du casino
-					],
-					[
-						'name' => 'Caesars Palace',
-						'location' => 'Las Vegas',
-						'description' => 'Live like a Caesar at Caesars Palace. Enjoy world-class entertainment, dining, and gaming in the heart of the Las Vegas Strip. Your empire awaits.',
-						'image' => 'img/casinos/c4.jpeg' // Remplacez par le chemin réel de l'image du casino
-					],
-					[
-						'name' => 'Wynn',
-						'location' => 'Las Vegas',
-						'description' => 'Discover elegance and excitement at Wynn Las Vegas. Experience fine dining, luxurious accommodations, and world-class entertainment in the heart of the Strip.',
-						'image' => 'img/casinos/c5.jpeg' // Remplacez par le chemin réel de l'image du casino
-					],
-					[
-						'name' => 'MGM Grand',
-						'location' => 'Las Vegas',
-						'description' => 'Stay at the iconic MGM Grand Las Vegas and enjoy world-class entertainment, gaming, and dining options. It\'s a destination that never sleeps.',
-						'image' => 'img/casinos/c6.jpeg' // Remplacez par le chemin réel de l'image du casino
-					],
-					[
-						'name' => 'The Mirage',
-						'location' => 'Las Vegas',
-						'description' => 'Experience the magic of The Mirage in Las Vegas. From the iconic volcano to Siegfried & Roy\'s Secret Garden, there\'s something for everyone to enjoy.',
-						'image' => 'img/casinos/c1.jpeg' // Remplacez par le chemin réel de l'image du casino
-					],
-					[
-						'name' => 'The Cosmopolitan',
-						'location' => 'Las Vegas',
-						'description' => 'Discover luxury and style at The Cosmopolitan of Las Vegas. Enjoy rooftop pools, world-class dining, and vibrant nightlife in the heart of the city.',
-						'image' => 'img/casinos/c2.jpeg' // Remplacez par le chemin réel de l'image du casino
-					],
-					[
-						'name' => 'The Palazzo',
-						'location' => 'Las Vegas',
-						'description' => 'Experience luxury and spacious suites at The Palazzo in Las Vegas. With its Italian-inspired design and upscale amenities, it\'s the perfect destination for a lavish stay.',
-						'image' => 'img/casinos/c3.jpeg' // Remplacez par le chemin réel de l'image du casino
-					],
-					[
-						'name' => 'Flamingo',
-						'location' => 'Las Vegas',
-						'description' => 'Experience luxury and spacious suites at The Palazzo in Las Vegas. With its Italian-inspired design and upscale amenities, it\'s the perfect destination for a lavish stay.',
-						'image' => 'img/casinos/c4.jpeg' // Remplacez par le chemin réel de l'image du casino
-					],
-					];
-            @endphp
+
                 <div  class="row" >
                 @foreach($casinos as $casino)
 
                         <div class="col-lg-4 col-md-6 col-sm-12 casino-box">
                             <div class="casino-image">
-                                <img src="{{ $casino['image'] }}" alt="{{$casino['name']}} Casino">
+                                <img src="{{env('APP_URL').'/img/casino/'.$casino->img_url  }}" alt="{{$casino->name}} Casino">
                                 <div class="category-location">
                                     <img src="{{ env('APP_URL') }}/img/icons/location.png" alt="Location Icon">
-                                    <span>{{$casino['location']}}</span>
+                                    <span>{{$casino->city_name}}</span>
                                 </div>
                             </div>
                             <div class="casino-info">
-                                <h3>{{  $casino['name'] }} </h3>
-                                <p>{{ Str::limit($casino['description'], 80) }}</p>
-                                <button>View casino</button>
+                                <h3 class="two-lines">{{$casino->name}} </h3>
+                                <p class="three-lines">{{ Str::limit($casino->resume_1_line, 80) }}</p>
+
+                                <a class="button" href="{{ route('casino', ['country' => $casino->country_title  ,'city' => $casino->city_title , 'name' => $casino->slug] )}}">View casino</a>
                             </div>
                         </div>
 
@@ -97,8 +40,9 @@
 
 			<div class="pagination-container">
 				<div class="pagination">
-					<button>Précédente</button>
-					<button>Suivante</button>
+
+                    <a  class="button" href="{{$casinos->previousPageUrl()}}">Précédente</a>
+					<a  class="button" href="{{$casinos->nextPageUrl()}}">Suivante</a>
 				</div>
 			</div>
 			<h2>About Casinos in the USA</h2>

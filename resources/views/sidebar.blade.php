@@ -75,7 +75,7 @@
                 <br>
             @endif
             @if($casino->website)
-                <i class="fa-solid fa-globe"></i> &nbsp;<a href="{{  $casino->website   }}">{{  $casino->website   }}</a>
+                <i class="fa-solid fa-globe"></i> &nbsp;<a href="{{  $casino->website   }}" target="_blank">Casino Website</a>
                 <br>
             @endif
         </p>

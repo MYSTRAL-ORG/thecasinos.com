@@ -1440,6 +1440,35 @@ ul li {
     margin-top:20px;
 }
 
+
+.two-lines {
+
+    height: 3em;
+}
+.three-lines {
+
+    height: 5em;
+}
+.button{
+
+    background-color: var(--theme-blue);
+    color: white;
+    padding: 10px 0;
+    width: 100% !important;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-top:20px;
+    display: block;text-align: center !important;
+    vertical-align: bottom;
+
+}
+.button:hover, .pagination button:hover{
+    background-color: var(--theme-red);
+    color: white;
+}
 .casino-box button:hover, .pagination button:hover {
     background-color: var(--theme-red);
     color: white;
@@ -1458,20 +1487,20 @@ ul li {
     justify-content: center; /* Centrer les éléments enfants */
 }
 
-.pagination button {
-    width: 150px;
-    background-color: var(--theme-red);
-    color: white;
-    padding: 10px 0;
-    border: none;
-    cursor: pointer;
-    border-radius: 10px;
-    transition: var(--theme-blue);
+.pagination .button {
+    width: 150px !important;
+    background-color: var(--theme-red) !important;
+    color: white !important;
+    padding: 10px 0 !important;
+    border: none !important;
+    cursor: pointer !important;
+    border-radius: 10px !important;
+    transition: var(--theme-blue) !important;
 }
 
-.pagination button:hover {
-    background-color: var(--theme-blue);
-    color: white;
+.pagination .button:hover {
+    background-color: var(--theme-blue) !important;
+    color: white !important;
 }
 
 
