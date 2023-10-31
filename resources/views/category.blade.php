@@ -38,8 +38,8 @@
 			<div class="pagination-container">
 				<div class="pagination">
 
-                    <a  class="button" href="{{$casinos->previousPageUrl()}}">Précédente</a>
-					<a  class="button" href="{{$casinos->nextPageUrl()}}">Suivante</a>
+                    @if($casinos->currentPage() >1) <a  class="button" href="{{$casinos->previousPageUrl()}}">Précédente</a>@endif
+                    @if($casinos->currentPage() < $casinos->lastPage())<a  class="button" href="{{$casinos->nextPageUrl()}}">Suivante</a>@endif
 				</div>
 			</div>
 			<h2>About Casinos in the USA</h2>
