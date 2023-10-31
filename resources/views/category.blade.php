@@ -87,7 +87,7 @@
                             <div class="casino-info">
                                 <h3>{{  $casino['name'] }} </h3>
                                 <p>{{ Str::limit($casino['description'], 80) }}</p>
-                                <button>View details</button>
+                                <button>View casino</button>
                             </div>
                         </div>
 
