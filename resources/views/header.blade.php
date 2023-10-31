@@ -11,7 +11,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
 
-
+        @if(!Route::currentRouteNamed('online'))
         <div class=" search-bar collapse navbar-collapse  nav_item " >
             <input id="search-casino" class="align-middle  search-bar  "  placeholder="Search..."/>
             <ul id="search-casino-list" class="search-casino-list d-none"></ul>
@@ -19,7 +19,7 @@
                 <img src="/img/icons/zoom.png" alt="Search Icon" />
             </button>
         </div>
-
+        @endif
         <!-- <div class="language collapse navbar-collapse  nav_item ">
             <div class="dropdown">
                 <button class="btn form-control  dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
