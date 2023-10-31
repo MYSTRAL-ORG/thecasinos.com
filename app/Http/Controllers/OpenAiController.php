@@ -24,7 +24,7 @@ class OpenAiController extends Controller
     }
 
     public function getListDataToCompute(){
-        $lstCasinoToCompute = DB::table('casino')->whereNotIn('id',CasinoDetailsSource::where('is_done', '=',true)
+        $lstCasinoToCompute = DB::table('casino')->whereNotNull('city_name')->whereNotIn('id',CasinoDetailsSource::where('is_done', '=',true)
             ->pluck('id_casino'))->limit(20)->get();
 
         return response()->json($lstCasinoToCompute);

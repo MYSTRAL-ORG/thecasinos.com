@@ -27,7 +27,7 @@
     @yield('casino')
 
     @yield('map')
-
+    @yield('online')
     @include('footer')
 
     </body>

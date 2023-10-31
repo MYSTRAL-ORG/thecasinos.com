@@ -10,7 +10,6 @@ import Photo from "ol-ext/style/Photo.js";
 import {click} from "ol/events/condition.js";
 import {Select} from "ol/interaction.js";
 import $ from "jquery";
-import Geolocation from 'ol/Geolocation.js';
 import {containsCoordinate} from "ol/extent.js";
 
 
@@ -105,39 +104,51 @@ $(document).ready(function () {
     let lat = $('meta[name="_lat"]').attr('content');
     let fromIndex = $('meta[name="_fromIndex"]').attr('content');
     let zoomCarte= 0;
+    if( fromIndex != null){
 
-    if(fromIndex.toLowerCase() === "true"){
-        async function callGeolocationBeforeLoad() {
-            fetch('https://www.googleapis.com/geolocation/v1/geolocate?key='+sessionGoogleKey, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    considerIp: true
-                })
-            })
-                .then(response => response.json())
-                .then(data => {
-                    lat = data.location.lat;
-                    lon= data.location.lng;
-                    zoomCarte= 9;
+        if(fromIndex.toLowerCase() === "true"){
+            zoomCarte = 9;
+             lon = sessionStorage.getItem('long');
+             lat = sessionStorage.getItem('lat');
+            if( lon == null || lat == null ){
+              async function callGeolocationBeforeLoad() {
+                  fetch('https://www.googleapis.com/geolocation/v1/geolocate?key=' + sessionGoogleKey, {
+                      method: 'POST',
+                      headers: {
+                          'Content-Type': 'application/json'
+                      },
+                      body: JSON.stringify({
+                          considerIp: true
+                      })
+                  })
+                      .then(response => response.json())
+                      .then(data => {
+                          lat = data.location.lat;
+                          lon = data.location.lng;
+                          sessionStorage.setItem('long', lon);
+                          sessionStorage.setItem('lat', lat);
 
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                }).finally(() => {
+
+                      })
+                      .catch(error => {
+                          console.error('Error:', error);
+                      }).finally(() => {
+
+                  })
+              }
+                callGeolocationBeforeLoad();
+          }else{
                 initializeMap();
-            })
+            }
+
+
+
+        }else{
+            zoomCarte= 19;
+
+            initializeMap();
         }
-
-        callGeolocationBeforeLoad();
-    }else{
-        zoomCarte= 19;
-
-        initializeMap();
     }
-
 
 
 

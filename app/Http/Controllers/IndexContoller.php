@@ -25,7 +25,7 @@ class IndexContoller extends Controller
        } catch (\Exception $e) {
             Log::info('Error', ['message' => $e->getMessage()]);
         } finally {
-            return view('index2', compact('sessionGoogle', 'lon', 'lat', 'fromIndex'));
+            return view('index', compact('sessionGoogle', 'lon', 'lat', 'fromIndex'));
         }
     }
 

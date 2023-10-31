@@ -20,8 +20,11 @@ use App\Http\Controllers\IndexContoller;
 */
 
 //Route::get('/',  [MapkitController::class , 'fetchMapData']);
-Route::get('/', [IndexContoller::class , 'index'])->name('index2');
+Route::get('/', [IndexContoller::class , 'index'])->name('index');
 
+Route::get('/online',  function () {
+    return view('online');  // 'sample' corresponds to the sample.blade.php view file
+})->name('online');
 
 
 Route::get('/{country}/{city}/{id}', [LocationController::class , 'show'])->name('casino');

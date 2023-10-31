@@ -4,7 +4,8 @@ namespace App\services;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
-use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use GuzzleHttp\Client;
 class GoogleService
 {
@@ -18,7 +19,8 @@ class GoogleService
 
     public function createOrGetSessionApiMapTile()
     {
-        $sessionGoogle =  Cache::get('app.sessionGoogle');
+
+        $sessionGoogle = Session::get('app.sessionGoogle');
 
         if (!$sessionGoogle) {
 
@@ -43,9 +45,10 @@ class GoogleService
             ]);
 
             $repJson = json_decode($response->getBody()->getContents());
-            $expiry = (new Carbon(intval($repJson->expiry)))->subDay();
+        ;
             $sessionGoogle = $repJson->session;
-            Cache::put('app.sessionGoogle', $sessionGoogle, $expiry);
+            Session::put('app.sessionGoogle', $sessionGoogle);
+
 
         }
         return $sessionGoogle;

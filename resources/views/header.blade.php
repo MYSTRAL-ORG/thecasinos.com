@@ -35,13 +35,13 @@
 
         <div class=" collapse navbar-collapse nav_item  " role="search">
             @if (Route::currentRouteNamed('online'))
-                <a href="/index2.php"  class="btn-online form-control">ONLINE</a>
+                <a href="{{ route('index')}}"  class="btn-online form-control">ONLINE</a>
             @else
-                <a href="/online.php" class="btn-online form-control">ONLINE</a>
+                <a href="{{ route('online')}}" class="btn-online form-control">ONLINE</a>
             @endif
-        </div>
+</div>
 
-    </div>
+</div>
 </nav>
 
 

@@ -9,7 +9,9 @@
 @section('context-js')
 
 @endsection
-    <title>@yield('page_title')</title>
+
+<title>@yield('page_title')</title>
+
 @section('casino')
 
     <div class="background-section">
@@ -50,11 +52,12 @@
             </div>
         </div>
     </div>
-    @section('map')
-        @include('map')
-    @endsection
 
 
 
 
+
+@endsection
+@section('map')
+    @include('map')
 @endsection
