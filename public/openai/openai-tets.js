@@ -1,9 +1,9 @@
 import OpenAI from "openai";
 import axios from 'axios';
 import fs from 'fs/promises';
+
 import { existsSync, openSync, unlinkSync } from 'fs';
 const openai = new OpenAI({ apiKey: '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' });
-
 
 
 
@@ -12,7 +12,7 @@ async function performApiRequest(params) {
     try {
         return await openai.chat.completions.create(params);
     } catch (error) {
-        console.error('API Request Error:', error);
+        console.log(new Date().toISOString() +'API Request Error:', error);
         throw error;
     }
 }
@@ -212,7 +212,9 @@ const lockFilePath =  'script.lock';
 
 // Check if lock file exists
 if (existsSync(lockFilePath)) {
-    console.log('Script is already running. Exiting...');
+    console.log(" ");
+    console.log("*************************");
+    console.log(  new Date().toISOString() + ': Script is already running. Exiting...');
     process.exit();
 }
 
@@ -221,12 +223,12 @@ openSync(lockFilePath, 'w');
 
 
 // Your script logic goes here
-console.log('Script running...');
+console.log( new Date().toISOString()+  ': Script running...');
 
 
 axios.get('http://casinos.test/tttt')
     .then(response => {
-        setTimeout(() => { console.log('World!'); }, 1000);
+        setTimeout(() => { }, 1000);
         response.data.forEach(casino => {
 
 
@@ -245,7 +247,8 @@ axios.get('http://casinos.test/tttt')
 
 
         })
-
+        console.log(  new Date().toISOString()+ ': Script end...');
+        console.log("*************************");
     })
     .catch(error => {
         console.log(error);

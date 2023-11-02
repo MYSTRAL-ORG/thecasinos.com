@@ -9,7 +9,7 @@
 	<div class="container feuille-container">
 		<section class=" feuille">
 			<h2>List of Casinos in {{ $location}}</h2>
-			<p>{{$category->header_text}}</p>
+			<p>{!! $category->header_text !!}</p>
 			<div class="">
 
                 <div  class="row" >
@@ -24,7 +24,7 @@
                                 </div>
                             </div>
                             <div class="casino-info">
-                                <h3 class="two-lines">{{$casino->name}} </h3>
+                                <h3 class=" align-middle two-lines">{{$casino->name}} </h3>
                                 <p class="three-lines">{{ Str::limit($casino->resume_1_line, 80) }}</p>
 
                                 <a class="button" href="{{ route('casino', ['country' => $casino->country_title  ,'city' => $casino->city_title , 'name' => $casino->slug] )}}">View casino</a>
@@ -43,7 +43,7 @@
 				</div>
 			</div>
 			<h2>About Casinos in {{ $location}}</h2>
-			<p>{{$category->footer_text}}</p>
+			<p>{!! $category->footer_text !!}</p>
 			<h3>Let's try online :</h3>
 			@php
 				$lines = 3; // Nombre de lignes à afficher par défaut

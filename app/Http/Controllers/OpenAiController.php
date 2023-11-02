@@ -33,7 +33,7 @@ class OpenAiController extends Controller
 
 
     public function getListCategoryToCompute(Request $request ){
-          $categories =      Category::where('done', '=', false)->limit(50)->get();
+          $categories =      Category::where('done', '=', false)->limit(1)->get();
 
         return response()->json($categories);
     }

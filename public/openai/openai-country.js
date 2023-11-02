@@ -21,7 +21,21 @@ async function performApiRequest(params) {
 
 // Example dummy function hard coded to return the same weather
 // In production, this could be your backend API or an external API
-
+const functions = [
+    {
+        "name": "get_country_informations",
+        "description": "Get the current information about  in a given country",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "country": {
+                    "type": "string",
+                    "description": "each paragraph  of  the huge description of the novel separated  by pipe |",
+                }
+            }
+        },
+    }
+];
 
 
 
@@ -49,7 +63,41 @@ console.log(messages);
         presence_penalty: 0
     });
     console.log(response.choices[0].message)    ;
-    return response.choices[0].message;
+    let responseMessage =  response.choices[0].message;
+
+    if (responseMessage.function_call) {
+        // Step 3: call the function
+        // Note: the JSON response may not always be valid; be sure to handle errors
+        const availableFunctions = {
+            get_country_informations: getCountryInformations,
+        };  // only one function in this example, but you can have multiple
+        const functionName = responseMessage.function_call.name;
+        const functionToCall = availableFunctions[functionName];
+
+        let cleanUpResp= responseMessage.function_call.arguments.replace(new RegExp( '\n', 'g'), '');
+        const functionArgs = JSON.parse(cleanUpResp);
+
+        const functionResponse = functionToCall(
+            functionArgs.country
+        );
+
+
+
+         // Step 4: send the info on the function call and function response to GPT
+        messages.push(responseMessage);  // extend conversation with assistant's reply
+        messages.push({
+            "role": "function",
+            "name": functionName,
+            "content": functionResponse,
+        });  // extend conversation with function response
+        const secondResponse = await openai.chat.completions.create({
+            model: "gpt-4",
+            messages: messages,
+        });  // get a new response from GPT where it can see the function response
+        return secondResponse;
+    }
+
+
 }
 
 
@@ -82,13 +130,15 @@ axios.get('http://casinos.test/ttttcat')
 
                 runConversation(casino).then(
                     (result) => {
-                        axios.post('http://casinos.test/api/openaiCat/'+casino.country_title, result)
+                       /*axios.post('http://casinos.test/api/openaiCat/'+casino.country_title, result)
                             .then(response => {
 
                             })
                             .catch(error => {
                                 console.log(error);
-                            });
+                            });*/
+                        console.log("fdsqfdsfqsdfsdqf");
+                            console.log(result);
                     }
                 ).catch(console.error);
 
