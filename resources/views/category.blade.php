@@ -52,7 +52,7 @@
 				$columns = ['Logo', 'Brand', 'Bonus', 'Note', 'Review', 'Casino']; // Les colonnes à afficher
 
 			@endphp
-            @include("top10");
+            @include("top10")
 		</section>
 	</div>
 @endsection

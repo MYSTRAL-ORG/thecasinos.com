@@ -14,6 +14,7 @@ import {containsCoordinate} from "ol/extent.js";
 
 
 
+
 $(document).ready(function () {
     const appUrl = $('meta[name="_appUrl"]').attr('content');
     const sessionGoogle = $('meta[name="_googleSessionToken"]').attr('content');
@@ -534,6 +535,20 @@ $(document).ready(function () {
             $(this).text("Load More");
         }
     });
+    function cleanUp(div) {
+        if (div.text().trim().length === 0) {
+            // The div has only white spaces, so clear it
+            div.empty();
+        }
+    }
+
+
+
+    cleanUp($('.casino-block-orange'));
+    cleanUp($('.casino-block-purple'));
+
+
+
 
 });
 

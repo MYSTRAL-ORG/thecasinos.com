@@ -3,9 +3,12 @@
 
 <style>
     #map {
-        height: 500px;
+        min-height: 500px;
         width: 100%;
         position: relative;
+        display: flex !important;
+        flex-grow: 1  !important;
+
     }
 </style>
 

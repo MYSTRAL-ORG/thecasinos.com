@@ -4,6 +4,8 @@ body {
     font-size: 16px;
     color: #333;
     background-color: var(--theme-light-grey) !important;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -787,6 +789,10 @@ h3 i   {
     display: none;
 }
 
+.casino-block-orange:-moz-only-whitespace {
+    display: none;
+}
+
 .casino-block-orange:empty {
     display: none;
 }
@@ -966,11 +972,11 @@ h3 i   {
 
 
 .casino-sidebar .image-casino {
-    width: 100%;   /* Force l'image à prendre toute la largeur de la feuille */
-    max-height: 100px; /* Limite la hauteur de l'image à 80px */
-    object-fit: cover; /* Cela s'assure que l'image couvre toute la zone de l'élément img sans déformation */
-    border-radius: 10px;
-    margin-top:10px;
+    width: 100% !important;   /* Force l'image à prendre toute la largeur de la feuille */
+    max-height: 100px !important; /* Limite la hauteur de l'image à 80px */
+    object-fit: cover !important; /* Cela s'assure que l'image couvre toute la zone de l'élément img sans déformation */
+    border-radius: 10px !important;
+    margin-top:10px !important;
 }
 
 
@@ -1073,7 +1079,7 @@ ul li {
     justify-content: center;
     position: relative;
     width: 100%;
-    height: 250px;
+    min-height: 250px;
     background: url('/img/main.jpg') no-repeat center center;
     background-size: cover;
     border-bottom: 4px solid  var(--theme-red);

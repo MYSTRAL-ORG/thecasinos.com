@@ -6,7 +6,7 @@
         </div>
     @endif
 
-	<div class="casino-block-orange">@if($casino->cat_tablegames)<h3><i class="fa-solid fa-dice"></i></h3>@endif
+	<div class="casino-block-orange">@if($casino->cat_tablegames)<h3><i class="fa-solid fa-dice"></i>Table Games</h3>@endif
         @if($casino->cat_poker)<h3><i class="fa-solid fa-coins"></i>Poker Tables</h3>@endif
         @if($casino->cat_slotmachines)<h3><i class="fa-solid fa-dollar-sign"></i>Gaming Machine</h3>@endif
         @if($casino->cat_sportsbook)<h3><i class="fa-solid fa-basketball"></i>Sports Book</h3>@endif
@@ -42,19 +42,19 @@
 	<div class="casino-block" id="sumup">
 		<h3>To sum up</h3>
 		<img src="/img/casino/{{$casino->img_url}}" alt="Casino presentation" class="image-casino">
-		<p>{!!  $casinoDetail->sumup!!}</p>
+		<p class="pt-3">{!!  $casinoDetail->sumup!!}</p>
 	</div>
 
 	<div class="casino-block" id="games">
 		<h3>Games</h3>
 		<img src="/img/sidebar-games.jpg" alt="Casino Games" class="image-casino">
-		<p>{!!  $casinoDetail->games!!}</p>
+		<p class="pt-3">{!!  $casinoDetail->games!!}</p>
 	</div>
 
 	<div class="casino-block" id="funfacts">
 		<h3>Fun Facts</h3>
 		<img src="/img/sidebar-facts.jpg" alt="Casino Fun facts" class="image-casino">
-		<p>{!!  $casinoDetail->fun_facts!!}</p>
+		<p class="pt-3">{!!  $casinoDetail->fun_facts!!}</p>
 	</div>
 
 	<div class="casino-block" id="contact">
