@@ -1369,7 +1369,7 @@ ul li {
 .casino-box {
     border: 2px solid var(--theme-light-grey);
     border-radius: 20px;
-    padding: 10px;
+
     overflow: hidden;
     position: relative;
 }
@@ -1397,6 +1397,7 @@ ul li {
     background-color: var(--theme-light-grey);
     text-align: center;
     border-radius: 10px;
+    font-weight: bold !important;
 }
 
 .category-location {

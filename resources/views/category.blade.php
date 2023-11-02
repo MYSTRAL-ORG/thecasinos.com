@@ -14,8 +14,8 @@
 
                 <div  class="row" >
                 @foreach($casinos as $casino)
-
-                        <div class="col-lg-4 col-md-6 col-sm-12 casino-box">
+                    <div class="col-lg-4 col-md-6 col-sm-12 mt-2 mb-2">
+                        <div class=" casino-box  ">
                             <div class="casino-image">
                                 <img src="{{env('APP_URL').'/img/casino/'.$casino->img_url  }}" alt="{{$casino->name}} Casino">
                                 <div class="category-location">
@@ -24,13 +24,13 @@
                                 </div>
                             </div>
                             <div class="casino-info">
-                                <h3 class=" align-middle two-lines">{{$casino->name}} </h3>
+                                <h3 class=" align-middle ">{{Str::limit($casino->name,26)}} </h3>
                                 <p class="three-lines">{{ Str::limit($casino->resume_1_line, 80) }}</p>
 
                                 <a class="button" href="{{ route('casino', ['country' => $casino->country_title  ,'city' => $casino->city_title , 'name' => $casino->slug] )}}">View casino</a>
                             </div>
                         </div>
-
+                    </div>
               @endforeach
                 </div>
 			</div>
