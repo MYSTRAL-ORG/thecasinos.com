@@ -45,7 +45,7 @@
 			</div>
 			<h2>About Casinos in {{ $location}}</h2>
 
-			<p>{!! $category->footer_text !!}</p>
+			<p>{!!  $category->footer_text  !!}</p>
 			<h3>Let's try online :</h3>
 			@php
 				$lines = 3; // Nombre de lignes à afficher par défaut
