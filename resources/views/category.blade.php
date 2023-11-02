@@ -36,6 +36,7 @@
 			</div>
 
 			<div class="pagination-container">
+
 				<div class="pagination">
 
                     @if($casinos->currentPage() >1) <a  class="button" href="{{$casinos->previousPageUrl()}}">Précédente</a>@endif
