@@ -43,6 +43,7 @@
 				</div>
 			</div>
 			<h2>About Casinos in {{ $location}}</h2>
+
 			<p>{!! $category->footer_text !!}</p>
 			<h3>Let's try online :</h3>
 			@php
