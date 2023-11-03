@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Casino;
 use App\Models\CasinoDetailsSource;
 use App\Models\Category;
+use App\Models\CategoryCity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -46,6 +47,23 @@ class OpenAiController extends Controller
         $categorie->done = true;
         $categorie->footer_text =$data['content'];
         $categorie->save();
+        return response()->json(['message' => 'Data processed successfully!']);
+    }
+
+public function getListCategoryCityToCompute(Request $request ){
+    $categoriesCity =      CategoryCity::where('done', '=', false)->limit(60)->get();
+    return response()->json($categoriesCity);
+}
+
+    public function insertHeaderCity(Request $request, String $cityTitle) {
+        $data = $request->json()->all(); // Get the JSON data from the request
+        Log::info($data);
+
+        $categorieCity = CategoryCity::where('city_title', $cityTitle)->get()->first();
+
+        $categorieCity->done = true;
+        $categorieCity->header_text =$data['content'] ;
+        $categorieCity->save();
         return response()->json(['message' => 'Data processed successfully!']);
     }
 

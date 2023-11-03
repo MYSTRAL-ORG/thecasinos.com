@@ -1049,14 +1049,15 @@ ul {
     font-size:20px;
 }
 
+
 ul li::before {
-    /*content: "\25A0"; */
-   /* color:  var(--theme-red);
+    content: "\25A0"; /* Code Unicode pour un carré */
+    color:  var(--theme-red);
     display: inline-block;
     width: 1em;
-    margin-left: -1.5em;
-    margin-right: 0.5em;
-    text-align: center;*/
+    margin-left: -1.5em; /* Positionne le carré à gauche */
+    margin-right: 0.5em; /* Espacement entre le carré et le texte */
+    text-align: center;
 }
 
 
@@ -1516,7 +1517,7 @@ ul li {
 .review-casino-box {
     width: 100%;
     border-radius: 10px 10px 20px 20px;
-    background-image: url('img/main.jpg');
+    background-image: url('/img/main.jpg');
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -1570,6 +1571,7 @@ ul li {
     margin-right: 20px;
     align-self: flex-end;  /* Forces the image to align to the end of the flex container */
     border-radius: 10px;
+    max-width: 554px;
 }
 
 .review-bottom-section {

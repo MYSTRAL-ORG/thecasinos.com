@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="/css/casinos.css">
+
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     @vite("resources/js/app.js")
     <title>@yield('page_title')</title>
@@ -25,7 +27,7 @@
     @include('header')
 
     @yield('casino')
-
+    @yield('casino-online')
     @yield('map')
     @yield('online')
     @yield('category')
