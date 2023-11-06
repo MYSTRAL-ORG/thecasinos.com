@@ -25,7 +25,7 @@
     <body>
 
     @include('header')
-
+    @yield('page-info')
     @yield('casino')
     @yield('casino-online')
     @yield('map')

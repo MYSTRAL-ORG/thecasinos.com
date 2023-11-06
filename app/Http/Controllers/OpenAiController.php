@@ -15,11 +15,17 @@ class OpenAiController extends Controller
         $data = $request->json()->all(); // Get the JSON data from the request
         Log::info($data);
 
-        CasinoDetailsSource::create([
+       /* CasinoDetailsSource::create([
             'id_casino' => $id,
             'is_done' => true,
             'source_openai_json'=>$data
-        ]);
+        ]);*/
+        if($data['content'] != null){
+            $casinoDetail =  CasinoDetailsSource::where('id_casino', $id)->get()->first();
+            $casinoDetail->new_desc = $data['content']  ;
+            $casinoDetail->is_done = true;
+            $casinoDetail->save();
+        }
 
         return response()->json(['message' => 'Data processed successfully!']);
     }

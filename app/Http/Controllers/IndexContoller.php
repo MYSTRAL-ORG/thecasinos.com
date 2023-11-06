@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Casino;
 use App\Models\Category;
 use App\Models\CategoryCity;
+use App\services\CasinoOnLineService;
 use App\services\GoogleService;
 use App\services\LocationService;
 use Carbon\Carbon;
@@ -53,8 +54,9 @@ class IndexContoller extends Controller
         if($city != null){
             $location=  $casinos->items()[0]->city_name ;
         }
-
-        return view('category', compact( 'casinos','location', 'category', 'categoryCity'));
+          $casinoOnLineService = new CasinoOnLineService();
+        $casinosOnLineActif = $casinoOnLineService->getCasinoOnlineCollection();
+        return view('category', compact( 'casinos','location', 'category', 'categoryCity','casinosOnLineActif'));
 
     }
 

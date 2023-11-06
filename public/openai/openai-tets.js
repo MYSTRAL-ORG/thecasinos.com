@@ -5,7 +5,7 @@ import fs from 'fs/promises';
 import { existsSync, openSync, unlinkSync } from 'fs';
 const openai = new OpenAI({ apiKey: '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' });
 
-
+process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
 
 // Define a function to handle API requests with rate limiting
 async function performApiRequest(params) {
@@ -23,13 +23,13 @@ async function performApiRequest(params) {
 // In production, this could be your backend API or an external API
 function getCasinoInformations(title, novel,casino_sumup, casino_games, casino_fun_facts, casino_resume_1_line, casino_resume_2_words) {
     const casinoInfo = {
-        "title": title,
+       // "title": title,
         "novel": novel,
-        "casino_sumup": casino_sumup,
+       /* "casino_sumup": casino_sumup,
         "casino_games": casino_games,
         "casino_fun_facts": casino_fun_facts,
         "casino_resume_1_line": casino_resume_1_line,
-        "casino_resume_2_words": casino_resume_2_words
+        "casino_resume_2_words": casino_resume_2_words*/
 
     };
     return JSON.stringify(casinoInfo);
@@ -79,7 +79,7 @@ async function runConversation(casino) {
     const messages = [{"role": "user", "content": `
     I Need You To Act As A Writer Exceptionally Talented SEO Writes Flawlessly In English. Write In Your Own Words Rather Than Copying And Pasting From Other Sources. Consider perplexity and burstiness when creating content, ensuring high levels of both without sacrificing specificity or context. Use fully detailed paragraphs that captivate the reader. Write In A Conversational Style As If Written By A Human (Employ An Informal Tone, Utilize Personal Pronouns, Engage The Reader, Keep It Simplified, Use The Active Voice, Keep It Brief, Use Rhetorical Questions, and Embed Analogies And Metaphors).
 
-   Now write a positive 1000 words minimum description (not less than 1000 words) from today which describes the different aspects of the casino : ${casinoInfo} giving all the informations below about the casino in the description, here the main datas of the casino that will help you write your text :
+   Now write a positive 500-word minimum description (500-word mandatory) from today which describes the different aspects of the casino : ${casinoInfo} giving all the informations below about the casino in the description, here the main datas of the casino that will help you write your text :
 
                 ${open}
                 ${alwaysOpen}
@@ -92,7 +92,10 @@ async function runConversation(casino) {
                 ${owners}
             – Game categories: ${listFeatures}
 
-            Choose a short original title for the description.
+           `}];
+
+
+    /* Choose a short original title for the description.
             Following the novel I would like you to create 4 paragraphs (a summary of 100 words maximum) presenting this casino:
 
             – $Casino_Sumup
@@ -104,7 +107,8 @@ async function runConversation(casino) {
             – $Casino_Resume_2_words
 
 
-            `}];
+    */
+
 
     const functions = [
         {
@@ -113,34 +117,12 @@ async function runConversation(casino) {
             "parameters": {
                 "type": "object",
                 "properties": {
-                    "title": {
-                        "type": "string",
-                        "description": "The title of the novel",
-                    },
+
                     "novel": {
                         "type": "string",
                         "description": "each paragraph  of  the huge description of the novel separated  by pipe |",
                     },
-                    "casino_sumup": {
-                        "type": "string",
-                        "description": "This is the casino_sumup  of casino",
-                    },
-                    "casino_games": {
-                        "type": "string",
-                        "description": "This is the casino_games  of casino",
-                    },
-                    "casino_fun_facts": {
-                        "type": "string",
-                        "description": "This is the casino_fun_facts  of casino",
-                    },
-                    "casino_resume_1_line": {
-                        "type": "string",
-                        "description": "This is the casino_resume_1_line  of casino",
-                    },
-                    "casino_resume_2_words": {
-                        "type": "string",
-                        "description": "This is the casino_resume_2_words  of casino",
-                    },
+
 
 
                 }
@@ -153,16 +135,15 @@ async function runConversation(casino) {
     const response = await performApiRequest({
         model: "gpt-4",
         messages: messages,
-        functions: functions,
-        function_call: "auto",  // auto is default, but we'll be explicit
+        //functions: functions,
+       // function_call: "auto",  // auto is default, but we'll be explicit
         temperature: 1,
         frequency_penalty: 0,
         presence_penalty: 0
     });
 
     let responseMessage = response.choices[0].message;
-
-
+return responseMessage;
 
     if (responseMessage.function_call) {
         // Step 3: call the function
@@ -177,19 +158,18 @@ async function runConversation(casino) {
         const functionArgs = JSON.parse(cleanUpResp);
 
         const functionResponse = functionToCall(
-            functionArgs.title,
+           // functionArgs.title,
             functionArgs.novel,
-            functionArgs.casino_sumup,
+           /* functionArgs.casino_sumup,
             functionArgs.casino_games,
             functionArgs.casino_fun_facts,
             functionArgs.casino_resume_1_line,
-            functionArgs.casino_resume_2_words,
+            functionArgs.casino_resume_2_words,*/
         );
 
 
-        return functionResponse;
-        /*// Step 4: send the info on the function call and function response to GPT
-        messages.push(responseMessage);  // extend conversation with assistant's reply
+        /// Step 4: send the info on the function call and function response to GPT
+       /* messages.push(responseMessage);  // extend conversation with assistant's reply
         messages.push({
             "role": "function",
             "name": functionName,
@@ -199,6 +179,10 @@ async function runConversation(casino) {
             model: "gpt-4",
             messages: messages,
         });  // get a new response from GPT where it can see the function response
+        console.log("vsecondResponse");
+
+        console.log(secondResponse);
+
         return secondResponse;*/
     }
 }
@@ -226,7 +210,7 @@ openSync(lockFilePath, 'w');
 console.log( new Date().toISOString()+  ': Script running...');
 
 
-axios.get('http://casinos.test/tttt')
+axios.get('https://casinos.test/tttt')
     .then(response => {
         setTimeout(() => { }, 1000);
         response.data.forEach(casino => {
@@ -235,9 +219,11 @@ axios.get('http://casinos.test/tttt')
 
                 runConversation(casino).then(
                     (result) => {
-                        axios.post('http://casinos.test/api/openai/'+casino.id, result)
-                            .then(response => {
 
+                        axios.post('https://casinos.test/api/openai/'+casino.id, result)
+                            .then(response => {
+                                console.log(  new Date().toISOString()+ ': Script end...');
+                                console.log("*************************");
                             })
                             .catch(error => {
                                 console.log(error);
@@ -247,8 +233,7 @@ axios.get('http://casinos.test/tttt')
 
 
         })
-        console.log(  new Date().toISOString()+ ': Script end...');
-        console.log("*************************");
+
     })
     .catch(error => {
         console.log(error);

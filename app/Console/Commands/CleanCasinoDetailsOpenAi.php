@@ -39,13 +39,17 @@ class CleanCasinoDetailsOpenAi extends Command
 
     private function cleanData()
     {
-
+/*
         DB::delete("delete from  casino_details_source where  source_openai_json ->>'casino_sumup'  is null or
   source_openai_json ->>'casino_games'   is null or
  source_openai_json ->>'casino_fun_facts'   is null or
  source_openai_json ->>'casino_resume_1_line'   is null or
  source_openai_json ->>'casino_resume_2_words'   is null or
-  source_openai_json ->>'novel'   is null or source_openai_json = '[]' or LENGTH(source_openai_json ->> 'novel')  <300");
+  source_openai_json ->>'novel'   is null or source_openai_json = '[]' or LENGTH(source_openai_json ->> 'novel')  <300");*/
+
+        $query = " update casino_details_source set is_done = false ,new_desc = null where  new_desc is null or  array_length(regexp_split_to_array(trim(new_desc), E'\\W+'), 1) < 400  " ;
+        DB::statement($query);
+
 
     }
 

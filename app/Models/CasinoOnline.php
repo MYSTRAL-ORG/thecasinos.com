@@ -27,15 +27,23 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $note
  * @property string|null $sous_titre
  * @property string|null $description
+ * @property string|null $deposit_mehods_description
+ * @property string|null $contact_information_description
+ * @property string|null $icone
+ * @property bool|null $actif
  * @package App\Models
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereActif($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereBonus($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereBonusDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereContactInformation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereContactInformationDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereDepositMehods($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereDepositMehodsDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereIcone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereKeyFeature($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereLogo($value)
@@ -54,6 +62,10 @@ class CasinoOnline extends Model
 	protected $table = 'casino_online';
 	public $timestamps = false;
 
+	protected $casts = [
+		'actif' => 'bool'
+	];
+
 	protected $fillable = [
 		'nom_casino',
 		'key_feature',
@@ -69,6 +81,10 @@ class CasinoOnline extends Model
 		'register_link',
 		'note',
 		'sous_titre',
-		'description'
+		'description',
+		'deposit_mehods_description',
+		'contact_information_description',
+		'icone',
+		'actif'
 	];
 }

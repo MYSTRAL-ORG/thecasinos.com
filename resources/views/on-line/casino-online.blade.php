@@ -48,12 +48,16 @@
 
 
 	<div class="container feuille-container">
-		<section class="row feuille">
+		<section class="feuille">
 			<h2>{{$casinoOnLine->sous_titre}}</h2>
+
+
 			@include("on-line/pres-casino-online")
 			@include("on-line/menu-casino-online")
-			@include("on-line/content-casino-online")
-			@include("on-line/sidebar-online")
+            <div class="row pt-4">
+                @include("on-line/content-casino-online")
+                @include("on-line/sidebar-online")
+            </div>
 		</section>
 	</div>
 @endsection

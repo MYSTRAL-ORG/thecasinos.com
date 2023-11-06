@@ -10,9 +10,9 @@
             <p>With TheCasinos.com, enjoy the premier online guide reference. Explore a world of top-tier gaming and enhance your onsite casino journey. Trust in our curated selections to elevate your gaming adventure.</p>
         </div>
         <div class="col-sm-6 col-lg-2 column">
-            <a href="about.php">About us</a>
-            <a href="terms.php">Terms and conditions</a>
-            <a href="policy.php">Private policy</a>
+            <a href="{{ route('about')}}">About us</a>
+            <a href="{{ route('terms')}}">Terms and conditions</a>
+            <a href="{{ route('policy')}}">Private policy</a>
         </div>
         <div class="col-sm-6 col-lg-2 column">
             <a href="#" class="btn-download btn-ios">

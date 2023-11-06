@@ -1018,7 +1018,7 @@ h1 {
     }
 }
 h2 {
-    font-size: 2.5em  ;
+    font-size: 2.5em !important;
     margin-bottom: 0px !important;
     margin-top: 0px !important;
     text-align: center !important;
@@ -1029,6 +1029,9 @@ h2 {
     padding-bottom: 10px !important;
     font-weight: bold !important;
 }
+
+
+
 
 h3 {
     position: relative;
@@ -1055,7 +1058,7 @@ ul li::before {
     color:  var(--theme-red);
     display: inline-block;
     width: 1em;
-    margin-left: -1.5em; /* Positionne le carré à gauche */
+
     margin-right: 0.5em; /* Espacement entre le carré et le texte */
     text-align: center;
 }
@@ -1515,26 +1518,22 @@ ul li {
 /* HEADER BOX CASINO ONLINE */
 
 .review-casino-box {
-    width: 100%;
+
     border-radius: 10px 10px 20px 20px;
     background-image: url('/img/main.jpg');
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 20px;
-    margin-top: 20px;
+
 }
 
 .review-top-section {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    width: 100%; /* Largeur de 90% pour .review-top-section */
-    margin: 0 20px; /* Padding de 20px à gauche et à droite pour .review-top-section */
+
+
 }
 
 .review-casino-logo {
-    padding: 20px;
+
     max-width: 150px;
 }
 
@@ -1543,7 +1542,7 @@ ul li {
     height: 2px;
     background-color: #333;
     margin-right: 20px;
-    min-width: 50%;  /* Minimum width */
+    //min-width: 50%;  /* Minimum width */
 }
 
 
@@ -1567,11 +1566,9 @@ ul li {
 }
 
 .review-casino-image {
-    width: auto;
-    margin-right: 20px;
-    align-self: flex-end;  /* Forces the image to align to the end of the flex container */
+    max-width: inherit;
     border-radius: 10px;
-    max-width: 554px;
+
 }
 
 .review-bottom-section {
@@ -1668,3 +1665,4 @@ ul li {
     flex-grow: initial;
     flex-basis: initial;
 }
+

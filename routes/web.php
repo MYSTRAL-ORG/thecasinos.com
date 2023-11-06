@@ -21,6 +21,17 @@ use App\Http\Controllers\IndexContoller;
 |
 */
 
+Route::get('/policy', function () {
+    return view('policy');  // 'sample' corresponds to the sample.blade.php view file
+})->name('policy');
+Route::get('/terms', function () {
+    return view('terms');  // 'sample' corresponds to the sample.blade.php view file
+})->name('terms');
+Route::get('/about', function () {
+    return view('about');  // 'sample' corresponds to the sample.blade.php view file
+})->name('about');
+
+
 //Route::get('/',  [MapkitController::class , 'fetchMapData']);
 Route::get('/', [IndexContoller::class , 'index'])->name('index');
 
