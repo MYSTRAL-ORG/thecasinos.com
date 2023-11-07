@@ -53,11 +53,11 @@ Route::get('/ttttcatCity', [OpenAiController::class , 'getListCategoryCityToComp
 
 
 
-Route::get('/online/{name}', [CasionOnLineController::class , 'get'])->name('casino-online');
-
-
-
 Route::get('/{country}/{city?}', [IndexContoller::class , 'category'])->name('category');
 
 Route::get('/{country}/{city}/{name}', [LocationController::class , 'show'])->name('casino');
+
+Route::get('/online/{name}', [CasionOnLineController::class , 'get'])->name('casino-online');
+
+
 
