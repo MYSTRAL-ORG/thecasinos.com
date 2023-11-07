@@ -21,6 +21,7 @@
         "symfony/http-client": "^6.3"
     },
     "require-dev": {
+        "appzcoder/crud-generator": "^3.3",
         "barryvdh/laravel-ide-helper": "^2.13",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
