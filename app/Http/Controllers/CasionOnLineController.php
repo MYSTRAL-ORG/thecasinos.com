@@ -9,9 +9,9 @@ use Illuminate\Http\Request;
 class CasionOnLineController extends Controller
 {
    //create a function get with request in parameters and retun a CasinoOnLine object
-    public function get(Request $request, int $id,CasinoOnLineService $casinoOnLineService)
+    public function get(Request $request, String $name,CasinoOnLineService $casinoOnLineService)
     {
-       $casinoOnLine = CasinoOnLine::where('id', $id)->get()->first();
+       $casinoOnLine = CasinoOnLine::where('nom_casino_slug', $name)->get()->first();
         $casinosOnLineActif = $casinoOnLineService->getCasinoOnlineCollection();
         $note = $casinoOnLine->note;
         $notePart1 = null;

@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $contact_information_description
  * @property string|null $icone
  * @property bool|null $actif
+ * @property string|null $nom_casino_slug
  * @package App\Models
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline newQuery()
@@ -48,6 +49,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereKeyFeature($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereLogo($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereNomCasino($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereNomCasinoSlug($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereNote($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline wherePointContre($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline wherePointPour($value)
@@ -85,6 +87,7 @@ class CasinoOnline extends Model
 		'deposit_mehods_description',
 		'contact_information_description',
 		'icone',
-		'actif'
+		'actif',
+		'nom_casino_slug'
 	];
 }

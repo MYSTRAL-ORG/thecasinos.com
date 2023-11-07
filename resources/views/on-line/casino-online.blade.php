@@ -35,10 +35,10 @@
 			</div>
             <div class="content-container">
                 <div class="block-location left-block">
-                    <div class="block-content">Online</div>
+                    <div class="block-content"><a href="{{ route('index')}}">The Casinos</a></div>
                 </div>
                 <div class="block-location middle-block">
-                    <div class="block-content"><a href="#">Casino</a></div>
+                    <div class="block-content"><a href="{{ route('online')}}">Online</a></div>
                 </div>
             </div>
 		</div>
