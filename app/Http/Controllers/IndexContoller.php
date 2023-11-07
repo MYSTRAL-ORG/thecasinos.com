@@ -61,6 +61,14 @@ class IndexContoller extends Controller
 
     }
 
+    function onLine (CasinoOnLineService $casinoOnLineService)
+    {
+
+        $casinosOnLineActif = $casinoOnLineService->getCasinoOnlineCollection();
+        return view('online', compact( 'casinosOnLineActif'));
+
+    }
+
 }
 
 
