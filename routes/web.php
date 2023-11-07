@@ -51,13 +51,13 @@ Route::get('/tttt', [OpenAiController::class , 'getListDataToCompute'])->name('g
 Route::get('/ttttcat', [OpenAiController::class , 'getListCategoryToCompute'])->name('getListCategoryToCompute');
 Route::get('/ttttcatCity', [OpenAiController::class , 'getListCategoryCityToCompute'])->name('getListCategoryCityToCompute');
 
-
+Route::get('/online/{name}', [CasionOnLineController::class , 'get'])->name('casino-online');
 
 Route::get('/{country}/{city?}', [IndexContoller::class , 'category'])->name('category');
 
 Route::get('/{country}/{city}/{name}', [LocationController::class , 'show'])->name('casino');
 
-Route::get('/online/{name}', [CasionOnLineController::class , 'get'])->name('casino-online');
+
 
 
 
