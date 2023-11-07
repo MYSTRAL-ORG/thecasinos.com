@@ -7,7 +7,7 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="stylesheet" href="/css/casinos.css">
     <script src="https://cdn.tiny.cloud/1/yjs13iiu8396de4wo8jhlctpftdttugbawrv4azhdarlhd2a/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 
     <script>tinymce.init({selector:'textarea'});</script>

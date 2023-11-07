@@ -1,6 +1,8 @@
 <?php
 
 
+use App\Http\Controllers\admin\AdminCasinoOnlineController;
+use App\Http\Controllers\admin\CategoryCityController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\CasionOnLineController;
 use App\Http\Controllers\CrawlerController;
@@ -9,6 +11,7 @@ use App\Http\Controllers\MapkitController;
 use App\Http\Controllers\OpenAiController;
 use App\Models\CasinoDetail;
 use App\Models\CasinoOnline;
+use App\Models\CategoryCity;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\IndexContoller;
 /*
@@ -23,7 +26,9 @@ use App\Http\Controllers\IndexContoller;
 */
 
 
-Route::resource('/category',  CategoryController::class );
+Route::resource('/admin/category',  CategoryController::class );
+Route::resource('/admin/category-city',  CategoryCityController::class );
+Route::resource('/admin/casino-online',  AdminCasinoOnlineController::class );
 
 
 

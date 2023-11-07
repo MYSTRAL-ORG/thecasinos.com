@@ -5,11 +5,15 @@
         </div>
 
         <div class="card-body">
-            <ul class="nav" role="tablist">
+            <ul class=" review-ul  " role="tablist">
                 <li role="presentation">
-                    <a href="{{ url('/category') }}">
-                        Dashboard
-                    </a>
+                    <a href="{{ url('/admin/casino-online') }}">Casino OnLine</a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ url('/admin/category-city') }}"> City </a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ url('/admin/category') }}">Country</a>
                 </li>
             </ul>
         </div>
