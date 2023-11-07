@@ -67,7 +67,7 @@ class CasinoOnline extends Model
 	protected $casts = [
 		'actif' => 'bool'
 	];
-
+//fillable
 	protected $fillable = [
 		'nom_casino',
 		'key_feature',
