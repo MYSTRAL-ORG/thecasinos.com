@@ -45,7 +45,7 @@
                 <td class='casino-note'>{{$casino->note}}</td>
                 @break
              @case( 'Review')
-                <td class='casino-review'><a href='{{ route('casino-online', ['id' => $casino->id]) }}'>Review</a></td>
+                <td class='casino-review'><a href='{{ route('casino-online', ['name' => $casino->nom_casino_slug]) }}'>Review</a></td>
                 @break
             @case( 'Casino')
                 <td class='casino-link'><a href='{{$casino->register_link}}'><button>Play</button></a></td>
