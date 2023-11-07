@@ -15,7 +15,7 @@
 </div>
 <div class="form-group {{ $errors->has('footer_text') ? 'has-error' : ''}}">
     <label for="footer_text" class="control-label">{{ 'Footer Text' }}</label>
-    <input class="form-control" name="footer_text" type="text" id="footer_text" value="{{ isset($category->footer_text) ? $category->footer_text : ''}}" >
+    <textarea class="form-control" name="footer_text" type="text" id="footer_text"  >{{ isset($category->footer_text) ? $category->footer_text : ''}}</textarea>
     {!! $errors->first('footer_text', '<p class="help-block">:message</p>') !!}
 </div>
 
