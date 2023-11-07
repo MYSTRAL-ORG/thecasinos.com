@@ -45,8 +45,8 @@
 
    <div class="pagination">
 
-       @if($casinos->currentPage() >1) <a  class="button" href="{{$casinos->previousPageUrl()}}">Précédente</a>@endif
-       @if($casinos->currentPage() < $casinos->lastPage())<a  class="button" href="{{$casinos->nextPageUrl()}}">Suivante</a>@endif
+       @if($casinos->currentPage() >1) <a  class="button" href="{{$casinos->previousPageUrl()}}">Previous</a>@endif
+       @if($casinos->currentPage() < $casinos->lastPage())<a  class="button" href="{{$casinos->nextPageUrl()}}">Next</a>@endif
    </div>
 </div>
 <h2>About Casinos in {{ $location}}</h2>
@@ -69,3 +69,6 @@
 </section>
 </div>
 @endsection
+<meta name="_fromIndex" content="{{ $fromIndex }}"/>
+
+

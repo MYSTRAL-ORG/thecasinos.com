@@ -38,6 +38,7 @@ class IndexContoller extends Controller
 
     function category (Request $request, LocationService $locationService, GoogleService $googleService , String $country, String $city =null)
     {
+        $fromIndex= true;
         $casinos = DB::table('casino')
             ->join('casino_details', 'casino.id', '=', 'casino_details.id_casino')
             ->select('casino.name', 'casino.city_name','casino_details.resume_1_line', 'casino.img_url','casino.city_title','casino.country_title','casino.slug','casino.country_name')
@@ -56,7 +57,7 @@ class IndexContoller extends Controller
         }
           $casinoOnLineService = new CasinoOnLineService();
         $casinosOnLineActif = $casinoOnLineService->getCasinoOnlineCollection();
-        return view('category', compact( 'casinos','location', 'category', 'categoryCity','casinosOnLineActif'));
+        return view('category', compact( 'casinos','location', 'category', 'categoryCity','casinosOnLineActif','fromIndex'));
 
     }
 
