@@ -236,6 +236,10 @@ $(document).ready(function () {
                     listItem.style.cursor = "pointer";
 
                     listItem.addEventListener('click', function() {
+
+                        if(window.location.pathname !== '/'){
+                            window.location = '/'+feature.get('countrytitle')+"/"+feature.get('citytitle')+"/"+feature.get('slug');
+                        }
                         const view = map.getView();
                         const zoom = view.getZoom();
                         view.animate({
