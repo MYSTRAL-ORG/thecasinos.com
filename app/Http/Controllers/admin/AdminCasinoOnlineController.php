@@ -26,30 +26,18 @@ class AdminCasinoOnlineController extends Controller
         $perPage = 25;
 
         if (!empty($keyword)) {
-            $casinoonline = CasinoOnline::where('nom_casino', 'LIKE', "%$keyword%")
-                ->orWhere('nom_casino_slug', 'LIKE', "%$keyword%")
-                ->orWhere('sous_titre', 'LIKE', "%$keyword%")
-                ->orWhere('key_feature', 'LIKE', "%$keyword%")
-                ->orWhere('screenshot', 'LIKE', "%$keyword%")
-                ->orWhere('logo', 'LIKE', "%$keyword%")
-                ->orWhere('point_pour', 'LIKE', "%$keyword%")
-                ->orWhere('point_contre', 'LIKE', "%$keyword%")
-                ->orWhere('bonus', 'LIKE', "%$keyword%")
-                ->orWhere('sumup_description', 'LIKE', "%$keyword%")
-                ->orWhere('bonus_description', 'LIKE', "%$keyword%")
-                ->orWhere('deposit_mehods_description', 'LIKE', "%$keyword%")
-                ->orWhere('contact_information_description', 'LIKE', "%$keyword%")
-                ->orWhere('contact_information', 'LIKE', "%$keyword%")
-                ->orWhere('register_link', 'LIKE', "%$keyword%")
-                ->orWhere('description', 'LIKE', "%$keyword%")
-                ->orWhere('icone', 'LIKE', "%$keyword%")
-                ->orWhere('actif', 'LIKE', "%$keyword%")
+            $casinoonline = CasinoOnline::whereRaw('LOWER(unaccent(nom_casino)) LIKE LOWER(unaccent(?))', ["%{$keyword}%"])
+                ->orWhereRaw('LOWER(unaccent(nom_casino_slug)) LIKE LOWER(unaccent(?))', ["%{$keyword}%"])
+                ->orWhereRaw('LOWER(unaccent(sous_titre)) LIKE LOWER(unaccent(?))', ["%{$keyword}%"])
+                ->orWhereRaw('LOWER(unaccent(sumup_description)) LIKE LOWER(unaccent(?))', ["%{$keyword}%"])
+                ->orWhereRaw('LOWER(unaccent(description)) LIKE LOWER(unaccent(?))', ["%{$keyword}%"])
+
                 ->orderBy('nom_casino')->paginate($perPage);
         } else {
             $casinoonline = CasinoOnline::orderBy('nom_casino')->paginate($perPage);
         }
 
-        return view('admin.casino-online.index', compact('casinoonline'));
+        return view('admin/casino-online.index', compact('casinoonline'));
     }
 
     /**
@@ -135,7 +123,13 @@ class AdminCasinoOnlineController extends Controller
     {
 
         $requestData = $request->all();
-                if ($request->hasFile('screenshot')) {
+        $requestData['actif']=0;
+        if ($request->has('actif')) {
+
+            $requestData['actif']=1;
+        }
+
+        if ($request->hasFile('screenshot')) {
             $file = $request->file('screenshot');
 
             $file->move(public_path($this::$publicPath), $file->getClientOriginalName());

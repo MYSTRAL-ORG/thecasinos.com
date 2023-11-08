@@ -1,10 +1,16 @@
+<div class="form-group {{ $errors->has('actif') ? 'has-error' : ''}}">
+    <label for="actif" class="control-label">{{ 'Actif' }}</label>
+
+    <input class="form-control" name="actif" type="checkbox" id="actif"   @if(isset($casinoonline->actif) && $casinoonline->actif  ==1)checked  @endif >
+    {!! $errors->first('actif', '<p class="help-block">:message</p>') !!}
+</div>
 <div class="form-group {{ $errors->has('nom_casino') ? 'has-error' : ''}}">
     <label for="nom_casino" class="control-label">{{ 'Nom Casino' }}</label>
     <input class="form-control" name="nom_casino" type="text" id="nom_casino" value="{{ isset($casinoonline->nom_casino) ? $casinoonline->nom_casino : ''}}" >
     {!! $errors->first('nom_casino', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('nom_casino_slug') ? 'has-error' : ''}}">
-    <label for="nom_casino_slug" class="control-label">{{ 'Nom Casino Slug' }}</label>
+    <label for="nom_casino_slug" class="control-label">{{ 'Nom Casino Slug' }} *</label>
     <input class="form-control" name="nom_casino_slug" type="text" id="nom_casino_slug" value="{{ isset($casinoonline->nom_casino_slug) ? $casinoonline->nom_casino_slug : ''}}" >
     {!! $errors->first('nom_casino_slug', '<p class="help-block">:message</p>') !!}
 </div>
@@ -17,6 +23,11 @@
     <label for="key_feature" class="control-label">{{ 'Key Feature' }}</label>
     <input class="form-control" name="key_feature" type="text" id="key_feature" value="{{ isset($casinoonline->key_feature) ? $casinoonline->key_feature : ''}}" >
     {!! $errors->first('key_feature', '<p class="help-block">:message</p>') !!}
+</div>
+<div class="form-group {{ $errors->has('note') ? 'has-error' : ''}}">
+    <label for="note" class="control-label">{{ 'Note' }} * Format : 5,0 Separator  ","</label>
+    <input class="form-control" name="note" type="text" id="note" value="{{ isset($casinoonline->note) ? $casinoonline->note : ''}}" >
+    {!! $errors->first('note', '<p class="help-block">:message</p>') !!}
 </div>
 <div class="form-group {{ $errors->has('screenshot') ? 'has-error' : ''}}">
     <label for="screenshot" class="control-label">{{ 'Screenshot' }}</label>
@@ -83,11 +94,7 @@
     <input class="form-control" name="icone" type="file" id="icone" value="{{ isset($casinoonline->icone) ? $casinoonline->icone : ''}}" >
     {!! $errors->first('icone', '<p class="help-block">:message</p>') !!}
 </div>
-<div class="form-group {{ $errors->has('actif') ? 'has-error' : ''}}">
-    <label for="actif" class="control-label">{{ 'Actif' }}</label>
-    <input class="form-control" name="actif" type="text" id="actif" value="{{ isset($casinoonline->actif) ? $casinoonline->actif : ''}}" >
-    {!! $errors->first('actif', '<p class="help-block">:message</p>') !!}
-</div>
+
 
 
 <div class="form-group">

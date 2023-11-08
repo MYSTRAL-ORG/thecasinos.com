@@ -51,6 +51,7 @@ class IndexContoller extends Controller
         if($city != null){
             $categoryCity = CategoryCity::where('city_title', $city)->get()->first();
         }
+
         $location= $casinos->items()[0]->country_name ;
         if($city != null){
             $location=  $casinos->items()[0]->city_name ;

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             @include('admin.sidebar')
 
@@ -24,12 +24,97 @@
                         <div class="table-responsive">
                             <table class="table">
                                 <tbody>
-                                    <tr>
-                                        <th>ID</th><td>{{ $casinoonline->id }}</td>
-                                    </tr>
-                                    <tr><th> Nom Casino </th><td> {{ $casinoonline->nom_casino }} </td></tr><tr><th> Nom Casino Slug </th><td> {{ $casinoonline->nom_casino_slug }} </td></tr><tr><th> Sous Titre </th><td> {{ $casinoonline->sous_titre }} </td></tr>
+                                <tr>
+                                    <th>Actif</th>
+                                    <td>@if ($casinoonline->actif ==1 ) True @else False @endif  </td>
+                                </tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <td>{{ $casinoonline->id }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nom Casino</th>
+                                    <td>{{ $casinoonline->nom_casino }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Nom Casino Slug</th>
+                                    <td>{{ $casinoonline->nom_casino_slug }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Sous Titre</th>
+                                    <td>{{ $casinoonline->sous_titre }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Key feature</th>
+                                    <td>{{ $casinoonline->key_feature }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Screenshot</th>
+
+                                    <td><img src="{{ $casinoonline->screenshot }}" height="100" width="100">{{ $casinoonline->screenshot }} {{ $casinoonline->screenshot }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Pros</th>
+                                    <td>{{ $casinoonline->point_pour }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Cons</th>
+                                    <td>{{ $casinoonline->point_contre }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Bonus</th>
+                                    <td>{{ $casinoonline->bonus }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Bonus Description</th>
+                                    <td>{{ $casinoonline->bonus_description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Sumup Description/th>
+                                    <td>{{ $casinoonline->sumup_description }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Deposit mehods</th>
+                                    <td>{{ $casinoonline->deposit_mehods }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Deposit mehods description</th>
+                                    <td>{{ $casinoonline->deposit_mehods_description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Contact information description</th>
+                                    <td>{{ $casinoonline->contact_information_description }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Contact information</th>
+                                    <td>{{ $casinoonline->contact_information }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Register link</th>
+                                    <td>{{ $casinoonline->register_link }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Note</th>
+                                    <td>{{ $casinoonline->note }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Description</th>
+                                    <td>{{ $casinoonline->description }}</td>
+                                </tr>
+
+                                <tr>
+                                    <th>Logo</th>
+                                    <td><img src="{{ $casinoonline->logo }}" height="100" width="100">{{ $casinoonline->logo }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Icone</th>
+                                    <td><img src="{{ $casinoonline->icone }}" height="100" width="100">{{ $casinoonline->icone }}</td>
+                                </tr>
+
                                 </tbody>
                             </table>
+
                         </div>
 
                     </div>
