@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Casino;
+use App\services\GenerateJsonService;
 use Illuminate\Http\Request;
 use function App\Http\Controllers\AppHttpControllers\str_random;
 
@@ -57,16 +58,16 @@ class CasinoController extends Controller
     {
 
         $requestData = $request->all();
-                if ($request->hasFile('img_url')) {
+        if ($request->hasFile('img_url')) {
             $file = $request->file('img_url');
-            $fileName = str_random(40) . '.' . $file->getClientOriginalExtension();
-            $destinationPath = storage_path('/app/public/uploads');
-            $file->move($destinationPath, $fileName);
-            $requestData['img_url'] = 'uploads/' . $fileName;
+            $file->move(public_path($this::$publicPath), $file->getClientOriginalName());
+
+            $requestData['img_url'] =    $file->getClientOriginalName();
         }
 
         Casino::create($requestData);
-
+        $serviceJson = new GenerateJsonService();
+        $serviceJson->writeJson();
         return redirect('admin/casino')->with('flash_message', 'Casino added!');
     }
 
@@ -119,7 +120,8 @@ class CasinoController extends Controller
 
         $casino = Casino::findOrFail($id);
         $casino->update($requestData);
-
+        $serviceJson = new GenerateJsonService();
+        $serviceJson->writeJson();
         return redirect('admin/casino')->with('flash_message', 'Casino updated!');
     }
 
