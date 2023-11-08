@@ -61,6 +61,11 @@ class AdminCasinoOnlineController extends Controller
     {
 
         $requestData = $request->all();
+        $requestData['actif']=0;
+        if ($request->has('actif')) {
+
+            $requestData['actif']=1;
+        }
         if ($request->hasFile('screenshot')) {
             $file = $request->file('screenshot');
 

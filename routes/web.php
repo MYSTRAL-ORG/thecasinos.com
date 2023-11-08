@@ -2,6 +2,8 @@
 
 
 use App\Http\Controllers\admin\AdminCasinoOnlineController;
+use App\Http\Controllers\admin\CasinoController;
+use App\Http\Controllers\admin\CasinoDetailController;
 use App\Http\Controllers\admin\CategoryCityController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\PasswordController;
@@ -33,11 +35,12 @@ Route::get('/passwordprompt', function () {
 
 Route::post('/password-check', [ PasswordController::class, 'check'])->name('password.check');
 Route::middleware(['password.protected'])->group(function () {
-
+        Route::resource('/admin/casino',    CasinoController::class );
         Route::resource('/admin/category',  CategoryController::class );
         Route::resource('/admin/category-city',  CategoryCityController::class );
         Route::resource('/admin/casino-online',  AdminCasinoOnlineController::class );
-    Route::resource('/admin',  CategoryController::class );
+        Route::resource('/admin/casino-details',   CasinoDetailController::class );
+        Route::resource('/admin',  CategoryController::class );
 
 });
 

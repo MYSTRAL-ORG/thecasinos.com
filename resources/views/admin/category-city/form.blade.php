@@ -1,5 +1,5 @@
 <div class="form-group {{ $errors->has('city_title') ? 'has-error' : ''}}">
-    <label for="city_title" class="control-label">{{ 'City Title' }}</label>
+    <label for="city_title" class="control-label">{{ 'City Title' }} * </label>
     <input class="form-control" name="city_title" type="text" id="city_title" value="{{ isset($categorycity->city_title) ? $categorycity->city_title : ''}}" >
     {!! $errors->first('city_title', '<p class="help-block">:message</p>') !!}
 </div>

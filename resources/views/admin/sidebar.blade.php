@@ -7,6 +7,12 @@
         <div class="card-body">
             <ul class=" review-ul  " role="tablist">
                 <li role="presentation">
+                    <a href="{{ url('/admin/casino') }}">Casino</a>
+                </li>
+                <li role="presentation">
+                    <a href="{{ url('/admin/casino-details') }}">Casino Details</a>
+                </li>
+                <li role="presentation">
                     <a href="{{ url('/admin/casino-online') }}">Casino OnLine</a>
                 </li>
                 <li role="presentation">

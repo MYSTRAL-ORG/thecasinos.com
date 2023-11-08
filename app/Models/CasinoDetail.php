@@ -24,11 +24,13 @@ use Illuminate\Database\Eloquent\Model;
  * @property string|null $seo_description
  * @property string|null $seo_keywords
  * @property bool|null $done
+ * @property bool|null $actif
  * @property Casino $casino
  * @package App\Models
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetail newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetail newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetail query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetail whereActif($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetail whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetail whereDone($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoDetail whereFunFacts($value)
@@ -50,12 +52,14 @@ class CasinoDetail extends Model
 	public $timestamps = false;
 
 	protected $casts = [
+        'id' => 'int',
 		'id_casino' => 'int',
-		'done' => 'bool'
+		'done' => 'bool',
+		'actif' => 'bool'
 	];
 
 	protected $fillable = [
-        'id_casino',
+        'id',
 		'title',
 		'description',
 		'sumup',
@@ -67,7 +71,8 @@ class CasinoDetail extends Model
 		'seo_title',
 		'seo_description',
 		'seo_keywords',
-		'done'
+		'done',
+		'actif'
 	];
 
 	public function casino()
