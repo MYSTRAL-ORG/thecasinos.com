@@ -11,6 +11,10 @@ use function App\Http\Controllers\AppHttpControllers\str_random;
 
 class AdminCasinoOnlineController extends Controller
 {
+
+    public static string $publicPath = 'img/casinos/online';
+
+
     /**
      * Display a listing of the resource.
      *
@@ -69,31 +73,26 @@ class AdminCasinoOnlineController extends Controller
     {
 
         $requestData = $request->all();
-                if ($request->hasFile('screenshot')) {
+        if ($request->hasFile('screenshot')) {
             $file = $request->file('screenshot');
-            $fileName = str_random(40) . '.' . $file->getClientOriginalExtension();
-            $destinationPath = storage_path('/app/public/uploads');
-            $file->move($destinationPath, $fileName);
-            $requestData['screenshot'] = 'uploads/' . $fileName;
+
+            $file->move(public_path($this::$publicPath), $file->getClientOriginalName());
+            $requestData['screenshot'] =  '/' .$this::$publicPath.'/'. $file->getClientOriginalName();
         }
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
-            $fileName = str_random(40) . '.' . $file->getClientOriginalExtension();
-            $destinationPath = storage_path('/app/public/uploads');
-            $file->move($destinationPath, $fileName);
-            $requestData['logo'] = 'uploads/' . $fileName;
+            $file->move(public_path($this::$publicPath), $file->getClientOriginalName());
+            $requestData['logo'] =  '/' .$this::$publicPath.'/'. $file->getClientOriginalName();
         }
         if ($request->hasFile('icone')) {
             $file = $request->file('icone');
-            $fileName = str_random(40) . '.' . $file->getClientOriginalExtension();
-            $destinationPath = storage_path('/app/public/uploads');
-            $file->move($destinationPath, $fileName);
-            $requestData['icone'] = 'uploads/' . $fileName;
+            $file->move(public_path($this::$publicPath), $file->getClientOriginalName());
+            $requestData['icone'] = '/' .$this::$publicPath.'/' . $file->getClientOriginalName();
         }
 
         CasinoOnline::create($requestData);
 
-        return redirect('casino-online')->with('flash_message', 'CasinoOnline added!');
+        return redirect('admin/casino-online')->with('flash_message', 'CasinoOnline added!');
     }
 
     /**
@@ -138,30 +137,25 @@ class AdminCasinoOnlineController extends Controller
         $requestData = $request->all();
                 if ($request->hasFile('screenshot')) {
             $file = $request->file('screenshot');
-            $fileName = str_random(40) . '.' . $file->getClientOriginalExtension();
-            $destinationPath = storage_path('/app/public/uploads');
-            $file->move($destinationPath, $fileName);
-            $requestData['screenshot'] = 'uploads/' . $fileName;
+
+            $file->move(public_path($this::$publicPath), $file->getClientOriginalName());
+            $requestData['screenshot'] =  '/' .$this::$publicPath.'/'. $file->getClientOriginalName();
         }
         if ($request->hasFile('logo')) {
             $file = $request->file('logo');
-            $fileName = str_random(40) . '.' . $file->getClientOriginalExtension();
-            $destinationPath = storage_path('/app/public/uploads');
-            $file->move($destinationPath, $fileName);
-            $requestData['logo'] = 'uploads/' . $fileName;
+            $file->move(public_path($this::$publicPath), $file->getClientOriginalName());
+            $requestData['logo'] =  '/' .$this::$publicPath.'/'. $file->getClientOriginalName();
         }
         if ($request->hasFile('icone')) {
             $file = $request->file('icone');
-            $fileName = str_random(40) . '.' . $file->getClientOriginalExtension();
-            $destinationPath = storage_path('/app/public/uploads');
-            $file->move($destinationPath, $fileName);
-            $requestData['icone'] = 'uploads/' . $fileName;
+            $file->move(public_path($this::$publicPath), $file->getClientOriginalName());
+            $requestData['icone'] = '/' .$this::$publicPath.'/' . $file->getClientOriginalName();
         }
 
         $casinoonline = CasinoOnline::findOrFail($id);
         $casinoonline->update($requestData);
 
-        return redirect('casino-online')->with('flash_message', 'CasinoOnline updated!');
+        return redirect('admin/casino-online')->with('flash_message', 'CasinoOnline updated!');
     }
 
     /**
@@ -175,6 +169,6 @@ class AdminCasinoOnlineController extends Controller
     {
         CasinoOnline::destroy($id);
 
-        return redirect('casino-online')->with('flash_message', 'CasinoOnline deleted!');
+        return redirect('admin/casino-online')->with('flash_message', 'CasinoOnline deleted!');
     }
 }
