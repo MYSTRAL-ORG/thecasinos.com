@@ -89,10 +89,10 @@ $(document).ready(function () {
 
     const googleBase = new TileLayer({
         source: new XYZ({
-           //  url: 'https://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}&scale=2',
+            url: 'https://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}&scale=2',
             // url:'https://sat-cdn1.apple-mapkit.com/tile?style=7&size=1&scale=1&z=4&x={x}&y={y}&v={z}2&accessKey='+accesKey
             // url: 'https://tile.googleapis.com/v1/2dtiles/{x}/{y}/{z}?style=7&size=1&scale=1&key=AJVsH2zGQIkWpBGEyZa5oSamWrBDNP4_iBKcSkJjjHKYJvJPKnH33qHcOl3uwkrFgCXEXqLfSpym8qrwOscn7nE7VQ',
-           url: "https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}/?session=" + sessionGoogle + "&key=" + sessionGoogleKey,
+           //url: "https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}/?session=" + sessionGoogle + "&key=" + sessionGoogleKey,
 
 
             tilePixelRatio: 2
@@ -175,12 +175,26 @@ $(document).ready(function () {
         });
         async function fetchData() {
             try {
-                const response = await fetch(appUrl+'/casinos.json');
-                const geojson = await response.json();
+                const response = await fetch(appUrl+'/casinos.json').then(response => {
+                    // Check if the response is ok (status in the range 200-299)
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    // Parse the JSON response body
+                    return response.json();
+                    }).then(geojson => {
+                        // Process the JSON data
 
-                const geoJsonFormat = new GeoJSON();
-                allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
-                updateFeaturesOnExtentChange();
+
+                        const geoJsonFormat = new GeoJSON();
+                        allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
+                        updateFeaturesOnExtentChange();
+                    })
+                    .catch(error => {
+                        // Handle any errors from the fetch or from the JSON parsing
+                        console.error('There has been a problem with your fetch operation:', error);
+                    });
+
             } catch (error) {
                 console.error('Error:', error);
             }
