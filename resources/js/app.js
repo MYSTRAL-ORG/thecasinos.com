@@ -105,13 +105,18 @@ $(document).ready(function () {
     let lat = $('meta[name="_lat"]').attr('content');
     let fromIndex = $('meta[name="_fromIndex"]').attr('content');
     let zoomCarte= 0;
+    console.log('start');
     if( fromIndex != null){
-
+        console.log('fromIndex');
         if(fromIndex.toLowerCase() === "true"){
+            console.log('fromIndex True');
             zoomCarte = 9;
              lon = sessionStorage.getItem('long');
              lat = sessionStorage.getItem('lat');
+            console.log('fromIndex lon'+lon);
+            console.log('fromIndex lon'+lat);
             if( lon == null || lat == null ){
+                console.log('lon lat null');
               async function callGeolocationBeforeLoad() {
                   fetch('https://www.googleapis.com/geolocation/v1/geolocate?key=' + sessionGoogleKey, {
                       method: 'POST',
@@ -124,6 +129,7 @@ $(document).ready(function () {
                   })
                       .then(response => response.json())
                       .then(data => {
+                          console.log('new lon lat ');
                           lat = data.location.lat;
                           lon = data.location.lng;
                           sessionStorage.setItem('long', lon);
@@ -134,10 +140,12 @@ $(document).ready(function () {
                       .catch(error => {
                           console.error('Error:', error);
                       }).finally(() => {
+                      initializeMap();
 
                   })
               }
                 callGeolocationBeforeLoad();
+
           }else{
                 initializeMap();
             }
