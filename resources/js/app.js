@@ -134,8 +134,6 @@ $(document).ready(function () {
                           lon = data.location.lng;
                           sessionStorage.setItem('long', lon);
                           sessionStorage.setItem('lat', lat);
-
-
                       })
                       .catch(error => {
                           console.error('Error:', error);
@@ -146,15 +144,11 @@ $(document).ready(function () {
               }
                 callGeolocationBeforeLoad();
 
-          }else{
+            }else{
                 initializeMap();
             }
-
-
-
         }else{
             zoomCarte= 19;
-
             initializeMap();
         }
     }
@@ -163,8 +157,6 @@ $(document).ready(function () {
 
 
     function initializeMap() {
-
-
 
         const viewClient = new View({
             projection: 'EPSG:4326',

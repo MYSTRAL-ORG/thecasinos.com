@@ -58,7 +58,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
     'google_key' => env('GOOGLE_KEY', ''),
     'openai_api_key' => env('OPENAI_API_KEY', ''),
-
+    'password_admin' => env('PASSWORD_ADMIN', ''),
     'asset_url' => env('ASSET_URL'),
 
     /*

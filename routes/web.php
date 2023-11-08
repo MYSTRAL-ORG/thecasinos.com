@@ -4,6 +4,7 @@
 use App\Http\Controllers\admin\AdminCasinoOnlineController;
 use App\Http\Controllers\admin\CategoryCityController;
 use App\Http\Controllers\admin\CategoryController;
+use App\Http\Controllers\admin\PasswordController;
 use App\Http\Controllers\CasionOnLineController;
 use App\Http\Controllers\CrawlerController;
 use App\Http\Controllers\LocationController;
@@ -25,13 +26,25 @@ use App\Http\Controllers\IndexContoller;
 |
 */
 
+/***** ADMIN *****/
+Route::get('/passwordprompt', function () {
+    return view('passwordprompt');
+});
 
-Route::resource('/admin/category',  CategoryController::class );
-Route::resource('/admin/category-city',  CategoryCityController::class );
-Route::resource('/admin/casino-online',  AdminCasinoOnlineController::class );
+Route::post('/password-check', [ PasswordController::class, 'check'])->name('password.check');
+Route::middleware(['password.protected'])->group(function () {
+
+        Route::resource('/admin/category',  CategoryController::class );
+        Route::resource('/admin/category-city',  CategoryCityController::class );
+        Route::resource('/admin/casino-online',  AdminCasinoOnlineController::class );
+    Route::resource('/admin',  CategoryController::class );
+
+});
 
 
 
+
+/***** APP *****/
 
 
 
