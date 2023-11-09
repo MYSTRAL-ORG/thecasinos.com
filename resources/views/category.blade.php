@@ -8,7 +8,7 @@
 @section('category')
 	<div class="container feuille-container">
 		<section class=" feuille">
-			<h2>List of Casinos in {{ $location}}</h2>
+			<h2 class="mb-4">List of Casinos in {{ $location}}</h2>
 			<p>
             @if($categoryCity != null )
                 {!!$categoryCity->header_text!!}

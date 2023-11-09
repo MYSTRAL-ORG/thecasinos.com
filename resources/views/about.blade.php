@@ -9,9 +9,9 @@
 <title>@yield('page_title')</title>
 @section('page-info')
 
-	<div class="container feuille-container">
+	<div class=" container feuille-container">
 		<section class= "row feuille">
-			<h2>Online reference to onsite experience</h2>
+			<h2 class="mb-4">Online reference to onsite experience</h2>
 			<p>Hello fellow wanderer and casino enthusiast! Ever been in a foreign city, with that itch to try your luck, but clueless about where to head? Or perhaps you're simply curious about the grandeur of a classic Vegas casino compared to a chic Monaco counterpart? That's precisely where TheCasinos.com comes in. Your online compass to the world's most iconic land-based casinos.</p>
 				<h3><strong>The Pitch:</strong></h3>
 				<p>Just imagine, a world map dotted with neon-lit bulbs, each signifying a classic gaming paradise – from the bustling streets of Las Vegas to the luxurious shores of Monte Carlo. Each bulb grows brighter with its popularity, luring travelers and gamers alike. Click on one, and transport yourself to a comprehensive review of the casino – right from its history, games on offer, to the ambiance and, yes, even the cocktails!</p>

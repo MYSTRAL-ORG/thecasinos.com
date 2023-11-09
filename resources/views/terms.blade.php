@@ -11,7 +11,7 @@
 
 	<div class="container feuille-container">
 		<section class="row feuille">
-			<h2>Terms and conditions</h2>
+			<h2 class="mb-4">Terms and conditions</h2>
 			<p>Welcome to TheCasinos.com! Our mission is to provide you with the most comprehensive and up-to-date reviews of land-based casinos around the globe, enhanced with an intuitive map presentation. By browsing, accessing, or using our website (&ldquo;Website&rdquo;), you agree to adhere to these terms and conditions (&ldquo;Terms&rdquo;). If, for any reason, you find these Terms not to your liking, we recommend discontinuing use of our site. So, pull up a seat, let&rsquo;s get started, shall we?</p>
 				<h3><strong>Accepting the Terms</strong></h3>
 				<p>When you embark on this thrilling journey with TheCasinos.com, it indicates you&rsquo;ve perused, understood, and wholeheartedly agreed to these Terms. If these Terms sound like too much of a gamble for you, we suggest you fold and avoid using our Website. And remember, just like any hand in poker, always know what you're getting into.</p>

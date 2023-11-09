@@ -11,7 +11,7 @@
 
 	<div class="container feuille-container">
 		<section class="row feuille">
-			<h2>Private policy</h2>
+			<h2 class="mb-4">Private policy</h2>
 				<p>This Privacy Policy outlines the principles and procedures adopted by TheCasinos.com regarding the collection, use, and disclosure of user information. By accessing and using our Service, users consent to the practices detailed in this policy.</p>
 			<h3>2. Interpretation and Definitions</h3>
 			<h4>2.1 Interpretation </h4>
