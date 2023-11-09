@@ -29,7 +29,7 @@
 
 <div class=" copyright-section  d-flex justify-content-between ">
     <div> <p>&copy; 2023 TheCasinos.com - Online reference to onsite experience</p></div>
-    <div ><a href="#" class="contact-btn">Contact</a></div>
+    <div ><a href="mailto:admin@thecasinos.com" class="contact-btn">Contact</a></div>
 </div>
 
 <meta name="_appUrl" content="{{ config('app.url')}}"/>
