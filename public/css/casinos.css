@@ -1666,3 +1666,6 @@ ul li {
     flex-basis: initial;
 }
 
+svg.w-5.h-5 {
+    max-width: 50px;
+}

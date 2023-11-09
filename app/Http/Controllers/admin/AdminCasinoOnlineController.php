@@ -32,9 +32,9 @@ class AdminCasinoOnlineController extends Controller
                 ->orWhereRaw('LOWER(unaccent(sumup_description)) LIKE LOWER(unaccent(?))', ["%{$keyword}%"])
                 ->orWhereRaw('LOWER(unaccent(description)) LIKE LOWER(unaccent(?))', ["%{$keyword}%"])
 
-                ->orderBy('nom_casino')->paginate($perPage);
+                ->orderBy('classement')->paginate($perPage);
         } else {
-            $casinoonline = CasinoOnline::orderBy('nom_casino')->paginate($perPage);
+            $casinoonline = CasinoOnline::orderBy('classement')->paginate($perPage);
         }
 
         return view('admin/casino-online.index', compact('casinoonline'));

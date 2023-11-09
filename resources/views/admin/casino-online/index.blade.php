@@ -30,13 +30,14 @@
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>#</th><th>Nom Casino</th><th>Nom Casino Slug</th><th>Sous Titre</th><th>Actions</th>
+                                        <th>#</th><th>Position</th><th>Nom Casino</th><th>Nom Casino Slug</th><th>Sous Titre</th><th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($casinoonline as $item)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $item->classement }}</td>
                                         <td>{{ $item->nom_casino }}</td><td>{{ $item->nom_casino_slug }}</td><td>{{ $item->sous_titre }}</td>
                                         <td>
                                             <a href="{{ url('/admin/casino-online/' . $item->id) }}" title="View CasinoOnline"><button class="btn btn-info btn-sm"><i class="fa fa-eye" aria-hidden="true"></i> View</button></a>

@@ -37,6 +37,10 @@
                                     <td>{{ $casinoonline->nom_casino }}</td>
                                 </tr>
                                 <tr>
+                                    <th>Position</th>
+                                    <td>{{ $casinoonline->classement }}</td>
+                                </tr>
+                                <tr>
                                     <th>Nom Casino Slug</th>
                                     <td>{{ $casinoonline->nom_casino_slug }}</td>
                                 </tr>

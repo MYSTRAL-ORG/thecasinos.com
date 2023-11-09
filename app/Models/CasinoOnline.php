@@ -57,6 +57,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereScreenshot($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereSousTitre($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereSumupDescription($value)
+ * @property int|null $classement
+ * @method static \Illuminate\Database\Eloquent\Builder|CasinoOnline whereClassement($value)
  * @mixin \Eloquent
  */
 class CasinoOnline extends Model
@@ -88,6 +90,7 @@ class CasinoOnline extends Model
 		'contact_information_description',
 		'icone',
 		'actif',
-		'nom_casino_slug'
+		'nom_casino_slug',
+        'classement'
 	];
 }
