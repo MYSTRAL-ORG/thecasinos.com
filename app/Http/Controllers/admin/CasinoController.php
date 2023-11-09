@@ -66,8 +66,8 @@ class CasinoController extends Controller
         }
 
         Casino::create($requestData);
-        $serviceJson = new GenerateJsonService();
-        $serviceJson->writeJson();
+       /* $serviceJson = new GenerateJsonService();
+        $serviceJson->writeJson();*/
         return redirect('admin/casino')->with('flash_message', 'Casino added!');
     }
 
@@ -120,8 +120,8 @@ class CasinoController extends Controller
 
         $casino = Casino::findOrFail($id);
         $casino->update($requestData);
-        $serviceJson = new GenerateJsonService();
-        $serviceJson->writeJson();
+       /* $serviceJson = new GenerateJsonService();
+        $serviceJson->writeJson();*/
         return redirect('admin/casino')->with('flash_message', 'Casino updated!');
     }
 
