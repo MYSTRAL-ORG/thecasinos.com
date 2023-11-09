@@ -28,6 +28,12 @@ use App\Http\Controllers\IndexContoller;
 |
 */
 
+
+Route::get(' 404', function () {
+    return view('erros/404');
+});
+
+
 /***** ADMIN *****/
 Route::get('/passwordprompt', function () {
     return view('passwordprompt');
