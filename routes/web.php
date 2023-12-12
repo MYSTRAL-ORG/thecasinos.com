@@ -27,7 +27,9 @@ use App\Http\Controllers\IndexContoller;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Route::get('sitemap.xml',function() {
+    return response()->file('sitemap.xml');
+});
 
 Route::get(' 404', function () {
     return view('erros/404');
