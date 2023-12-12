@@ -5,15 +5,6 @@
 
     RewriteEngine On
 
-    # Rediriger de HTTP vers HTTPS
-    RewriteCond %{HTTPS} off
-    RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
-
-    # Ensure www is always used (Redirect non-www to www)
-    RewriteCond %{HTTP_HOST} !^www\. [NC]
-    RewriteCond %{HTTP_HOST} ^(.+)$ [NC]
-    RewriteRule ^ https://www.%1%{REQUEST_URI} [R=301,L,NE]
-
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -23,7 +14,7 @@
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Handle Front Controller...
+    # Send Requests To Front Controller...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
