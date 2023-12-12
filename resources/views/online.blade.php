@@ -18,7 +18,7 @@
 	<div class="container feuille-container">
 		<section class=" row feuille">
 			<h2 class="h2">The top 10 casinos online</h2>
-			<p class="mt-4">Thecasinos.com feels like being a kid in a candy store, but for online gaming enthusiasts. Picture a platform where the best online casinos come together, showcasing their most enticing games and alluring bonuses.</p>
+			<p class="mt-4">Thecasinos.com  feels like being a kid in a candy store, but for online gaming enthusiasts. Picture a platform where the best online casinos come together, showcasing their most enticing games and alluring bonuses.</p>
 		    <p>Before committing, Thecasinos.com lets you test some games for free, akin to sampling a treat at your favorite bakery. But a word to the wise about bonuses: not everything that shines is golden, and some offers might not live up to their hype.</p>
 			<p>Always craving something new? Thecasinos.com frequently updates with the latest casino introductions, reminiscent of a constantly evolving restaurant menu. Ready to embark on a fresh gaming journey?</p>
 			@php
