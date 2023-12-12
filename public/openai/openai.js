@@ -214,7 +214,7 @@ axios.get('http://casinos.test/tttt')
                     }
                 ).catch(console.error);
             }
-ret
+
         })
 
     })
