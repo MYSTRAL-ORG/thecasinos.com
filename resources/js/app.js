@@ -175,7 +175,7 @@ $(document).ready(function () {
         });
         async function fetchData() {
             try {
-                const response = await fetch(appUrl+'/casinos.json').then(response => {
+                const response = await fetch(appUrl+'/data-source.json').then(response => {
                     // Check if the response is ok (status in the range 200-299)
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
