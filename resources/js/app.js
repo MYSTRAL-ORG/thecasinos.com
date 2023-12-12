@@ -189,8 +189,7 @@ $(document).ready(function () {
                         const geoJsonFormat = new GeoJSON();
                         allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
                         updateFeaturesOnExtentChange();
-                    })
-                    .catch(error => {
+                    }).catch(error => {
                         // Handle any errors from the fetch or from the JSON parsing
                         console.error('There has been a problem with your fetch operation:', error);
                     });
