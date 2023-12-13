@@ -7,7 +7,7 @@
 
     <link rel="shortcut icon" href="#" />
 
-
+    <link rel="canonical" href="{{ config('app.url') . request()->getRequestUri() }}">
     <script src="/js/bootstrap.bundle.js"></script>
 
     <link rel="stylesheet" href="/css/bootstrap.min.css">
