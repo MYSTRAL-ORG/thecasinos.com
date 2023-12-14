@@ -12,23 +12,12 @@
 
 
 
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/casinos.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 
-    <script>
-        window.addEventListener('load', function() {
-            var link = document.createElement('link');
-            link.rel = 'stylesheet';
-            link.href = '/css/bootstrap.min.css';
-            document.head.appendChild(link);
-            var link2 = document.createElement('link');
-            link2.rel = 'stylesheet';
-            link2.href = '/css/casinos.css';
-            document.head.appendChild(link2);
-            var link3 = document.createElement('link');
-            link3.rel = 'stylesheet';
-            link3.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css';
-            document.head.appendChild(link3);
-        });
-    </script>
+
+
     @vite("resources/js/app.js")
     <title>@yield('page_title')</title>
     <meta name="description" content="@yield('page_description')">
