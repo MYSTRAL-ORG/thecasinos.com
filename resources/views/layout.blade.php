@@ -8,13 +8,13 @@
     <link rel="shortcut icon" href="#" />
 
     <link rel="canonical" href="{{ config('app.url') . request()->getRequestUri() }}">
-    <script src="/js/bootstrap.bundle.js" defer></script>
+    <script src="/js/bootstrap.bundle.js" defer async></script>
 
 
 
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-        <link rel="stylesheet" href="/css/casinos.css">
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+        <link rel="stylesheet" href="/css/bootstrap.min.css" media="all">
+        <link rel="stylesheet" href="/css/casinos.css" media="all">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"  media="all" >
 
 
 
