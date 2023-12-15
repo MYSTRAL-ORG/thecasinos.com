@@ -9,3 +9,5 @@ deployment:
     - /opt/alt/alt-nodejs16/root/usr/bin/npm install
     - /opt/alt/alt-nodejs16/root/usr/bin/npm run build
     - /bin/php artisan app:clean
+    - /bin/php artisan app:sitemap-casino
+
