@@ -13,10 +13,8 @@ use Spatie\Sitemap\Tags\Url;
 
 class generateStieMapCasino extends Command
 {
-    const SITEMAP_CASINOS_XML = 'sitemap-casinos.xml';
-    const SITEMAP_GLOBAL_XML = 'sitemap-global.xml';
+    const SITEMAP_CASINOS_XML = 'sitemap.xml';
 
-    const SITEMAP_CASINOS_ONLINE_XML = 'sitemap-casinos-online.xml';
     /**
      * The name and signature of the console command.
      *
@@ -37,9 +35,9 @@ class generateStieMapCasino extends Command
     public function handle(): void
     {
 
-        $sitemapPath = public_path(self::SITEMAP_GLOBAL_XML);
+
         $sitemapCasinoPath = public_path(self::SITEMAP_CASINOS_XML);
-        $sitemapCasinoOnLinePath = public_path(self::SITEMAP_CASINOS_ONLINE_XML);
+
 
 
 
@@ -50,27 +48,42 @@ class generateStieMapCasino extends Command
         $this->createAndAddUrl(config('app.url').'/about',$sitemap );
         $this->createAndAddUrl(config('app.url').'/terms',$sitemap );
         $this->createAndAddUrl(config('app.url').'/policy',$sitemap );
-        $this->writeSiteMap($sitemapPath, $sitemap);
+
+
+        //CASINOS ONLINE
+
+        CasinoOnline::all()->each(function (CasinoOnline $casinoOnLine) use ($sitemap) {
+            $this->createAndAddUrl(config('app.url') . "/online/" .$casinoOnLine->nom_casino_slug ,$sitemap);
+        });
+
+
 
 
 
         //CASINOS
-        $sitemapCasino = SitemapGenerator::create("")->getSitemap();
+
         // Liste des casinos
-        Casino::all()->each(function (Casino $casino) use ($sitemapCasino) {
-           $this->createAndAddUrl(config('app.url') . "/" . $casino->country_title . "/" . $casino->city_title . "/" . $casino->slug ,$sitemapCasino);
+        Casino::all()->each(function (Casino $casino) use ($sitemap) {
+            $this->createAndAddUrl(config('app.url') . "/" . $casino->country_title . "/" . $casino->city_title . "/" . $casino->slug ,$sitemap);
         });
-        $this->writeSiteMap($sitemapCasinoPath, $sitemapCasino);
 
 
 
-        //CASINOS ONLINE
-        $sitemapCasinoOnLine = SitemapGenerator::create("")->getSitemap();
-        // Liste des casinos
-        CasinoOnline::all()->each(function (CasinoOnline $casinoOnLine) use ($sitemapCasinoOnLine) {
-            $this->createAndAddUrl(config('app.url') . "/" .$casinoOnLine->nom_casino_slug ,$sitemapCasinoOnLine);
-        });
-        $this->writeSiteMap($sitemapCasinoOnLinePath, $sitemapCasinoOnLine);
+
+
+        $this->writeSiteMap($sitemapCasinoPath, $sitemap);
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     }
