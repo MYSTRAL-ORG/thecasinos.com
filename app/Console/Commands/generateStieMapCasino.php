@@ -112,8 +112,14 @@ class generateStieMapCasino extends Command
         if (file_exists($sitemapPath)) {
             unlink($sitemapPath);
         }
+        $sitemap->writeToFile($sitemapPath);
+        $gzPath = $sitemapPath . '.gz';
+        $gzData = gzencode(file_get_contents($sitemapPath), 9);
+        file_put_contents($gzPath, $gzData);
+
+
 
         // Enregistrez le sitemap dans un fichier public
-        $sitemap->writeToFile($sitemapPath);
+        //
     }
 }
