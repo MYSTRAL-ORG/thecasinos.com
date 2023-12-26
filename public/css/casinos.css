@@ -1084,8 +1084,8 @@ ul li {
     position: relative;
     width: 100%;
     min-height: 250px;
-    background: url('/img/main.jpg') no-repeat center center;
-    background-size: cover;
+    background: url('/img/main2.jpg') no-repeat center center;
+    background-size:    cover;
     border-bottom: 4px solid  var(--theme-red);
     text-align: center;
 }
