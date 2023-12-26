@@ -10,13 +10,13 @@
     <link rel="shortcut icon" href="#" />
 
     <link rel="canonical" href="{{ config('app.url') . parse_url(request()->getRequestUri(), PHP_URL_PATH) }}">
-    <script src="/js/bootstrap.bundle.js" defer async></script>
 
 
+    <script  src="/js/bootstrap.bundle.js" defer async></script>
 
-        <link rel="stylesheet" href="/css/bootstrap.min.css" media="all">
-        <link rel="stylesheet" href="/css/casinos.css" media="all">
-        <link    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" >
+    <link rel="stylesheet" href="/css/bootstrap.min.css" media="all">
+    <link rel="stylesheet" href="/css/casinos.css" media="all">
+    <link  media="all"  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet" >
 
 
 
