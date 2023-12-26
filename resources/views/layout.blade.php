@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,7 +9,7 @@
 
     <link rel="shortcut icon" href="#" />
 
-    <link rel="canonical" href="{{ config('app.url') . request()->getRequestUri() }}">
+    <link rel="canonical" href="{{ config('app.url') . parse_url(request()->getRequestUri(), PHP_URL_PATH) }}">
     <script src="/js/bootstrap.bundle.js" defer async></script>
 
 
