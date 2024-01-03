@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Models\Casino;
 use App\Models\CasinoOnline;
+use App\Models\Category;
+use App\Models\CategoryCity;
 use DateTime;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -20,7 +22,7 @@ class generateStieMapCasino extends Command
      *
      * @var string
      */
-    protected $signature = 'app:sitemap-casino';
+    protected $signature = 'app:sitemap';
 
     /**
      * The console command description.
@@ -68,6 +70,12 @@ class generateStieMapCasino extends Command
         });
 
 
+        Category::all()->each(function (Category $category) use ($sitemap) {
+            $this->createAndAddUrl(config('app.url') . "/" . $category->country_title  ,$sitemap);
+        });
+        CategoryCity::all()->each(function (CategoryCity $categoryCity) use ($sitemap) {
+            $this->createAndAddUrl(config('app.url') . "/" . $categoryCity->country_title . "/" . $categoryCity->city_title ,$sitemap);
+        });
 
 
 

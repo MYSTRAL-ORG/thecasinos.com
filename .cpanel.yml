@@ -8,7 +8,7 @@ deployment:
     - /opt/cpanel/composer/bin/composer install
     - /opt/alt/alt-nodejs16/root/usr/bin/npm install
     - /opt/alt/alt-nodejs16/root/usr/bin/npm run build
-    - /bin/php artisan app:sitemap-casino
+    - /bin/php artisan app:sitemap
     - /bin/php artisan app:clean
 
 
