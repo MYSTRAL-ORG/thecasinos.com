@@ -1,6 +1,12 @@
 @extends('layout')
 @section('page_title', 'TheCasinos.com : Online reference to Onsite experience')
 
+aaaa
+@if($casinos->currentPage() >1) <link rel="prev" href="{{ config('app.url') . parse_url(request()->getRequestUri(), PHP_URL_PATH) }}?page={{$casinos->currentPage()-1}}" />  @endif
+@if($casinos->currentPage() < $casinos->lastPage())<link rel="next" href="{{ config('app.url') . parse_url(request()->getRequestUri(), PHP_URL_PATH) }}?page={{$casinos->currentPage()+1}}" />  @endif
+
+
+
 
 @php
     use Illuminate\Support\Str;
