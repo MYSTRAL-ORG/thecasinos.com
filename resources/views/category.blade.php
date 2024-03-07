@@ -23,7 +23,7 @@
        <div class="col-lg-4 col-md-6 col-sm-12 mt-2 mb-2">
            <div class=" casino-box  ">
                <div class="casino-image">
-                   <img src="{{env('APP_URL').'/img/casino/'.$casino->img_url  }}" alt="{{$casino->name}} Casino">
+                   <img  src="" data-src="{{env('APP_URL').'/img/casino/'.$casino->img_url  }}" alt="{{$casino->name}} Casino" class="lazy">
                    <div class="category-location">
                        <img src="{{ env('APP_URL') }}/img/icons/location.png" alt="Location Icon">
                        <span>{{$casino->city_name}}</span>
