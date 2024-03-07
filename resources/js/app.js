@@ -16,6 +16,13 @@ import {containsCoordinate} from "ol/extent.js";
 
 
 $(document).ready(function () {
+
+
+   
+
+
+
+
     const appUrl = $('meta[name="_appUrl"]').attr('content');
     const sessionGoogle = $('meta[name="_googleSessionToken"]').attr('content');
     const sessionGoogleKey = $('meta[name="_googleKey"]').attr('content');

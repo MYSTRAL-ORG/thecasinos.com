@@ -41,7 +41,7 @@
         @endif</div>
 	<div class="casino-block" id="sumup">
 		<h3>To sum up</h3>
-		<img src="/img/casino/{{$casino->img_url}}" alt="Casino presentation" class="image-casino">
+		<img    src="" data-src="/img/casino/{{$casino->img_url}}" alt="Casino presentation" class="lazy image-casino">
 		<p class="pt-3">{!!  $casinoDetail->sumup!!}</p>
 	</div>
 
@@ -53,13 +53,13 @@
 
 	<div class="casino-block" id="funfacts">
 		<h3>Fun Facts</h3>
-		<img src="/img/sidebar-facts.jpg" alt="Casino Fun facts" class="image-casino">
+		<img     src="" data-src="/img/sidebar-facts.jpg" alt="Casino Fun facts" class="lazy image-casino">
 		<p class="pt-3">{!!  $casinoDetail->fun_facts!!}</p>
 	</div>
 
 	<div class="casino-block" id="contact">
 		<h3>Contact</h3>
-		<img src="/img/sidebar-contact.jpg" alt="Casino contact" class="image-casino">
+		<img     src="" data-src="/img/sidebar-contact.jpg" alt="Casino contact" class="lazy image-casino">
         <br>  <br>
 		<p>
             @if($casino->telephone)

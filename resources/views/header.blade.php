@@ -1,4 +1,32 @@
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const images = document.querySelectorAll('img.lazy');
 
+        if ('IntersectionObserver' in window) {
+            const lazyImageObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        let lazyImage = entry.target;
+                        lazyImage.src = lazyImage.dataset.src;
+                        lazyImage.classList.remove('lazy');
+                        lazyImage.classList.add('loaded');
+                        lazyImageObserver.unobserve(lazyImage);
+                    }
+                });
+            });
+
+            images.forEach((lazyImage) => {
+                lazyImageObserver.observe(lazyImage);
+            });
+        } else {
+            // Fallback for browsers that don't support IntersectionObserver
+            images.forEach((lazyImage) => {
+                lazyImage.src = lazyImage.dataset.src;
+                lazyImage.classList.remove('lazy');
+            });
+        }
+    });
+</script>
 
 
 
