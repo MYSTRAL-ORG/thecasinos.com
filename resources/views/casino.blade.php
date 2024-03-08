@@ -46,7 +46,7 @@
 
 
 
-                <img  src="" data-src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class="lazy image-casino ">
+                <img  src="" loading="lazy" data-src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class="lazy image-casino ">
                 @include("menu-casino")
             </div>
             <div class="col-lg-8 col-sm-12 pt-2">
