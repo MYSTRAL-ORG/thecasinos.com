@@ -1070,7 +1070,8 @@ ul li {
 
 
 .image-casino {
-    width: 100%;   /* Force l'image à prendre toute la largeur de la feuille */
+    width: 100%;
+    height: 100%; /* Force l'image à prendre toute la largeur de la feuille */
     max-height: 400px; /* Limite la hauteur de l'image à 80px */
     object-fit: cover; /* Cela s'assure que l'image couvre toute la zone de l'élément img sans déformation */
     border-radius: 10px;

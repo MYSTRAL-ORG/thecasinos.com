@@ -110,8 +110,8 @@ class ImagesService
 
         ImageManager::configure(['driver' => 'imagick']); // ou 'gd' si vous préférez
 
-        $directory = public_path('img/casino'); // Chemin du dossier contenant les images originales
-        $newDirectory = public_path('img/casino_converted'); // Chemin du dossier pour sauvegarder les images converties
+        $directory = public_path('img/casinos/randomCasinos'); // Chemin du dossier contenant les images originales
+        $newDirectory = public_path('img/casinos/randomCasinos'); // Chemin du dossier pour sauvegarder les images converties
 
         if (!file_exists($newDirectory)) {
             mkdir($newDirectory, 0755, true); // Crée le dossier si n'existe pas
