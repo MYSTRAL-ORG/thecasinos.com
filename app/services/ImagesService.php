@@ -12,6 +12,8 @@ use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\HttpClient\HttpClient;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\Facades\Image;
+use Intervention\Image\ImageManagerStatic as ImageManager;
+
 class ImagesService
 {
 
@@ -102,6 +104,41 @@ class ImagesService
         }
 
     }
+
+
+    public function getnerateWebpImage(){
+
+        ImageManager::configure(['driver' => 'imagick']); // ou 'gd' si vous préférez
+
+        $directory = public_path('img/casino'); // Chemin du dossier contenant les images originales
+        $newDirectory = public_path('img/casino_converted'); // Chemin du dossier pour sauvegarder les images converties
+
+        if (!file_exists($newDirectory)) {
+            mkdir($newDirectory, 0755, true); // Crée le dossier si n'existe pas
+        }
+
+        $images = scandir($directory);
+
+        foreach ($images as $img) {
+            if (in_array($img, ['.', '..'])) continue; // Ignorer les dossiers . et ..
+
+            $originalPath = $directory . '/' . $img;
+            $newPath = $newDirectory . '/' . pathinfo($img, PATHINFO_FILENAME) . '.webp';
+
+            // Vérifie si le fichier est une image avant de tenter de la convertir
+            if (@is_array(getimagesize($originalPath))) {
+                // Convertir l'image en WebP et la sauvegarder
+                $image = ImageManager::make($originalPath)->encode('webp', 80); // 90 est la qualité
+                $image->save($newPath);
+            }
+        }
+
+        echo "Conversion terminée.";
+
+    }
+
+
+
 
 
 }
