@@ -64,5 +64,5 @@
 
 @endsection
 @section('map')
-
+    @include('map')
 @endsection
