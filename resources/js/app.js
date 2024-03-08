@@ -18,7 +18,7 @@ import {containsCoordinate} from "ol/extent.js";
 $(document).ready(function () {
 
 
-   
+
 
 
 
@@ -276,6 +276,9 @@ $(document).ready(function () {
                     });
                     //Display matched part in bold
                     // Highlight the matched text
+
+
+
 
                     let imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
                      imageURL = appUrl + imageURL;
