@@ -20,7 +20,7 @@ class LocationController extends Controller
         $lat = 36.1450;
 
 
-        $casino = Casino::where('slug',$slug)->first();
+        $casino = Casino::where('country_title', $country)->where('city_title', $city)->where('city_title', $city)->where('slug',$slug)->first();
 
         $casinoDetail = CasinoDetail::where('id_casino',  $casino->id)->first();
         $lon = $casino->location_longitude;

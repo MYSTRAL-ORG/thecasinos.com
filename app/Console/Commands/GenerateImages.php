@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Intervention\Image\Facades\Image;
 use File;
+use Log;
+
 class GenerateImages extends Command
 {
     /**
@@ -29,9 +31,11 @@ class GenerateImages extends Command
     {
         $sourceDir = public_path('img/casino'); // The source directory
         $sizes = [
-            'mobile' => 360,   // Width for mobile devices
-            'tablet' => 768,   // Width for tablet devices
+
+
             'desktop' => 1920, // Width for desktop devices
+            'tablet' => 768,   // Width for tablet devices
+            'mobile' => 360,   // Width for mobile devices
         ];
 
         if (!File::isDirectory($sourceDir)) {
@@ -46,16 +50,15 @@ class GenerateImages extends Command
                 $targetDirPath = public_path('img/casino/' . $folder);
 
                 File::isDirectory($targetDirPath) or File::makeDirectory($targetDirPath, 0755, true);
-
+                $this->info($width);
                 $resizedImage = $image->resize($width, null, function ($constraint) {
                     $constraint->aspectRatio();
-                    $constraint->upsize();
                 });
 
                 $resizedImage->save($targetDirPath . '/' . $file->getFilename());
             }
 
-            $this->info("Images have been resized and moved to respective folders.");
+            //$this->info("Images have been resized and moved to respective folders.");
         }
 
         return 0;
