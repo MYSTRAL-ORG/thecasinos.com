@@ -46,7 +46,7 @@
 
 
 
-                <img  loading="lazy" src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class=" image-casino ">
+               <!--  <img  loading="lazy" src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class=" image-casino "> -->
                 @include("menu-casino")
             </div>
             <div class="col-lg-8 col-sm-12 pt-2">
@@ -64,5 +64,5 @@
 
 @endsection
 @section('map')
-    @include('map')
+
 @endsection

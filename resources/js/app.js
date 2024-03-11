@@ -113,9 +113,11 @@ $(document).ready(function () {
     let fromIndex = $('meta[name="_fromIndex"]').attr('content');
     let zoomCarte= 0;
     console.log('start');
-    if( fromIndex != null){
+    const showMap  =  fromIndex === 'true';
+
+
         console.log('fromIndex');
-        if(fromIndex.toLowerCase() === "true"){
+        if(showMap){
             console.log('fromIndex True');
             zoomCarte = 9;
              lon = sessionStorage.getItem('long');
@@ -158,31 +160,32 @@ $(document).ready(function () {
             zoomCarte= 19;
             initializeMap();
         }
-    }
+
 
 
 
 
     function initializeMap() {
+       if(showMap) {
+           const viewClient = new View({
+               projection: 'EPSG:4326',
+               center: [Number(lon), Number(lat)],
+               zoom: zoomCarte,
+           });
 
-        const viewClient = new View({
-            projection: 'EPSG:4326',
-            center: [Number(lon), Number(lat)],
-            zoom: zoomCarte,
-        });
 
-
-        map = new Map({
-            layers: [ googleBase, casinoVectorLayer6],
-            target: 'map',
-            useInterimTilesOnError: false,
-            preload: Infinity,
-            view: viewClient,
-            controls: []
-        });
+           map = new Map({
+               layers: [googleBase, casinoVectorLayer6],
+               target: 'map',
+               useInterimTilesOnError: false,
+               preload: Infinity,
+               view: viewClient,
+               controls: []
+           });
+       }
         async function fetchData() {
             try {
-                const response = await fetch(appUrl +'/data-source.txt').then(response => {
+                const response = await fetch(appUrl +  showMap ? '/data-source.txt' :'data-source-light.txt' ).then(response => {
                     // Check if the response is ok (status in the range 200-299)
                     if (!response.ok) {
                         throw new Error('Network response was not ok ' + response.statusText);
@@ -195,7 +198,9 @@ $(document).ready(function () {
 
                         const geoJsonFormat = new GeoJSON();
                         allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
+                    if(showMap) {
                         updateFeaturesOnExtentChange();
+                    }
                     })
                     .catch(error => {
                         // Handle any errors from the fetch or from the JSON parsing
@@ -206,25 +211,26 @@ $(document).ready(function () {
                 console.error('Error:', error);
             }
         }
-        fetchData();
-        map.on('moveend', updateFeaturesOnExtentChange);
+       // fetchData();
+
+        if(showMap) {
+            map.on('moveend', updateFeaturesOnExtentChange);
 
 
-
-         select = new Select({
-            condition: click,
-            style: function (feature, resolution) {
-                return generatedStyle(feature, resolution, true);
-            }
-        })
-        map.addInteraction(select);
-
-
-        select.getFeatures().on(['add','remove'], function(e) {
-            jqueryActionGallery($("#see-more-action-"+e.element.getId()),e.type);
-        });
+            select = new Select({
+                condition: click,
+                style: function (feature, resolution) {
+                    return generatedStyle(feature, resolution, true);
+                }
+            })
+            map.addInteraction(select);
 
 
+            select.getFeatures().on(['add', 'remove'], function (e) {
+                jqueryActionGallery($("#see-more-action-" + e.element.getId()), e.type);
+            });
+
+        }
 
         let inputElement = document.getElementById('search-casino');
         let resultsList = document.getElementById('autocompleteResults');
