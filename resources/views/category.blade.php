@@ -23,7 +23,19 @@
        <div class="col-lg-4 col-md-6 col-sm-12 mt-2 mb-2">
            <div class=" casino-box  ">
                <div class="casino-image">
-                   <img loading="lazy" src="{{env('APP_URL').'/img/casino/'.$casino->img_url  }}" alt="{{$casino->name}} Casino" class="lazy">
+
+
+                   <img loading="lazy"
+                        src="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}"
+                        alt="{{ $casino->name }} Casino"
+                        srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }} 480w,
+             {{ env('APP_URL') . '/img/casino/tablet/' . $casino->img_url }} 768w,
+             {{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }} 1024w"
+                        sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, 1024px">
+
+
+
+
                    <div class="category-location">
                        <img loading="lazy" src="{{ env('APP_URL') }}/img/icons/location.png" alt="Location Icon">
                        <span>{{$casino->city_name}}</span>

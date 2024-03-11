@@ -173,6 +173,7 @@ return [
         Reliese\Coders\CodersServiceProvider::class,
         Stevebauman\Location\LocationServiceProvider::class,
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
     ])->toArray(),
 
     /*
@@ -188,6 +189,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'Location' => Stevebauman\Location\Facades\Location::class,
+        'Image' => Intervention\Image\Facades\Image::class,
         // 'Example' => App\Facades\Example::class,
     ])->toArray(),
 
