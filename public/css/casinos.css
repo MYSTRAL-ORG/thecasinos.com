@@ -22,8 +22,22 @@ body {
 }
 
 p {
-    font-size: 20px;
+    font-size: 20px; /* Taille de police pour les écrans plus grands */
     line-height: 1.5;
+}
+
+/* Media query pour les écrans de tablette */
+@media (max-width: 768px) {
+    p {
+        font-size: 18px; /* Taille de police légèrement réduite pour les tablettes */
+    }
+}
+
+/* Media query pour les écrans de téléphone */
+@media (max-width: 480px) {
+    p {
+        font-size: 16px; /* Taille de police plus petite pour les téléphones */
+    }
 }
 
 ul {

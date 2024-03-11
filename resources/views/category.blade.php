@@ -7,9 +7,9 @@
 @endphp
 @section('category')
 	<div class="container feuille-container">
-		<section class=" feuille">
+		<section class="  feuille">
 			<h2 class="mb-4">List of Casinos in {{ $location}}</h2>
-			<p>
+			<p class="m-2">
             @if($categoryCity != null )
                 {!!$categoryCity->header_text!!}
            @else
@@ -23,9 +23,9 @@
        <div class="col-lg-4 col-md-6 col-sm-12 mt-2 mb-2">
            <div class=" casino-box  ">
                <div class="casino-image">
-                   <img  src="{{env('APP_URL').'/img/casino/'.$casino->img_url  }}" alt="{{$casino->name}} Casino" class="lazy">
+                   <img loading="lazy" src="{{env('APP_URL').'/img/casino/'.$casino->img_url  }}" alt="{{$casino->name}} Casino" class="lazy">
                    <div class="category-location">
-                       <img src="{{ env('APP_URL') }}/img/icons/location.png" alt="Location Icon">
+                       <img loading="lazy" src="{{ env('APP_URL') }}/img/icons/location.png" alt="Location Icon">
                        <span>{{$casino->city_name}}</span>
                    </div>
                </div>
