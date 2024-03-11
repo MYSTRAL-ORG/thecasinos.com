@@ -38,6 +38,7 @@ class IndexContoller extends Controller
 
     function category (Request $request, LocationService $locationService, GoogleService $googleService , String $country, String $city =null)
     {
+        $fromIndex= 'false';
 
         $casinos = DB::table('casino')
             ->join('casino_details', 'casino.id', '=', 'casino_details.id_casino')
