@@ -211,7 +211,7 @@ $(document).ready(function () {
                 console.error('Error:', error);
             }
         }
-       // fetchData();
+         fetchData();
 
         if(showMap) {
             map.on('moveend', updateFeaturesOnExtentChange);
