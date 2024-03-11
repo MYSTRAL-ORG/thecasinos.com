@@ -41,13 +41,23 @@
         @endif</div>
 	<div class="casino-block" id="sumup">
 		<h3>To sum up</h3>
-		<img    src="/img/casino/{{$casino->img_url}}" alt="Casino presentation" class=" image-casino">
+
+        <img loading="lazy"
+             src="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}"
+
+             srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }} 480w,
+             {{ env('APP_URL') . '/img/casino/tablet/' . $casino->img_url }} 768w,
+             {{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }} 1024w"
+             sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, 1024px" alt="Casino presentation" class=" image-casino ">
+
+
+
 		<p class="pt-3">{!!  $casinoDetail->sumup!!}</p>
 	</div>
 
 	<div class="casino-block" id="games">
 		<h3>Games</h3>
-		<img src="/img/sidebar-games.jpg" alt="Casino Games" class="image-casino">
+		<img loading="lazy"  src="/img/sidebar-games.jpg" alt="Casino Games" class="image-casino">
 		<p class="pt-3">{!!  $casinoDetail->games!!}</p>
 	</div>
 
@@ -59,7 +69,7 @@
 
 	<div class="casino-block" id="contact">
 		<h3>Contact</h3>
-		<img     src="/img/sidebar-contact.jpg" alt="Casino contact" class=" image-casino">
+		<img  loading="lazy"   src="/img/sidebar-contact.jpg" alt="Casino contact" class=" image-casino">
         <br>  <br>
 		<p>
             @if($casino->telephone)
