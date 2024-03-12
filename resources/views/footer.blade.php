@@ -3,7 +3,7 @@
     <div class="row justify-content-center   footer">
         <div class="col-sm-6 col-lg-2 column text-center ">
             <a href="https://www.thecasinos.com">
-                <img src="/img/logo.png" alt="Logo">
+                <img loading="lazy" src="/img/logo.png" alt="Logo">
             </a>
         </div>
         <div class="col-sm-6 col-lg-3 column-description">

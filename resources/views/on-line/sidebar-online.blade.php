@@ -35,13 +35,13 @@
 
         <div class="casino-block" id="sumup">
             <h3>To sum up</h3>
-            <img src="{{env('APP_URL').$casinoOnLine->logo}}" alt="Casino presentation" class="image-casino">
+            <img loading="lazy"  src="{{env('APP_URL').$casinoOnLine->logo}}" alt="Casino presentation" class="image-casino">
             <p class="pt-2">{!! $casinoOnLine->sumup_description!!}</p>
         </div>
 
         <div class="casino-block" id="bonus">
             <h3>Bonus</h3>
-            <img src="/img/sidebar-games.jpg" alt="Casino Games" class="image-casino">
+            <img loading="lazy"  src="/img/sidebar-games.jpg" alt="Casino Games" class="image-casino">
             <p class="pt-2"> {!! $casinoOnLine->bonus_description!!}</p>
             <div class="casino-button-container-inside">
                 <button class="casino-register-button-inside">{{$casinoOnLine->bonus}}</button>
@@ -49,7 +49,7 @@
         </div>
         <div class="casino-block" id="deposit">
             <h3>Deposit method</h3>
-            <img src="/img/sidebar-facts.jpg" alt="Casino Fun facts" class="image-casino">
+            <img loading="lazy"  src="/img/sidebar-facts.jpg" alt="Casino Fun facts" class="image-casino">
             <p class="pt-2">{!!$casinoOnLine->deposit_mehods_description!!}</p>
             <div class="casino-data-container">
                 @foreach (explode('|', $casinoOnLine->deposit_mehods) as $dm)
@@ -60,7 +60,7 @@
 
         <div class="casino-block" id="contact">
             <h3>Contact</h3>
-            <img src="/img/sidebar-contact.jpg" alt="Casino contact" class="image-casino">
+            <img loading="lazy"  src="/img/sidebar-contact.jpg" alt="Casino contact" class="image-casino">
             <p class="pt-2">{!!$casinoOnLine->contact_information_description !!}</p>
             <div class="casino-data-container">
                 @foreach (explode('|', $casinoOnLine->contact_information) as $contact)

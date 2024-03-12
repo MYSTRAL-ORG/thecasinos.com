@@ -1,6 +1,6 @@
 <div class="  mt-3 row review-casino-box pt-2">
   <div class="col-sm-12 col-lg-12 review-top-section">
-    <img class="review-casino-logo" src="{{env('APP_URL').$casinoOnLine->logo}}" alt="">
+    <img  loading="lazy"  class="review-casino-logo" src="{{env('APP_URL').$casinoOnLine->logo}}" alt="">
     <div class="review-white-line"></div>
     <!-- Ajout du système de note -->
     <div class="review-rating-box">
@@ -24,7 +24,7 @@
         </div>
 
         <div class=" col-sm-12 col-lg-6">
-          <img class="review-casino-image" src="{{env('APP_URL').$casinoOnLine->screenshot}}" alt="">
+          <img loading="lazy"  class="review-casino-image" src="{{env('APP_URL').$casinoOnLine->screenshot}}" alt="">
         </div>
 
   <div class=" col-sm-12 col-lg-6 review-bottom-section">

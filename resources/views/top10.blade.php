@@ -33,7 +33,7 @@
      @foreach ($columns as $col)
         @switch ($col)
             @case( 'Logo')
-                <td class='casino-logo'><img src='{{env('APP_URL').$casino->icone}}' alt='Casino Logo'></td>
+                <td class='casino-logo'><img loading="lazy"  src='{{env('APP_URL').$casino->icone}}' alt='Casino Logo'></td>
                 @break
             @case( 'Brand')
                 <td class='casino-brand'>{{$casino->nom_casino}}</td>

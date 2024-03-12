@@ -64,7 +64,7 @@
 
 	<div class="casino-block" id="funfacts">
 		<h3>Fun Facts</h3>
-		<img     src="/img/sidebar-facts.jpg" alt="Casino Fun facts" class=" image-casino">
+		<img  loading="lazy"    src="/img/sidebar-facts.jpg" alt="Casino Fun facts" class=" image-casino">
 		<p class="pt-3">{!!  $casinoDetail->fun_facts!!}</p>
 	</div>
 

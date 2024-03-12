@@ -16,7 +16,7 @@
             <input id="search-casino" class="align-middle  search-bar  "  placeholder="Search..."/>
             <ul id="search-casino-list" class="search-casino-list d-none"></ul>
             <button class="btn search-btn">
-                <img src="/img/icons/zoom.png" alt="Search Icon" />
+                <img  loading="lazy" src="/img/icons/zoom.png" alt="Search Icon" />
             </button>
         </div>
         @endif

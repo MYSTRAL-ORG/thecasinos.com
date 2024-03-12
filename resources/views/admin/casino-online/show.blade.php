@@ -55,7 +55,7 @@
                                 <tr>
                                     <th>Screenshot</th>
 
-                                    <td><img src="{{ $casinoonline->screenshot }}" height="100" width="100">{{ $casinoonline->screenshot }} {{ $casinoonline->screenshot }}</td>
+                                    <td><img loading="lazy"  src="{{ $casinoonline->screenshot }}" height="100" width="100">{{ $casinoonline->screenshot }} {{ $casinoonline->screenshot }}</td>
                                 </tr>
                                 <tr>
                                     <th>Pros</th>
@@ -109,11 +109,11 @@
 
                                 <tr>
                                     <th>Logo</th>
-                                    <td><img src="{{ $casinoonline->logo }}" height="100" width="100">{{ $casinoonline->logo }}</td>
+                                    <td><img  loading="lazy"  src="{{ $casinoonline->logo }}" height="100" width="100">{{ $casinoonline->logo }}</td>
                                 </tr>
                                 <tr>
                                     <th>Icone</th>
-                                    <td><img src="{{ $casinoonline->icone }}" height="100" width="100">{{ $casinoonline->icone }}</td>
+                                    <td><img loading="lazy"  src="{{ $casinoonline->icone }}" height="100" width="100">{{ $casinoonline->icone }}</td>
                                 </tr>
 
                                 </tbody>

@@ -38,7 +38,7 @@
 
     <p style="text-align: center">The page you're looking for might have been moved, renamed, or might never have existed. But don't worry, your next big win could be just around the corner!</p>
     <a href="/" class="home-button">Return to Home</a>
-   <img class="rounded mx-auto d-block" src="/img/404.png">
+   <img  loading="lazy" class="rounded mx-auto d-block" src="/img/404.png" />
 </div>
 <!-- Footer with sustainability message -->
 </body>
