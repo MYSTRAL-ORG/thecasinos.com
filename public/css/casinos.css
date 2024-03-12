@@ -221,7 +221,7 @@ body, html {
 
 .gallery {
     background-color: black;
-    background-image: url('/img/background.jpg'); /* Remplacez par le chemin de votre image */
+    background-image: url('/img/background.webp'); /* Remplacez par le chemin de votre image */
     background-repeat: no-repeat; /* Evite la répétition de l'image */
     background-size: cover; /* S'assure que l'image couvre toute la galerie */
     background-position: center; /* Centre l'image d'arrière-plan */
