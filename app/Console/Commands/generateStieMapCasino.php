@@ -15,7 +15,7 @@ use Spatie\Sitemap\Tags\Url;
 
 class generateStieMapCasino extends Command
 {
-    const SITEMAP_CASINOS_XML = 'sitemap.xml';
+    const SITEMAP_CASINOS_XML = 'sitemap';
 
     /**
      * The name and signature of the console command.
@@ -35,79 +35,62 @@ class generateStieMapCasino extends Command
      * Execute the console command.
      */
     public function handle(): void
-    {
+    {$urls = collect([]);
 
+// Ajouter des URLs globales
+        $globalUrls = [
+            config('app.url'),
+            config('app.url').'/online',
+            config('app.url').'/about',
+            config('app.url').'/terms',
+            config('app.url').'/policy',
+        ];
+        foreach ($globalUrls as $url) {
+            $urls->push(['url' => $url, 'priority' => 0.5]);
+        }
 
-        $sitemapCasinoPath = public_path(self::SITEMAP_CASINOS_XML);
-
-
-
-
-        //GLOBAL
-        $sitemap = SitemapGenerator::create("")->getSitemap();
-        $this->createAndAddUrl(config('app.url'),$sitemap );
-        $this->createAndAddUrl(config('app.url').'/online',$sitemap );
-        $this->createAndAddUrl(config('app.url').'/about',$sitemap );
-        $this->createAndAddUrl(config('app.url').'/terms',$sitemap );
-        $this->createAndAddUrl(config('app.url').'/policy',$sitemap );
-
-
-        //CASINOS ONLINE
-
-        CasinoOnline::all()->each(function (CasinoOnline $casinoOnLine) use ($sitemap) {
-            $this->createAndAddUrl(config('app.url') . "/online/" .$casinoOnLine->nom_casino_slug ,$sitemap);
+// Ajouter des URLs pour CasinoOnline
+        CasinoOnline::all()->each(function($item) use ($urls) {
+            $urls->push(['url' => config('app.url') . "/online/" . $item->nom_casino_slug, 'priority' => 0.5]);
         });
 
-
-
-
-
-        //CASINOS
-
-        // Liste des casinos
-        Casino::all()->each(function (Casino $casino) use ($sitemap) {
-            $this->createAndAddUrl(config('app.url') . "/" . $casino->country_title . "/" . $casino->city_title . "/" . $casino->slug ,$sitemap);
+// Ajouter des URLs pour Casino avec une priorité élevée
+        Casino::all()->each(function($item) use ($urls) {
+            $urls->push(['url' => config('app.url') . "/" . $item->country_title . "/" . $item->city_title . "/" . $item->slug, 'priority' => 1.0]);
         });
 
-
-        Category::all()->each(function (Category $category) use ($sitemap) {
-            $this->createAndAddUrl(config('app.url') . "/" . $category->country_title  ,$sitemap);
+// Ajouter des URLs pour Category et CategoryCity
+        Category::all()->each(function($item) use ($urls) {
+            $urls->push(['url' => config('app.url') . "/" . $item->country_title, 'priority' => 0.5]);
         });
-        CategoryCity::all()->each(function (CategoryCity $categoryCity) use ($sitemap) {
-            $this->createAndAddUrl(config('app.url') . "/" . $categoryCity->country_title . "/" . $categoryCity->city_title ,$sitemap);
+        CategoryCity::all()->each(function($item) use ($urls) {
+            $urls->push(['url' => config('app.url') . "/" . $item->country_title . "/" . $item->city_title, 'priority' => 0.5]);
         });
 
+// Segmenter et générer des sitemaps
+        // Segmenter et générer des sitemaps
+        $urls->chunk(900)->each(function ($chunk, $index) {
+            $sitemap = Sitemap::create();
+            foreach ($chunk as $item) {
+                $this->createAndAddUrl($item['url'], $sitemap, $item['priority']);
+            }
 
-
-        $this->writeSiteMap($sitemapCasinoPath, $sitemap);
-
-
-
-
-
-
-
-
-
-
-
-
-
+            $filename = $index === 0 ? 'sitemap.xml' : "sitemap-{$index}.xml";
+            $sitemap->writeToFile(public_path($filename));
+        });
 
     }
 
-    /**
-     * @param Casino $casino
-     * @return Url
-     */
-    function createAndAddUrl(String $url, Sitemap $sitemap): void
+    function createAndAddUrl(String $url, Sitemap $sitemap, float $priority = 0.5): void
     {
-        $url = new Url($url);
-        $url->setChangeFrequency('daily');
-        $url->setLastModificationDate(new DateTime('now'));
-        $url->setPriority(1);
+        $url = Url::create($url)
+            ->setChangeFrequency('weekly') // ou 'daily' selon la fréquence de mise à jour de votre contenu
+            ->setLastModificationDate(now())
+            ->setPriority($priority);
         $sitemap->add($url);
     }
+
+
 
     /**
      * @param string $sitemapPath
