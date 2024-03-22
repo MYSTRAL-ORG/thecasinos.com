@@ -69,7 +69,7 @@ class generateStieMapCasino extends Command
 
 // Segmenter et générer des sitemaps
         // Segmenter et générer des sitemaps
-        $urls->chunk(900)->each(function ($chunk, $index) {
+        $urls->chunk(1500)->each(function ($chunk, $index) {
             $sitemap = Sitemap::create();
             foreach ($chunk as $item) {
                 $this->createAndAddUrl($item['url'], $sitemap, $item['priority']);
