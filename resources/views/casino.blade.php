@@ -72,14 +72,16 @@
                 <h2 class="h2">{{$casinoDetail->title}}</h2>
 
                 <img loading="lazy"
+                     class="image-casino "
                      src="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}"
                      alt="{{ $casino->name }}"
-                     srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }} 480w,
+                     srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }} 600w,
              {{ env('APP_URL') . '/img/casino/tablet/' . $casino->img_url }} 768w,
              {{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }} 1024w"
-                     sizes="(max-width: 480px) 480px, (max-width: 768px) 768px, 1024px"  class=" image-casino ">
+                     sizes="(max-width: 600px) 600px, (max-width: 768px) 768px, 1024px">
 
-               <!--  <img  loading="lazy" src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class=" image-casino "> -->
+
+                <!--  <img  loading="lazy" src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class=" image-casino "> -->
                 @include("menu-casino")
             </div>
             <div class="col-lg-8 col-sm-12 pt-2">
