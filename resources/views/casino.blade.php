@@ -71,7 +71,7 @@
             <div class="col-lg-12 col-sm-12 pb-2">
                 <h2 class="h2">{{$casinoDetail->title}}</h2>
 
-                <img loading="lazy"
+                <img
                      class="image-casino "
                      src="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}"
                      alt="{{ $casino->name }}"
