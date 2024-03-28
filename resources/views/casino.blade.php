@@ -4,9 +4,23 @@
 @section('page_title', $casinoDetail->seo_title)
 
 @section('page_description',  $casinoDetail->seo_description)
+@php
+    $features = collect([]);
 
-@section('page_keywords',  $casinoDetail->seo_keywords)
+    if($casino->self_parking) $features->push('Self parking');
+    if($casino->valet) $features->push('Valet');
+    if($casino->restaurants) $features->push('Restaurants');
+    if($casino->hotels) $features->push('Hotels');
+    if($casino->shops) $features->push('Shops');
+    if($casino->spas) $features->push('Spas');
 
+    $featuresList = $features->implode(', '); // Transforme la collection en chaîne de caractères séparée par des virgules
+@endphp
+
+
+@section('page_keywords')
+    Available facilities: {{ $featuresList }}
+@endsection
 @section('context-js')
 
 

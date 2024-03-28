@@ -2,7 +2,9 @@
 @section('page_title')
     List of Casinos in {{ $location}}
 @endsection
-
+@section('page_description')
+     Discover top casinos in {{ $location }}, offering exciting games and luxury entertainment for every gambler. Start your adventure now.
+@endsection
 @php
     use Illuminate\Support\Str;
 @endphp
@@ -85,6 +87,15 @@
 @section('meta-tags')
 
     <meta name="_fromIndex" content="{{ $fromIndex }}"/>
+@endsection
+
+@section('page_keywords')
+    @php
+        $keywords = $casinos->map(function($casino) {
+            return $casino->name;
+        })->implode(', ');
+    @endphp
+     Casinos, {{ $location }}, {{ $keywords }}
 @endsection
 
 

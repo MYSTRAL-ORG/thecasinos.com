@@ -20,9 +20,9 @@
 
 
 
-	<div class="casino-block-purple">@if($casino->self_parking)
+	<div class="casino-block-purple">
+        @if($casino->self_parking)
             <h3><i class="fa-solid fa-square-parking"></i>Self parking</h3>
-
         @endif
         @if($casino->valet)
             <h3><i class="fa-solid fa-car"></i>Valet</h3>
