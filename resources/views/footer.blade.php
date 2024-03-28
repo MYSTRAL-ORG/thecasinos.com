@@ -3,7 +3,7 @@
     <div class="row justify-content-center   footer">
         <div class="col-sm-6 col-lg-2 column text-center ">
             <a href="https://www.thecasinos.com">
-                <img loading="lazy" src="/img/logo.png" alt="Logo">
+                <img loading="lazy" src="/img/logo.png" alt="The Casinos">
             </a>
         </div>
         <div class="col-sm-6 col-lg-3 column-description">
@@ -28,7 +28,7 @@
 
 
 <div class=" copyright-section  d-flex justify-content-between ">
-    <div> <p>&copy; 2023 TheCasinos.com - Online reference to onsite experience</p></div>
+    <div> <p>&copy; 2024 TheCasinos.com - Online reference to onsite experience</p></div>
     <div ><a href="mailto:admin@thecasinos.com" class="contact-btn">Contact</a></div>
 </div>
 

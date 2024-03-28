@@ -27,7 +27,7 @@
                                     <tr>
                                         <th>ID</th><td>{{ $casino->id }}</td>
                                     </tr>
-                                    <tr><th> Name </th><td> {{ $casino->name }} </td></tr><tr><th> Img Url </th><td><img loading="lazy"  src="{{ '/img/casino/'.$casino->img_url }}" height="100" width="100">{{'img/casino/'. $casino->img_url }}   </td></tr>
+                                    <tr><th> Name </th><td> {{ $casino->name }} </td></tr><tr><th> Img Url </th><td><img alt="{{ $casino->name }}" loading="lazy"  src="{{ '/img/casino/'.$casino->img_url }}" height="100" width="100">{{'img/casino/'. $casino->img_url }}   </td></tr>
                                 </tbody>
                             </table>
                         </div>

@@ -45,7 +45,7 @@
 
                 <img loading="lazy"
                      src="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}"
-                     alt="{{ $casino->name }} Casino"
+                     alt="{{ $casino->name }}"
                      srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }} 480w,
              {{ env('APP_URL') . '/img/casino/tablet/' . $casino->img_url }} 768w,
              {{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }} 1024w"

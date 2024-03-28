@@ -5,7 +5,7 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary header ">
     <div class="container-fluid   d-flex justify-content-between">
         <a  class="navbar-brand  " href="/" alt="TheCasinos.com">
-            <img loading="lazy" id="logo" src="/img/logo-dark.png" alt="Logo">
+            <img loading="lazy" id="logo" src="/img/logo-dark.png" alt="The Casinos">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".nav_item" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -16,7 +16,7 @@
             <input id="search-casino" class="align-middle  search-bar  "  placeholder="Search..."/>
             <ul id="search-casino-list" class="search-casino-list d-none"></ul>
             <button class="btn search-btn">
-                <img  loading="lazy" src="/img/icons/zoom.png" alt="Search Icon" />
+                <img  loading="lazy" src="/img/icons/zoom.png" alt="Search" />
             </button>
         </div>
         @endif
