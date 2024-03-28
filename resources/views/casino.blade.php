@@ -36,7 +36,7 @@
     Available facilities: {{ $featuresList }}
 @endsection
 @section('context-js')
-
+    <link rel="preload" as="image" href="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}">
 
 @endsection
 
