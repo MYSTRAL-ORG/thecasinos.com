@@ -14,6 +14,20 @@
     if($casino->shops) $features->push('Shops');
     if($casino->spas) $features->push('Spas');
 
+    if($casino->cat_tablegames) $features->push('Table Games');
+    if($casino->cat_poker) $features->push('Poker Tables');
+    if($casino->cat_slotmachines) {
+        // Pour éviter les doublons de "Gaming Machine" et "Slot Machines"
+        if(!$features->contains('Slot Machines')) {
+            $features->push('Slot Machines');
+        }
+    }
+    if($casino->cat_sportsbook) $features->push('Sports Book');
+    if($casino->cat_horseracing) $features->push('Horse Racing');
+    if($casino->cat_simulcasting) $features->push('Simulcast');
+    if($casino->cat_offtrack) $features->push('Off Track');
+    if($casino->cat_greyhounds) $features->push('Greyhounds');
+    if($casino->cat_bingo) $features->push('Bingo');
     $featuresList = $features->implode(', '); // Transforme la collection en chaîne de caractères séparée par des virgules
 @endphp
 
