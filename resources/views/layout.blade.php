@@ -24,7 +24,7 @@
     <link   rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style" media="all" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"></noscript>
 
-
+    @yield('meta-tags')
 
     @vite("resources/js/app.js")
     <title>@yield('page_title')</title>

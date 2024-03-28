@@ -1,6 +1,7 @@
 @extends('layout')
-@section('page_title', 'TheCasinos.com : Online reference to Onsite experience')
-
+@section('page_title')
+    List of Casinos in {{ $location}}
+@endsection
 
 @php
     use Illuminate\Support\Str;
@@ -8,7 +9,7 @@
 @section('category')
 	<div class="container feuille-container">
 		<section class="  feuille">
-			<h2 class="mb-4">List of Casinos in {{ $location}}</h2>
+			<h1 class="text-dark fs-1 mb-4">List of Casinos in {{ $location}}</h1>
 			<p class="m-2">
             @if($categoryCity != null )
                 {!!$categoryCity->header_text!!}
@@ -81,6 +82,9 @@
 </section>
 </div>
 @endsection
-<meta name="_fromIndex" content="{{ $fromIndex }}"/>
+@section('meta-tags')
+
+    <meta name="_fromIndex" content="{{ $fromIndex }}"/>
+@endsection
 
 
