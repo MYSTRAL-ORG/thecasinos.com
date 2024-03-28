@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 @extends('layout')
 
 @section('page_title', $casinoDetail->seo_title)
@@ -12,7 +12,6 @@
 
 @endsection
 
-<title>@yield('page_title')</title>
 
 @section('casino')
 
