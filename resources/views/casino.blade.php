@@ -74,7 +74,7 @@
                     <source media="(max-width: 767px)"
                             srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}" width="300"
                             height="200">
-                    <img loading="lazy" class=" p-2 rounded-3 img-fluid image-casino center-image"
+                    <img class=" p-2 rounded-3 img-fluid image-casino center-image"
                          src="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}"
                          alt="{{ $casino->name }}">
                 </picture>
