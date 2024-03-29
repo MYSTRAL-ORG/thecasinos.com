@@ -73,7 +73,7 @@
                             srcset="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}">
                     <source media="(max-width: 767px)"
                             srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}">
-                    <img class="rounded-3 img-fluid image-casino"
+                    <img class="rounded-3 img-fluid image-casino center-image"
                          src="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}"
                          alt="{{ $casino->name }}">
                 </picture>

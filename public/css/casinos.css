@@ -1729,3 +1729,17 @@ svg.w-5.h-5 {
         font-size: 1.5em !important; /* Taille réduite pour les écrans mobiles */
     }
 }
+
+.center-image {
+    max-width: 300px !important; /* Limite la largeur de l'image à 300px */
+    display: block; /* Transforme l'image en bloc pour permettre le centrage */
+    margin-left: auto; /* Centre l'image horizontalement */
+    margin-right: auto;
+}
+
+/* Optionnel: ajuste l'image pour les écrans plus larges */
+@media (min-width: 480px) {
+    .center-image {
+        max-width: 100% !important; /* Permet à l'image de s'ajuster à la largeur du conteneur */
+    }
+}
