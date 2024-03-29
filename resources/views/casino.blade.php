@@ -70,15 +70,15 @@
         <div class="row feuille" >
             <div class="col-lg-12 col-sm-12 pb-2">
                 <h2 class="h2">{{$casinoDetail->title}}</h2>
+                <picture>
+                    <source media="(min-width: 768px)" srcset="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}">
+                    <source media="(max-width: 767px)" srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}">
+                    <img loading="lazy" class="rounded-3 img-fluid image-casino" src="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}" alt="{{ $casino->name }}">
+                </picture>
 
-                <img
-                     class="image-casino "
-                     src="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}"
-                     alt="{{ $casino->name }}"
-                     srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }} 600w,
-             {{ env('APP_URL') . '/img/casino/tablet/' . $casino->img_url }} 768w,
-             {{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }} 1024w"
-                     sizes="(max-width: 600px) 600px, (max-width: 768px) 768px, 1024px">
+
+
+
 
 
                 <!--  <img  loading="lazy" src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class=" image-casino "> -->
