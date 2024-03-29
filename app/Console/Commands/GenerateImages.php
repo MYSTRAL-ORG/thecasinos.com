@@ -31,11 +31,7 @@ class GenerateImages extends Command
     {
         $sourceDir = public_path('img/casino'); // The source directory
         $sizes = [
-
-
-            'desktop' => 1920, // Width for desktop devices
-            'tablet' => 768,   // Width for tablet devices
-            'mobile' => 360,   // Width for mobile devices
+            'mobile' => 300,   // Width for mobile devices
         ];
 
         if (!File::isDirectory($sourceDir)) {
@@ -50,17 +46,17 @@ class GenerateImages extends Command
                 $targetDirPath = public_path('img/casino/' . $folder);
 
                 File::isDirectory($targetDirPath) or File::makeDirectory($targetDirPath, 0755, true);
-                $this->info($width);
+
                 $resizedImage = $image->resize($width, null, function ($constraint) {
                     $constraint->aspectRatio();
                 });
 
                 $resizedImage->save($targetDirPath . '/' . $file->getFilename());
+                $this->info("Saved resized image to {$targetDirPath}/{$file->getFilename()}");
             }
-
-            //$this->info("Images have been resized and moved to respective folders.");
         }
 
+        //$this->info("Images have been resized and moved to respective folders.");
         return 0;
     }
 }
