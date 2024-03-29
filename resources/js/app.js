@@ -1,592 +1,155 @@
-import Map from 'ol/Map.js';
-import TileLayer from 'ol/layer/Tile.js';
-import View from 'ol/View.js';
-import {XYZ} from "ol/source.js";
-import VectorSource from "ol/source/Vector.js";
-import {GeoJSON} from "ol/format.js";
-import {Icon, Stroke, Style} from "ol/style.js";
-import VectorLayer from "ol/layer/Vector.js";
-import Photo from "ol-ext/style/Photo.js";
-import {click} from "ol/events/condition.js";
-import {Select} from "ol/interaction.js";
 import $ from "jquery";
-import {containsCoordinate} from "ol/extent.js";
-
-
 
 
 $(document).ready(function () {
 
-
-
-
-
-
-
-    const appUrl = $('meta[name="_appUrl"]').attr('content');
-    const sessionGoogle = $('meta[name="_googleSessionToken"]').attr('content');
-    const sessionGoogleKey = $('meta[name="_googleKey"]').attr('content');
-
-
-
-    let styleCache = {};
-
-    function generatedStyle(feature, resolution, sel) {
-        let img = feature.get("imgurl");
-        const originalImg =feature.get("originalimg");
-
-        if(!originalImg){
-            img =   sel ?"sel_icon-the-casinos.png"  : "icon-the-casinos.png";
-
-        }
-
-        let style = styleCache[img+sel];
-
-        if (!style ) {
-            let imgUrl =appUrl+'/img/casino/'+img;
-            let pointer;
-            if(!originalImg){
-                pointer = new Icon({
-                    anchor: [0.5, 150],
-                    anchorXUnits: 'fraction',
-                    anchorYUnits: 'pixels',
-                    src: imgUrl,
-                    scale: 0.2,
-                    stroke: new Stroke({
-                        width: 2,
-                        color: sel ? "#ed5c56" : "#fff",
-                    }),
-                });
-            }else{
-                pointer = new Photo({
-                    transparent: true,
-                    src: imgUrl,
-                    radius: feature.get("radius"),
-                    kind: "circle",
-                    crop: true,
-                    shadow: 5,
-                    onload: function () {
-                        casinoVectorLayer6.changed();
-                    },
-                    displacement: [0, 0],
-                    stroke: new Stroke({
-                        width: 2,
-                        color: sel ? "#ed5c56" : "#fff",
-                    }),
-                })
-            }
-
-            styleCache[img] = style = new Style({
-                image: pointer,
-            });
-        }
-
-        return [style];
+    // Fonction debounce pour retarder l'appel de la fonction de recherche
+    function debounce(func, wait) {
+        let timeout;
+        return function (...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func.apply(this, args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
     }
 
-
-    const casinoVectorLayer6 = new VectorLayer({
-        source: new VectorSource({
-            attributions: ["<img src=`${appurl}/img/icons/google_on_non_white.png`>"]
-        }),
-        style: generatedStyle,
-    });
-
-
-
-    const googleBase = new TileLayer({
-        source: new XYZ({
-            //url: 'https://mt{0-3}.google.com/vt/lyrs=s&x={x}&y={y}&z={z}&scale=2',
-            // url:'https://sat-cdn1.apple-mapkit.com/tile?style=7&size=1&scale=1&z=4&x={x}&y={y}&v={z}2&accessKey='+accesKey
-            // url: 'https://tile.googleapis.com/v1/2dtiles/{x}/{y}/{z}?style=7&size=1&scale=1&key=AJVsH2zGQIkWpBGEyZa5oSamWrBDNP4_iBKcSkJjjHKYJvJPKnH33qHcOl3uwkrFgCXEXqLfSpym8qrwOscn7nE7VQ',
-            url: "https://tile.googleapis.com/v1/2dtiles/{z}/{x}/{y}/?session=" + sessionGoogle + "&key=" + sessionGoogleKey,
-
-
-            tilePixelRatio: 2
-        })
-    });
-
-    let map= null;
-    let select= null
-    let lon = $('meta[name="_lon"]').attr('content');
-    let lat = $('meta[name="_lat"]').attr('content');
-    let fromIndex = $('meta[name="_fromIndex"]').attr('content');
-    let zoomCarte= 0;
-    console.log('start');
-    const showMap  =  fromIndex === 'true';
-
-
-        console.log('fromIndex');
-        if(showMap){
-            console.log('fromIndex True');
-            zoomCarte = 9;
-             lon = sessionStorage.getItem('long');
-             lat = sessionStorage.getItem('lat');
-            console.log('fromIndex lon'+lon);
-            console.log('fromIndex lon'+lat);
-            if( lon == null || lat == null ){
-                console.log('lon lat null');
-              async function callGeolocationBeforeLoad() {
-                  fetch('https://www.googleapis.com/geolocation/v1/geolocate?key=' + sessionGoogleKey, {
-                      method: 'POST',
-                      headers: {
-                          'Content-Type': 'application/json'
-                      },
-                      body: JSON.stringify({
-                          considerIp: true
-                      })
-                  })
-                      .then(response => response.json())
-                      .then(data => {
-                          console.log('new lon lat ');
-                          lat = data.location.lat;
-                          lon = data.location.lng;
-                          sessionStorage.setItem('long', lon);
-                          sessionStorage.setItem('lat', lat);
-                      })
-                      .catch(error => {
-                          console.error('Error:', error);
-                      }).finally(() => {
-                      initializeMap();
-
-                  })
-              }
-                callGeolocationBeforeLoad();
-
-            }else{
-                initializeMap();
-            }
-        }else{
-            zoomCarte= 19;
-            initializeMap();
-        }
-
-
-
-
-
-    function initializeMap() {
-       if(showMap) {
-           const viewClient = new View({
-               projection: 'EPSG:4326',
-               center: [Number(lon), Number(lat)],
-               zoom: zoomCarte,
-           });
-
-
-           map = new Map({
-               layers: [googleBase, casinoVectorLayer6],
-               target: 'map',
-               useInterimTilesOnError: false,
-               preload: Infinity,
-               view: viewClient,
-               controls: []
-           });
-       }
-        async function fetchData() {
-            try {
-                const response = await fetch(appUrl +  showMap ? '/data-source.txt' :'data-source-light.txt' ).then(response => {
-                    // Check if the response is ok (status in the range 200-299)
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    // Parse the JSON response body
-                    return response.json();
-                    }).then(geojson => {
-                        // Process the JSON data
-
-
-                        const geoJsonFormat = new GeoJSON();
-                        allCasinosFeatures = geoJsonFormat.readFeatures(geojson);
-                    if(showMap) {
-                        updateFeaturesOnExtentChange();
-                    }
-                    })
-                    .catch(error => {
-                        // Handle any errors from the fetch or from the JSON parsing
-                        console.error('There has been a problem with your fetch operation:', error);
+// Fonction de recherche qui sera appelée par debounce
+    function performSearch(searchQuery) {
+        fetch(`/search-casinos?query=${encodeURIComponent(searchQuery)}`)
+            .then(response => response.json())
+            .then(casinos => {
+                removeElements(); // Effacer les résultats précédents
+                if (casinos.length > 0) {
+                    $("#search-casino-list").removeClass("d-none");
+                    casinos.forEach(casino => {
+                        const listItem = createListItem(casino, searchQuery);
+                        document.querySelector(".search-casino-list").appendChild(listItem);
                     });
-
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
-         fetchData();
-
-        if(showMap) {
-            map.on('moveend', updateFeaturesOnExtentChange);
-
-
-            select = new Select({
-                condition: click,
-                style: function (feature, resolution) {
-                    return generatedStyle(feature, resolution, true);
+                } else {
+                    $("#search-casino-list").addClass("d-none");
                 }
             })
-            map.addInteraction(select);
-
-
-            select.getFeatures().on(['add', 'remove'], function (e) {
-                jqueryActionGallery($("#see-more-action-" + e.element.getId()), e.type);
-            });
-
-        }
-
-        let inputElement = document.getElementById('search-casino');
-        let resultsList = document.getElementById('autocompleteResults');
-        inputElement.addEventListener("keyup", (e) => {//loop through above array
-            //Initially remove all elements ( so if user erases a letter or adds new letter then clean previous outputs)
-            removeElements();
-            //create an  empty array
-
-            if(inputElement.value===""){
-                $("#search-casino-list").addClass("d-none");
-            }
-
-
-            let lstElement = [];
-
-            for (let feature of allCasinosFeatures) {
-                //convert input to lowercase and compare with each string
-                const name = feature.get("name");
-                const    nameNormalize = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-                const  searchNormalize = inputElement.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-
-
-                if (
-                    nameNormalize.includes(searchNormalize) && inputElement.value !== ""
-                ) {
-                    //create li element
-                    let listItem = document.createElement("li");
-                    //One common class name
-                    listItem.classList.add("list-items");
-                    listItem.style.cursor = "pointer";
-
-                    listItem.addEventListener('click', function() {
-
-                        if(window.location.pathname !== '/'){
-                            window.location = '/'+feature.get('countrytitle')+"/"+feature.get('citytitle')+"/"+feature.get('slug');
-                        }
-                        const view = map.getView();
-                        const zoom = view.getZoom();
-                        view.animate({
-                            center: feature.getGeometry().getCoordinates(),
-                            zoom: 18
-                        },function() {  // This is the callback after animation completes
-                            select.getFeatures().push(feature);
-                        });
-
-                        select.getFeatures().clear();
-                        $("#search-casino-list").addClass("d-none");
-                        removeElements();
-                    });
-                    //Display matched part in bold
-                    // Highlight the matched text
-
-
-
-
-                    let imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
-                     imageURL = appUrl + imageURL;
-                    let word2Display =  '<img class="small-img-search" src="'+imageURL+'" alt="Description of Image">' ;
-                    const regex = new RegExp(`(${inputElement.value})`, 'gi');
-                    const name2display = name.replace(regex, "<b>$1</b>");
-                    const cityOrCountry=  feature.get("cityname") ?? feature.get("countryname") ;
-                    word2Display+= ' <div class="d-lg-table">                   <div>'+name2display+' </div>                    <div class="text-secondary"> '+cityOrCountry+'  </div>                                    </div>';
-
-                    //display the value in array
-
-
-
-                    listItem.innerHTML = word2Display;
-                    lstElement.push(word2Display)  ;
-                    document.querySelector(".search-casino-list").appendChild(listItem);
-                    if(lstElement.length>=6){
-                        $("#search-casino-list").removeClass("d-none");
-                        return;
-                    }
-                }
-            }
-        });
+            .catch(error => console.error('Error fetching search results:', error));
     }
 
-
-
-
-
-
-
-
-
-    // geolocation.setTracking(true);
-
-// Check if GeoJSON data is in local storage
-
-    let allCasinosFeatures = [];
-
-   // const cachedGeoJSON = localStorage.getItem('cachedGeoJSON');
-
-
-
-
-
-
-    function generatedDivGallery(lstFeatures) {
-        const $galleryDiv = $("#gallery");
-        $galleryDiv.empty();
-
-        lstFeatures.forEach(function (feature) {
-            let imageURL =feature.get("originalimg") ?  '/img/casino/'+feature.get("imgurl") :  '/img/casinos/randomCasinos/'+feature.get("imgurl");
-            imageURL = appUrl + imageURL;
-            const shortDesc =  feature.get('shortdesc')?? '';
-            const longDesc =  feature.get('longdesc')??'';
-
-            const location = feature.get('cityname') == undefined ? feature.get('countryname') : feature.get('cityname');
-            let $childElement= `
-                <div class="emcapsule col-sm-6 col-lg-2">
-                    <span class=" block m-2 ">
-
-                        <div class="block-image" style="background-image: url('${imageURL}');">
-                            <span data-id-feature="${feature.getId()}"  id="see-more-action-${feature.getId()}"   class="see-more">See more</span>
-                        </div>
-                        <h3 class="casino-name">${feature.get('name')}</h3>
-                        <p class="short-description">${shortDesc}</p>
-                        <p class="long-description">${longDesc}</p>
-                        <div class="location-info">
-                            <img src="${appUrl}/img/icons/location.png" alt="Location Icon" class="location-icon">
-                            <span class="city-name">${location}</span>
-                            <button class="add-button" onclick="window.location.href='/${feature.get('countrytitle')}/${feature.get('citytitle')}/${feature.get('slug')}';">see</button>
-                         </div>
-
-                    </span>
-                </div>
-        `;
-
-            $galleryDiv.append($childElement)
+// Fonction pour créer un élément de liste avec les données du casino
+    function createListItem(casino, searchQuery) {
+        const listItem = document.createElement("li");
+        listItem.classList.add("list-items");
+        listItem.style.cursor = "pointer";
+        listItem.addEventListener('click', function () {
+            window.location = `/${casino.country_title}/${casino.city_title}/${casino.slug}`;
         });
 
-        //reload my div gallery to avoid dirty cache
+        const imageURL = `/img/casino/${casino.img_url}`;
+        const nameHighlighted = casino.name.replace(new RegExp(`(${searchQuery})`, 'gi'), "<b>$1</b>");
+        const cityOrCountry = casino.city_name || casino.country_name;
 
-        $(".see-more").click(function () {
-            const featureId = $(this).attr("data-id-feature");
-            const featureToSelect = casinoVectorLayer6.getSource().getFeatureById(parseInt(featureId));
-
-
-            clearAllSelectionExcept(featureToSelect);
-            if($(this).text() === "See more"){
-                select.getFeatures().push(featureToSelect);
-            }else{
-                select.getFeatures().remove(featureToSelect);
-            }
-            //jqueryActionGallery($(this));
-        });
-
+        listItem.innerHTML = `<img class="small-img-search" src="${imageURL}" alt="Description of Image">
+                          <div class="d-lg-table">
+                              <div>${nameHighlighted}</div>
+                              <div class="text-secondary">${cityOrCountry}</div>
+                          </div>`;
+        return listItem;
     }
-
-
-    function clearAllSelectionExcept(featureToKeep) {
-        let selectedFeatures = select.getFeatures();
-
-        selectedFeatures.forEach((feature) => {
-            if (feature !== featureToKeep) {
-                select.getFeatures().remove(feature);
-            }
-        });
-    }
-
-
-
-    let first6Features;
-
-
-    function updateFeaturesOnExtentChange() {
-        // 1. Get the current extent of the map
-        const currentExtent = map.getView().calculateExtent(map.getSize());
-        let featuresInExtent = [];
-        allCasinosFeatures.forEach(function (feature) {
-            const geometry = feature.getGeometry();
-            const coordinates = geometry.getCoordinates();
-            if (containsCoordinate(currentExtent, coordinates)) {
-                featuresInExtent.push(feature);
-            }
-        });
-
-        featuresInExtent.sort(function (a, b) {
-            const propertyA = a.get('squarefootage');
-            const propertyB = b.get('squarefootage');
-            return propertyB - propertyA; // Modify the comparison as needed
-        });
-
-        // 4. Get the first 6 features
-        const first12Features = featuresInExtent.slice(0, 12);
-
-
-        casinoVectorLayer6.getSource().clear();
-        let radius = 74;
-        first12Features.forEach(function (feature) {
-
-            feature.set('radius', (radius > 40) ? radius : 44);
-            radius -= 10;
-            casinoVectorLayer6.getSource().addFeature(feature);
-        });
-
-        first6Features = first12Features.slice(0, 6);
-        generatedDivGallery(first6Features);
-    }
-
-
-
-
-    //create a function that get randomly string from an array of string and never get the same until  the array
-    function getRandomNonRepeatingCasinos(arr) {
-
-        let currentIndex = arr.length;
-        let temporaryValue, randomIndex;
-
-        // While there remain elements to shuffle...
-        while (currentIndex !== 0) {
-            // Pick a remaining element...
-            randomIndex = Math.floor(Math.random() * currentIndex);
-            currentIndex--;
-
-            // Swap it with the current element
-            temporaryValue = arr[currentIndex];
-            arr[currentIndex] = arr[randomIndex];
-            arr[randomIndex] = temporaryValue;
-        }
-
-        let index = 0;
-
-        if (index >= arr.length) {
-            // Handle what to do when all strings have been shown
-            return null; // You can return null or take a different action
-        }
-        return arr[index++];
-
-    }
-
-
-    function jqueryActionGallery(element , actionType ) {
-        const encapsule = element.closest(".emcapsule");
-        const allBlock = $(".emcapsule");
-
-        if (actionType === "remove") {
-            encapsule.removeClass("expanded  col-lg-4 col-sm-12 ");
-            element.text("See more")
-            encapsule.addClass("col-sm-6 col-lg-2");
-            allBlock.show();
-            encapsule.find(".long-description").hide();
-            encapsule.find(".short-description").show();
-        }else{
-
-            encapsule.addClass(" expanded col-sm-12 col-lg-4 ");
-            allBlock.show();
-            element.text("See less");
-            encapsule.find(".long-description").show();
-            encapsule.find(".short-description").hide();
-            if(allBlock.length === 6 && element.attr("data-id-feature")!== undefined){
-                if (encapsule.is(":last-child")) {
-                   // Si le bloc est le dernier bloc, cachez le premier bloc
-                   $(".emcapsule").first().hide();
-                } else {
-                   // Sinon, cachez le dernier bloc
-                   $(".emcapsule").last().hide();
-                }
-            }
-
-        }
-    }
-
-    function displayNames(featureID) {
-
-        // Use the `find` method to efficiently retrieve the target feature.
-        let feature = allCasinosFeatures.find(feature => feature.getId() === featureID);
-
-        if (feature) {  // Check if the feature exists before proceeding.
-            const featureGeometry = feature.getGeometry();
-            map.getView().fit(featureGeometry, {padding: [20, 20, 20, 20]});
-            removeElements();
-        } else {
-            console.warn(`Feature with ID ${featureID} not found.`);
-        }
-    }
-
-
-
 
     function removeElements() {
-        //clear all the item
-        let items = document.querySelectorAll(".list-items");
-        items.forEach((item) => {
-            item.remove();
-        });
+        document.querySelector(".search-casino-list").innerHTML = '';
     }
 
-
-
-
-
-
-    function displayResultsSearch(featureId) {
-
-    }
-
-    window.onresize = function () {
-       // fixContentHeight();
-    }
-    function fixContentHeight() {
-
-
-        const h = window.innerHeight ;
-
-        const canvasheight = h + 'px';// Modification MM 2022-10-18
-
-
-        const canvaswidth = $('#map').parent().css('width');
-        $('#map').css("height", canvasheight);
-        $('#map').css("width", canvaswidth);
-
-        map.updateSize();
-    }
-
-   // fixContentHeight();
-
-
-
-    //casino  details page
-
-
-    $(".casino-detail-load-more-btn").click(function(){
-        if($(this).text() == "Load More") {
-            // Afficher les lignes cachées
-            $(".hidden-row").show();
-            // Changer le texte du bouton
-            $(this).text("Load Less");
-        } else {
-            // Masquer les lignes
-            $(".hidden-row").hide();
-            // Changer le texte du bouton
-            $(this).text("Load More");
+    document.getElementById('search-casino').addEventListener("keyup", debounce((e) => {
+        const inputElement = e.target;
+        const searchQuery = inputElement.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        if (searchQuery.length < 3) {
+            removeElements(); // Effacer les résultats précédents
+            $("#search-casino-list").addClass("d-none");
+            return;
         }
-    });
-    function cleanUp(div) {
-        if (div.text().trim().length === 0) {
-            // The div has only white spaces, so clear it
-            div.empty();
-        }
-    }
+        performSearch(searchQuery);
+    }, 500)); // Attend 500 ms après que l'utilisateur a fini de taper
 
 
+    /*
 
-    cleanUp($('.casino-block-orange'));
-    cleanUp($('.casino-block-purple'));
+       let inputElement = document.getElementById('search-casino');
+
+       inputElement.addEventListener("keyup", (e) => {//loop through above array
+           //Initially remove all elements ( so if user erases a letter or adds new letter then clean previous outputs)
+           removeElements();
+           //create an  empty array
+
+           if (inputElement.value === "") {
+               $("#search-casino-list").addClass("d-none");
+           }
 
 
+           let lstElement = [];
+
+           for (let feature of allCasinosFeatures) {
+               //convert input to lowercase and compare with each string
+               const name = feature.get("name");
+               const nameNormalize = name.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+               const searchNormalize = inputElement.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
 
+               if (
+                   nameNormalize.includes(searchNormalize) && inputElement.value !== ""
+               ) {
+                   //create li element
+                   let listItem = document.createElement("li");
+                   //One common class name
+                   listItem.classList.add("list-items");
+                   listItem.style.cursor = "pointer";
+
+                   listItem.addEventListener('click', function () {
+
+                       if (window.location.pathname !== '/') {
+                           window.location = '/' + feature.get('country_name') + "/" + feature.get('city_title') + "/" + feature.get('slug');
+                       }
+                       const view = map.getView();
+                       const zoom = view.getZoom();
+                       view.animate({
+                           center: feature.getGeometry().getCoordinates(),
+                           zoom: 18
+                       }, function () {  // This is the callback after animation completes
+                           select.getFeatures().push(feature);
+                       });
+
+                       select.getFeatures().clear();
+                       $("#search-casino-list").addClass("d-none");
+                       removeElements();
+                   });
+                   //Display matched part in bold
+                   // Highlight the matched text
+
+
+                   let imageURL = feature.get("originalimg") ? '/img/casino/' + feature.get("img_url") : '/img/casinos/randomCasinos/' + feature.get("img_url");
+                   imageURL = appUrl + imageURL;
+                   let word2Display = '<img class="small-img-search" src="' + imageURL + '" alt="Description of Image">';
+                   const regex = new RegExp(`(${inputElement.value})`, 'gi');
+                   const name2display = name.replace(regex, "<b>$1</b>");
+                   const cityOrCountry = feature.get("cityname") ?? feature.get("country_name");
+                   word2Display += ' <div class="d-lg-table">                   <div>' + name2display + ' </div>                    <div class="text-secondary"> ' + cityOrCountry + '  </div>                                    </div>';
+
+                   //display the value in array
+
+
+                   listItem.innerHTML = word2Display;
+                   lstElement.push(word2Display);
+                   document.querySelector(".search-casino-list").appendChild(listItem);
+                   if (lstElement.length >= 6) {
+                       $("#search-casino-list").removeClass("d-none");
+                       return;
+                   }
+               }
+           }
+       });
+
+   */
 });
 
 
-window.addEventListener('beforeunload', function () {
-    localStorage.clear(); // Clears all data in localStorage
-});
+

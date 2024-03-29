@@ -1,4 +1,4 @@
-
+@vite("resources/js/home-and-map.js")
 
 
 <style>
@@ -7,7 +7,7 @@
         width: 100%;
         position: relative;
         display: flex !important;
-        flex-grow: 1  !important;
+        flex-grow: 1 !important;
 
     }
 </style>
@@ -15,8 +15,8 @@
 
 <div id="map" class="map"></div>
 
-<div id="gallery" class="gallery container-fluid d-flex justify-content-center   @if(Route::currentRouteNamed('casino')) d-none @endif ">
-
+<div id="gallery"
+     class="gallery container-fluid d-flex justify-content-center   @if(Route::currentRouteNamed('casino')) d-none @endif ">
 
 
 </div>
