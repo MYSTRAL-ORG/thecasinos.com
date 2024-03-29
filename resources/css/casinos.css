@@ -43,38 +43,41 @@ p {
 ul {
     list-style: none !important;
 }
+
 .search-casino-list {
     background-color: var(--theme-light-grey);
     width: inherit;
     position: absolute;
-    top: 100%;  /* pour le positionner juste en dessous de l'input */
+    top: 100%; /* pour le positionner juste en dessous de l'input */
     left: 0;
     z-index: 1000;
 
-    border-radius: 20px ;
+    border-radius: 20px;
     padding: 10px;
     list-style-type: none;
     margin: 0;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .list-items::before {
-    content:none !important;
+    content: none !important;
     list-style-type: none !important;
 
 }
 
 .list-items {
-    content:none !important;
+    content: none !important;
     list-style-type: none !important;
     padding: 10px;
-    display:flex;
+    display: flex;
     font-size: medium;
 }
+
 .list-items:hover {
     background-color: #dddddd;
 }
-.header{
+
+.header {
     background-color: white;
     width: 100%;
     height: fit-content;
@@ -82,7 +85,7 @@ ul {
     padding: 0 30px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Optional shadow for depth */
     box-sizing: border-box;
-    border-top: 8px solid  var(--theme-red);
+    border-top: 8px solid var(--theme-red);
     z-index: 9999;
 }
 
@@ -90,7 +93,7 @@ ul {
     height: 50px;
 }
 
-#logo{
+#logo {
     height: 50px;
 }
 
@@ -115,8 +118,8 @@ ul {
     background-color: transparent;
     margin-right: 10px;
     height: 40px;
-    font-size:17px;
-    color:#333;
+    font-size: 17px;
+    color: #333;
 }
 
 .search-bar input::placeholder {
@@ -189,7 +192,7 @@ ul {
 
 
 .btn-online {
-    background-color:black;
+    background-color: black;
     padding: 0px 50px; /* Augmentation de la valeur de padding pour le rendre plus large */
     border-radius: 20px;
     color: white;
@@ -203,9 +206,8 @@ ul {
 
 
 .btn-online:hover {
-    background-color:  var(--theme-red)/* A bit lighter red when hovered */
+    background-color: var(--theme-red) /* A bit lighter red when hovered */
 }
-
 
 
 body, html {
@@ -217,7 +219,7 @@ body, html {
 
 
 /* GALLERY */
-
+  
 
 .gallery {
     background-color: black;
@@ -229,7 +231,7 @@ body, html {
     align-items: flex-start; /* Alignement des éléments au haut */
     flex-wrap: wrap; /* Permet aux blocs de s'enrouler si nécessaire */
     padding: 20px 0;
-    border-top:8px solid grey;
+    border-top: 8px solid grey;
 }
 
 .gallery::-webkit-scrollbar {
@@ -241,7 +243,7 @@ body, html {
     border-radius: 20px;
     padding: 10px;
     /*margin:  10px; *//* Margin de droite et gauche de 10px et haut/bas de 20px */
-   /* width: calc(100%/ 6 - 2*10px - 2*10px);*/
+    /* width: calc(100%/ 6 - 2*10px - 2*10px);*/
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -271,7 +273,7 @@ body, html {
 }
 
 .casino-name {
-    color:  var(--theme-red);
+    color: var(--theme-red);
     font-weight: bold;
     margin-bottom: 20px; /* Espace entre le titre et la localisation */
     margin-top: 0px;
@@ -281,7 +283,7 @@ body, html {
     margin: 0 0 15px; /* 15px est juste une valeur indicative, ajustez à votre préférence */
     font-size: 14px; /* Vous pouvez ajuster cette taille selon vos préférences */
     color: #777; /* Une couleur plus claire pour différencier de la couleur du titre et de la localisation */
-    margin-top:0px
+    margin-top: 0px
 }
 
 .location-info {
@@ -316,19 +318,19 @@ body, html {
 }
 
 .casino-name {
-    color:  var(--theme-red);
+    color: var(--theme-red);
     font-weight: bold;
     margin-top: 0px;
     margin-bottom: 0px;
 }
 
 .short-description {
-    display: block;  /* Ajout pour s'assurer qu'il est affiché par défaut */
+    display: block; /* Ajout pour s'assurer qu'il est affiché par défaut */
     font-size: 14px;
 }
 
 .long-description {
-    display: none;  /* Caché par défaut */
+    display: none; /* Caché par défaut */
     font-size: 14px;
 }
 
@@ -370,7 +372,7 @@ body, html {
 }
 
 .block.expanded {
-    flex-basis: calc((100% - 2*20px) / 3 - 2*10px - 2*10px);
+    flex-basis: calc((100% - 2 * 20px) / 3 - 2 * 10px - 2 * 10px);
     flex-grow: 2;
 }
 
@@ -403,7 +405,7 @@ body, html {
 
 /* Style pour le bouton "+" */
 .add-button {
-    background-color:  var(--theme-red);
+    background-color: var(--theme-red);
     color: white;
     border: none;
     border-radius: 10px;
@@ -428,14 +430,14 @@ body, html {
 
 .add-button a {
     text-decoration: none;
-    color:white;
+    color: white;
 }
 
 .footer {
     background-color: #222222;
     align-items: center; /* Ajouté pour centrer verticalement les éléments */
     gap: 30px; /* Ajouté pour rapprocher les colonnes */
-    border-top: 4px solid  var(--theme-red);
+    border-top: 4px solid var(--theme-red);
     font-size: 16px;
     padding: 20px 30px;
 }
@@ -451,7 +453,7 @@ body, html {
 }
 
 .column {
-    display:flex;
+    display: flex;
     flex-direction: column !important;
     gap: 10px !important;
     align-items: start !important;
@@ -660,8 +662,6 @@ body, html {
 }
 
 
-
-
 .casino-block {
     margin-bottom: 20px;
     padding: 10px;
@@ -683,7 +683,7 @@ body, html {
     font-size: 20px;
     border-radius: 10px;
     text-align: center;
-    margin-top:0px;
+    margin-top: 0px;
     margin-bottom: 0px;
 }
 
@@ -705,7 +705,7 @@ body, html {
 }
 
 
-.casino-block-orange, .casino-block-orange-online  {
+.casino-block-orange, .casino-block-orange-online {
     margin-bottom: 20px;
     padding: 10px;
     border: 2px solid var(--theme-orange);
@@ -720,12 +720,12 @@ body, html {
     padding: 10px;
     border-radius: 10px;
     text-align: center;
-    margin-top:0px;
+    margin-top: 0px;
     background-color: #FCF6F1;
     margin-bottom: 10px;
 }
 
-.casino-block-orange h3:last-child, .casino-block-orange-online h3:last-child  {
+.casino-block-orange h3:last-child, .casino-block-orange-online h3:last-child {
     margin-bottom: 0px; /* Supprime la marge inférieure du dernier élément h3 */
 }
 
@@ -781,7 +781,7 @@ body, html {
     padding: 10px;
     border-radius: 10px;
     text-align: center;
-    margin-top:0px;
+    margin-top: 0px;
     background-color: #FAF1FC;
     margin-bottom: 10px;
 }
@@ -790,7 +790,7 @@ body, html {
     margin-bottom: 0px; /* Supprime la marge inférieure du dernier élément h3 */
 }
 
-h3 i   {
+h3 i {
     font-family: "Font Awesome 5 Free";
     font-weight: 900;
     position: absolute !important; /* Position absolue pour l'icône */
@@ -826,7 +826,7 @@ h3 i   {
     padding: 10px;
     border-radius: 10px;
     text-align: center;
-    margin-top:0px;
+    margin-top: 0px;
     background-color: var(--theme-light-grey);
     margin-bottom: 10px;
 }
@@ -869,7 +869,7 @@ h3 i   {
     padding: 10px;
     border-radius: 10px;
     text-align: center;
-    margin-top:0px;
+    margin-top: 0px;
     background-color: var(--theme-light-grey);
     margin-bottom: 10px;
 }
@@ -968,33 +968,32 @@ h3 i   {
 
 .casino-block a {
     text-decoration: none;
-    color:  var(--theme-red);
+    color: var(--theme-red);
 }
 
 .casino-block h3 {
     position: relative;
     color: var(--theme-red);
     font-size: 24px;
-    background-color:var(--theme-light-red);
+    background-color: var(--theme-light-red);
     padding: 10px;
     border-radius: 10px;
     text-align: center;
-    margin-top:0px;
-    margin-bottom:0px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
-
 
 
 .casino-sidebar .image-casino {
-    width: 100% !important;   /* Force l'image à prendre toute la largeur de la feuille */
+    width: 100% !important; /* Force l'image à prendre toute la largeur de la feuille */
     max-height: 100px !important; /* Limite la hauteur de l'image à 80px */
     object-fit: cover !important; /* Cela s'assure que l'image couvre toute la zone de l'élément img sans déformation */
     border-radius: 10px !important;
-    margin-top:10px !important;
+    margin-top: 10px !important;
 }
 
 
-@media(min-width: 768px) {
+@media (min-width: 768px) {
     h1 {
         font-size: 4em !important;
     }
@@ -1011,8 +1010,8 @@ h1 {
     padding-top: 10px !important;
     padding-bottom: 10px !important;
     color: white !important;
-    position: relative  !important;
-    z-index: 2  !important;
+    position: relative !important;
+    z-index: 2 !important;
     /*  animation: breathe 4s infinite; */
     flex: 1 !important; /* Fait en sorte que le titre occupe tout l'espace restant */
     font-weight: bold !important;
@@ -1026,11 +1025,13 @@ h1 {
         transform: scale(1.05);
     }
 }
-@media(min-width: 768px) {
+
+@media (min-width: 768px) {
     h2 {
-        font-size:2.5em !important;
+        font-size: 2.5em !important;
     }
 }
+
 h2 {
     /* font-size: 2.5em !important; */
     /* margin-bottom: 0px !important; */
@@ -1045,11 +1046,9 @@ h2 {
 }
 
 
-
-
 h3 {
     position: relative;
-    color:  var(--theme-red);
+    color: var(--theme-red);
     font-size: 20px;
 }
 
@@ -1061,15 +1060,15 @@ h4 {
 
 ul {
     list-style-type: none; /* Supprime le style de puce par défaut */
-    padding-left: 0;      /* Supprime le padding par défaut */
+    padding-left: 0; /* Supprime le padding par défaut */
     line-height: 1.5;
-    font-size:20px;
+    font-size: 20px;
 }
 
 
 ul li::before {
     content: "\25A0"; /* Code Unicode pour un carré */
-    color:  var(--theme-red);
+    color: var(--theme-red);
     display: inline-block;
     width: 1em;
 
@@ -1079,7 +1078,7 @@ ul li::before {
 
 
 ul li {
-   /* margin-left: 1em; /* Ajoute une marge pour éviter le débordement du carré */
+    /* margin-left: 1em; /* Ajoute une marge pour éviter le débordement du carré */
 }
 
 
@@ -1099,11 +1098,12 @@ ul li {
     width: 100%;
     min-height: 250px;
     max-height: 400px;
- background-color: #232323;
+    background-color: #232323;
 
-    border-bottom: 4px solid  var(--theme-red);
+    border-bottom: 4px solid var(--theme-red);
     text-align: center;
 }
+
 .lazy-background {
     background-image: none !important; /* Image de fond initialement vide */
     /* autres styles nécessaires */
@@ -1128,9 +1128,15 @@ ul li {
 }
 
 @keyframes lightFlicker {
-    0%   { opacity: 0.3; }
-    50%  { opacity: 1; }
-    100% { opacity: 0.3; }
+    0% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.3;
+    }
 
 }
 
@@ -1147,7 +1153,7 @@ ul li {
 
 .light {
     position: absolute;
-    background: rgba(255,255,255,0.8);
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 50%;
     animation: lightFlicker infinite alternate;
     filter: blur(8px);
@@ -1155,62 +1161,80 @@ ul li {
 }
 
 .light1 {
-    width: 20px; height: 20px;
-    top: 10%; left: 20%;
+    width: 20px;
+    height: 20px;
+    top: 10%;
+    left: 20%;
     animation-duration: 1.3s;
 }
 
 .light2 {
-    width: 25px; height: 25px;
-    top: 20%; left: 50%;
+    width: 25px;
+    height: 25px;
+    top: 20%;
+    left: 50%;
     animation-duration: 1.5s;
 }
 
 .light3 {
-    width: 30px; height: 30px;
-    top: 30%; left: 80%;
+    width: 30px;
+    height: 30px;
+    top: 30%;
+    left: 80%;
     animation-duration: 1.8s;
 }
 
 .light4 {
-    width: 35px; height: 35px;
-    top: 40%; left: 10%;
+    width: 35px;
+    height: 35px;
+    top: 40%;
+    left: 10%;
     animation-duration: 1.4s;
 }
 
 .light5 {
-    width: 20px; height: 20px;
-    top: 40%; left: 70%;
+    width: 20px;
+    height: 20px;
+    top: 40%;
+    left: 70%;
     animation-duration: 1.6s;
 }
 
 .light6 {
-    width: 25px; height: 25px;
-    top: 50%; left: 90%;
+    width: 25px;
+    height: 25px;
+    top: 50%;
+    left: 90%;
     animation-duration: 1.6s;
 }
 
 .light7 {
-    width: 30px; height: 30px;
-    top: 80%; left: 400%;
+    width: 30px;
+    height: 30px;
+    top: 80%;
+    left: 400%;
     animation-duration: 1.7s;
 }
 
 .light8 {
-    width: 35px; height: 35px;
-    top: 70%; left: 30%;
+    width: 35px;
+    height: 35px;
+    top: 70%;
+    left: 30%;
     animation-duration: 1.8s;
 }
 
 .light9 {
-    width: 20px; height: 20px;
-    top: 80%; left: 90%;
+    width: 20px;
+    height: 20px;
+    top: 80%;
+    left: 90%;
     animation-duration: 1.9s;
 }
 
 
 .block-location {
-    flex: 1;  /* Chaque bloc prend un tiers de l'espace disponible */
+    flex: 1; /* Chaque bloc prend un tiers de l'espace disponible */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1218,7 +1242,7 @@ ul li {
     border-radius: 10px;
     margin: 10px;
     padding: 10px;
-    color: white;  /* Contenu en blanc */
+    color: white; /* Contenu en blanc */
     height: auto; /* cela permet au conteneur de s'ajuster à la hauteur de son contenu */
     flex-direction: column; /* cela indique que les enfants Flex doivent être empilés verticalement */
 }
@@ -1254,6 +1278,7 @@ ul li {
     margin-bottom: 30px;
 
 }
+
 @media (max-width: 768px) {
     .casino-table {
         display: block;
@@ -1261,6 +1286,7 @@ ul li {
         white-space: nowrap;
     }
 }
+
 .casino-table th, .casino-table td {
     text-align: center;
     vertical-align: middle;
@@ -1290,6 +1316,7 @@ ul li {
     text-align: center;
     vertical-align: middle; /* centre le contenu verticalement */
 }
+
 .casino-table .load-more-cell {
     text-align: center;
     vertical-align: middle; /* centre le contenu verticalement */
@@ -1364,7 +1391,7 @@ ul li {
 
 .casino-detail-load-more-btn:hover {
     background-color: white;
-    color:#333
+    color: #333
 }
 
 .casino-detail-load-less-btn {
@@ -1382,14 +1409,13 @@ ul li {
 }
 
 .casino-detail-load-less-btn:hover {
-    background-color:var(--theme-blue);
-    color:white
+    background-color: var(--theme-blue);
+    color: white
 }
 
 .hidden-row {
     display: none;
 }
-
 
 
 /* LIST CATEGORY */
@@ -1443,8 +1469,8 @@ ul li {
     display: flex;
     align-items: center;
     border-radius: 5px;
-    margin:10px;
-    padding:10px;
+    margin: 10px;
+    padding: 10px;
 }
 
 .category-location img {
@@ -1472,7 +1498,7 @@ ul li {
     cursor: pointer;
     border-radius: 10px;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-top:20px;
+    margin-top: 20px;
 }
 
 
@@ -1480,11 +1506,13 @@ ul li {
 
     height: 3em;
 }
+
 .three-lines {
 
     height: 5em;
 }
-.button{
+
+.button {
 
     background-color: var(--theme-blue);
     color: white;
@@ -1495,15 +1523,18 @@ ul li {
     cursor: pointer;
     border-radius: 10px;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-top:20px;
-    display: block;text-align: center !important;
+    margin-top: 20px;
+    display: block;
+    text-align: center !important;
     vertical-align: bottom;
 
 }
-.button:hover, .pagination button:hover{
+
+.button:hover, .pagination button:hover {
     background-color: var(--theme-red);
     color: white;
 }
+
 .casino-box button:hover, .pagination button:hover {
     background-color: var(--theme-red);
     color: white;
@@ -1566,7 +1597,7 @@ ul li {
     height: 2px;
     background-color: #333;
     margin-right: 20px;
-    //min-width: 50%;  /* Minimum width */
+/ / min-width: 50 %; /* Minimum width */
 }
 
 
@@ -1579,7 +1610,7 @@ ul li {
 .review-left-col {
     color: white;
     padding-left: 40px;
-    padding-right:20px;
+    padding-right: 20px;
 }
 
 .review-right-col {
@@ -1663,13 +1694,13 @@ ul li {
 
 .review-ul {
     list-style-type: none; /* Supprime le style de puce par défaut */
-    padding-left: 0;      /* Supprime le padding par défaut */
+    padding-left: 0; /* Supprime le padding par défaut */
     line-height: 1.5;
-    font-size:18px;
+    font-size: 18px;
 }
 
 
-.small-img-search{
+.small-img-search {
     border-radius: 0.5rem;
     width: 3rem;
     height: 100% !important;
@@ -1679,8 +1710,7 @@ ul li {
 }
 
 
-
-.navbar-collapse{
+.navbar-collapse {
     flex-grow: initial;
 }
 
