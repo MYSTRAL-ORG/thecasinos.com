@@ -1,4 +1,3 @@
-
 @extends('layout')
 
 @section('page_title', $casinoDetail->seo_title)
@@ -36,7 +35,6 @@
     Available facilities: {{ $featuresList }}
 @endsection
 @section('context-js')
-    <link rel="preload" as="image" href="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}">
 
 @endsection
 
@@ -50,7 +48,7 @@
                 <div class="inner-circle"></div>
                 <span class="chip-letter">$</span>
             </div>
-            <h1 class="h1" >{{$casino->name}}</h1>
+            <h1 class="h1">{{$casino->name}}</h1>
         </div>
         <div class="overlay">
             <div class="light light1"></div>
@@ -67,18 +65,18 @@
     </div>
 
     <div class="container feuille-container ">
-        <div class="row feuille" >
+        <div class="row feuille">
             <div class="col-lg-12 col-sm-12 pb-2">
                 <h2 class="h2">{{$casinoDetail->title}}</h2>
                 <picture>
-                    <source media="(min-width: 768px)" srcset="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}">
-                    <source media="(max-width: 767px)" srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}">
-                    <img loading="lazy" class="rounded-3 img-fluid image-casino" src="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}" alt="{{ $casino->name }}">
+                    <source media="(min-width: 768px)"
+                            srcset="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}">
+                    <source media="(max-width: 767px)"
+                            srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}">
+                    <img loading="lazy" class="rounded-3 img-fluid image-casino"
+                         src="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}"
+                         alt="{{ $casino->name }}">
                 </picture>
-
-
-
-
 
 
                 <!--  <img  loading="lazy" src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class=" image-casino "> -->
@@ -92,10 +90,6 @@
             </div>
         </div>
     </div>
-
-
-
-
 
 @endsection
 @section('map')
