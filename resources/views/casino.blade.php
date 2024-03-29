@@ -64,7 +64,7 @@
         @include("breadcrumb")
     </div>
 
-    <div class="container feuille-container ">
+    <div class="container   ">
         <div class="row feuille">
             <div class="col-lg-12 col-sm-12 pb-2">
                 <h2 class="h2">{{$casinoDetail->title}}</h2>
@@ -72,7 +72,8 @@
                     <source media="(min-width: 768px)"
                             srcset="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}">
                     <source media="(max-width: 767px)"
-                            srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}">
+                            srcset="{{ env('APP_URL') . '/img/casino/mobile/' . $casino->img_url }}" width="300"
+                            height="200">
                     <img class="rounded-3 img-fluid image-casino center-image"
                          src="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}"
                          alt="{{ $casino->name }}">
