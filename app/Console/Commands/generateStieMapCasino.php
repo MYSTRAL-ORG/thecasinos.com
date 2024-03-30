@@ -36,10 +36,7 @@ class generateStieMapCasino extends Command
      */
     public function handle(): void
     {
-
-
         $sitemapCasinoPath = public_path(self::SITEMAP_CASINOS_XML);
-
 
         //GLOBAL
         $sitemap = SitemapGenerator::create("")->getSitemap();
@@ -49,21 +46,15 @@ class generateStieMapCasino extends Command
         $this->createAndAddUrl(config('app.url') . '/terms', $sitemap, 0.6);
         $this->createAndAddUrl(config('app.url') . '/policy', $sitemap, 0.6);
 
-
         //CASINOS ONLINE
-
         CasinoOnline::all()->each(function (CasinoOnline $casinoOnLine) use ($sitemap) {
             $this->createAndAddUrl(config('app.url') . "/online/" . $casinoOnLine->nom_casino_slug, $sitemap, 0.6);
         });
 
-
         //CASINOS
-
-        // Liste des casinos
         Casino::all()->each(function (Casino $casino) use ($sitemap) {
             $this->createAndAddUrl(config('app.url') . "/" . $casino->country_title . "/" . $casino->city_title . "/" . $casino->slug, $sitemap, 1);
         });
-
 
         Category::all()->each(function (Category $category) use ($sitemap) {
             $this->createAndAddUrl(config('app.url') . "/" . $category->country_title, $sitemap, 0.6);
@@ -72,15 +63,13 @@ class generateStieMapCasino extends Command
             $this->createAndAddUrl(config('app.url') . "/" . $categoryCity->country_title . "/" . $categoryCity->city_title, $sitemap, 0.6);
         });
 
-
         $this->writeSiteMap($sitemapCasinoPath, $sitemap);
-
-
     }
 
     /**
-     * @param Casino $casino
-     * @return Url
+     * @param string $url
+     * @param Sitemap $sitemap
+     * @param float $priority
      */
     function createAndAddUrl(string $url, Sitemap $sitemap, float $priority): void
     {
@@ -98,17 +87,11 @@ class generateStieMapCasino extends Command
      */
     public function writeSiteMap(string $sitemapPath, Sitemap $sitemap): void
     {
-// Vérifiez si le fichier sitemap existe déjà et le remplacer si nécessaire
+        // Vérifiez si le fichier sitemap existe déjà et le remplacer si nécessaire
         if (file_exists($sitemapPath)) {
             unlink($sitemapPath);
         }
         $sitemap->writeToFile($sitemapPath);
-        $gzPath = $sitemapPath . '.gz';
-        $gzData = gzencode(file_get_contents($sitemapPath), 9);
-        file_put_contents($gzPath, $gzData);
-
-
-        // Enregistrez le sitemap dans un fichier public
-        //
+        // Suppression de la création du fichier .gz pour la compression
     }
 }
