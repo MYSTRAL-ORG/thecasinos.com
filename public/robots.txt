@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: /admin/
 
-Sitemap: https://www.thecasinos.com/sitemap-index.xml
+Sitemap: https://www.thecasinos.com/sitemap.xml
