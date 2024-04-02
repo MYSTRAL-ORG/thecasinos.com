@@ -35,6 +35,22 @@
     Available facilities: {{ $featuresList }}
 @endsection
 @section('context-js')
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var imgSrc = "{{ env('APP_URL') }}/img/casino/desktop/{{ $casino->img_url }}"; // Chemin par défaut
+            var imgElement = document.querySelector('.image-casino');
+
+            // Vérifie si l'écran est inférieur à 768 pixels
+            if (window.innerWidth < 768) {
+                imgSrc = "{{ env('APP_URL') }}/img/casino/mobile/{{ $casino->img_url }}"; // Chemin pour mobile
+                imgElement.width = 300; // Définir la largeur pour mobile
+                imgElement.height = 200; // Définir la hauteur pour mobile
+            }
+
+            imgElement.src = imgSrc; // Appliquer le chemin d'accès de l'image
+            imgElement.alt = "{{ $casino->name }}"; // Appliquer le texte alternatif de l'image
+        });
+    </script>
 
 @endsection
 
