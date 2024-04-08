@@ -10,26 +10,6 @@
     <link rel="canonical" href="{{ config('app.url') . parse_url(request()->getRequestUri(), PHP_URL_PATH) }}">
 
 
-    <script src="{{asset('/js/bootstrap.bundle.js')}}" defer></script>
-
-
-    <link rel="preload" href="{{asset('/css/bootstrap.min.css')}}" as="style"
-          onload="this.onload=null;this.rel='stylesheet'" media="all">
-
-    <noscript>
-        <link rel="stylesheet" href="/css/bootstrap.min.css">
-    </noscript>
-
-
-    <link rel="stylesheet" href="/css/casinos.min.css" media="all">
-
-
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style"
-          media="all" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    </noscript>
-
     @yield('meta-tags')
 
     @vite("resources/js/app.js")
