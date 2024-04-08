@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 
-window.addEventListener('load', function () {
+$(document).ready(function () {
 
     // Fonction debounce pour retarder l'appel de la fonction de recherche
     function debounce(func, wait) {
@@ -60,16 +60,21 @@ window.addEventListener('load', function () {
         document.querySelector(".search-casino-list").innerHTML = '';
     }
 
-    document.getElementById('search-casino').addEventListener("keyup", debounce((e) => {
-        const inputElement = e.target;
-        const searchQuery = inputElement.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        if (searchQuery.length < 3) {
-            removeElements(); // Effacer les résultats précédents
-            $("#search-casino-list").addClass("d-none");
-            return;
+    document.addEventListener('DOMContentLoaded', function () {
+        const searchCasinoElement = document.getElementById('search-casino');
+        if (searchCasinoElement) {
+            document.getElementById('search-casino').addEventListener("keyup", debounce((e) => {
+                const inputElement = e.target;
+                const searchQuery = inputElement.value.trim().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                if (searchQuery.length < 3) {
+                    removeElements(); // Effacer les résultats précédents
+                    $("#search-casino-list").addClass("d-none");
+                    return;
+                }
+                performSearch(searchQuery);
+            }, 500)); // Attend 500 ms après que l'utilisateur a fini de taper
         }
-        performSearch(searchQuery);
-    }, 500)); // Attend 500 ms après que l'utilisateur a fini de taper
+    });
 
 
     /*
