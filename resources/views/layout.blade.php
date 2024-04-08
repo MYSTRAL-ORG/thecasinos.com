@@ -19,7 +19,9 @@
     @yield('context-js')
 
     <!-- 2024 Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZTJV1TP3F"></script>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+
+    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-BZTJV1TP3F"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
