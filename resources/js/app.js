@@ -1,7 +1,7 @@
 import $ from "jquery";
 
 
-$(document).ready(function () {
+window.addEventListener('load', function () {
 
     // Fonction debounce pour retarder l'appel de la fonction de recherche
     function debounce(func, wait) {
