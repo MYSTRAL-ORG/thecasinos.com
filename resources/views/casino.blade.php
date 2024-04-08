@@ -50,6 +50,31 @@
             imgElement.src = imgSrc; // Appliquer le chemin d'accès de l'image
             imgElement.alt = "{{ $casino->name }}"; // Appliquer le texte alternatif de l'image
         });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const paragraphs = document.querySelectorAll('.content-casino p');
+            const SHOW_INITIAL = 2; // Nombre de paragraphes à montrer initialement
+
+            if (paragraphs.length > SHOW_INITIAL) {
+                for (let i = SHOW_INITIAL; i < paragraphs.length; i++) {
+                    paragraphs[i].classList.add('hidden');
+                }
+
+                const loadMoreButton = document.createElement('button');
+                loadMoreButton.id = 'loadMore';
+                loadMoreButton.classList.add('casino-detail-load-more-btn');
+                loadMoreButton.textContent = 'Load More';
+                document.querySelector('.content-casino').appendChild(loadMoreButton);
+
+                loadMoreButton.addEventListener('click', function () {
+                    document.querySelectorAll('.content-casino p.hidden').forEach(function (p) {
+                        p.classList.remove('hidden');
+                    });
+                    loadMoreButton.remove(); // Supprime le bouton après affichage de tout le contenu
+                });
+            }
+        });
+
     </script>
 
 @endsection
@@ -101,6 +126,14 @@
             </div>
             <div class="col-lg-8 col-sm-12 pt-2">
                 @include("content-casino")
+                <h3>Most similar casinos online :</h3>
+
+                @php
+                    $lines = 3;
+                    $columns = ['Logo', 'Bonus', 'Review', 'Casino'];
+
+                @endphp
+                @include('top10')
             </div>
             <div class="col-lg-4 col-sm-12 pt-2">
                 @include("sidebar")
@@ -109,6 +142,4 @@
     </div>
 
 @endsection
-@section('map')
 
-@endsection

@@ -1743,3 +1743,8 @@ svg.w-5.h-5 {
         max-width: 100% !important; /* Permet à l'image de s'ajuster à la largeur du conteneur */
     }
 }
+
+
+.hidden {
+    display: none;
+}
