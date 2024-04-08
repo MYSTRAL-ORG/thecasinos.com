@@ -38,12 +38,8 @@
     <meta name="keywords" content="@yield('page_keywords')">
     @yield('context-js')
 
-
-    <!-- Google Tag Manager -->
- 
-
     <!-- Google tag (gtag.js) -->
-    <script src="https://www.googletagmanager.com/gtag/js?id=G-BZTJV1TP3F"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZTJV1TP3F"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 
