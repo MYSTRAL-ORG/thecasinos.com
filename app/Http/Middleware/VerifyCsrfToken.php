@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken as Middleware;
+use Symfony\Component\HttpFoundation\Cookie;
 
 class VerifyCsrfToken extends Middleware
 {
@@ -12,6 +13,23 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        //
+        'api/*'
     ];
+
+
+    protected function newCookie($request, $config)
+    {
+        return new Cookie(
+            'XSRF-TOKEN',
+            $request->session()->token(),
+            $this->availableAt(60 * $config['lifetime']),
+            $config['path'],
+            $config['domain'],
+            $config['secure'],
+            true, // Httponly flag true
+            false,
+            $config['same_site'] ?? null,
+            $config['partitioned'] ?? false
+        );
+    }
 }
