@@ -12,6 +12,7 @@
 
     @yield('meta-tags')
 
+
     @vite("resources/js/app.js")
     <title>@yield('page_title')</title>
     <meta name="description" content="@yield('page_description')">
@@ -21,7 +22,7 @@
     <!-- 2024 Google tag (gtag.js) -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
 
-    <script defer src="https://www.googletagmanager.com/gtag/js?id=G-BZTJV1TP3F"></script>
+    <script src="https://www.googletagmanager.com/gtag/js?id=G-BZTJV1TP3F" defer></script>
     <script>
         window.dataLayer = window.dataLayer || [];
 

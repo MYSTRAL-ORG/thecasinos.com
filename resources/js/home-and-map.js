@@ -24,14 +24,10 @@ $(document).ready(function () {
 
     let styleCache = {};
 
-    function generatedStyle(feature, resolution, sel) {
-        let img = feature.get("imgurl");
+    function generatedStyle(feature, resolution, sel = false) {
         const originalImg = feature.get("originalimg");
+        let img = originalImg ? feature.get("imgurl") : sel ? "sel_icon-the-casinos.png" : "icon-the-casinos.png";
 
-        if (!originalImg) {
-            img = sel ? "sel_icon-the-casinos.png" : "icon-the-casinos.png";
-
-        }
 
         let style = styleCache[img + sel];
 
@@ -225,7 +221,7 @@ $(document).ready(function () {
 
         }
 
-         
+
     }
 
 

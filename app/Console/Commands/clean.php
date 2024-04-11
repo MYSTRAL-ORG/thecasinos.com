@@ -25,8 +25,10 @@ class clean extends Command
      */
     public function handle(): void
     {
-        $this->call('route:cache');
+
+
         $this->call('key:generate');
+        $this->call('route:cache');
         $this->call('cache:clear');
         $this->call('view:clear');
         $this->call('route:clear');
@@ -35,9 +37,6 @@ class clean extends Command
         $this->call('clear-compiled');
         $this->call('config:cache');
         $this->call('optimize:clear');
-
-
-
 
 
     }

@@ -35,16 +35,11 @@
 <meta name="_appUrl" content="{{ config('app.url')}}"/>
 
 
-<script src="{{asset('/js/bootstrap.bundle.js')}}" defer></script>
+@vite('resources/js/lib-bootstrap.js')
+@vite('resources/css/lib/lib-bootstrap.scss')
 
 
-<link rel="stylesheet" href="/css/bootstrap.min.css" media="all">
+@vite('resources/css/casinos.css')
 
-
-<link rel="stylesheet" href="/css/casinos.min.css" media="all">
-
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
-      media="all">
 
 

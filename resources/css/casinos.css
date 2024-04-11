@@ -26,19 +26,6 @@ p {
     line-height: 1.5;
 }
 
-/* Media query pour les écrans de tablette */
-@media (max-width: 768px) {
-    p {
-        font-size: 18px; /* Taille de police légèrement réduite pour les tablettes */
-    }
-}
-
-/* Media query pour les écrans de téléphone */
-@media (max-width: 480px) {
-    p {
-        font-size: 16px; /* Taille de police plus petite pour les téléphones */
-    }
-}
 
 ul {
     list-style: none !important;
@@ -219,11 +206,11 @@ body, html {
 
 
 /* GALLERY */
-  
+
 
 .gallery {
     background-color: black;
-    background-image: url('/img/background.webp'); /* Remplacez par le chemin de votre image */
+    background-image: url('../../public/img/background.webp'); /* Remplacez par le chemin de votre image */
     background-repeat: no-repeat; /* Evite la répétition de l'image */
     background-size: cover; /* S'assure que l'image couvre toute la galerie */
     background-position: center; /* Centre l'image d'arrière-plan */
@@ -597,9 +584,6 @@ body, html {
     background-color: white;
 
 
-    padding: 40px;
-    margin-top: 40px;
-    margin-bottom: 40px;
     border-radius: 20px 20px 40px 40px;
 
     flex-wrap: wrap;
@@ -688,7 +672,7 @@ body, html {
 }
 
 .casino-block-green h3::before, .casino-block-green-online h3::before {
-    font-family: "Font Awesome 5 Free";
+    /*font-family: "Font Awesome 5 Free";*/
     font-weight: 900;
     position: absolute; /* Position absolue pour l'icône */
     left: 10px; /* Distance de l'icône par rapport à la gauche du h3 */
@@ -697,7 +681,7 @@ body, html {
 }
 
 .casino-block-green h3:nth-child(1)::before {
-    content: "\f017"; /* Icône pour "Table Games" */
+    /* content: "\f017"; *//* Icône pour "Table Games" */
 }
 
 .casino-block-green-online h3:nth-child(1)::before {
@@ -730,7 +714,7 @@ body, html {
 }
 
 .casino-block-orange h3::before, .casino-block-orange-online h3::before {
-    font-family: "Font Awesome 5 Free";
+    /*font-family: "Font Awesome 5 Free";*/
     font-weight: 900;
     position: absolute; /* Position absolue pour l'icône */
     left: 10px; /* Distance de l'icône par rapport à la gauche du h3 */
@@ -739,31 +723,31 @@ body, html {
 }
 
 .casino-block-orange h3:nth-child(1)::before {
-    content: "\f522"; /* Icône pour "Table Games" */
+    /*content: "\f522"; !* Icône pour "Table Games" *!*/
 }
 
 .casino-block-orange h3:nth-child(2)::before {
-    content: "\f155"; /* Icône pour "Slot Machine" (dice) */
+    /*content: "\f155"; !* Icône pour "Slot Machine" (dice) *!*/
 }
 
 .casino-block-orange h3:nth-child(3)::before {
-    content: "\f51e"; /* Icône pour "Poker" (lizard hand) */
+    /*content: "\f51e"; !* Icône pour "Poker" (lizard hand) *!*/
 }
 
 .casino-block-orange-online h3:nth-child(1)::before {
-    content: "\f522"; /* Icône pour "Table Games" */
+    /*content: "\f522"; !* Icône pour "Table Games" *!*/
 }
 
 .casino-block-orange-online h3:nth-child(2)::before {
-    content: "\f155"; /* Icône pour "Slot Machine" (dice) */
+    /*content: "\f155"; !* Icône pour "Slot Machine" (dice) *!*/
 }
 
 .casino-block-orange-online h3:nth-child(3)::before {
-    content: "\f51e"; /* Icône pour "Poker" (lizard hand) */
+    /*content: "\f51e"; !* Icône pour "Poker" (lizard hand) *!*/
 }
 
 .casino-block-orange-online h3:nth-child(4)::before {
-    content: "\f1e3"; /* Icône pour "Poker" (lizard hand) */
+    /*content: "\f1e3"; !* Icône pour "Poker" (lizard hand) *!*/
 }
 
 .casino-block-purple, .casino-block-purple-online {
@@ -791,7 +775,7 @@ body, html {
 }
 
 h3 i {
-    font-family: "Font Awesome 5 Free";
+    /*font-family: "Font Awesome 5 Free";*/
     font-weight: 900;
     position: absolute !important; /* Position absolue pour l'icône */
     left: 10px !important; /* Distance de l'icône par rapport à la gauche du h3 */
@@ -836,7 +820,7 @@ h3 i {
 }
 
 .casino-block-cons h3::before {
-    font-family: "Font Awesome 5 Free";
+    /*font-family: "Font Awesome 5 Free";*/
     font-weight: 900;
     position: absolute; /* Position absolue pour l'icône */
     left: 10px; /* Distance de l'icône par rapport à la gauche du h3 */
@@ -879,7 +863,7 @@ h3 i {
 }
 
 .casino-block-pros h3::before {
-    font-family: "Font Awesome 5 Free";
+    /*font-family: "Font Awesome 5 Free";*/
     font-weight: 900;
     position: absolute; /* Position absolue pour l'icône */
     left: 10px; /* Distance de l'icône par rapport à la gauche du h3 */
@@ -1575,7 +1559,7 @@ ul li {
 .review-casino-box {
 
     border-radius: 10px 10px 20px 20px;
-    background-image: url('/img/main.jpg');
+    background-image: url('../../public/img/main.jpg');
 
 }
 
@@ -1597,7 +1581,6 @@ ul li {
     height: 2px;
     background-color: #333;
     margin-right: 20px;
-/ / min-width: 50 %; /* Minimum width */
 }
 
 
@@ -1722,4 +1705,28 @@ ul li {
 
 svg.w-5.h-5 {
     max-width: 50px;
+}
+
+@media (max-width: 600px) {
+    .h1 {
+        font-size: 1.5em !important; /* Taille réduite pour les écrans mobiles */
+    }
+}
+
+.center-image {
+    max-width: 300px !important; /* Limite la largeur de l'image à 300px */
+    display: block; /* Transforme l'image en bloc pour permettre le centrage */
+    margin-left: auto; /* Centre l'image horizontalement */
+    margin-right: auto;
+}
+
+/* Optionnel: ajuste l'image pour les écrans plus larges */
+@media (min-width: 480px) {
+    .center-image {
+        max-width: 100% !important; /* Permet à l'image de s'ajuster à la largeur du conteneur */
+    }
+}
+
+.hidden {
+    display: none;
 }
