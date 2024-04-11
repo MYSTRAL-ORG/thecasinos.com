@@ -1025,7 +1025,8 @@ h2 {
     /* width: 100% !important; */
     border-radius: 10px !important;
     /* padding-top: 10px !important; */
-    padding-bottom: 10px !important;
+    padding-bottom: 1em !important;
+    padding-top: 1em !important;
     font-weight: bold !important;
 }
 

@@ -105,7 +105,7 @@
         @include("breadcrumb")
     </div>
 
-    <div class="container   ">
+    <div class="container   pb-5">
         <div class="row feuille ">
             <div class="col-lg-12 col-sm-12 pt-5pb-2">
                 <h2 class="h2">{{$casinoDetail->title}}</h2>
