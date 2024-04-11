@@ -1106,7 +1106,7 @@ ul li {
     bottom: 10px;
     width: 60%;
     left: 50%;
-
+    transform: translateX(-50%);
     display: flex;
     z-index: 2;
 }
@@ -1730,7 +1730,6 @@ svg.w-5.h-5 {
 .hidden {
     display: none;
 }
-
 
 @media (max-width: 768px) {
     /* Point de rupture pour les appareils mobiles */
