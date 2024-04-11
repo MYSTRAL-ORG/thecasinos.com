@@ -1106,7 +1106,7 @@ ul li {
     bottom: 10px;
     width: 60%;
     left: 50%;
-    transform: translateX(-50%);
+
     display: flex;
     z-index: 2;
 }
@@ -1729,4 +1729,20 @@ svg.w-5.h-5 {
 
 .hidden {
     display: none;
+}
+
+
+@media (max-width: 768px) {
+    /* Point de rupture pour les appareils mobiles */
+    .content-casino {
+        font-size: 1rem !important; /* 16px pour la lisibilité */
+        padding: 1rem !important;; /* Padding confortable pour le toucher */
+    }
+}
+
+@media (max-width: 320px) {
+    .content-casino {
+        font-size: 0.875rem !important;; /* Ajustement pour les très petits écrans */
+        padding: 0.75rem !important;; /* Moins de padding pour économiser de l'espace */
+    }
 }
