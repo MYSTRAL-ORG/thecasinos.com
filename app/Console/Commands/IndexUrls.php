@@ -58,11 +58,11 @@ class IndexUrls extends Command
 
         foreach ($records as &$record) {
             if ($record['Status'] == '0') {
-                /* if (!$this->indexURL($http, $record['URL'])) {
-                     $remaining = $initialTotalPendingUrls - $processedCount;
-                     $percentageComplete = ($initialTotalPendingUrls > 0) ? round($processedCount / $initialTotalPendingUrls * 100, 2) : 0;
-                     return ['success' => false, 'error' => "Failed to index URL: {$record['URL']}", 'processed' => $processedCount, 'remaining' => $remaining, 'percentage' => $percentageComplete];
-                 }*/
+                if (!$this->indexURL($http, $record['URL'])) {
+                    $remaining = $initialTotalPendingUrls - $processedCount;
+                    $percentageComplete = ($initialTotalPendingUrls > 0) ? round($processedCount / $initialTotalPendingUrls * 100, 2) : 0;
+                    return ['success' => false, 'error' => "Failed to index URL: {$record['URL']}", 'processed' => $processedCount, 'remaining' => $remaining, 'percentage' => $percentageComplete];
+                }
                 $record['Status'] = 1;
                 $processedCount++;
             }
