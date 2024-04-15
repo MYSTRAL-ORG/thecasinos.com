@@ -10,7 +10,7 @@ use SplTempFileObject;
 class GenerateCsvFromSitemap extends Command
 {
     protected $signature = 'sitemap:generate-csv {url}';
-    protected $description = 'Generate CSV files from a sitemap with a maximum of 200 URLs each';
+    protected $description = 'Generate a CSV file from a sitemap, with each URL having a default status of 0';
 
     public function handle()
     {
@@ -27,19 +27,15 @@ class GenerateCsvFromSitemap extends Command
         $xml = simplexml_load_string($body);
 
         foreach ($xml->url as $urlElement) {
-            $urls[] = (string)$urlElement->loc;
+            $urls[] = [(string)$urlElement->loc, 0]; // Include status with default 0
         }
 
-        // Divide URLs into chunks and save to CSV
-        $chunks = array_chunk($urls, 200);
+        // Create CSV file in storage
+        $csvFilePath = storage_path("app/google/data.csv");
+        $csv = Writer::createFromPath($csvFilePath, 'w+'); // Ensure the path is writable
+        $csv->insertOne(['URL', 'Status']); // Define columns with Status
+        $csv->insertAll($urls); // Insert all URLs with status
 
-        foreach ($chunks as $index => $chunk) {
-            $csvFilePath = storage_path("app/google/csv-2-load/data_{$index}.csv"); // Using the public folder inside storage
-            $csv = Writer::createFromPath($csvFilePath, 'w+'); // Ensure the path is writable
-            $csv->insertOne(['URL']);
-            $csv->insertAll(array_map(fn($url) => [$url], $chunk));
-
-            $this->info("Generated: {$csvFilePath} with " . count($chunk) . " URLs");
-        }
+        $this->info("Generated: {$csvFilePath} with " . count($urls) . " URLs");
     }
 }
