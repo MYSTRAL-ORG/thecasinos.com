@@ -8,6 +8,7 @@ use GuzzleHttp\Client;
 use League\Csv\Reader;
 use League\Csv\Writer;
 use Illuminate\Support\Facades\Storage;
+use Log;
 
 class IndexUrls extends Command
 {
@@ -16,6 +17,8 @@ class IndexUrls extends Command
 
     public function handle()
     {
+
+        Log::info("Processing  $this->description");
         $filePath = storage_path('app/google/data.csv');
 
         if (!file_exists($filePath)) {
@@ -24,17 +27,17 @@ class IndexUrls extends Command
             return;
         }
 
-        $this->info("Processing file: $filePath");
+        Log::info("Processing file: $filePath");
 
         $result = $this->processFile($filePath);
         if (!$result['success']) {
             $this->logSummary($result['processed'], $result['remaining'], $result['percentage']); // Log summary before error
-            $this->error("Processing stopped due to an error: " . $result['error']);
+            Log::info("Processing stopped due to an error: " . $result['error']);
             $this->logError("Processing stopped due to an error: " . $result['error']);
             return;
         }
 
-        $this->info("Successfully processed the file.");
+        Log::info("Successfully processed the file.");
         $this->logSummary($result['processed'], $result['remaining'], $result['percentage']);
     }
 
