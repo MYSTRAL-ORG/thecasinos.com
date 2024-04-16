@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
-        $schedule->command(IndexUrls::class)->dailyAt('02:00'); // Run every day at 2 AM
+        $schedule->command(IndexUrls::class)->everyFiveMinutes()->withoutOverlapping(); // Run every day at 2 AM
     }
 
     /**
