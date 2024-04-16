@@ -51,22 +51,17 @@ class IndexUrls extends Command
             return $record['Status'] == '0';
         }));
 
-        $jsonKeyFile = storage_path("app/google/account1.json");
-        if (!file_exists($jsonKeyFile)) {
-            $this->logError("JSON key file not found: {$jsonKeyFile}");
-            return ['success' => false, 'error' => "JSON key file not found: {$jsonKeyFile}", 'processed' => $processedCount, 'remaining' => $initialTotalPendingUrls, 'percentage' => 0];
-        }
-
-        $http = $this->setupHttpClient($jsonKeyFile);
+        $http = $this->setupHttpClient(storage_path("app/google/account1.json"));
 
         foreach ($records as &$record) {
             if ($record['Status'] == '0') {
-                if (!$this->indexURL($http, $record['URL'])) {
-                    $remaining = $initialTotalPendingUrls - $processedCount;
-                    $percentageComplete = ($initialTotalPendingUrls > 0) ? round($processedCount / $initialTotalPendingUrls * 100, 2) : 0;
-                    return ['success' => false, 'error' => "Failed to index URL: {$record['URL']}", 'processed' => $processedCount, 'remaining' => $remaining, 'percentage' => $percentageComplete];
+                $indexResult = $this->indexURL($http, $record['URL']);
+                if (!$indexResult) {
+                    Log::error("Failed to index URL: {$record['URL']}");
+                    // Immediately exit the foreach loop due to failure
+                    break;
                 }
-                $record['Status'] = 1;
+                $record['Status'] = '1';
                 $processedCount++;
             }
         }
@@ -74,13 +69,14 @@ class IndexUrls extends Command
         $remaining = $initialTotalPendingUrls - $processedCount;
         $percentageComplete = ($initialTotalPendingUrls > 0) ? round($processedCount / $initialTotalPendingUrls * 100, 2) : 0;
 
-        // Rewrite the CSV with updated statuses
+        // Réécrire le CSV avec les statuts mis à jour
         $writer = Writer::createFromPath($filePath, 'w');
         $writer->insertOne(['URL', 'Status']);
         $writer->insertAll($records);
 
         return ['success' => true, 'processed' => $processedCount, 'remaining' => $remaining, 'percentage' => $percentageComplete];
     }
+
 
     private function indexURL($http, $url)
     {
@@ -96,8 +92,10 @@ class IndexUrls extends Command
             return true;
         } catch (\Exception $e) {
             $this->logError('Failed to index URL: ' . $url . ' with error: ' . $e->getMessage());
+
             return false;
         }
+
     }
 
     private function setupHttpClient($jsonKeyFile)
