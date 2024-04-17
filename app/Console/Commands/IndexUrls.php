@@ -17,7 +17,7 @@ class IndexUrls extends Command
 
     public function handle()
     {
-        file_put_contents(public_path('seo.txt'), null);
+        
         Log::info("Processing  $this->description");
         $filePath = storage_path('app/google/data.csv');
 
