@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
-        $schedule->command(IndexUrls::class)->everySixHours();
+        $schedule->command(IndexUrls::class)->hourly();
     }
 
     /**

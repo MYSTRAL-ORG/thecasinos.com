@@ -119,7 +119,7 @@ class IndexUrls extends Command
     private function logSummary($processed, $remaining, $percentage)
     {
         $logMessage = now()->toDateTimeString() . " - Processed: $processed, Total not Processed: $remaining, Percentage: $percentage%\n";
-        file_put_contents(public_path('seo.txt'), $logMessage, FILE_APPEND);  // Utilisation de file_put_contents avec public_path()
+        file_put_contents(public_path('seo.txt'), $logMessage);  // Utilisation de file_put_contents avec public_path()
     }
 
     private function logError($errorMessage)
