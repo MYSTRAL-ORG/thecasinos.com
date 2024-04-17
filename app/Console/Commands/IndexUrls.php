@@ -17,7 +17,7 @@ class IndexUrls extends Command
 
     public function handle()
     {
-
+        file_put_contents(public_path('seo.txt'), null);
         Log::info("Processing  $this->description");
         $filePath = storage_path('app/google/data.csv');
 
@@ -43,38 +43,64 @@ class IndexUrls extends Command
 
     private function processFile($filePath)
     {
-        $csv = Reader::createFromPath($filePath, 'r');
-        $csv->setHeaderOffset(0);
-        $records = iterator_to_array($csv->getRecords());
         $processedCount = 0;
-        $initialTotalPendingUrls = count(array_filter($records, function ($record) {
-            return $record['Status'] == '0';
-        }));
+        $remaining = 0;
+        $percentageComplete = 0;
 
-        $http = $this->setupHttpClient(storage_path("app/google/account1.json"));
+        try {
+            $csv = Reader::createFromPath($filePath, 'r');
+            $csv->setHeaderOffset(0);
+            $records = iterator_to_array($csv->getRecords());
+            $initialTotalPendingUrls = count(array_filter($records, function ($record) {
+                return $record['Status'] == '0';
+            }));
 
-        foreach ($records as &$record) {
-            if ($record['Status'] == '0') {
-                $indexResult = $this->indexURL($http, $record['URL']);
-                if (!$indexResult) {
-                    Log::error("Failed to index URL: {$record['URL']}");
-                    // Immediately exit the foreach loop due to failure
-                    break;
+            $remaining = $initialTotalPendingUrls;  // Initial value before processing
+
+            $http = $this->setupHttpClient(storage_path("app/google/account1.json"));
+
+            foreach ($records as &$record) {
+                if ($record['Status'] == '0') {
+                    $indexResult = $this->indexURL($http, $record['URL']);
+                    if (!$indexResult) {
+                        Log::error("Failed to index URL: {$record['URL']}");
+                        break;
+                    }
+                    $record['Status'] = '1';
+                    $processedCount++;
+                    $remaining--;
                 }
-                $record['Status'] = '1';
-                $processedCount++;
             }
+
+            // Rewrite the CSV with updated statuses
+            $writer = Writer::createFromPath($filePath, 'w');
+            $writer->insertOne(['URL', 'Status']);
+            $writer->insertAll($records);
+
+            // Recalculate the percentage of URLs with status '1' after writing to CSV
+            $totalSuccessUrls = count(array_filter($records, function ($record) {
+                return $record['Status'] == '1';
+            }));
+            $totalUrls = count($records);
+            $percentageComplete = ($totalUrls > 0) ? round($totalSuccessUrls / $totalUrls * 100, 2) : 0;
+
+            return [
+                'success' => true,
+                'processed' => $processedCount,
+                'remaining' => $initialTotalPendingUrls - $processedCount,
+                'percentage' => $percentageComplete
+            ];
+
+        } catch (\Exception $e) {
+            Log::error("An error occurred: " . $e->getMessage());
+            return [
+                'success' => false,
+                'processed' => $processedCount,
+                'remaining' => count($records) - $processedCount,  // Calculate remaining based on unprocessed entries
+                'percentage' => 0,  // Set to 0 in case of exception
+                'error' => $e->getMessage()
+            ];
         }
-
-        $remaining = $initialTotalPendingUrls - $processedCount;
-        $percentageComplete = ($initialTotalPendingUrls > 0) ? round($processedCount / $initialTotalPendingUrls * 100, 2) : 0;
-
-        // Réécrire le CSV avec les statuts mis à jour
-        $writer = Writer::createFromPath($filePath, 'w');
-        $writer->insertOne(['URL', 'Status']);
-        $writer->insertAll($records);
-
-        return ['success' => true, 'processed' => $processedCount, 'remaining' => $remaining, 'percentage' => $percentageComplete];
     }
 
 
@@ -119,7 +145,7 @@ class IndexUrls extends Command
     private function logSummary($processed, $remaining, $percentage)
     {
         $logMessage = now()->toDateTimeString() . " - Processed: $processed, Total not Processed: $remaining, Percentage: $percentage%\n";
-        file_put_contents(public_path('seo.txt'), $logMessage);  // Utilisation de file_put_contents avec public_path()
+        file_put_contents(public_path('seo.txt'), $logMessage, FILE_APPEND);  // Utilisation de file_put_contents avec public_path()
     }
 
     private function logError($errorMessage)
