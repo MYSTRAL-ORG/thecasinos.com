@@ -25,5 +25,5 @@ class Url2Index extends Model
     protected $casts = [
         'status' => 'bool'
     ];
-    protected $fillable = ['url', 'status'];
+    protected $fillable = ['url', 'status', 'status_bing'];
 }
