@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use Google_Client;
 use GuzzleHttp\Client;
 use App\Models\Url2Index;
+use Carbon\Carbon;
 
 // Ensure this is the correct model name
 use Exception;
@@ -95,11 +96,15 @@ class IndexUrls extends Command
 
     private function writeLog($filePath, $message)
     {
-        // Create a Carbon instance for now in the GMT+4 timezone
-        $dateWithTimezone = now()->timezone('GMT+4');
+        // Set the timezone to GMT+4 using Carbon
+        $dateWithTimezone = Carbon::now(new \DateTimeZone('GMT+4'));
 
-        // Use FILE_APPEND flag to ensure that each log entry is appended to the existing file
+        // Alternatively, you can use a location-based timezone like 'Asia/Dubai' which is also GMT+4
+        // $dateWithTimezone = Carbon::now(new \DateTimeZone('Asia/Dubai'));
+
+        // Format the date and time to a string and append it with the log message
         file_put_contents($filePath, $dateWithTimezone->toDateTimeString() . " - " . $message . "\n", FILE_APPEND);
     }
+
 
 }
