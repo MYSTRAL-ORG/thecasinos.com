@@ -29,11 +29,17 @@ class IndexUrlsBing extends Command
         $indexedCount = 0;
 
         foreach ($pendingUrls as $urlEntry) {
-            if ($this->indexURL($http, $urlEntry->url, $filePath)) {
-                $urlEntry->status_bing = true;
-                $urlEntry->save();
-                $indexedCount++;
+
+            $indexSuccess = $this->indexURL($http, $urlEntry->url, $filePath);
+            if (!$indexSuccess) {
+                $this->writeLog($filePath, "Processing stopped after failure to index URL: " . $urlEntry->url);
+                break; // Stop processing further URLs upon failure
             }
+
+            $urlEntry->status_bing = true;
+            $urlEntry->save();
+            $indexedCount++;
+
         }
 
         $this->logSummary($filePath, $totalUrls, $indexedCount);
