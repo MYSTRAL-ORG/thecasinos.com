@@ -22,6 +22,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->command(IndexUrls::class)->everySixHours();
         $schedule->command(IndexUrlsBing::class)->everySixHours();
+
+        //Lance la géneration du site tous les week end
         $schedule->command(generateStieMapCasino::class)->weekends();
     }
 
