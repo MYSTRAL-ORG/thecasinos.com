@@ -95,8 +95,11 @@ class IndexUrls extends Command
 
     private function writeLog($filePath, $message)
     {
-        // Using FILE_APPEND flag to ensure that each log entry is appended to the existing file
+        // Create a Carbon instance for now in the GMT+4 timezone
+        $dateWithTimezone = now()->timezone('GMT+4');
 
-        file_put_contents($filePath, now()->toDateTimeString() . " - " . $message . "\n", FILE_APPEND);
+        // Use FILE_APPEND flag to ensure that each log entry is appended to the existing file
+        file_put_contents($filePath, $dateWithTimezone->toDateTimeString() . " - " . $message . "\n", FILE_APPEND);
     }
+
 }
