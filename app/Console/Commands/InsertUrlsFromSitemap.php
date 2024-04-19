@@ -31,7 +31,8 @@ class InsertUrlsFromSitemap extends Command
             // Create a new Url2Index instance for each URL and save it to the database with status false
             $url2Index = new Url2Index([
                 'url' => (string)$urlElement->loc,
-                'status' => false
+                'status' => false,
+                'status_bing' => false
             ]);
             $url2Index->save();
             $count++;
