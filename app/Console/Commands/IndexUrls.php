@@ -5,9 +5,10 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Google_Client;
 use GuzzleHttp\Client;
-use League\Csv\Reader;
-use League\Csv\Writer;
-use Illuminate\Support\Facades\Storage;
+use App\Models\Url2Index;
+
+// Ensure this is the correct model name
+use Exception;
 use Log;
 
 class IndexUrls extends Command
@@ -17,111 +18,63 @@ class IndexUrls extends Command
 
     public function handle()
     {
-        file_put_contents(public_path('seo.txt'), null);
-        Log::info("Processing  $this->description");
-        $filePath = storage_path('app/google/data.csv');
 
-        if (!file_exists($filePath)) {
-            $this->logError("File not found: $filePath");
-            $this->error("File not found: $filePath");
+        $filePath = public_path('seo.txt');
+        file_put_contents($filePath, null);
+        $pendingUrls = Url2Index::where('status', false)->get();
+
+        if ($pendingUrls->isEmpty()) {
+            $this->writeLog($filePath, "No pending URLs to process.");
+
             return;
         }
 
-        Log::info("Processing file: $filePath");
+        $http = $this->setupHttpClient(storage_path("app/google/account1.json"));
+        $totalUrls = $pendingUrls->count();
+        $indexedCount = 0;
 
-        $result = $this->processFile($filePath);
-        if (!$result['success']) {
-            $this->logSummary($result['processed'], $result['remaining'], $result['percentage']); // Log summary before error
-            Log::info("Processing stopped due to an error: " . $result['error']);
-            $this->logError("Processing stopped due to an error: " . $result['error']);
-            return;
-        }
-
-        Log::info("Successfully processed the file.");
-        $this->logSummary($result['processed'], $result['remaining'], $result['percentage']);
-    }
-
-    private function processFile($filePath)
-    {
-        $processedCount = 0;
-        $remaining = 0;
-        $percentageComplete = 0;
-
-        try {
-            $csv = Reader::createFromPath($filePath, 'r');
-            $csv->setHeaderOffset(0);
-            $records = iterator_to_array($csv->getRecords());
-            $initialTotalPendingUrls = count(array_filter($records, function ($record) {
-                return $record['Status'] == '0';
-            }));
-
-            $remaining = $initialTotalPendingUrls;  // Initial value before processing
-
-            $http = $this->setupHttpClient(storage_path("app/google/account1.json"));
-
-            foreach ($records as &$record) {
-                if ($record['Status'] == '0') {
-                    $indexResult = $this->indexURL($http, $record['URL']);
-                    if (!$indexResult) {
-                        Log::error("Failed to index URL: {$record['URL']}");
-                        break;
-                    }
-                    $record['Status'] = '1';
-                    $processedCount++;
-                    $remaining--;
-                }
+        foreach ($pendingUrls as $urlEntry) {
+            $indexSuccess = $this->indexURL($http, $urlEntry->url, $filePath);
+            if (!$indexSuccess) {
+                $this->writeLog($filePath, "Processing stopped after failure to index URL: " . $urlEntry->url);
+                break; // Stop processing further URLs upon failure
             }
-
-            // Rewrite the CSV with updated statuses
-            $writer = Writer::createFromPath($filePath, 'w');
-            $writer->insertOne(['URL', 'Status']);
-            $writer->insertAll($records);
-
-            // Recalculate the percentage of URLs with status '1' after writing to CSV
-            $totalSuccessUrls = count(array_filter($records, function ($record) {
-                return $record['Status'] == '1';
-            }));
-            $totalUrls = count($records);
-            $percentageComplete = ($totalUrls > 0) ? round($totalSuccessUrls / $totalUrls * 100, 2) : 0;
-
-            return [
-                'success' => true,
-                'processed' => $processedCount,
-                'remaining' => $initialTotalPendingUrls - $processedCount,
-                'percentage' => $percentageComplete
-            ];
-
-        } catch (\Exception $e) {
-            Log::error("An error occurred: " . $e->getMessage());
-            return [
-                'success' => false,
-                'processed' => $processedCount,
-                'remaining' => count($records) - $processedCount,  // Calculate remaining based on unprocessed entries
-                'percentage' => 0,  // Set to 0 in case of exception
-                'error' => $e->getMessage()
-            ];
+            $urlEntry->status = true;
+            $urlEntry->save();
+            $indexedCount++;
         }
+
+        // Get the total count of URLs from the database
+        $totalUrls = Url2Index::count();
+
+        // Get the count of indexed URLs (status = true)
+        $indexedCount = Url2Index::where('status', true)->count();
+
+        // Calculate remaining URLs (status = false)
+        $remaining = Url2Index::where('status', false)->count();
+
+        // Calculate the percentage of indexed URLs
+        $percentageIndexed = ($totalUrls > 0) ? round($indexedCount / $totalUrls * 100, 2) : 0;
+
+        $summary = "Total URLs: $totalUrls, Indexed URLs: $indexedCount, Remaining: $remaining, Success Rate: $percentageIndexed%";
+        $this->writeLog($filePath, $summary);
     }
 
-
-    private function indexURL($http, $url)
+    private function indexURL($http, $url, $filePath)
     {
-        $content = [
-            'json' => [
-                'url' => trim($url),
-                'type' => 'URL_UPDATED'
-            ]
-        ];
-
         try {
-            $response = $http->post('v3/urlNotifications:publish', $content);
-            return true;
-        } catch (\Exception $e) {
-            $this->logError('Failed to index URL: ' . $url . ' with error: ' . $e->getMessage());
-
+            $response = $http->post('v3/urlNotifications:publish', [
+                'json' => [
+                    'url' => trim($url),
+                    'type' => 'URL_UPDATED'
+                ]
+            ]);
+            return false;
+        } catch (Exception $e) {
+            $errorMessage = 'Failed to index URL: ' . $url . ' with error: ' . $e->getMessage();
+            $this->writeLog($filePath, $errorMessage);
             return false;
         }
-
     }
 
     private function setupHttpClient($jsonKeyFile)
@@ -131,27 +84,19 @@ class IndexUrls extends Command
         $client->addScope('https://www.googleapis.com/auth/indexing');
         $client->fetchAccessTokenWithAssertion();
 
-        $accessToken = $client->getAccessToken()['access_token'];
-
         return new Client([
             'base_uri' => 'https://indexing.googleapis.com/',
             'headers' => [
-                'Authorization' => 'Bearer ' . $accessToken,
+                'Authorization' => 'Bearer ' . $client->getAccessToken()['access_token'],
                 'Content-Type' => 'application/json'
             ]
         ]);
     }
 
-    private function logSummary($processed, $remaining, $percentage)
+    private function writeLog($filePath, $message)
     {
-        //log summary
-        $logMessage = now()->toDateTimeString() . " - Processed: $processed, Total not Processed: $remaining, Percentage: $percentage%\n";
-        file_put_contents(public_path('seo.txt'), $logMessage, FILE_APPEND);  // Utilisation de file_put_contents avec public_path()
-    }
+        // Using FILE_APPEND flag to ensure that each log entry is appended to the existing file
 
-    private function logError($errorMessage)
-    {
-        $logMessage = now()->toDateTimeString() . " - ERROR: $errorMessage\n";
-        file_put_contents(public_path('seo.txt'), $logMessage, FILE_APPEND);  // Utilisation de file_put_contents avec public_path()
+        file_put_contents($filePath, now()->toDateTimeString() . " - " . $message . "\n", FILE_APPEND);
     }
 }
