@@ -71,20 +71,20 @@ Route::get('/', [IndexController::class, 'index'])->name('index');
 Route::get('/online', [IndexController::class, 'onLine'])->name('online');
 Route::get('/online/{name}', [CasinoOnlineController::class, 'get'])->name('casino-online');
 
-// Routes dynamiques avec expressions régulières pour 'country' et 'city'
+// Routes dynamiques avec expressions régulières ajustées
 Route::get('/{country}/{city}', [IndexController::class, 'category'])
     ->name('category')
     ->where([
         'country' => '[a-z-]+',
-        'city' => '[a-z-]+'
+        'city' => '[a-z-]+(?:-[a-z-]+)*'  // Mise à jour pour capturer des segments multiples
     ]);
 
 Route::get('/{country}/{city}/{name}', [LocationController::class, 'show'])
     ->name('casino')
     ->where([
         'country' => '[a-z-]+',
-        'city' => '[a-z-]+',
-        'name' => '[a-zA-Z0-9-_]+'
+        'city' => '[a-z-]+(?:-[a-z-]+)*',  // Mise à jour pour capturer des segments multiples
+        'name' => '[a-zA-Z0-9-_]+(?:-[a-zA-Z0-9-_]+)*'  // Mise à jour pour capturer des noms complexes
     ]);
 
 
