@@ -8,7 +8,7 @@ use App\Http\Controllers\admin\CategoryCityController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\PasswordController;
 use App\Http\Controllers\CasinoSearchController;
-use App\Http\Controllers\CasionOnLineController;
+use App\Http\Controllers\CasinoOnlineController;
 use App\Http\Controllers\CrawlerController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\MapkitController;
@@ -17,7 +17,7 @@ use App\Models\CasinoDetail;
 use App\Models\CasinoOnline;
 use App\Models\CategoryCity;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\IndexContoller;
+use App\Http\Controllers\IndexController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,23 +67,28 @@ Route::get('/about', function () {
 })->name('about');
 
 
-//Route::get('/',  [MapkitController::class , 'fetchMapData']);
-Route::get('/', [IndexContoller::class, 'index'])->name('index');
+Route::get('/', [IndexController::class, 'index'])->name('index');
+Route::get('/online', [IndexController::class, 'onLine'])->name('online');
+Route::get('/online/{name}', [CasinoOnlineController::class, 'get'])->name('casino-online');
 
-Route::get('/online', [IndexContoller::class, 'onLine'])->name('online');
+// Routes dynamiques avec expressions régulières pour 'country' et 'city'
+Route::get('/{country}/{city}', [IndexController::class, 'category'])
+    ->name('category')
+    ->where([
+        'country' => '[a-z-]+',
+        'city' => '[a-z-]+'
+    ]);
+
+Route::get('/{country}/{city}/{name}', [LocationController::class, 'show'])
+    ->name('casino')
+    ->where([
+        'country' => '[a-z-]+',
+        'city' => '[a-z-]+',
+        'name' => '[a-zA-Z0-9-_]+'
+    ]);
 
 
 Route::get('/tttt', [OpenAiController::class, 'getListDataToCompute'])->name('getListDataToCompute');
 Route::get('/ttttcat', [OpenAiController::class, 'getListCategoryToCompute'])->name('getListCategoryToCompute');
 Route::get('/ttttcatCity', [OpenAiController::class, 'getListCategoryCityToCompute'])->name('getListCategoryCityToCompute');
-
-Route::get('/online/{name}', [CasionOnLineController::class, 'get'])->name('casino-online');
-
-Route::get('/{country}/{city?}', [IndexContoller::class, 'category'])->name('category');
-
-Route::get('/{country}/{city}/{name}', [LocationController::class, 'show'])->name('casino');
-
-
-
-
 
