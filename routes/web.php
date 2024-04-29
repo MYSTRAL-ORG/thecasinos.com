@@ -73,19 +73,10 @@ Route::get('/online/{name}', [CasinoOnlineController::class, 'get'])->name('casi
 
 // Routes dynamiques avec expressions régulières ajustées
 Route::get('/{country}/{city}', [IndexController::class, 'category'])
-    ->name('category')
-    ->where([
-        'country' => '[a-z-]+',
-        'city' => '[a-z-]+(?:-[a-z-]+)*'  // Mise à jour pour capturer des segments multiples
-    ]);
+    ->name('category');
 
 Route::get('/{country}/{city}/{name}', [LocationController::class, 'show'])
-    ->name('casino')
-    ->where([
-        'country' => '[a-z-]+',
-        'city' => '[a-z-]+(?:-[a-z-]+)*',  // Mise à jour pour capturer des segments multiples
-        'name' => '[a-zA-Z0-9-_]+(?:-[a-zA-Z0-9-_]+)*'  // Mise à jour pour capturer des noms complexes
-    ]);
+    ->name('casino');
 
 
 Route::get('/tttt', [OpenAiController::class, 'getListDataToCompute'])->name('getListDataToCompute');
