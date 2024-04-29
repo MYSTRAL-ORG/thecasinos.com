@@ -58,7 +58,7 @@ class IndexUrls extends Command
         // Calculate the percentage of indexed URLs
         $percentageIndexed = ($totalUrls > 0) ? round($indexedCount / $totalUrls * 100, 2) : 0;
 
-        $summary = "Total URLs: $totalUrls, Indexed URLs: $indexedCount, Remaining: $remaining, Success Rate: $percentageIndexed%";
+        $summary = "Total URLs: $indexedCount, Indexed URLs: $indexedCount, Remaining: $remaining, Success Rate: $percentageIndexed%";
         $this->writeLog($filePath, $summary);
     }
 
