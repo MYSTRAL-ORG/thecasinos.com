@@ -31,18 +31,19 @@ class IndexUrls extends Command
         }
 
         $http = $this->setupHttpClient(storage_path("app/google/account1.json"));
-        $totalUrls = $pendingUrls->count();
+
         $indexedCount = 0;
 
         foreach ($pendingUrls as $urlEntry) {
             $indexSuccess = $this->indexURL($http, $urlEntry->url, $filePath);
+
             if (!$indexSuccess) {
                 $this->writeLog($filePath, "Processing stopped after failure to index URL: " . $urlEntry->url);
-                break; // Stop processing further URLs upon failure
+                break;
             }
             $urlEntry->status = true;
             $urlEntry->save();
-            $indexedCount++;
+            $indexedCount = $indexedCount + 1;
         }
 
         // Get the total count of URLs from the database
@@ -70,7 +71,8 @@ class IndexUrls extends Command
                     'type' => 'URL_UPDATED'
                 ]
             ]);
-            return false;
+
+            return true;
         } catch (Exception $e) {
             $errorMessage = 'Failed to index URL: ' . $url . ' with error: ' . $e->getMessage();
             $this->writeLog($filePath, $errorMessage);
