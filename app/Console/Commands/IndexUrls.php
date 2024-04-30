@@ -26,13 +26,10 @@ class IndexUrls extends Command
 
         if ($pendingUrls->isEmpty()) {
             $this->writeLog($filePath, "No pending URLs to process.");
-
             return;
         }
 
         $http = $this->setupHttpClient(storage_path("app/google/account1.json"));
-
-        $indexedCount = 0;
 
         foreach ($pendingUrls as $urlEntry) {
             $indexSuccess = $this->indexURL($http, $urlEntry->url, $filePath);
@@ -43,11 +40,11 @@ class IndexUrls extends Command
             }
             $urlEntry->status = true;
             $urlEntry->save();
-            $indexedCount = $indexedCount + 1;
+
         }
 
         // Get the total count of URLs from the database
-        $totalUrls = Url2Index::count();
+        $totalUrls = Url2Index::all()->count();
 
         // Get the count of indexed URLs (status = true)
         $indexedCount = Url2Index::where('status', true)->count();
@@ -58,11 +55,11 @@ class IndexUrls extends Command
         // Calculate the percentage of indexed URLs
         $percentageIndexed = ($totalUrls > 0) ? round($indexedCount / $totalUrls * 100, 2) : 0;
 
-        $summary = "Total URLs: $indexedCount, Indexed URLs: $indexedCount, Remaining: $remaining, Success Rate: $percentageIndexed%";
+        $summary = "Total URLs: $totalUrls, Indexed URLs: $indexedCount, Remaining: $remaining, Success Rate: $percentageIndexed%";
         $this->writeLog($filePath, $summary);
     }
 
-    private function indexURL($http, $url, $filePath)
+    private function indexURL($http, $url, $filePath): bool
     {
         try {
             $response = $http->post('v3/urlNotifications:publish', [
