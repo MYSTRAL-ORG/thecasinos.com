@@ -20,7 +20,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
-        $schedule->command(IndexUrls::class)->everySixHours();
+        $schedule->command(IndexUrls::class)->dailyAt('14:00')->timezone('Indian/Reunion');
         $schedule->command(IndexUrlsBing::class)->everySixHours();
 
         //Lance la géneration du site tous les week end
