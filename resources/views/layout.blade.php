@@ -18,7 +18,7 @@
     <meta name="description" content="@yield('page_description')">
     <meta name="keywords" content="@yield('page_keywords')">
     @yield('context-js')
-
+    <meta name="yandex-verification" content="9167145b8ec2988b"/>
     <!-- 2024 Google tag (gtag.js) -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
 
