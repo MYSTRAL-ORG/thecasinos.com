@@ -16,9 +16,8 @@
 @section('online')
     <h1 style="display: none;">TheCasinos.com - Online Casinos</h1>
     <div class="container feuille-container">
-        <h2 class="h2">The top 10 casinos online</h2>
-        <section class=" row feuille">
-
+        <section class=" row feuille p-4">
+            <h2 class="h2">The top 10 casinos online</h2>
             <p class="mt-4">Thecasinos.com feels like being a kid in a candy store, but for online gaming enthusiasts.
                 Picture a platform where the best online casinos come together, showcasing their most enticing games and
                 alluring bonuses.</p>
