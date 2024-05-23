@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <meta name="google-site-verification" content="cEs10KedajHFcdCI2ltJ2Wo5fqzy5kSrknaMhxYJ0VQ"/>
-    <link rel="icon" href="{{ asset('favicon.ico') }}favicon.ico" type="image/x-icon">
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <link rel="canonical" href="{{ config('app.url') . parse_url(request()->getRequestUri(), PHP_URL_PATH) }}">
