@@ -52,28 +52,29 @@
         });
 
         document.addEventListener("DOMContentLoaded", function () {
-            const paragraphs = document.querySelectorAll('.content-casino p');
-            const SHOW_INITIAL = 2; // Nombre de paragraphes à montrer initialement
+            /* const paragraphs = document.querySelectorAll('.content-casino p');
+             const SHOW_INITIAL = 2; // Nombre de paragraphes à montrer initialement
 
-            if (paragraphs.length > SHOW_INITIAL) {
-                for (let i = SHOW_INITIAL; i < paragraphs.length; i++) {
-                    paragraphs[i].classList.add('hidden');
-                }
+             if (paragraphs.length > SHOW_INITIAL) {
+                 for (let i = SHOW_INITIAL; i < paragraphs.length; i++) {
+                     paragraphs[i].classList.add('hidden');
+                 }
 
-                const loadMoreButton = document.createElement('button');
-                loadMoreButton.id = 'loadMore';
-                loadMoreButton.classList.add('casino-detail-load-more-btn');
-                loadMoreButton.textContent = 'Load More';
-                document.querySelector('.content-casino').appendChild(loadMoreButton);
+                 const loadMoreButton = document.createElement('button');
+                 loadMoreButton.id = 'loadMore';
+                 loadMoreButton.classList.add('casino-detail-load-more-btn');
+                 loadMoreButton.textContent = 'Load More';
+                 document.querySelector('.content-casino').appendChild(loadMoreButton);
 
-                loadMoreButton.addEventListener('click', function () {
-                    document.querySelectorAll('.content-casino p.hidden').forEach(function (p) {
-                        p.classList.remove('hidden');
-                    });
-                    loadMoreButton.remove(); // Supprime le bouton après affichage de tout le contenu
-                });
-            }
-        });
+                 loadMoreButton.addEventListener('click', function () {
+                     document.querySelectorAll('.content-casino p.hidden').forEach(function (p) {
+                         p.classList.remove('hidden');
+                     });
+                     loadMoreButton.remove(); // Supprime le bouton après affichage de tout le contenu
+                 });*/
+        }
+        })
+        ;
 
     </script>
 
