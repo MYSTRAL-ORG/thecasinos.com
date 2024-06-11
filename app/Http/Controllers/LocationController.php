@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Log;
 
 class LocationController extends Controller
 {
-    public function show($country, $city, $slug,GoogleService $googleService,CasinoOnLineService $casinoOnLineService)
+    public function show(Request $request, $country, $city, $slug, GoogleService $googleService, CasinoOnLineService $casinoOnLineService)
     {
 
 
@@ -20,12 +20,12 @@ class LocationController extends Controller
         $lat = 36.1450;
 
 
-        $casino = Casino::where('country_title', $country)->where('city_title', $city)->where('city_title', $city)->where('slug',$slug)->first();
-
-        $casinoDetail = CasinoDetail::where('id_casino',  $casino->id)->first();
+        $casino = Casino::where('country_title', $country)->where('city_title', $city)->where('city_title', $city)->where('slug', $slug)->first();
+        Log::info('Request URL: ' . $request->fullUrl());
+        $casinoDetail = CasinoDetail::where('id_casino', $casino->id)->first();
         $lon = $casino->location_longitude;
         $lat = $casino->location_latitude;
-        $fromIndex= "false";
+        $fromIndex = "false";
         $casinosOnLineActif = $casinoOnLineService->getCasinoOnlineCollection();
         $sessionGoogle = $googleService->createOrGetSessionApiMapTile();
 
@@ -33,6 +33,6 @@ class LocationController extends Controller
             return abort(404);
         }
 
-        return view('casino', compact('casinoDetail','casino','sessionGoogle','lon', 'lat', 'fromIndex','casinosOnLineActif' ));
+        return view('casino', compact('casinoDetail', 'casino', 'sessionGoogle', 'lon', 'lat', 'fromIndex', 'casinosOnLineActif'));
     }
 }

@@ -52,7 +52,7 @@ class IndexController extends Controller
         if ($city != null) {
             $categoryCity = CategoryCity::where('city_title', $city)->get()->first();
         }
-
+        Log::info('Request URL: ' . $request->fullUrl());
         $location = $casinos->items()[0]->country_name;
         if ($city != null) {
             $location = $casinos->items()[0]->city_name;
