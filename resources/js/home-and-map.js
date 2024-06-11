@@ -13,7 +13,7 @@ import {Select} from "ol/interaction.js";
 import {containsCoordinate} from "ol/extent.js";
 import $ from "jquery";
 
-
+ 
 $(document).ready(function () {
 
 
