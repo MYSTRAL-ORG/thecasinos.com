@@ -73,7 +73,7 @@
                      loadMoreButton.remove(); // Supprime le bouton après affichage de tout le contenu
                  });*/
         }
-        })
+        )
         ;
 
     </script>
@@ -110,7 +110,7 @@
         <div class="row feuille pt-3">
             <div class="col-lg-12 col-sm-12 pt-5pb-2">
                 <h2 class="h2">{{$casinoDetail->title}}</h2>
-                <!--  <picture>
+                   <picture>
                     <source media="(min-width: 768px)"
                             srcset="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}">
                     <source media="(max-width: 767px)"
@@ -119,7 +119,7 @@
                     <img loading="lazy" class="rounded-3 img-fluid image-casino center-image"
                          src="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}"
                          alt="{{ $casino->name }}">
-                </picture> -->
+                </picture>
 
 
                 <!--  <img  loading="lazy" src="/img/casino/{{$casino->img_url}}" alt="{{$casino->name}}" class=" image-casino "> -->
