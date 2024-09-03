@@ -74,17 +74,16 @@ Route::get('/online/{name}', [CasinoOnlineController::class, 'get'])->name('casi
 Route::get('/{country}/{city}/{name}', [LocationController::class, 'show'])
     ->name('casino')
     ->where([
-        'country' => '[a-z-]+',
-        'city' => '[a-z-]+(?:-[a-z-]+)*',  // Mise à jour pour capturer des segments multiples
-        'name' => '[a-zA-Z0-9-_]+(?:-[a-zA-Z0-9-_]+)*'  // Mise à jour pour capturer des noms complexes
+        'country' => '[a-zA-Z\-]+',  // Autorise les lettres et les tirets
+        'city' => '[a-zA-Z0-9\-]+(?:-[a-zA-Z0-9\-]+)*',  // Autorise les lettres, chiffres, et tirets
+        'name' => '[a-zA-Z0-9\-_]+(?:-[a-zA-Z0-9\-_]+)*'  // Autorise lettres, chiffres, tirets, et underscores
     ]);
 
-// Routes dynamiques avec expressions régulières ajustées
 Route::get('/{country}/{city?}', [IndexController::class, 'category'])
     ->name('category')
     ->where([
-        'country' => '[a-z-]+',
-        'city' => '[a-z-]+(?:-[a-z-]+)*'  // Mise à jour pour capturer des segments multiples
+        'country' => '[a-zA-Z\-]+',  // Autorise les lettres et les tirets
+        'city' => '[a-zA-Z0-9\-]+(?:-[a-zA-Z0-9\-]+)*'  // Autorise les lettres, chiffres, et tirets
     ]);
 
 
