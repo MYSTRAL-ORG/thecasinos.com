@@ -31,7 +31,7 @@ use App\Http\Controllers\IndexController;
 */
 Route::get('/search-casinos', [CasinoSearchController::class, 'search'])->name('search_casinos');
 
-Route::get(' 404', function () {
+Route::get('404', function () {
     return view('erros/404');
 });
 
