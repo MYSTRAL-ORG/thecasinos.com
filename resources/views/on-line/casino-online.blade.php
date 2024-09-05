@@ -1,8 +1,8 @@
 @extends('layout')
 
-@section('page_title', "Casino Online Title - TheCasinos.com")
+@section('page_title', "{{$casinoOnLine->nom_casino}}")
 
-@section('page_description',   $casinoOnLine->nom_casino )
+@section('page_description',   $casinoOnLine->key_feature )
 
 @section('page_keywords',$casinoOnLine->nom_casino)
 
