@@ -28,9 +28,11 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 
+    # Activer le module d'expiration
     ExpiresActive On
     ExpiresDefault "access plus 2 days"
-     #Images
+
+    # Caching des images
     ExpiresByType image/jpeg "access plus 1 year"
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
@@ -38,4 +40,17 @@
     ExpiresByType image/x-icon "access plus 1 year"
     ExpiresByType image/webp "access plus 1 year"
 
+    # Caching des fichiers CSS et JS
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+
+    # Caching des fichiers HTML
+    ExpiresByType text/html "access plus 2 days"
+
+    # Headers pour éviter les cookies sur les fichiers statiques
+    <FilesMatch "\.(ico|jpg|jpeg|png|gif|svg|css|js|webp)$">
+        Header unset Set-Cookie
+        Header always set Cache-Control "public, max-age=31536000"
+    </FilesMatch>
 </IfModule>
