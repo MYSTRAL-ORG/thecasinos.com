@@ -1,0 +1,11 @@
+---
+deployment:
+  tasks:
+    - export PATH="$PATH:/opt/alt/alt-nodejs16/root/usr/bin/"
+    - cd /home/cayi7350/thecasinos.com
+    - git reset --hard origin/master
+    - git pull
+    - /opt/cpanel/composer/bin/composer install
+    - /bin/php artisan app:clean
+
+
