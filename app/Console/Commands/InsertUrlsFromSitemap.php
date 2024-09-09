@@ -32,7 +32,7 @@ class InsertUrlsFromSitemap extends Command
             $url2Index = new Url2Index([
                 'url' => (string)$urlElement->loc,
                 'status' => false,
-                'status_bing' => false
+                'status_bing' => true
             ]);
             $url2Index->save();
             $count++;
