@@ -1,4 +1,8 @@
 User-agent: *
 Disallow: /admin/
+Disallow: /*?PageSpeed=noscript
+Disallow: /*?*utm_source
+Disallow: /*?*utm_medium
+Disallow: /*?*utm_campaign
 
 Sitemap: https://www.thecasinos.com/sitemap.xml
