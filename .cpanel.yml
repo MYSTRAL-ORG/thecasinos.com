@@ -6,8 +6,6 @@ deployment:
     - git reset --hard origin/master
     - git pull
     - /opt/cpanel/composer/bin/composer install
-    - /opt/alt/alt-nodejs22/root/usr/bin/npm install
-    - /opt/alt/alt-nodejs22/root/usr/bin/npm run build
     - /bin/php artisan app:clean
 
 
