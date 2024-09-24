@@ -10,29 +10,32 @@
 
     <link rel="canonical" href="{{ config('app.url') . parse_url(request()->getRequestUri(), PHP_URL_PATH) }}">
 
-
     @yield('meta-tags')
-
 
     <title>@yield('page_title')</title>
     <meta name="description" content="@yield('page_description')">
     <meta name="keywords" content="@yield('page_keywords')">
 
+    <!-- Preload important CSS using @vite -->
+    <link rel="preload" href="{{ mix('css/app.css') }}" as="style">
 
+    <!-- Keep @vite for handling CSS and JS assets -->
     @vite("resources/js/app.js")
+
     @yield('context-js')
+
     <meta name="yandex-verification" content="9167145b8ec2988b"/>
-    <!-- 2024 Google tag (gtag.js) -->
+
+    <!-- Preconnect to Google Tag Manager for faster connection -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
 
+    <!-- Defer loading of Google Tag Manager JS to not block rendering -->
     <script src="https://www.googletagmanager.com/gtag/js?id=G-BZTJV1TP3F" defer></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
         function gtag() {
             dataLayer.push(arguments);
         }
-
         gtag('js', new Date());
         gtag('config', 'G-BZTJV1TP3F');
     </script>
@@ -51,4 +54,3 @@
 
 </body>
 </html>
-
