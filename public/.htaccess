@@ -5,37 +5,37 @@
 
     RewriteEngine On
 
-    # Redirect HTTP to HTTPS
+    # Rediriger de HTTP vers HTTPS
     RewriteCond %{HTTPS} off
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-    # Redirect non-www to www
+    # Rediriger non-www vers www
     RewriteCond %{HTTP_HOST} !^www\. [NC]
     RewriteCond %{HTTP_HOST} ^(.+)$ [NC]
     RewriteRule ^ https://www.%1%{REQUEST_URI} [R=301,L,NE]
 
-    # Remove trailing slashes if not a directory
+    # Rediriger les slashes terminaux si ce n'est pas un dossier
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Dynamic file routing via front controller
+    # Gestion des fichiers dynamiques via le contrôleur frontal
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
 
-    # Prevent caching of critical files (robots.txt, .htaccess, sitemap.xml)
+    # Ne pas mettre en cache robots.txt, .htaccess, et sitemap.xml
     <FilesMatch "(^robots\.txt$|^\.htaccess$|^sitemap\.xml$)">
         Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
         Header set Pragma "no-cache"
         Header set Expires "0"
     </FilesMatch>
 
-    # Enable Expires caching
+    # Activer le module d'expiration pour le cache
     ExpiresActive On
     ExpiresDefault "access plus 2 days"
 
-    # Image Caching
+    # Caching des images
     ExpiresByType image/jpeg "access plus 1 year"
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
@@ -43,50 +43,21 @@
     ExpiresByType image/x-icon "access plus 1 year"
     ExpiresByType image/webp "access plus 1 year"
 
-    # CSS and JS Caching
+    # Caching des fichiers CSS et JS
     ExpiresByType text/css "access plus 1 month"
     ExpiresByType text/javascript "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
 
-    # Adjust cache settings for dynamic HTML pages
+    # Désactiver le cache pour les pages HTML dynamiques
     <FilesMatch "\.(html|htm)$">
-        Header set Cache-Control "private, max-age=600, must-revalidate"
+        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header set Expires "0"
     </FilesMatch>
 
-    # Headers to remove cookies on static files
+    # Headers pour éviter les cookies sur les fichiers statiques
     <FilesMatch "\.(ico|jpg|jpeg|png|gif|svg|css|js|webp)$">
         Header unset Set-Cookie
-        Header always set Cache-Control "public, max-age=31536000, immutable"
+        Header always set Cache-Control "public, max-age=31536000"
     </FilesMatch>
 </IfModule>
-
-# BEGIN Enable Gzip Compression
-<IfModule mod_deflate.c>
-    # Compress HTML, CSS, JavaScript, Text, XML, and fonts
-    AddOutputFilterByType DEFLATE application/javascript
-    AddOutputFilterByType DEFLATE application/rss+xml
-    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
-    AddOutputFilterByType DEFLATE application/x-font
-    AddOutputFilterByType DEFLATE application/x-font-opentype
-    AddOutputFilterByType DEFLATE application/x-font-ttf
-    AddOutputFilterByType DEFLATE application/x-javascript
-    AddOutputFilterByType DEFLATE application/xhtml+xml
-    AddOutputFilterByType DEFLATE application/xml
-    AddOutputFilterByType DEFLATE font/opentype
-    AddOutputFilterByType DEFLATE font/otf
-    AddOutputFilterByType DEFLATE font/ttf
-    AddOutputFilterByType DEFLATE image/svg+xml
-    AddOutputFilterByType DEFLATE image/x-icon
-    AddOutputFilterByType DEFLATE text/css
-    AddOutputFilterByType DEFLATE text/html
-    AddOutputFilterByType DEFLATE text/javascript
-    AddOutputFilterByType DEFLATE text/plain
-    AddOutputFilterByType DEFLATE text/xml
-
-    # Remove browser bugs
-    BrowserMatch ^Mozilla/4 gzip-only-text/html
-    BrowserMatch ^Mozilla/4\.0[678] no-gzip
-    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
-    Header append Vary User-Agent
-</IfModule>
-# END Gzip Compression
