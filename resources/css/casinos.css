@@ -1693,7 +1693,9 @@ ul li {
     max-height: 2rem;
 
 }
-
+.navbar {
+    min-height: 100px; /* Adjust based on your design */
+}
 
 .navbar-collapse {
     flex-grow: initial;
@@ -1703,6 +1705,7 @@ ul li {
 .navbar-collapse {
     flex-grow: initial;
     flex-basis: initial;
+    transition: height 0.3s ease;
 }
 
 svg.w-5.h-5 {
