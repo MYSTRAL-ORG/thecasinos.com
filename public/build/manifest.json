@@ -98,7 +98,7 @@
     "src": "resources/js/app.js"
   },
   "resources/js/home-and-map.js": {
-    "file": "assets/home-and-map-2201ca66.js",
+    "file": "assets/home-and-map-88cf0a03.js",
     "imports": [
       "_ol-7a8c938d.js",
       "_ol-ext-e569ddd5.js",
