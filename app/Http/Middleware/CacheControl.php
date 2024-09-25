@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Log;
 use Symfony\Component\HttpFoundation\Response;
 
 class CacheControl
@@ -19,7 +20,7 @@ class CacheControl
 
         // Add Cache-Control Header
         $response->headers->set('Cache-Control', 'max-age=31536000');
-
+    Log::info('Cache-Control: max-age=31536000');
         return $response;
     }
 }
