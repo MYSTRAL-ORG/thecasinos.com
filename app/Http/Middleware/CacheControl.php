@@ -19,7 +19,8 @@ class CacheControl
         $response = $next($request);
 
         // Add Cache-Control Header
-        $response->headers->set('Cache-Control', 'max-age=31536000');
+        $response = $response->header('Cache-Control', 'public, max-age=31536000')
+            ->header('Pragma', 'cache');
     Log::info('Cache-Control: max-age=31536000');
         return $response;
     }
