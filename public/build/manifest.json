@@ -1,66 +1,6 @@
 {
-  "_@petamoriken-4ed993c7.js": {
-    "file": "assets/@petamoriken-4ed993c7.js"
-  },
-  "_@popperjs-8746c87e.js": {
-    "file": "assets/@popperjs-8746c87e.js"
-  },
-  "_bootstrap-5d330182.js": {
-    "file": "assets/bootstrap-5d330182.js",
-    "imports": [
-      "_@popperjs-8746c87e.js"
-    ]
-  },
-  "_geotiff-4ed993c7.js": {
-    "file": "assets/geotiff-4ed993c7.js"
-  },
-  "_ieee754-725317a4.js": {
-    "file": "assets/ieee754-725317a4.js"
-  },
-  "_jquery-19e97fd3.js": {
-    "file": "assets/jquery-19e97fd3.js",
-    "imports": [
-      "_ieee754-725317a4.js"
-    ]
-  },
-  "_lerc-4ed993c7.js": {
-    "file": "assets/lerc-4ed993c7.js"
-  },
-  "_ol-7a8c938d.js": {
-    "file": "assets/ol-7a8c938d.js",
-    "imports": [
-      "_rbush-d66ee5ad.js"
-    ]
-  },
-  "_ol-ext-e569ddd5.js": {
-    "file": "assets/ol-ext-e569ddd5.js",
-    "imports": [
-      "_ol-7a8c938d.js"
-    ]
-  },
-  "_pako-4ed993c7.js": {
-    "file": "assets/pako-4ed993c7.js"
-  },
-  "_pbf-4ed993c7.js": {
-    "file": "assets/pbf-4ed993c7.js"
-  },
-  "_quick-lru-4ed993c7.js": {
-    "file": "assets/quick-lru-4ed993c7.js"
-  },
-  "_quickselect-f3892974.js": {
-    "file": "assets/quickselect-f3892974.js"
-  },
-  "_rbush-d66ee5ad.js": {
-    "file": "assets/rbush-d66ee5ad.js",
-    "imports": [
-      "_quickselect-f3892974.js"
-    ]
-  },
-  "_web-worker-4ed993c7.js": {
-    "file": "assets/web-worker-4ed993c7.js"
-  },
-  "_xml-utils-4ed993c7.js": {
-    "file": "assets/xml-utils-4ed993c7.js"
+  "_jquery-b1664d58.js": {
+    "file": "assets/jquery-b1664d58.js"
   },
   "node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff": {
     "file": "assets/bootstrap-icons-bb1de989.woff",
@@ -89,33 +29,23 @@
     "src": "resources/css/lib/lib-bootstrap.scss"
   },
   "resources/js/app.js": {
-    "file": "assets/app-0b00c5eb.js",
+    "file": "assets/app-15d103ae.js",
     "imports": [
-      "_jquery-19e97fd3.js",
-      "_ieee754-725317a4.js"
+      "_jquery-b1664d58.js"
     ],
     "isEntry": true,
     "src": "resources/js/app.js"
   },
   "resources/js/home-and-map.js": {
-    "file": "assets/home-and-map-88cf0a03.js",
+    "file": "assets/home-and-map-c540aa06.js",
     "imports": [
-      "_ol-7a8c938d.js",
-      "_ol-ext-e569ddd5.js",
-      "_jquery-19e97fd3.js",
-      "_rbush-d66ee5ad.js",
-      "_quickselect-f3892974.js",
-      "_ieee754-725317a4.js"
+      "_jquery-b1664d58.js"
     ],
     "isEntry": true,
     "src": "resources/js/home-and-map.js"
   },
   "resources/js/lib-bootstrap.js": {
-    "file": "assets/lib-bootstrap-263a6cc1.js",
-    "imports": [
-      "_bootstrap-5d330182.js",
-      "_@popperjs-8746c87e.js"
-    ],
+    "file": "assets/lib-bootstrap-1bd85d39.js",
     "isEntry": true,
     "src": "resources/js/lib-bootstrap.js"
   }
