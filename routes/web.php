@@ -29,65 +29,69 @@ use App\Http\Controllers\IndexController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/search-casinos', [CasinoSearchController::class, 'search'])->name('search_casinos');
 
-Route::get('404', function () {
-    return view('erros/404');
+Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
+
+    Route::get('/search-casinos', [CasinoSearchController::class, 'search'])->name('search_casinos');
+
+    Route::get('404', function () {
+        return view('erros/404');
+    });
+
+
+    /***** ADMIN *****/
+    Route::get('/passwordprompt', function () {
+        return view('passwordprompt');
+    });
+
+    Route::post('/password-check', [PasswordController::class, 'check'])->name('password.check');
+    Route::middleware(['password.protected'])->group(function () {
+        Route::resource('/admin/casino', CasinoController::class);
+        Route::resource('/admin/category', CategoryController::class);
+        Route::resource('/admin/category-city', CategoryCityController::class);
+        Route::resource('/admin/casino-online', AdminCasinoOnlineController::class);
+        Route::resource('/admin/casino-details', CasinoDetailController::class);
+        Route::resource('/admin', CategoryController::class);
+
+    });
+
+
+    /***** APP *****/
+
+
+    Route::get('/policy', function () {
+        return view('policy');  // 'sample' corresponds to the sample.blade.php view file
+    })->name('policy');
+    Route::get('/terms', function () {
+        return view('terms');  // 'sample' corresponds to the sample.blade.php view file
+    })->name('terms');
+    Route::get('/about', function () {
+        return view('about');  // 'sample' corresponds to the sample.blade.php view file
+    })->name('about');
+
+
+    Route::get('/', [IndexController::class, 'index'])->name('index');
+    Route::get('/online', [IndexController::class, 'onLine'])->name('online');
+    Route::get('/online/{name}', [CasinoOnlineController::class, 'get'])->name('casino-online');
+
+    Route::get('/{country}/{city}/{name}', [LocationController::class, 'show'])
+        ->name('casino')
+        ->where([
+            'country' => '[a-zA-Z\-]+',  // Autorise les lettres et les tirets
+            'city' => '[a-zA-Z0-9\-]+(?:-[a-zA-Z0-9\-]+)*',  // Autorise les lettres, chiffres, et tirets
+            'name' => '[a-zA-Z0-9\-_]+(?:-[a-zA-Z0-9\-_]+)*'  // Autorise lettres, chiffres, tirets, et underscores
+        ]);
+
+    Route::get('/{country}/{city?}', [IndexController::class, 'category'])
+        ->name('category')
+        ->where([
+            'country' => '[a-zA-Z\-]+',  // Autorise les lettres et les tirets
+            'city' => '[a-zA-Z0-9\-]+(?:-[a-zA-Z0-9\-]+)*'  // Autorise les lettres, chiffres, et tirets
+        ]);
+
+
+    Route::get('/tttt', [OpenAiController::class, 'getListDataToCompute'])->name('getListDataToCompute');
+    Route::get('/ttttcat', [OpenAiController::class, 'getListCategoryToCompute'])->name('getListCategoryToCompute');
+    Route::get('/ttttcatCity', [OpenAiController::class, 'getListCategoryCityToCompute'])->name('getListCategoryCityToCompute');
+
 });
-
-
-/***** ADMIN *****/
-Route::get('/passwordprompt', function () {
-    return view('passwordprompt');
-});
-
-Route::post('/password-check', [PasswordController::class, 'check'])->name('password.check');
-Route::middleware(['password.protected'])->group(function () {
-    Route::resource('/admin/casino', CasinoController::class);
-    Route::resource('/admin/category', CategoryController::class);
-    Route::resource('/admin/category-city', CategoryCityController::class);
-    Route::resource('/admin/casino-online', AdminCasinoOnlineController::class);
-    Route::resource('/admin/casino-details', CasinoDetailController::class);
-    Route::resource('/admin', CategoryController::class);
-
-});
-
-
-/***** APP *****/
-
-
-Route::get('/policy', function () {
-    return view('policy');  // 'sample' corresponds to the sample.blade.php view file
-})->name('policy');
-Route::get('/terms', function () {
-    return view('terms');  // 'sample' corresponds to the sample.blade.php view file
-})->name('terms');
-Route::get('/about', function () {
-    return view('about');  // 'sample' corresponds to the sample.blade.php view file
-})->name('about');
-
-
-Route::get('/', [IndexController::class, 'index'])->name('index');
-Route::get('/online', [IndexController::class, 'onLine'])->name('online');
-Route::get('/online/{name}', [CasinoOnlineController::class, 'get'])->name('casino-online');
-
-Route::get('/{country}/{city}/{name}', [LocationController::class, 'show'])
-    ->name('casino')
-    ->where([
-        'country' => '[a-zA-Z\-]+',  // Autorise les lettres et les tirets
-        'city' => '[a-zA-Z0-9\-]+(?:-[a-zA-Z0-9\-]+)*',  // Autorise les lettres, chiffres, et tirets
-        'name' => '[a-zA-Z0-9\-_]+(?:-[a-zA-Z0-9\-_]+)*'  // Autorise lettres, chiffres, tirets, et underscores
-    ]);
-
-Route::get('/{country}/{city?}', [IndexController::class, 'category'])
-    ->name('category')
-    ->where([
-        'country' => '[a-zA-Z\-]+',  // Autorise les lettres et les tirets
-        'city' => '[a-zA-Z0-9\-]+(?:-[a-zA-Z0-9\-]+)*'  // Autorise les lettres, chiffres, et tirets
-    ]);
-
-
-Route::get('/tttt', [OpenAiController::class, 'getListDataToCompute'])->name('getListDataToCompute');
-Route::get('/ttttcat', [OpenAiController::class, 'getListCategoryToCompute'])->name('getListCategoryToCompute');
-Route::get('/ttttcatCity', [OpenAiController::class, 'getListCategoryCityToCompute'])->name('getListCategoryCityToCompute');
-
