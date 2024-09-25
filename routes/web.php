@@ -29,8 +29,8 @@ use App\Http\Controllers\IndexController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
 Route::middleware('cache.headers:public;max_age=2628000;etag')->group(function () {
+
 
     Route::get('/search-casinos', [CasinoSearchController::class, 'search'])->name('search_casinos');
 
