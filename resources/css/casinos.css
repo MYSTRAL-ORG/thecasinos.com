@@ -1073,6 +1073,7 @@ ul li {
     object-fit: cover; /* Cela s'assure que l'image couvre toute la zone de l'élément img sans déformation */
     border-radius: 10px;
     margin-top: 20px;
+    aspect-ratio: 3 / 2;
 }
 
 .background-section {
