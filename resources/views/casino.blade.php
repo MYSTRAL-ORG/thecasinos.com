@@ -127,6 +127,24 @@
             </div>
             <div class="col-lg-8 col-sm-12 pt-5">
                 @include("content-casino")
+                @if ($casino->link_interne_id)
+                    @php
+                        // Fetch the relevant casino using link_interne_id
+                        $relatedCasino = \App\Models\Casino::find($casino->link_interne_id);
+                    @endphp
+
+                    @if ($relatedCasino)
+                        <div class="related-casino">
+                            <h3>Relevant Casino:</h3>
+                            <p>
+                                Check out a similar casino:
+                                <a href="{{ route('casino', ['country' => $relatedCasino->country_title, 'city' => $relatedCasino->city_title, 'name' => $relatedCasino->slug]) }}">
+                                    {{ $relatedCasino->name }}
+                                </a>
+                            </p>
+                        </div>
+                    @endif
+                @endif
                 <h3>Most similar casinos online :</h3>
 
                 @php

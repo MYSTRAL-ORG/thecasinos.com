@@ -203,11 +203,13 @@ class Casino extends Model
 		'table_games',
 		'hotel_name',
 		'valet',
-		'self_parking'
+		'self_parking',
+        'link_interne_id'
 	];
 
 	public function casino_details()
 	{
 		return $this->hasMany(CasinoDetail::class, 'id_casino');
 	}
+
 }
