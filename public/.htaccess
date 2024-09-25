@@ -48,16 +48,5 @@
     ExpiresByType text/javascript "access plus 1 month"
     ExpiresByType application/javascript "access plus 1 month"
 
-    # Désactiver le cache pour les pages HTML dynamiques
-    <FilesMatch "\.(html|htm)$">
-        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
-        Header set Pragma "no-cache"
-        Header set Expires "0"
-    </FilesMatch>
 
-    # Headers pour éviter les cookies sur les fichiers statiques
-    <FilesMatch "\.(ico|jpg|jpeg|png|gif|svg|css|js|webp)$">
-        Header unset Set-Cookie
-        Header always set Cache-Control "public, max-age=31536000"
-    </FilesMatch>
 </IfModule>

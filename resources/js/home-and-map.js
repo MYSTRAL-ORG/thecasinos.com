@@ -28,8 +28,7 @@ $(document).ready(function () {
         const originalImg = feature.get("originalimg");
         let img = originalImg ? feature.get("imgurl") : sel ? "sel_icon-the-casinos.png" : "icon-the-casinos.png";
 
-
-        let style = styleCache[img + sel];
+        let style = styleCache[img + sel]; // Utilisez ici le cache pour vérifier si le style existe déjà
 
         if (!style) {
             let imgUrl = appUrl + '/img/casino/' + img;
@@ -65,13 +64,16 @@ $(document).ready(function () {
                 })
             }
 
-            styleCache[img] = style = new Style({
+            // Ajoutez le nouveau style dans le cache pour une future réutilisation
+            styleCache[img + sel] = new Style({
                 image: pointer,
             });
         }
 
-        return [style];
+        // Retourne toujours le style depuis le cache
+        return [styleCache[img + sel]];
     }
+
 
 
     const casinoVectorLayer6 = new VectorLayer({
