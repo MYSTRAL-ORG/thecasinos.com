@@ -118,7 +118,7 @@
                             height="200">
                     <img loading="lazy" class="rounded-3 img-fluid image-casino center-image"
                          src="{{ env('APP_URL') . '/img/casino/desktop/' . $casino->img_url }}"
-                         alt="{{ $casino->name }}">
+                         alt="{{ $casino->name }}"  width="600" height="400">
                 </picture>
 
 
