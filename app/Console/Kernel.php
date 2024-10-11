@@ -20,11 +20,11 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
 
-        $schedule->command(IndexUrls::class)->dailyAt('14:30')->timezone('Indian/Reunion')->between('14:28', '14:32');
-        $schedule->command(IndexUrlsBing::class)->everySixHours();
+       // $schedule->command(IndexUrls::class)->dailyAt('14:30')->timezone('Indian/Reunion')->between('14:28', '14:32');
+       // $schedule->command(IndexUrlsBing::class)->everySixHours();
 
         //Lance la géneration du site tous les week end
-        $schedule->command(generateStieMapCasino::class)->weekends();
+        //$schedule->command(generateStieMapCasino::class)->weekends();
     }
 
     /**
