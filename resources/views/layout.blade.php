@@ -9,8 +9,8 @@
     <link rel="shortcut icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
     <link rel="canonical" href="{{ config('app.url') . parse_url(request()->getRequestUri(), PHP_URL_PATH) }}">
-
-
+    <link rel="alternate" href="{{ config('app.url')}}" hreflang="en" />
+    <meta name="language" content="en">
     @yield('meta-tags')
 
 
