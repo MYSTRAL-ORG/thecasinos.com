@@ -13,11 +13,12 @@
         <section class="  feuille ps-2 pe-2">
             <h1 class="text-dark fs-1 mb-4">List of Casinos in {{ $location}}</h1>
             <p class="m-2 ">
-                @if($categoryCity != null )
-                    {!!$categoryCity->header_text!!}
-                @else
-                    {!! $category->header_text !!}
-                @endif
+
+
+                    {!!$categoryCity?->header_text!!}
+
+
+
             </p>
 
 
@@ -74,12 +75,8 @@
             <h2>About Casinos in {{ $location}}</h2>
 
             <p>
-            @if($categoryCity != null )
-                {!! $categoryCity->footer_text !!}
-            @else
-                {!! $category->footer_text !!}
-            @endif
 
+                {!! $categoryCity?->footer_text !!}
 
             <h3>Let's try online :</h3>
             @php
