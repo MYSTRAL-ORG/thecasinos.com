@@ -28,8 +28,43 @@
     if($casino->cat_greyhounds) $features->push('Greyhounds');
     if($casino->cat_bingo) $features->push('Bingo');
     $featuresList = $features->implode(', '); // Transforme la collection en chaîne de caractères séparée par des virgules
+$schema = [
+    '@context' => 'https://schema.org',
+    '@type' => 'LocalBusiness',
+    'name' => $casino->name,
+    'description' => $casinoDetail->seo_description,
+    'address' => [
+        '@type' => 'PostalAddress',
+        'addressCountry' => 'Reunion', // Valeur fixe car pays connu
+        'addressLocality' => 'Saint-Pierre', // Valeur fixe car ville connue
+        'streetAddress' => '42 Bd Hubert Delisle, Saint-Pierre 97410, Réunion'
+    ],
+    'telephone' => '+262 262 25 26 96',
+    'url' => 'http://www.casinodusud.re/',
+    'openingHours' => '24/7',
+    'amenityFeature' => collect([
+        $casino->self_parking ? ['@type' => 'LocationFeatureSpecification', 'name' => 'Self Parking'] : null,
+        $casino->valet ? ['@type' => 'LocationFeatureSpecification', 'name' => 'Valet'] : null,
+        $casino->restaurants ? ['@type' => 'LocationFeatureSpecification', 'name' => 'Restaurants'] : null,
+        $casino->hotels ? ['@type' => 'LocationFeatureSpecification', 'name' => 'Hotels'] : null,
+        $casino->spas ? ['@type' => 'LocationFeatureSpecification', 'name' => 'Spas'] : null,
+        $casino->cat_slotmachines ? ['@type' => 'LocationFeatureSpecification', 'name' => 'Slot Machines'] : null
+    ])->filter()->values()->all(),
+    'image' => env('APP_URL').'/img/casino/desktop/'.$casino->img_url
+];
+
+// Nettoyage des valeurs null ou vides
+$schema = array_filter($schema, function($value) {
+    if (is_array($value)) {
+        return !empty(array_filter($value));
+    }
+    return !empty($value);
+});
 @endphp
 
+<script type="application/ld+json">
+    @json($schema)
+</script>
 
 @section('page_keywords')
     Available facilities: {{ $featuresList }}
