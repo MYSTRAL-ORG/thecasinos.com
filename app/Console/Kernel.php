@@ -4,8 +4,8 @@ namespace App\Console;
 
 use App\Console\Commands\CasinoCrawler;
 use App\Console\Commands\CleanCasinoDetailsOpenAi;
-use App\Console\Commands\CronEmailDeleteUselessUsers;
-use App\Console\Commands\generateStieMapCasino;
+
+use App\Console\Commands\generateSiteMapCasino;
 use App\Console\Commands\IndexUrls;
 use App\Console\Commands\IndexUrlsBing;
 use Illuminate\Console\Scheduling\Schedule;
@@ -24,7 +24,7 @@ class Kernel extends ConsoleKernel
        // $schedule->command(IndexUrlsBing::class)->everySixHours();
 
         //Lance la géneration du site tous les week end
-        //$schedule->command(generateStieMapCasino::class)->weekends();
+       $schedule->command(generateSiteMapCasino::class)->weekly();
     }
 
     /**
