@@ -22,6 +22,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\CacheControl::class,
+
     ];
 
     /**
@@ -41,6 +42,7 @@ class Kernel extends HttpKernel
 
         'web' => [
             \App\Http\Middleware\CacheControl::class,
+            \App\Http\Middleware\RedirectPageSpeed::class,
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
