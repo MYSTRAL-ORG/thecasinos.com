@@ -25,15 +25,13 @@
     <!-- 2024 Google tag (gtag.js) -->
     <link rel="preconnect" href="https://www.googletagmanager.com">
 
-    <script src="https://www.googletagmanager.com/gtag/js?id=G-BZTJV1TP3F" defer></script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-BZTJV1TP3F"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
-
-        function gtag() {
-            dataLayer.push(arguments);
-        }
-
+        function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
+
         gtag('config', 'G-BZTJV1TP3F');
     </script>
 
