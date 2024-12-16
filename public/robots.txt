@@ -1,4 +1,9 @@
 User-agent: *
 Disallow:
 
+
 Sitemap: https://www.thecasinos.com/sitemap.xml
+Sitemap: https://www.thecasinos.com/sitemaps/casinos.xml
+Sitemap: https://www.thecasinos.com/sitemaps/online-casinos.xml
+Sitemap: https://www.thecasinos.com/sitemaps/categories.xml
+Sitemap: https://www.thecasinos.com/sitemaps/static.xml
