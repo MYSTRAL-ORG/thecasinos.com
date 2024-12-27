@@ -4,7 +4,13 @@
     </IfModule>
 
     RewriteEngine On
+# Bloquer les URLs PageSpeed dupliquées
+    RewriteCond %{QUERY_STRING} ^PageSpeed=* [NC,OR]
+    RewriteCond %{QUERY_STRING} ^pagespeed=* [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
 
+    # Bloquer les suffixes PageSpeed dans les URLs
+    RewriteRule ^(.+\.pagespeed\..+)$ - [F,L]
     # Rediriger de HTTP vers HTTPS
     RewriteCond %{HTTPS} off
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]

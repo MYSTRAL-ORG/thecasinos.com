@@ -1,6 +1,15 @@
 User-agent: *
-Disallow:
+Disallow: *.pagespeed.*
+Disallow: *?PageSpeed=*
+Disallow: *?pagespeed=*
+Disallow: *.php?*
+# Autoriser la mise en cache par PageSpeed
+User-agent: Googlebot-Image
+Allow: *
 
+# Autoriser le rendu par PageSpeed
+User-agent: Google-PageRenderer
+Allow: *
 
 Sitemap: https://www.thecasinos.com/sitemap.xml
 Sitemap: https://www.thecasinos.com/sitemaps/casinos.xml
