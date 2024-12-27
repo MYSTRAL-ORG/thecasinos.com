@@ -82,8 +82,8 @@ class GenerateSiteMapCasino extends Command
                     $this->addOptimizedUrl(
                         $sitemap,
                         "/{$casino->country_title}/{$casino->city_title}/{$casino->slug}",
-                        0.9, // Priorité maximale pour les casinos physiques
-                        'daily' // Fréquence augmentée pour améliorer le crawl
+                        0.7,
+                        'monthly'
                     );
                 }
             });
@@ -121,8 +121,8 @@ class GenerateSiteMapCasino extends Command
                     $this->addOptimizedUrl(
                         $sitemap,
                         "/{$category->country_title}",
-                        0.7,
-                        'weekly'
+                        0.6,
+                        'monthly'
                     );
                 }
             });
@@ -134,8 +134,8 @@ class GenerateSiteMapCasino extends Command
                     $this->addOptimizedUrl(
                         $sitemap,
                         "/{$city->country_title}/{$city->city_title}",
-                        0.7,
-                        'weekly'
+                        0.6,
+                        'monthly'
                     );
                 }
             });
