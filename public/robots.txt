@@ -1,9 +1,12 @@
 User-agent: *
-Disallow: *.pagespeed.*
-Disallow: *?PageSpeed=*
-Disallow: *?pagespeed=*
-Disallow: *.php?*
-# Autoriser la mise en cache par PageSpeed
+Allow: /
+Disallow: /admin/
+Disallow: /wp-admin/
+Disallow: /wp-includes/
+Disallow: /cgi-bin/
+Disallow: /tmp/
+
+# Autoriser spécifiquement Googlebot-Image
 User-agent: Googlebot-Image
 Allow: *
 
@@ -11,6 +14,7 @@ Allow: *
 User-agent: Google-PageRenderer
 Allow: *
 
+# Sitemaps
 Sitemap: https://www.thecasinos.com/sitemap.xml
 Sitemap: https://www.thecasinos.com/sitemaps/casinos.xml
 Sitemap: https://www.thecasinos.com/sitemaps/online-casinos.xml
