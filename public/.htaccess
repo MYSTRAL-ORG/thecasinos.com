@@ -86,3 +86,10 @@
     CacheMaxExpire 2592000
     CacheIgnoreNoLastMod on
 </IfModule>
+
+<IfModule mod_setenvif.c>
+    SetEnvIfNoCase User-Agent "Googlebot" search_bot
+    SetEnvIfNoCase User-Agent "Googlebot-Mobile" search_bot
+    SetEnvIfNoCase User-Agent "Googlebot-Image" search_bot
+    SetEnvIfNoCase User-Agent "Googlebot-News" search_bot
+</IfModule>
