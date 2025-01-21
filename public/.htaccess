@@ -1,84 +1,88 @@
 <IfModule mod_rewrite.c>
+    # Options de base
     <IfModule mod_negotiation.c>
         Options -MultiViews -Indexes
     </IfModule>
 
     RewriteEngine On
-# Bloquer les URLs PageSpeed dupliquées
-    RewriteCond %{QUERY_STRING} ^PageSpeed=* [NC,OR]
-    RewriteCond %{QUERY_STRING} ^pagespeed=* [NC]
-    RewriteRule ^(.*)$ /$1? [R=301,L]
 
-    # Bloquer les suffixes PageSpeed dans les URLs
-    RewriteRule ^(.+\.pagespeed\..+)$ - [F,L]
-    # Rediriger de HTTP vers HTTPS
+    # Redirection HTTPS (à mettre en premier)
     RewriteCond %{HTTPS} off
     RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-    # Rediriger non-www vers www
+    # Redirection www (après HTTPS)
     RewriteCond %{HTTP_HOST} !^www\. [NC]
     RewriteCond %{HTTP_HOST} ^(.+)$ [NC]
     RewriteRule ^ https://www.%1%{REQUEST_URI} [R=301,L,NE]
 
-    # Rediriger les slashes terminaux si ce n'est pas un dossier
+    # Retirer les paramètres PageSpeed (optimisé)
+    RewriteCond %{QUERY_STRING} PageSpeed=.*$ [NC]
+    RewriteRule ^(.*)$ /$1? [R=301,L]
+
+    # Gestion des slashes terminaux
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
     RewriteRule ^ %1 [L,R=301]
 
-    # Gestion des fichiers dynamiques via le contrôleur frontal
+    # Route par défaut vers index.php
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteRule ^ index.php [L]
+</IfModule>
 
+# Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/x-javascript text/javascript application/json
+    BrowserMatch ^Mozilla/4 gzip-only-text/html
+    BrowserMatch ^Mozilla/4\.0[678] no-gzip
+    BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
 
-
+# Cache (unifié et optimisé)
+<IfModule mod_expires.c>
     ExpiresActive On
+    ExpiresDefault "access plus 1 month"
 
-    # Cacher tout pour une durée de 1 an (ajuster selon vos besoins)
+    # CSS, JavaScript
     ExpiresByType text/css "access plus 1 year"
     ExpiresByType application/javascript "access plus 1 year"
     ExpiresByType text/javascript "access plus 1 year"
+
+    # Images
     ExpiresByType image/jpeg "access plus 1 year"
     ExpiresByType image/gif "access plus 1 year"
     ExpiresByType image/png "access plus 1 year"
     ExpiresByType image/webp "access plus 1 year"
-    ExpiresByType image/x-icon "access plus 1 year"
     ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/x-icon "access plus 1 year"
+
+    # Fonts
     ExpiresByType font/ttf "access plus 1 year"
     ExpiresByType font/woff "access plus 1 year"
     ExpiresByType font/woff2 "access plus 1 year"
-
 </IfModule>
+
 <IfModule mod_headers.c>
+    # En-têtes de cache pour les ressources statiques
+    <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|ico|svg|woff|woff2|ttf)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
 
-     # Cacher tout sauf robots.txt, .htaccess, et sitemap.xml
-       <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|ico|svg|woff|woff2|ttf|txt)$">
-           Header set Cache-Control "public, max-age=2592000, immutable"
-       </FilesMatch>
-
-       # Ne pas mettre en cache robots.txt, .htaccess et sitemap.xml
-       <FilesMatch "(^robots\.txt$|^\.htaccess$|^sitemap\.xml$)">
-           Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
-           Header set Pragma "no-cache"
-           Header set Expires "0"
-       </FilesMatch>
+    # Contenu dynamique et fichiers système
+    <FilesMatch "(^robots\.txt$|^sitemap\.xml$)">
+        Header set Cache-Control "no-cache, must-revalidate, max-age=0"
+        Header set Pragma "no-cache"
+        Header unset ETag
+        FileETag None
+    </FilesMatch>
 </IfModule>
-# LiteSpeed Cache Configurations
+
+# Configuration LiteSpeed
 <IfModule LiteSpeed>
     CacheLookup on
-</IfModule>
-
-# Adjusting Cache-Control Headers for LiteSpeed compatibility
-<IfModule mod_headers.c>
-    # Set max-age for assets like CSS, JS, images, etc.
-    <FilesMatch "\.(css|js|jpg|jpeg|png|gif|webp|ico|svg|woff|woff2|ttf)$">
-        Header set Cache-Control "public, max-age=2592000, immutable"
-    </FilesMatch>
-
-    # Ensure dynamic content is not cached
-    <FilesMatch "(^robots\.txt$|^\.htaccess$|^sitemap\.xml$)">
-        Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
-        Header set Pragma "no-cache"
-        Header set Expires "0"
-    </FilesMatch>
+    RewriteEngine On
+    CacheEnable public /
+    CacheDefaultExpiry 604800
+    CacheMaxExpire 2592000
+    CacheIgnoreNoLastMod on
 </IfModule>
