@@ -1,33 +1,54 @@
-/.phpunit.cache
+# Laravel-specific directories
+/vendor
 /node_modules
+
+# Public directory
 /public/hot
 /public/storage
+/public/build
+
+# Storage directories
 /storage/*.key
-/vendor
+/storage/logs
+/storage/framework/cache
+/storage/framework/sessions
+/storage/framework/views
+
+# Ensure critical storage directories are kept
+!storage/logs/.gitignore
+!storage/framework/cache/.gitignore
+!storage/framework/sessions/.gitignore
+!storage/framework/views/.gitignore
+
+# Bootstrap cache
+/bootstrap/cache
+
+# Ensure bootstrap cache directory is kept
+!bootstrap/cache/.gitignore
+
+# Environment files
 .env
-.env.backup
-.env.production
+.env.*
+*.env
+
+# PHPUnit and testing
 .phpunit.result.cache
+/.phpunit.cache
+
+# IDE and OS-specific files
+/.idea
+/.vscode
+/.fleet
+.DS_Store
+Thumbs.db
+
+# Debug and temporary files
+npm-debug.log
+yarn-error.log
+*.log
+*.swp
+
+# Other system files
 Homestead.json
 Homestead.yaml
 auth.json
-npm-debug.log
-yarn-error.log
-/.fleet
-/.idea
-/.vscode
-/.tmp.driveupload/79124
-/.tmp.driveupload/79126
-/.tmp.driveupload/79132
-/.tmp.driveupload/79134
-/.tmp.driveupload/79138
-/.tmp.driveupload/79140
-/.tmp.driveupload/132441
-**/.DS_Store
-/.tmp.driveupload/146348
-/.tmp.driveupload/146358
-/.tmp.driveupload/146364
-/.tmp.driveupload/146370
-/.tmp.driveupload/
-/.tmp.drivedownload/
-/public/build/
