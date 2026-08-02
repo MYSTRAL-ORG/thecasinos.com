@@ -12,6 +12,8 @@
     "preview": "astro dev --host 0.0.0.0",
     "check": "astro check",
     "import:legacy": "node scripts/import-legacy.mjs",
+    "import:legacy-details": "node scripts/import-legacy-details.mjs",
+    "scrape:legacy-details": "node scripts/scrape-legacy-details.mjs",
     "audit:legacy": "node scripts/audit-legacy.mjs"
   },
   "dependencies": {

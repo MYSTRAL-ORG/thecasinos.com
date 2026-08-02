@@ -1,32 +1,73 @@
 ---
 import 'leaflet/dist/leaflet.css';
+
+const { stats = { casinos: 7493, countries: 157, cities: 3224 } } = Astro.props;
 ---
 
 <section class="map-shell" aria-labelledby="map-title">
+  <div id="casino-map" aria-label="Interactive map of casinos around the visitor"></div>
   <div class="map-copy">
-    <p class="eyebrow">Explore visually</p>
-    <h2 id="map-title">Move the map.<br />Find the right place.</h2>
-    <p>Only casinos in the visible area are loaded, keeping the experience fast on desktop and mobile.</p>
-    <div class="map-status" aria-live="polite">Loading places…</div>
+    <p class="eyebrow">Casinos around you</p>
+    <h1 id="map-title">Find a casino.<br /><span>Start with the map.</span></h1>
+    <p>Allow your location to discover nearby venues, then move the map to explore anywhere in the world.</p>
+    <form class="map-search" action="/search" method="get">
+      <label class="sr-only" for="map-query">Search by casino, city or country</label>
+      <input id="map-query" type="search" name="q" placeholder="Casino, city or country…" autocomplete="off" />
+      <button type="submit">Search</button>
+    </form>
+    <div class="map-actions">
+      <button class="locate-button" type="button"><span aria-hidden="true">⌖</span> Use my location</button>
+      <div class="map-status" aria-live="polite">Loading casinos…</div>
+    </div>
+    <div class="map-stats" aria-label="Directory statistics">
+      <span><strong>{Number(stats.casinos).toLocaleString('en-US')}</strong> casinos</span>
+      <span><strong>{Number(stats.countries).toLocaleString('en-US')}</strong> countries</span>
+      <span><strong>{Number(stats.cities).toLocaleString('en-US')}</strong> cities</span>
+    </div>
   </div>
-  <div id="casino-map" aria-label="Interactive world map of land-based casinos"></div>
+  <div class="nearby-panel" aria-live="polite">
+    <div class="nearby-heading"><strong>Places in this area</strong><span>Move the map to update</span></div>
+    <div class="nearby-list"></div>
+  </div>
 </section>
 
 <script>
   import * as L from 'leaflet';
+  import { getCasinoImageUrl } from '@/lib/media';
+
+  type MapCasino = {
+    name: string;
+    longitude: number;
+    latitude: number;
+    country_name: string;
+    country_slug: string;
+    city_name: string;
+    city_slug: string;
+    slug: string;
+    legacy_image_name?: string | null;
+    has_original_image?: boolean;
+  };
 
   const mapElement = document.querySelector<HTMLElement>('#casino-map');
   const status = document.querySelector<HTMLElement>('.map-status');
+  const nearbyList = document.querySelector<HTMLElement>('.nearby-list');
+  const locateButton = document.querySelector<HTMLButtonElement>('.locate-button');
 
   if (mapElement) {
-    const map = L.map(mapElement, { center: [28, 2], zoom: 2, minZoom: 2, maxZoom: 17, zoomControl: false, worldCopyJump: true });
+    const map = L.map(mapElement, {
+      center: [27, 2], zoom: 2, minZoom: 2, maxZoom: 17, zoomControl: false, worldCopyJump: true,
+    });
     L.control.zoom({ position: 'topright' }).addTo(map);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     }).addTo(map);
+
     const markers: L.Marker[] = [];
+    let userMarker: L.CircleMarker | null = null;
+    let userLocation: L.LatLng | null = null;
     let requestId = 0;
+    let debounceTimer = 0;
 
     async function refresh() {
       const currentRequest = ++requestId;
@@ -37,49 +78,150 @@ import 'leaflet/dist/leaflet.css';
       if (status) status.textContent = 'Searching this area…';
       try {
         const response = await fetch(`/api/casinos-in-view.json?${params}`);
-        const casinos = await response.json();
+        if (!response.ok) throw new Error('Map request failed');
+        const casinos = await response.json() as MapCasino[];
         if (currentRequest !== requestId) return;
         markers.splice(0).forEach((marker) => marker.remove());
-        casinos.forEach((casino: { name: string; longitude: number; latitude: number; country_slug: string; city_slug: string; slug: string }) => {
-          if (!Number.isFinite(Number(casino.longitude)) || !Number.isFinite(Number(casino.latitude))) return;
-          const url = `/${casino.country_slug}/${casino.city_slug}/${casino.slug}`;
-          const icon = L.divIcon({ className: 'casino-marker-icon', html: '<span></span>', iconSize: [20, 20], iconAnchor: [10, 10], popupAnchor: [0, -10] });
-          const marker = L.marker([Number(casino.latitude), Number(casino.longitude)], { icon, title: casino.name, alt: casino.name });
-          marker.bindPopup(`<a class="casino-map-link" href="${url}">${escapeHtml(casino.name)}</a>`);
-          markers.push(marker.addTo(map));
-        });
-        if (status) status.textContent = `${casinos.length} place${casinos.length === 1 ? '' : 's'} in view`;
+        const reference = userLocation ?? map.getCenter();
+        const ordered = casinos
+          .filter((casino) => Number.isFinite(Number(casino.longitude)) && Number.isFinite(Number(casino.latitude)))
+          .map((casino) => ({ casino, distance: reference.distanceTo([Number(casino.latitude), Number(casino.longitude)]) }))
+          .sort((first, second) => first.distance - second.distance);
+
+        for (const { casino } of ordered) addCasinoMarker(casino);
+        renderNearby(ordered.slice(0, 6));
+        if (status) status.textContent = `${ordered.length} place${ordered.length === 1 ? '' : 's'} in view`;
       } catch {
         if (status) status.textContent = 'Map data is temporarily unavailable.';
+        if (nearbyList) nearbyList.innerHTML = '<p class="nearby-empty">Unable to load nearby casinos.</p>';
       }
+    }
+
+    function addCasinoMarker(casino: MapCasino) {
+      const url = casinoUrl(casino);
+      const image = getCasinoImageUrl(casino, { width: 96, height: 96, quality: 72 });
+      const visual = image
+        ? `<img src="${escapeAttribute(image)}" alt="" loading="lazy" />`
+        : `<b>${escapeHtml(casino.name.trim().charAt(0))}</b>`;
+      const icon = L.divIcon({
+        className: 'casino-marker-icon', html: `<span>${visual}</span>`, iconSize: [48, 48], iconAnchor: [24, 24], popupAnchor: [0, -23],
+      });
+      const marker = L.marker([Number(casino.latitude), Number(casino.longitude)], { icon, title: casino.name, alt: casino.name });
+      const popupImage = getCasinoImageUrl(casino, { width: 300, height: 170, quality: 78 });
+      marker.bindPopup(`<article class="casino-popup">${popupImage ? `<img src="${escapeAttribute(popupImage)}" alt="" />` : ''}<small>${escapeHtml(casino.city_name)}, ${escapeHtml(casino.country_name)}</small><a href="${url}">${escapeHtml(casino.name.trim())}</a></article>`, { minWidth: 220 });
+      markers.push(marker.addTo(map));
+    }
+
+    function renderNearby(items: { casino: MapCasino; distance: number }[]) {
+      if (!nearbyList) return;
+      if (!items.length) {
+        nearbyList.innerHTML = '<p class="nearby-empty">No casino in this area. Zoom out or move the map.</p>';
+        return;
+      }
+      nearbyList.innerHTML = items.map(({ casino, distance }) => {
+        const image = getCasinoImageUrl(casino, { width: 220, height: 150, quality: 74 });
+        return `<a class="nearby-card" href="${casinoUrl(casino)}">${image ? `<img src="${escapeAttribute(image)}" alt="" loading="lazy" />` : '<span class="nearby-placeholder"></span>'}<span><small>${escapeHtml(casino.city_name)} · ${formatDistance(distance)}</small><strong>${escapeHtml(casino.name.trim())}</strong></span></a>`;
+      }).join('');
+    }
+
+    function locateVisitor() {
+      if (!navigator.geolocation) {
+        if (status) status.textContent = 'Geolocation is not supported by this browser.';
+        return;
+      }
+      if (status) status.textContent = 'Finding your location…';
+      if (locateButton) locateButton.disabled = true;
+      navigator.geolocation.getCurrentPosition(({ coords }) => {
+        userLocation = L.latLng(coords.latitude, coords.longitude);
+        userMarker?.remove();
+        userMarker = L.circleMarker(userLocation, { radius: 9, weight: 4, color: '#fff', fillColor: '#2879d0', fillOpacity: 1 }).addTo(map).bindTooltip('Your location');
+        map.setView(userLocation, 10);
+        if (status) status.textContent = 'Showing casinos around you';
+        if (locateButton) locateButton.disabled = false;
+      }, () => {
+        if (status) status.textContent = 'Location unavailable. You can still move the map.';
+        if (locateButton) locateButton.disabled = false;
+      }, { enableHighAccuracy: false, timeout: 10_000, maximumAge: 600_000 });
+    }
+
+    function casinoUrl(casino: MapCasino) {
+      return `/${encodeURIComponent(casino.country_slug)}/${encodeURIComponent(casino.city_slug)}/${encodeURIComponent(casino.slug)}`;
+    }
+
+    function formatDistance(distanceInMetres: number) {
+      if (distanceInMetres < 1000) return `${Math.max(50, Math.round(distanceInMetres / 50) * 50)} m`;
+      return `${(distanceInMetres / 1000).toFixed(distanceInMetres < 10_000 ? 1 : 0)} km`;
     }
 
     function escapeHtml(value: string) {
       return value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character] ?? character);
     }
 
-    map.on('moveend', refresh);
+    function escapeAttribute(value: string) {
+      return escapeHtml(value);
+    }
+
+    map.on('moveend', () => {
+      window.clearTimeout(debounceTimer);
+      debounceTimer = window.setTimeout(refresh, 180);
+    });
+    locateButton?.addEventListener('click', locateVisitor);
     refresh();
+    window.setTimeout(locateVisitor, 450);
   }
 </script>
 
 <style>
-  .map-shell { position: relative; min-height: 650px; overflow: hidden; border-radius: var(--radius-lg); background: var(--forest); box-shadow: var(--shadow); }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  .map-shell { position: relative; min-height: 760px; overflow: hidden; border: 1px solid rgba(255,255,255,.12); border-radius: 30px; background: #dce5df; box-shadow: 0 28px 70px rgba(4,25,20,.28); }
   #casino-map { position: absolute; inset: 0; }
-  .map-copy { position: absolute; z-index: 3; top: 34px; left: 34px; width: min(390px, calc(100% - 68px)); padding: 28px; border: 1px solid rgba(255,255,255,.18); border-radius: 22px; background: rgba(17, 47, 40, .93); color: #fff; backdrop-filter: blur(12px); }
+  .map-copy { position: absolute; z-index: 500; top: 26px; left: 26px; width: min(470px, calc(100% - 52px)); padding: 30px; border: 1px solid rgba(255,255,255,.2); border-radius: 24px; background: rgba(17, 47, 40, .95); color: #fff; backdrop-filter: blur(14px); box-shadow: 0 20px 55px rgba(5,25,20,.25); }
   .map-copy .eyebrow { color: var(--lime); }
-  .map-copy h2 { margin-bottom: 15px; font-size: clamp(2rem, 4vw, 3.2rem); }
-  .map-copy p:not(.eyebrow) { color: #c4d4cf; }
-  .map-status { display: inline-flex; margin-top: 8px; padding: 8px 11px; border-radius: 999px; background: rgba(255,255,255,.1); color: #fff; font-size: .78rem; }
+  .map-copy h1 { margin-bottom: 18px; font-size: clamp(2.35rem, 4.2vw, 4.35rem); }
+  .map-copy h1 span { color: var(--lime); }
+  .map-copy > p:not(.eyebrow) { max-width: 420px; margin: 0; color: #c8d7d2; }
+  .map-search { min-height: 56px; margin-top: 22px; padding: 5px 5px 5px 17px; display: flex; gap: 8px; border-radius: 999px; background: #fff; }
+  .map-search input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); }
+  .map-search button { padding: 0 20px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; font-weight: 700; cursor: pointer; }
+  .map-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+  .locate-button, .map-status { min-height: 36px; padding: 8px 11px; border: 0; border-radius: 999px; font-size: .76rem; }
+  .locate-button { background: var(--lime); color: var(--forest); font-weight: 800; cursor: pointer; }
+  .locate-button:disabled { opacity: .62; cursor: wait; }
+  .map-status { display: inline-flex; align-items: center; background: rgba(255,255,255,.1); color: #fff; }
+  .map-stats { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 18px; color: #9fb7b0; font-size: .73rem; text-transform: uppercase; letter-spacing: .06em; }
+  .map-stats strong { color: #fff; font-size: .86rem; }
+  .nearby-panel { position: absolute; z-index: 500; right: 20px; bottom: 20px; left: 20px; padding: 15px; border: 1px solid rgba(255,255,255,.8); border-radius: 20px; background: rgba(255,253,248,.94); backdrop-filter: blur(13px); box-shadow: 0 16px 42px rgba(18,33,30,.2); }
+  .nearby-heading { display: flex; justify-content: space-between; gap: 15px; margin: 0 4px 11px; }
+  .nearby-heading strong { font: 700 .88rem/1.2 'Manrope', sans-serif; }
+  .nearby-heading span { color: var(--muted); font-size: .72rem; }
+  .nearby-list { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 9px; }
+  :global(.nearby-card) { min-width: 0; overflow: hidden; display: grid; grid-template-columns: 66px minmax(0, 1fr); align-items: center; gap: 9px; border: 1px solid var(--line); border-radius: 13px; background: #fff; color: var(--ink); }
+  :global(.nearby-card img), :global(.nearby-placeholder) { width: 66px; height: 66px; object-fit: cover; background: linear-gradient(135deg, var(--forest), #356b5f); }
+  :global(.nearby-card > span:last-child) { min-width: 0; padding-right: 8px; display: flex; flex-direction: column; }
+  :global(.nearby-card small) { overflow: hidden; color: var(--brand-dark); font-size: .62rem; text-overflow: ellipsis; white-space: nowrap; }
+  :global(.nearby-card strong) { overflow: hidden; margin-top: 4px; font-size: .72rem; line-height: 1.25; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+  :global(.nearby-empty) { margin: 8px; color: var(--muted); font-size: .82rem; }
   :global(.casino-marker-icon) { border: 0; background: transparent; }
-  :global(.casino-marker-icon span) { width: 18px; height: 18px; display: block; border: 3px solid #fff; border-radius: 50%; background: var(--brand); box-shadow: 0 4px 12px rgba(0,0,0,.28); transition: transform .18s ease; }
-  :global(.casino-marker-icon:hover span) { transform: scale(1.25); }
-  :global(.casino-map-link) { color: var(--ink); font: 700 .85rem/1.3 'DM Sans', sans-serif; }
-  :global(.leaflet-popup-content-wrapper) { border-radius: 10px; }
+  :global(.casino-marker-icon span) { width: 46px; height: 46px; overflow: hidden; display: grid; place-items: center; border: 3px solid #fff; border-radius: 50%; background: var(--brand); color: #fff; box-shadow: 0 7px 18px rgba(0,0,0,.34); transition: transform .18s ease; }
+  :global(.casino-marker-icon img) { width: 100%; height: 100%; object-fit: cover; }
+  :global(.casino-marker-icon:hover span) { transform: scale(1.12); }
+  :global(.casino-popup) { overflow: hidden; display: flex; flex-direction: column; }
+  :global(.casino-popup img) { width: calc(100% + 40px); height: 115px; margin: -14px -20px 11px; object-fit: cover; }
+  :global(.casino-popup small) { color: var(--brand-dark); font-weight: 700; }
+  :global(.casino-popup a) { margin-top: 4px; color: var(--ink); font: 800 .92rem/1.3 'DM Sans', sans-serif; }
+  :global(.leaflet-popup-content-wrapper) { overflow: hidden; border-radius: 14px; }
+  @media (max-width: 1020px) {
+    .nearby-list { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
   @media (max-width: 700px) {
-    .map-shell { min-height: 680px; }
-    .map-copy { top: 14px; left: 14px; width: calc(100% - 28px); padding: 21px; }
-    .map-copy h2 { font-size: 2rem; }
-    #casino-map { top: 310px; }
+    .map-shell { min-height: 970px; border-radius: 22px; }
+    .map-copy { top: 12px; left: 12px; width: calc(100% - 24px); padding: 21px; }
+    .map-copy h1 { font-size: 2.6rem; }
+    .map-search { border-radius: 16px; }
+    .map-stats { gap: 9px; }
+    #casino-map { top: 395px; bottom: 262px; }
+    .nearby-panel { right: 10px; bottom: 10px; left: 10px; }
+    .nearby-list { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; }
+    :global(.nearby-card) { flex: 0 0 240px; scroll-snap-align: start; }
   }
 </style>

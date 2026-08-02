@@ -1,7 +1,10 @@
 ---
 import type { Casino } from '@/lib/types';
+import { getCasinoImageUrl } from '@/lib/media';
 const { casino } = Astro.props as { casino: Casino };
 const url = `/${casino.country_slug}/${casino.city_slug}/${casino.slug}`;
+const image = getCasinoImageUrl(casino, { width: 720, height: 420 });
+const imageSmall = getCasinoImageUrl(casino, { width: 420, height: 280 });
 const games = [
   casino.has_slots && 'Slots',
   casino.has_table_games && 'Table games',
@@ -12,7 +15,8 @@ const games = [
 
 <article class="casino-card card">
   <a href={url} class="card-top">
-    <div class="monogram" aria-hidden="true">{casino.name.trim().charAt(0)}</div>
+    {image ? <img src={image} srcset={`${imageSmall} 420w, ${image} 720w`} sizes="(max-width: 620px) 100vw, (max-width: 930px) 50vw, 33vw" width="720" height="420" loading="lazy" alt={`${casino.name.trim()} in ${casino.city_name}`} /> : <div class="monogram" aria-hidden="true">{casino.name.trim().charAt(0)}</div>}
+    <div class="image-shade"></div>
     <div class="location"><span>{casino.country_name}</span><strong>{casino.city_name}</strong></div>
   </a>
   <div class="card-body">
@@ -27,9 +31,12 @@ const games = [
 <style>
   .casino-card { overflow: hidden; min-height: 100%; transition: transform .2s ease, box-shadow .2s ease; }
   .casino-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
-  .card-top { min-height: 130px; padding: 20px; display: flex; align-items: end; justify-content: space-between; gap: 20px; background: linear-gradient(135deg, var(--forest), #285d51); color: #fff; }
+  .card-top { position: relative; min-height: 220px; overflow: hidden; padding: 20px; display: flex; align-items: end; justify-content: space-between; gap: 20px; background: linear-gradient(135deg, var(--forest), #285d51); color: #fff; }
+  .card-top > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .35s ease; }
+  .casino-card:hover .card-top > img { transform: scale(1.035); }
+  .image-shade { position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,27,22,.88), rgba(6,27,22,.04) 70%); }
   .monogram { width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: var(--lime); color: var(--forest); font: 800 1.8rem/1 'Manrope', sans-serif; }
-  .location { display: flex; flex-direction: column; align-items: end; text-align: right; }
+  .location { position: relative; z-index: 1; margin-left: auto; display: flex; flex-direction: column; align-items: end; text-align: right; }
   .location span { color: #bfd0cb; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
   .location strong { margin-top: 4px; }
   .card-body { padding: 24px; }
