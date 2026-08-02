@@ -1,54 +1,31 @@
-# Laravel-specific directories
-/vendor
-/node_modules
+# Dependencies and build output
+node_modules/
+web/node_modules/
+web/dist/
+web/.astro/
+.netlify/
 
-# Public directory
-/public/hot
-/public/storage
-/public/build
-
-# Storage directories
-/storage/*.key
-/storage/logs
-/storage/framework/cache
-/storage/framework/sessions
-/storage/framework/views
-
-# Ensure critical storage directories are kept
-!storage/logs/.gitignore
-!storage/framework/cache/.gitignore
-!storage/framework/sessions/.gitignore
-!storage/framework/views/.gitignore
-
-# Bootstrap cache
-/bootstrap/cache
-
-# Ensure bootstrap cache directory is kept
-!bootstrap/cache/.gitignore
-
-# Environment files
+# Environment and credentials
 .env
 .env.*
-*.env
+!.env.example
+web/.env
+web/.env.*
+!web/.env.example
+*.pem
+*.key
+*.p12
+*.htpasswd
 
-# PHPUnit and testing
-.phpunit.result.cache
-/.phpunit.cache
+# Supabase local state
+supabase/.branches/
+supabase/.temp/
 
-# IDE and OS-specific files
-/.idea
-/.vscode
-/.fleet
-.DS_Store
-Thumbs.db
-
-# Debug and temporary files
-npm-debug.log
-yarn-error.log
+# Logs, caches and editor files
 *.log
 *.swp
-
-# Other system files
-Homestead.json
-Homestead.yaml
-auth.json
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.fleet/

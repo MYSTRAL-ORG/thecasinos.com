@@ -1,0 +1,164 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CasinoCard from '@/components/CasinoCard.astro';
+import OnlineRanking from '@/components/OnlineRanking.astro';
+import WorldMap from '@/components/WorldMap.astro';
+import { getFeaturedCasinos, getOnlineCasinos, getPopularDestinations, getSiteStats } from '@/lib/data';
+
+const [stats, casinos, destinations, onlineCasinos] = await Promise.all([
+  getSiteStats(),
+  getFeaturedCasinos(5),
+  getPopularDestinations(6),
+  getOnlineCasinos(),
+]);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'TheCasinos.com',
+  url: Astro.site,
+  description: 'Explore land-based casinos around the world and compare a curated online casino ranking.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${Astro.site}search?q={search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+
+<BaseLayout title="TheCasinos.com — Casinos around the world" description="Explore 7,500+ land-based casinos by map, country or city, then compare our curated online casino Top 10." structuredData={structuredData}>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Online reference to onsite experience</p>
+        <h1>Every casino<br /><span>has a place.</span></h1>
+        <p class="lede">Navigate the world’s casino landscape through places, facts and focused reviews—not a wall of generic listings.</p>
+        <form class="hero-search" action="/search" method="get">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 21-4.35-4.35m2.35-5.65a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" /></svg>
+          <label class="sr-only" for="hero-query">Search by casino, city or country</label>
+          <input id="hero-query" type="search" name="q" placeholder="Casino, city or country…" autocomplete="off" />
+          <button type="submit">Explore</button>
+        </form>
+        <div class="hero-stats" aria-label="Directory statistics">
+          <div><strong>{stats.casinos.toLocaleString('en-US')}</strong><span>casinos</span></div>
+          <div><strong>{stats.countries.toLocaleString('en-US')}</strong><span>countries</span></div>
+          <div><strong>{stats.cities.toLocaleString('en-US')}</strong><span>cities</span></div>
+        </div>
+      </div>
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="globe">
+          <span class="line line-a"></span><span class="line line-b"></span><span class="line line-c"></span>
+          <span class="pin pin-a"></span><span class="pin pin-b"></span><span class="pin pin-c"></span><span class="pin pin-d"></span><span class="pin pin-e"></span>
+          <div class="globe-label"><small>Featured destination</small><strong>Monte-Carlo</strong><span>43.7384° N · 7.4246° E</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="section-heading">
+      <div><p class="eyebrow">Selected places</p><h2>Start with casinos<br />worth knowing.</h2></div>
+      <a href="/search" class="button secondary">Browse the directory</a>
+    </div>
+    <div class="casino-grid">
+      {casinos.map((casino) => <CasinoCard casino={casino} />)}
+    </div>
+  </section>
+
+  <section class="section-tight container"><WorldMap /></section>
+
+  <section class="section container destinations">
+    <div class="section-heading"><div><p class="eyebrow">Browse by country</p><h2>Six doors into<br />the directory.</h2></div></div>
+    <div class="destination-grid">
+      {destinations.map((destination, index) => (
+        <a href={`/${destination.country_slug}`} class="destination-card">
+          <span>{String(index + 1).padStart(2, '0')}</span>
+          <div><strong>{destination.country_name}</strong><small>{Number(destination.casino_count).toLocaleString('en-US')} places</small></div>
+          <b aria-hidden="true">↗</b>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="online-section">
+    <div class="container">
+      <div class="section-heading online-heading">
+        <div><p class="eyebrow">Curated online</p><h2>A clear ranking.<br />Managed by you.</h2><p class="lede">The Top 10 is editorial, ordered in the administration area and separated from the global casino directory.</p></div>
+        <a href="/online" class="button">View the Top 10</a>
+      </div>
+      <OnlineRanking casinos={onlineCasinos} compact />
+      <p class="affiliate-note">18+ · Affiliate links may generate a commission at no extra cost to you. Offers and availability can change; verify the operator’s terms.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+  .hero { position: relative; min-height: 720px; overflow: hidden; background: var(--forest); color: #fff; }
+  .hero::before { content: ''; position: absolute; inset: 0; opacity: .08; background-image: radial-gradient(circle at center, #fff 1px, transparent 1.5px); background-size: 25px 25px; mask-image: linear-gradient(to right, #000, transparent 70%); }
+  .hero-grid { position: relative; min-height: 720px; display: grid; grid-template-columns: 1.07fr .93fr; align-items: center; gap: 60px; }
+  .hero-copy { position: relative; z-index: 2; padding: 70px 0; }
+  .hero .eyebrow { color: var(--lime); }
+  .hero h1 { margin-bottom: 25px; }
+  .hero h1 span { color: var(--lime); }
+  .hero .lede { color: #c1d0cb; }
+  .hero-search { max-width: 630px; min-height: 67px; margin-top: 34px; padding: 7px 7px 7px 20px; display: flex; align-items: center; gap: 12px; border-radius: 999px; background: #fff; color: var(--ink); box-shadow: 0 18px 50px rgba(0,0,0,.22); }
+  .hero-search svg { width: 21px; flex: 0 0 auto; fill: none; stroke: #73807c; stroke-width: 2; stroke-linecap: round; }
+  .hero-search input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--ink); }
+  .hero-search button { min-height: 53px; padding: 0 27px; border: 0; border-radius: 999px; background: var(--brand); color: #fff; font-weight: 700; cursor: pointer; }
+  .hero-stats { display: flex; gap: 42px; margin-top: 42px; }
+  .hero-stats div { display: flex; flex-direction: column; }
+  .hero-stats strong { font: 700 1.45rem/1 'Manrope', sans-serif; }
+  .hero-stats span { margin-top: 7px; color: #93aba4; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+  .hero-orbit { position: relative; display: grid; place-items: center; }
+  .globe { position: relative; width: min(520px, 42vw); aspect-ratio: 1; overflow: hidden; border: 1px solid rgba(215,232,118,.5); border-radius: 50%; background: radial-gradient(circle at 37% 28%, rgba(215,232,118,.17), transparent 19%), radial-gradient(circle at 68% 58%, rgba(255,255,255,.1), transparent 14%), #12322c; box-shadow: inset 0 0 80px rgba(0,0,0,.35), 0 0 0 40px rgba(255,255,255,.025), 0 0 0 80px rgba(255,255,255,.018); }
+  .line { position: absolute; inset: 12%; border: 1px solid rgba(255,255,255,.13); border-radius: 50%; }
+  .line-b { transform: rotate(65deg); border-radius: 45%; }
+  .line-c { inset: 35% 2%; }
+  .pin { position: absolute; width: 14px; height: 14px; border: 3px solid #fff; border-radius: 50%; background: var(--brand); box-shadow: 0 0 0 8px rgba(233,84,91,.16); }
+  .pin-a { top: 25%; left: 27%; }.pin-b { top: 36%; right: 20%; }.pin-c { bottom: 27%; left: 19%; }.pin-d { bottom: 22%; right: 30%; }.pin-e { top: 17%; right: 42%; }
+  .globe-label { position: absolute; right: 6%; bottom: 11%; padding: 16px 18px; display: flex; flex-direction: column; border-radius: 14px; background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+  .globe-label small { color: var(--brand-dark); font-size: .67rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .globe-label strong { margin-top: 5px; font-size: 1rem; }
+  .globe-label span { margin-top: 3px; color: var(--muted); font-size: .68rem; }
+  .casino-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 20px; }
+  .casino-grid > :global(*) { grid-column: span 2; }
+  .casino-grid > :global(*:nth-child(4)), .casino-grid > :global(*:nth-child(5)) { grid-column: span 3; }
+  .destination-grid { display: grid; grid-template-columns: repeat(2, 1fr); border-top: 1px solid var(--line); }
+  .destination-card { min-height: 112px; padding: 24px 12px; display: grid; grid-template-columns: 45px 1fr auto; align-items: center; gap: 15px; border-bottom: 1px solid var(--line); }
+  .destination-card:nth-child(odd) { padding-right: 34px; border-right: 1px solid var(--line); }
+  .destination-card:nth-child(even) { padding-left: 34px; }
+  .destination-card > span { color: #9da5a1; font-size: .78rem; }
+  .destination-card div { display: flex; flex-direction: column; }
+  .destination-card strong { font: 700 1.18rem/1.2 'Manrope', sans-serif; }
+  .destination-card small { margin-top: 6px; color: var(--muted); }
+  .destination-card b { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; color: var(--brand-dark); transition: background .18s ease, color .18s ease; }
+  .destination-card:hover b { background: var(--brand); color: #fff; }
+  .online-section { padding: 92px 0; background: #eceae1; }
+  .online-heading .lede { margin-bottom: 0; }
+  .affiliate-note { margin: 18px 4px 0; color: var(--muted); font-size: .76rem; }
+  @media (max-width: 930px) {
+    .hero-grid { grid-template-columns: 1fr; min-height: auto; }
+    .hero-copy { padding-bottom: 30px; }
+    .hero-orbit { height: 390px; }
+    .globe { width: 380px; }
+    .casino-grid > :global(*) { grid-column: span 3; }
+    .casino-grid > :global(*:nth-child(5)) { grid-column: 2 / span 4; }
+  }
+  @media (max-width: 620px) {
+    .hero { min-height: auto; }
+    .hero-grid { gap: 15px; }
+    .hero-copy { padding: 58px 0 20px; }
+    .hero-search { border-radius: 20px; flex-wrap: wrap; padding: 12px; }
+    .hero-search svg { margin-left: 5px; }
+    .hero-search input { width: calc(100% - 40px); min-height: 40px; }
+    .hero-search button { width: 100%; }
+    .hero-stats { justify-content: space-between; gap: 10px; }
+    .hero-orbit { height: 330px; overflow: hidden; }
+    .globe { width: 330px; }
+    .casino-grid { grid-template-columns: 1fr; }
+    .casino-grid > :global(*), .casino-grid > :global(*:nth-child(4)), .casino-grid > :global(*:nth-child(5)) { grid-column: auto; }
+    .destination-grid { grid-template-columns: 1fr; }
+    .destination-card:nth-child(odd), .destination-card:nth-child(even) { padding-inline: 8px; border-right: 0; }
+  }
+</style>

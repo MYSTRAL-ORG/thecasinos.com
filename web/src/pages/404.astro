@@ -1,0 +1,10 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+Astro.response.status = 404;
+---
+
+<BaseLayout title="Page not found" description="The requested page could not be found." noindex>
+  <section class="not-found"><div class="container"><span>404</span><p class="eyebrow">Wrong turn</p><h1>This place is<br />off the map.</h1><p>The page may have moved, or the casino is no longer listed.</p><div><a class="button" href="/">Return home</a><a class="button secondary" href="/search">Search casinos</a></div></div></section>
+</BaseLayout>
+
+<style>.not-found{min-height:650px;padding:90px 0;background:var(--forest);color:#fff}.not-found .container{position:relative}.not-found span{position:absolute;right:0;top:-70px;color:rgba(255,255,255,.04);font:800 clamp(9rem,28vw,24rem)/1 'Manrope',sans-serif}.not-found .eyebrow{color:var(--lime)}.not-found h1{position:relative}.not-found p:not(.eyebrow){max-width:500px;color:#c2d1cc}.not-found .button{margin:18px 8px 0 0}.not-found .button.secondary{color:#fff;border-color:rgba(255,255,255,.25)}</style>

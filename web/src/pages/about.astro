@@ -1,0 +1,31 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="About TheCasinos.com" description="The story and mission behind TheCasinos.com, an online reference for onsite casino experiences.">
+  <section class="about-hero"><div class="container"><p class="eyebrow">About us</p><h1>Online reference<br />to onsite experience.</h1><p class="lede">Your online compass to the world’s land-based casinos—from the bustle of Las Vegas to the elegance of Monte-Carlo.</p></div></section>
+  <section class="section container about-grid">
+    <aside><span>01</span><p>Explore places</p><span>02</span><p>Understand the experience</p><span>03</span><p>Travel informed</p></aside>
+    <article class="legal-copy">
+      <h2>The pitch</h2><p>Imagine a world map dotted with gaming destinations, each opening a practical view of a casino: its history, games, scale and atmosphere. TheCasinos.com turns the old directory into a clearer, faster way to discover those places.</p>
+      <h2>Digging deeper</h2><p>We do not want the directory to stop at bright lights and jackpot machines. Every casino has context: the city around it, the games it offers and the history that shaped it. Existing content is retained while the new platform makes it easier to review, verify and improve.</p>
+      <h2>Simplicity with a touch of class</h2><p>Navigation begins with location. Search directly, browse countries and cities, or move across the map to uncover better-known destinations and local venues alike.</p>
+      <h2>Green gaming</h2><p>Keeping the experience digital and efficient matters. The new architecture loads only the data required for each page and map view, reducing unnecessary transfer compared with the former full-directory download.</p>
+      <h2>A peek into the future</h2><p>Our goal remains to make TheCasinos.com a useful first stop before an onsite gaming trip. Editorial improvements, verified venue details and relevant nearby services can progressively enrich that experience.</p>
+      <h2>Your role in this adventure</h2><p>If you notice an error or have a suggestion, write to <a class="text-link" href="mailto:admin@thecasinos.com">admin@thecasinos.com</a>. We appreciate every useful correction.</p>
+      <p><em>Ridouane D. &amp; Sebastien A.</em></p>
+    </article>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero { padding: 90px 0; background: var(--forest); color: #fff; }
+  .about-hero .eyebrow { color: var(--lime); }
+  .about-hero .lede { color: #c2d1cc; }
+  .about-grid { display: grid; grid-template-columns: 260px 1fr; gap: 90px; }
+  .about-grid aside { padding-top: 12px; }
+  .about-grid aside span { color: var(--brand-dark); font-size: .72rem; font-weight: 700; }
+  .about-grid aside p { margin: 6px 0 24px; padding-bottom: 20px; border-bottom: 1px solid var(--line); font-weight: 700; }
+  .legal-copy h2:first-child { margin-top: 0; }
+  @media (max-width: 720px) { .about-grid { grid-template-columns: 1fr; gap: 30px; } }
+</style>

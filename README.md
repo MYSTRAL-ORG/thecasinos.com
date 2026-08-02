@@ -1,66 +1,82 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# TheCasinos.com v2
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A complete rebuild of TheCasinos.com around its data: 7,493 unique land-based casino URLs, geographic exploration and a manageable online casino Top 10.
 
-## About Laravel
+## Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Astro 7 with server-rendered routes and selective client-side JavaScript
+- Supabase Postgres, PostGIS, Auth and Row Level Security
+- Netlify SSR adapter and CDN configuration
+- Leaflet for viewport-based geographic exploration
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+The former Laravel runtime is intentionally removed. The legacy GeoJSON remains in `data/legacy/casinos.geojson` as a non-public migration source, and the original brand logo is retained in `web/public/logo.png`.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Local setup
 
-## Learning Laravel
+Requirements: Node.js 22.12+ (Node 24 is used on Netlify) and a Supabase project.
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+cd web
+cp .env.example .env
+npm install
+npm run dev
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+For a public-data fallback preview, the site also runs without Supabase variables. Authentication and editing are disabled until the project URL and anonymous key are configured.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Supabase setup
 
-## Laravel Sponsors
+1. Link the repository to the intended Supabase project.
+2. Apply `supabase/migrations/20260802120000_initial_schema.sql`.
+3. Create the first editor in Supabase Auth.
+4. Give that user the admin role in `app_metadata`:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+```json
+{ "role": "admin" }
+```
 
-### Premium Partners
+5. Set the import variables in a trusted local terminal and run:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```bash
+cd web
+npm run audit:legacy
+npm run import:legacy
+```
 
-## Contributing
+`SUPABASE_SERVICE_ROLE_KEY` is used only by the local import script. It must never be prefixed with `PUBLIC_`, committed, or exposed in browser/Netlify public configuration.
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+The import batches upserts by legacy ID and merges 34 duplicate records that previously shared the same public URL. The resulting public directory has 7,493 unique casino routes.
 
-## Code of Conduct
+## Netlify
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+The root `netlify.toml` sets `web` as the base directory, builds the Astro SSR output, configures security headers and excludes `/admin` from caching and indexing.
 
-## Security Vulnerabilities
+Configure only these public variables for the web application:
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```text
+PUBLIC_SUPABASE_URL
+PUBLIC_SUPABASE_ANON_KEY
+```
 
-## License
+Do not configure a service-role key in Netlify. All browser-side administration uses the authenticated user token and is enforced by RLS.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## Quality checks
+
+```bash
+cd web
+npm run check
+npm run build
+npm run audit:legacy
+```
+
+The main preserved URL shapes are:
+
+- `/{country}`
+- `/{country}/{city}`
+- `/{country}/{city}/{casino-slug}`
+- `/online`
+- `/online/{legacy-slug}`
+
+## Security note
+
+The previous repository version contained a Google service-account key, a PostgreSQL dump with account tables, and an `.htpasswd` file. They have been removed from the new tree, but Git history still contains them. Revoke/rotate those credentials and rewrite the repository history before treating the repository as clean.

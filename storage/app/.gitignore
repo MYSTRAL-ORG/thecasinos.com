@@ -1,8 +1,0 @@
-*
-!.gitignore
-!public/
-!public/**/*
-!google/
-!google/**/*
-!sql/
-!sql/**/*

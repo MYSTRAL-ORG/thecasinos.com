@@ -1,0 +1,40 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CasinoCard from '@/components/CasinoCard.astro';
+import { searchCasinos } from '@/lib/data';
+
+const query = Astro.url.searchParams.get('q')?.trim() ?? '';
+const casinos = query ? await searchCasinos(query) : [];
+---
+
+<BaseLayout title={query ? `Search results for “${query}”` : 'Search casinos'} description="Search TheCasinos.com by casino name, city or country." noindex={Boolean(query)}>
+  <section class="search-hero">
+    <div class="container">
+      <p class="eyebrow">7,500+ places</p>
+      <h1>Find a casino.</h1>
+      <form action="/search" method="get">
+        <label for="q">Casino, city or country</label>
+        <div><input id="q" name="q" type="search" value={query} placeholder="Try Las Vegas, Monaco…" autofocus /><button class="button" type="submit">Search</button></div>
+      </form>
+    </div>
+  </section>
+  <section class="section container">
+    {query ? <p class="result-count"><strong>{casinos.length}</strong> result{casinos.length === 1 ? '' : 's'} for “{query}”</p> : <p class="empty-state">Enter a casino, city or country to explore the directory.</p>}
+    {query && casinos.length === 0 && <p class="empty-state">No match found. Try a broader city or country name.</p>}
+    <div class="results">{casinos.map((casino) => <CasinoCard casino={casino} />)}</div>
+  </section>
+</BaseLayout>
+
+<style>
+  .search-hero { padding: 80px 0; background: var(--forest); color: #fff; }
+  .search-hero .eyebrow { color: var(--lime); }
+  .search-hero h1 { margin-bottom: 35px; }
+  form { max-width: 760px; }
+  label { display: block; margin-bottom: 9px; color: #c5d4cf; font-size: .85rem; }
+  form > div { display: flex; gap: 10px; }
+  input { width: 100%; min-height: 56px; padding: 0 18px; border: 0; border-radius: 12px; outline: 0; background: #fff; }
+  .result-count { margin: 0 0 28px; color: var(--muted); }
+  .results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 900px) { .results { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .results { grid-template-columns: 1fr; } form > div { flex-direction: column; } }
+</style>

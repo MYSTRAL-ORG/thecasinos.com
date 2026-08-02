@@ -1,0 +1,52 @@
+[build]
+base = "web"
+command = "npm run build"
+publish = "dist"
+
+[build.environment]
+NODE_VERSION = "24"
+NPM_FLAGS = "--no-audit --no-fund"
+
+[dev]
+command = "npm run dev"
+targetPort = 4321
+port = 8888
+
+[[headers]]
+for = "/*"
+  [headers.values]
+  X-Content-Type-Options = "nosniff"
+  X-Frame-Options = "DENY"
+  Referrer-Policy = "strict-origin-when-cross-origin"
+  Permissions-Policy = "camera=(), microphone=(), geolocation=(self)"
+  Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+  Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co"
+
+[[headers]]
+for = "/_astro/*"
+  [headers.values]
+  Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+for = "/logo.png"
+  [headers.values]
+  Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+[[headers]]
+for = "/admin/*"
+  [headers.values]
+  Cache-Control = "private, no-store"
+  Netlify-CDN-Cache-Control = "private, no-store"
+  X-Robots-Tag = "noindex, nofollow"
+
+[[redirects]]
+from = "/private-policy"
+to = "/policy"
+status = 301
+force = true
+
+[[redirects]]
+from = "/passwordprompt"
+to = "/admin"
+status = 301
+force = true

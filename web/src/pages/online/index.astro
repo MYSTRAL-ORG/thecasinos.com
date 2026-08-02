@@ -1,0 +1,55 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import OnlineRanking from '@/components/OnlineRanking.astro';
+import { getOnlineCasinos } from '@/lib/data';
+
+const casinos = await getOnlineCasinos();
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'TheCasinos.com online casino ranking',
+  numberOfItems: casinos.length,
+  itemListElement: casinos.map((casino) => ({ '@type': 'ListItem', position: casino.position, name: casino.name, url: new URL(`/online/${casino.slug}`, Astro.site).toString() })),
+};
+---
+
+<BaseLayout title="Online casino Top 10" description="Compare the current TheCasinos.com online casino ranking, offers, ratings and detailed editorial reviews." structuredData={structuredData}>
+  <section class="online-hero">
+    <div class="container hero-grid">
+      <div><p class="eyebrow">The online edit</p><h1>Ten places.<br /><span>One clear view.</span></h1><p class="lede">An editorial shortlist designed to make offers, strengths and limits easy to compare.</p></div>
+      <aside><strong>18+</strong><p>Gambling involves risk. Set a budget, never chase losses, and stop when play is no longer enjoyable.</p></aside>
+    </div>
+  </section>
+  <section class="section container">
+    <div class="ranking-intro"><div><p class="eyebrow">Current ranking</p><h2>Online casino<br />Top 10</h2></div><p>Positions and content are managed from the secure administration area. The list shows only active, published operators.</p></div>
+    <OnlineRanking casinos={casinos} />
+    <p class="disclosure">Affiliate disclosure: some outbound links are sponsored and may generate a commission at no extra cost to you. A position does not guarantee availability, legality or suitability in your jurisdiction. Verify all current terms directly with the operator.</p>
+  </section>
+  <section class="safety">
+    <div class="container safety-grid">
+      <div><p class="eyebrow">Before you play</p><h2>Safety is part<br />of the comparison.</h2></div>
+      <div class="safety-copy"><h3>Are online casinos safe?</h3><p>Casino licensing, payment history, game fairness and customer support all matter. A licence alone is not a guarantee, and the right operator depends on your location and personal limits.</p><p>Independent laboratories may test random number generators, while live dealer games need their own controls. Read the full review, check the operator’s current licence and terms, and use responsible-gambling tools whenever you play.</p><p>Offers change frequently. Bonus value depends on wagering requirements, withdrawal caps, eligible games and regional restrictions—not only the headline amount.</p></div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .online-hero { padding: 88px 0; background: var(--forest); color: #fff; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 340px; align-items: end; gap: 80px; }
+  .online-hero .eyebrow { color: var(--lime); }
+  .online-hero h1 span { color: var(--lime); }
+  .online-hero .lede { color: #c4d3ce; }
+  .online-hero aside { padding: 24px; border: 1px solid rgba(255,255,255,.18); border-radius: 18px; background: rgba(255,255,255,.06); }
+  .online-hero aside strong { color: var(--lime); font: 800 2rem/1 'Manrope', sans-serif; }
+  .online-hero aside p { margin-bottom: 0; color: #c4d3ce; font-size: .86rem; }
+  .ranking-intro { margin-bottom: 36px; display: grid; grid-template-columns: 1fr 470px; gap: 70px; align-items: end; }
+  .ranking-intro h2, .ranking-intro p { margin-bottom: 0; }
+  .ranking-intro > p { color: var(--muted); }
+  .disclosure { margin: 18px 5px 0; color: var(--muted); font-size: .76rem; }
+  .safety { padding: 92px 0; background: #e8eadc; }
+  .safety-grid { display: grid; grid-template-columns: .8fr 1.2fr; gap: 90px; }
+  .safety-copy { max-width: 670px; }
+  .safety-copy h3 { font-size: 1.45rem; }
+  .safety-copy p { color: #52625d; }
+  @media (max-width: 780px) { .hero-grid, .ranking-intro, .safety-grid { grid-template-columns: 1fr; gap: 35px; } }
+</style>

@@ -1,0 +1,51 @@
+---
+import type { OnlineCasino } from '@/lib/types';
+const { casinos, compact = false } = Astro.props as { casinos: OnlineCasino[]; compact?: boolean };
+---
+
+<div class:list={["online-ranking", { compact }]}>
+  {casinos.slice(0, compact ? 3 : 10).map((casino) => (
+    <article class="rank-row">
+      <div class="rank">{String(casino.position ?? '—').padStart(2, '0')}</div>
+      <div class="operator">
+        {casino.logo_url ? <img src={casino.logo_url} width="48" height="48" alt={`${casino.name} logo`} loading="lazy" /> : <span class="operator-mark">{casino.name.charAt(0)}</span>}
+        <div><h3>{casino.name}</h3><span>{casino.subtitle || casino.key_features?.[0]}</span></div>
+      </div>
+      {!compact && <div class="bonus"><small>Current offer</small><strong>{casino.bonus}</strong></div>}
+      <div class="rating" aria-label={`${casino.rating} out of 5`}><strong>{Number(casino.rating).toFixed(1)}</strong><span>★</span></div>
+      <div class="actions">
+        <a href={`/online/${casino.slug}`} class="review">Review</a>
+        <a href={casino.affiliate_url} class="button small" target="_blank" rel="nofollow sponsored noopener">Visit site</a>
+      </div>
+    </article>
+  ))}
+</div>
+
+<style>
+  .online-ranking { overflow: hidden; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
+  .rank-row { min-height: 106px; display: grid; grid-template-columns: 60px minmax(220px, 1.25fr) minmax(230px, 1.25fr) 80px 175px; align-items: center; gap: 20px; padding: 17px 22px; border-bottom: 1px solid var(--line); }
+  .rank-row:last-child { border-bottom: 0; }
+  .rank { color: #a4aaa6; font: 700 1rem/1 'Manrope', sans-serif; }
+  .operator { display: flex; align-items: center; gap: 13px; }
+  .operator img, .operator-mark { width: 48px; height: 48px; object-fit: contain; border-radius: 13px; background: #f0eee7; }
+  .operator-mark { display: grid; place-items: center; background: var(--forest); color: var(--lime); font: 800 1.2rem/1 'Manrope', sans-serif; }
+  .operator h3 { margin: 0 0 3px; font-size: 1rem; }
+  .operator span, .bonus small { color: var(--muted); font-size: .77rem; }
+  .bonus { display: flex; flex-direction: column; gap: 4px; }
+  .bonus strong { font-size: .9rem; }
+  .rating { display: flex; align-items: center; gap: 5px; }
+  .rating strong { font-size: 1.2rem; }
+  .rating span { color: #e7ad31; }
+  .actions { display: flex; align-items: center; justify-content: end; gap: 14px; }
+  .review { font-size: .86rem; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+  .compact .rank-row { grid-template-columns: 45px minmax(200px, 1fr) 70px 160px; }
+  @media (max-width: 920px) {
+    .rank-row, .compact .rank-row { grid-template-columns: 40px minmax(200px, 1fr) 70px 155px; }
+    .bonus { display: none; }
+  }
+  @media (max-width: 650px) {
+    .rank-row, .compact .rank-row { grid-template-columns: 32px 1fr; gap: 12px; padding: 18px 15px; }
+    .rating { grid-column: 2; }
+    .actions { grid-column: 2; justify-content: start; }
+  }
+</style>

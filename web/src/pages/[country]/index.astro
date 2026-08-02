@@ -1,0 +1,38 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CasinoCard from '@/components/CasinoCard.astro';
+import { getCasinosByLocation } from '@/lib/data';
+
+const country = Astro.params.country ?? '';
+const casinos = await getCasinosByLocation(country);
+const countryName = casinos[0]?.country_name ?? country.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+if (!casinos.length) Astro.response.status = 404;
+const cities = new Map<string, { name: string; count: number }>();
+for (const casino of casinos) {
+  const current = cities.get(casino.city_slug);
+  cities.set(casino.city_slug, { name: casino.city_name, count: (current?.count ?? 0) + 1 });
+}
+---
+
+<BaseLayout title={`Casinos in ${countryName}`} description={`Explore land-based casinos, destinations and practical information for ${countryName}.`} noindex={!casinos.length}>
+  <section class="location-hero"><div class="container"><div class="breadcrumbs"><a href="/">World</a><span>/</span><span>{countryName}</span></div><p class="eyebrow">Country guide</p><h1>Casinos in<br />{countryName}</h1><p>{casinos.length} listed place{casinos.length === 1 ? '' : 's'} across {cities.size} cit{cities.size === 1 ? 'y' : 'ies'}.</p></div></section>
+  <section class="section container">
+    {casinos.length ? <>
+      <div class="city-links">{[...cities.entries()].slice(0, 24).map(([slug, city]) => <a href={`/${country}/${slug}`}>{city.name}<span>{city.count}</span></a>)}</div>
+      <div class="casino-list">{casinos.map((casino) => <CasinoCard casino={casino} />)}</div>
+    </> : <div class="empty-state"><h2>Destination not found</h2><p>This country is not available in the current directory.</p><a class="button" href="/">Return to the map</a></div>}
+  </section>
+</BaseLayout>
+
+<style>
+  .location-hero { padding: 35px 0 75px; background: var(--forest); color: #fff; }
+  .location-hero .breadcrumbs, .location-hero .eyebrow { color: var(--lime); }
+  .location-hero h1 { margin-bottom: 18px; }
+  .location-hero p:last-child { color: #c2d1cc; }
+  .city-links { margin-bottom: 45px; display: flex; flex-wrap: wrap; gap: 9px; }
+  .city-links a { display: flex; gap: 10px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: .88rem; }
+  .city-links span { color: var(--brand-dark); font-weight: 700; }
+  .casino-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 900px) { .casino-list { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .casino-list { grid-template-columns: 1fr; } }
+</style>
