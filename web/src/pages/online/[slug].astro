@@ -1,0 +1,73 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import OnlineRanking from '@/components/OnlineRanking.astro';
+import { getOnlineCasino, getOnlineCasinos } from '@/lib/data';
+
+const slug = Astro.params.slug ?? '';
+const [casino, ranking] = await Promise.all([getOnlineCasino(slug), getOnlineCasinos()]);
+if (!casino) Astro.response.status = 404;
+const structuredData = casino ? {
+  '@context': 'https://schema.org',
+  '@type': 'Review',
+  name: `${casino.name} review`,
+  itemReviewed: { '@type': 'Organization', name: casino.name },
+  reviewRating: { '@type': 'Rating', ratingValue: casino.rating, bestRating: 5 },
+  reviewBody: casino.summary,
+} : undefined;
+---
+
+<BaseLayout title={casino ? `${casino.name} review` : 'Online casino not found'} description={casino?.summary ?? 'Online casino review not found.'} noindex={!casino} structuredData={structuredData}>
+  {casino ? <>
+    <section class="review-hero"><div class="container"><div class="breadcrumbs"><a href="/">The Casinos</a><span>/</span><a href="/online">Online</a><span>/</span><span>{casino.name}</span></div><div class="review-grid"><div><p class="eyebrow">Rank #{casino.position ?? '—'} · Online review</p><h1>{casino.name}</h1><p class="lede">{casino.subtitle}</p><div class="score"><strong>{Number(casino.rating).toFixed(1)}</strong><span>★★★★★</span><small>Editorial rating / 5</small></div></div><aside><small>Current offer</small><strong>{casino.bonus}</strong><a class="button" href={casino.affiliate_url} target="_blank" rel="nofollow sponsored noopener">Visit {casino.name}</a><p>18+ · Terms apply</p></aside></div></div></section>
+    <section class="section container review-body">
+      <article>
+        <p class="eyebrow">Overview</p><h2>{casino.subtitle || `${casino.name} at a glance`}</h2><p class="intro">{casino.description || casino.summary}</p>
+        <div class="content-block"><h3>To sum up</h3><p>{casino.summary}</p></div>
+        {casino.bonus_description && <div class="content-block"><h3>Bonus and promotions</h3><p>{casino.bonus_description}</p><div class="offer-inline">{casino.bonus}</div></div>}
+        {casino.deposit_description && <div class="content-block"><h3>Deposit methods</h3><p>{casino.deposit_description}</p><div class="chips">{casino.deposit_methods.map((method) => <span>{method}</span>)}</div></div>}
+        {casino.contact_description && <div class="content-block"><h3>Customer support</h3><p>{casino.contact_description}</p><div class="chips">{casino.contact_methods.map((method) => <span>{method}</span>)}</div></div>}
+      </article>
+      <aside class="summary-card card">
+        <h2>Key features</h2><ul>{casino.key_features.map((feature) => <li>✓ {feature}</li>)}</ul>
+        <div class="pros-cons"><div><h3>Pros</h3>{casino.pros.map((pro) => <p>+ {pro}</p>)}</div><div><h3>Cons</h3>{casino.cons.map((con) => <p>− {con}</p>)}</div></div>
+        <a class="button" href={casino.affiliate_url} target="_blank" rel="nofollow sponsored noopener">Register &amp; play</a>
+      </aside>
+    </section>
+    <section class="more-online"><div class="container"><div class="section-heading"><div><p class="eyebrow">Compare</p><h2>Other ranked casinos</h2></div><a href="/online" class="button secondary">Full Top 10</a></div><OnlineRanking casinos={ranking.filter((item) => item.id !== casino.id)} compact /></div></section>
+  </> : <section class="section container"><div class="empty-state"><h1>Review not found</h1><a class="button" href="/online">Return to the ranking</a></div></section>}
+</BaseLayout>
+
+<style>
+  .review-hero { padding: 32px 0 78px; background: var(--forest); color: #fff; }
+  .review-hero .breadcrumbs, .review-hero .eyebrow { color: var(--lime); }
+  .review-grid { display: grid; grid-template-columns: 1fr 360px; gap: 80px; align-items: end; }
+  .review-hero h1 { margin-bottom: 15px; }
+  .review-hero .lede { color: #c3d3ce; }
+  .score { display: grid; grid-template-columns: auto auto; width: fit-content; align-items: center; gap: 0 12px; margin-top: 30px; }
+  .score strong { grid-row: span 2; font: 800 3.6rem/1 'Manrope', sans-serif; color: var(--lime); }
+  .score span { color: var(--gold); letter-spacing: .08em; }
+  .score small { color: #96aca5; }
+  .review-grid > aside { padding: 28px; display: flex; flex-direction: column; align-items: start; border-radius: 20px; background: #fff; color: var(--ink); }
+  .review-grid > aside small { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  .review-grid > aside strong { margin: 8px 0 22px; font: 700 1.25rem/1.3 'Manrope', sans-serif; }
+  .review-grid > aside p { margin: 10px 0 0; color: var(--muted); font-size: .72rem; }
+  .review-body { display: grid; grid-template-columns: 1fr 380px; gap: 70px; align-items: start; }
+  .review-body article h2 { margin-bottom: 20px; }
+  .review-body .intro { color: var(--muted); font-size: 1.08rem; }
+  .content-block { margin-top: 52px; padding-top: 34px; border-top: 1px solid var(--line); }
+  .content-block h3 { font-size: 1.45rem; }
+  .content-block p { color: var(--muted); }
+  .offer-inline { width: fit-content; margin-top: 18px; padding: 13px 16px; border-radius: 12px; background: #e8edd2; font-weight: 700; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips span { padding: 8px 11px; border-radius: 999px; background: #efede5; font-size: .8rem; }
+  .summary-card { position: sticky; top: 25px; padding: 28px; }
+  .summary-card h2 { font-size: 1.4rem; }
+  .summary-card ul { margin: 0 0 24px; padding: 0; list-style: none; }
+  .summary-card li { padding: 9px 0; border-bottom: 1px solid var(--line); font-size: .87rem; }
+  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 24px; }
+  .pros-cons h3 { margin-bottom: 10px; font-size: 1rem; }
+  .pros-cons p { margin: 0 0 7px; color: var(--muted); font-size: .8rem; line-height: 1.4; }
+  .summary-card .button { width: 100%; }
+  .more-online { padding: 82px 0; background: #eceae1; }
+  @media (max-width: 800px) { .review-grid, .review-body { grid-template-columns: 1fr; gap: 35px; } .summary-card { position: static; } }
+</style>

@@ -1,0 +1,19 @@
+project_id = "thecasinos"
+
+[api]
+enabled = true
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+major_version = 17
+
+[auth]
+enabled = true
+site_url = "http://localhost:4321"
+additional_redirect_urls = ["https://www.thecasinos.com/admin", "https://*.netlify.app/admin"]
+
+[studio]
+enabled = true
+port = 54323

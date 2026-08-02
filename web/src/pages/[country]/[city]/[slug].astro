@@ -1,0 +1,76 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCasinoByPath } from '@/lib/data';
+
+const country = Astro.params.country ?? '';
+const city = Astro.params.city ?? '';
+const slug = Astro.params.slug ?? '';
+const casino = await getCasinoByPath(country, city, slug);
+if (!casino) Astro.response.status = 404;
+const facts = casino ? [
+  casino.opened_on && { label: 'Opened', value: new Date(`${casino.opened_on}T00:00:00`).getFullYear().toString() },
+  casino.gaming_machines != null && casino.gaming_machines > 0 && { label: 'Gaming machines', value: casino.gaming_machines.toLocaleString('en-US') },
+  casino.table_games != null && casino.table_games > 0 && { label: 'Table games', value: casino.table_games.toLocaleString('en-US') },
+  casino.poker_tables != null && casino.poker_tables > 0 && { label: 'Poker tables', value: casino.poker_tables.toLocaleString('en-US') },
+  casino.square_footage != null && casino.square_footage > 0 && { label: 'Gaming floor', value: `${casino.square_footage.toLocaleString('en-US')} sq ft` },
+].filter(Boolean) as { label: string; value: string }[] : [];
+const structuredData = casino ? {
+  '@context': 'https://schema.org',
+  '@type': 'Casino',
+  name: casino.name.trim(),
+  description: casino.description || casino.short_description,
+  address: { '@type': 'PostalAddress', addressLocality: casino.city_name, addressRegion: casino.state_name, addressCountry: casino.country_name },
+  geo: casino.latitude != null && casino.longitude != null ? { '@type': 'GeoCoordinates', latitude: casino.latitude, longitude: casino.longitude } : undefined,
+} : undefined;
+---
+
+<BaseLayout title={casino?.name.trim() ?? 'Casino not found'} description={casino?.description || `Casino information for ${casino?.city_name ?? city}.`} noindex={!casino} structuredData={structuredData}>
+  {casino ? <>
+    <section class="detail-hero">
+      <div class="container">
+        <div class="breadcrumbs"><a href="/">World</a><span>/</span><a href={`/${casino.country_slug}`}>{casino.country_name}</a><span>/</span><a href={`/${casino.country_slug}/${casino.city_slug}`}>{casino.city_name}</a></div>
+        <div class="hero-grid"><div><p class="eyebrow">{casino.short_description || 'Land-based casino'}</p><h1>{casino.name.trim()}</h1><p class="intro">{casino.description}</p><div class="place"><span>{casino.city_name}</span><span>{casino.state_name}</span><strong>{casino.country_name}</strong></div></div><div class="place-mark" aria-hidden="true"><span>{casino.name.trim().charAt(0)}</span><small>{casino.latitude?.toFixed(3)} · {casino.longitude?.toFixed(3)}</small></div></div>
+      </div>
+    </section>
+    <section class="section container detail-grid">
+      <article>
+        <p class="eyebrow">At a glance</p><h2>Know the place<br />before you go.</h2>
+        <p class="lede">This listing is built from the existing TheCasinos.com directory. Operational details can change, so confirm opening hours and access conditions with the venue before travelling.</p>
+        <div class="feature-list">
+          {[casino.has_slots && 'Slot machines', casino.has_table_games && 'Table games', casino.has_sportsbook && 'Sportsbook', casino.has_bingo && 'Bingo', casino.always_open && 'Listed as always open'].filter(Boolean).map((item) => <span>✓ {item}</span>)}
+        </div>
+      </article>
+      <aside class="facts card">
+        <h2>Key facts</h2>
+        {facts.length ? facts.map((fact) => <div><span>{fact.label}</span><strong>{fact.value}</strong></div>) : <p class="muted">Detailed facts are being verified.</p>}
+        {casino.hotel_name && <div><span>Hotel</span><strong>{casino.hotel_name}</strong></div>}
+        {casino.owner_name && <div><span>Operator</span><strong>{casino.owner_name}</strong></div>}
+      </aside>
+    </section>
+    {casino.latitude != null && casino.longitude != null && <section class="container location-panel"><div><p class="eyebrow">Location</p><h2>{casino.city_name}, {casino.country_name}</h2><p>Coordinates from the existing directory dataset.</p></div><a class="button dark" href={`https://www.openstreetmap.org/?mlat=${casino.latitude}&mlon=${casino.longitude}#map=15/${casino.latitude}/${casino.longitude}`} target="_blank" rel="noopener">Open map</a></section>}
+  </> : <section class="section container"><div class="empty-state"><h1>Casino not found</h1><p>The requested listing is unavailable or has moved.</p><a href="/search" class="button">Search the directory</a></div></section>}
+</BaseLayout>
+
+<style>
+  .detail-hero { padding: 34px 0 82px; overflow: hidden; background: var(--forest); color: #fff; }
+  .detail-hero .breadcrumbs, .detail-hero .eyebrow { color: var(--lime); }
+  .hero-grid { display: grid; grid-template-columns: 1.3fr .7fr; align-items: center; gap: 70px; }
+  .detail-hero h1 { max-width: 850px; margin-bottom: 23px; }
+  .intro { max-width: 710px; color: #c3d3ce; font-size: 1.12rem; }
+  .place { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .place span, .place strong { padding: 8px 11px; border-radius: 999px; background: rgba(255,255,255,.09); font-size: .8rem; }
+  .place-mark { width: min(330px, 28vw); aspect-ratio: 1; display: grid; place-items: center; align-content: center; gap: 20px; border: 1px solid rgba(215,232,118,.35); border-radius: 50%; background: radial-gradient(circle, rgba(215,232,118,.2), transparent 60%); box-shadow: 0 0 0 35px rgba(255,255,255,.025); }
+  .place-mark span { font: 800 8rem/1 'Manrope', sans-serif; color: var(--lime); }
+  .place-mark small { color: #9eb5ae; }
+  .detail-grid { display: grid; grid-template-columns: 1fr minmax(330px, .58fr); gap: 70px; }
+  .feature-list { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 27px; }
+  .feature-list span { padding: 9px 12px; border-radius: 999px; background: #e7edd0; color: #354b37; font-size: .82rem; font-weight: 600; }
+  .facts { padding: 28px; }
+  .facts h2 { margin-bottom: 18px; font-size: 1.35rem; }
+  .facts div { display: flex; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid var(--line); }
+  .facts span { color: var(--muted); font-size: .84rem; }
+  .facts strong { max-width: 190px; text-align: right; font-size: .9rem; }
+  .location-panel { margin-bottom: 90px; padding: 36px; display: flex; align-items: center; justify-content: space-between; gap: 30px; border-radius: var(--radius-lg); background: var(--lime); }
+  .location-panel h2, .location-panel p { margin-bottom: 0; }
+  @media (max-width: 760px) { .hero-grid { grid-template-columns: 1fr; }.place-mark { display: none; }.detail-grid { grid-template-columns: 1fr; gap: 36px; }.location-panel { align-items: start; flex-direction: column; } }
+</style>

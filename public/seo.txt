@@ -1,7 +1,0 @@
-2024-04-17 07:05:07 - ERROR: Failed to index URL: https://www.thecasinos.com/australia/north-hobart/queens-head-hotel with error: Client error: `POST https://indexing.googleapis.com/v3/urlNotifications:publish` resulted in a `429 Too Many Requests` response:
-{
-  "error": {
-    "code": 429,
-    "message": "Quota exceeded for quota metric 'Publish requests' and limit 'Publish re (truncated...)
-
-2024-04-17 07:05:07 - Processed: 0, Total not Processed: 10775, Percentage: 0.34%

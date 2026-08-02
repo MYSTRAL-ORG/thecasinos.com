@@ -1,0 +1,85 @@
+---
+import 'leaflet/dist/leaflet.css';
+---
+
+<section class="map-shell" aria-labelledby="map-title">
+  <div class="map-copy">
+    <p class="eyebrow">Explore visually</p>
+    <h2 id="map-title">Move the map.<br />Find the right place.</h2>
+    <p>Only casinos in the visible area are loaded, keeping the experience fast on desktop and mobile.</p>
+    <div class="map-status" aria-live="polite">Loading places…</div>
+  </div>
+  <div id="casino-map" aria-label="Interactive world map of land-based casinos"></div>
+</section>
+
+<script>
+  import * as L from 'leaflet';
+
+  const mapElement = document.querySelector<HTMLElement>('#casino-map');
+  const status = document.querySelector<HTMLElement>('.map-status');
+
+  if (mapElement) {
+    const map = L.map(mapElement, { center: [28, 2], zoom: 2, minZoom: 2, maxZoom: 17, zoomControl: false, worldCopyJump: true });
+    L.control.zoom({ position: 'topright' }).addTo(map);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+    }).addTo(map);
+    const markers: L.Marker[] = [];
+    let requestId = 0;
+
+    async function refresh() {
+      const currentRequest = ++requestId;
+      const bounds = map.getBounds();
+      const params = new URLSearchParams({
+        west: String(bounds.getWest()), south: String(bounds.getSouth()), east: String(bounds.getEast()), north: String(bounds.getNorth()),
+      });
+      if (status) status.textContent = 'Searching this area…';
+      try {
+        const response = await fetch(`/api/casinos-in-view.json?${params}`);
+        const casinos = await response.json();
+        if (currentRequest !== requestId) return;
+        markers.splice(0).forEach((marker) => marker.remove());
+        casinos.forEach((casino: { name: string; longitude: number; latitude: number; country_slug: string; city_slug: string; slug: string }) => {
+          if (!Number.isFinite(Number(casino.longitude)) || !Number.isFinite(Number(casino.latitude))) return;
+          const url = `/${casino.country_slug}/${casino.city_slug}/${casino.slug}`;
+          const icon = L.divIcon({ className: 'casino-marker-icon', html: '<span></span>', iconSize: [20, 20], iconAnchor: [10, 10], popupAnchor: [0, -10] });
+          const marker = L.marker([Number(casino.latitude), Number(casino.longitude)], { icon, title: casino.name, alt: casino.name });
+          marker.bindPopup(`<a class="casino-map-link" href="${url}">${escapeHtml(casino.name)}</a>`);
+          markers.push(marker.addTo(map));
+        });
+        if (status) status.textContent = `${casinos.length} place${casinos.length === 1 ? '' : 's'} in view`;
+      } catch {
+        if (status) status.textContent = 'Map data is temporarily unavailable.';
+      }
+    }
+
+    function escapeHtml(value: string) {
+      return value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character] ?? character);
+    }
+
+    map.on('moveend', refresh);
+    refresh();
+  }
+</script>
+
+<style>
+  .map-shell { position: relative; min-height: 650px; overflow: hidden; border-radius: var(--radius-lg); background: var(--forest); box-shadow: var(--shadow); }
+  #casino-map { position: absolute; inset: 0; }
+  .map-copy { position: absolute; z-index: 3; top: 34px; left: 34px; width: min(390px, calc(100% - 68px)); padding: 28px; border: 1px solid rgba(255,255,255,.18); border-radius: 22px; background: rgba(17, 47, 40, .93); color: #fff; backdrop-filter: blur(12px); }
+  .map-copy .eyebrow { color: var(--lime); }
+  .map-copy h2 { margin-bottom: 15px; font-size: clamp(2rem, 4vw, 3.2rem); }
+  .map-copy p:not(.eyebrow) { color: #c4d4cf; }
+  .map-status { display: inline-flex; margin-top: 8px; padding: 8px 11px; border-radius: 999px; background: rgba(255,255,255,.1); color: #fff; font-size: .78rem; }
+  :global(.casino-marker-icon) { border: 0; background: transparent; }
+  :global(.casino-marker-icon span) { width: 18px; height: 18px; display: block; border: 3px solid #fff; border-radius: 50%; background: var(--brand); box-shadow: 0 4px 12px rgba(0,0,0,.28); transition: transform .18s ease; }
+  :global(.casino-marker-icon:hover span) { transform: scale(1.25); }
+  :global(.casino-map-link) { color: var(--ink); font: 700 .85rem/1.3 'DM Sans', sans-serif; }
+  :global(.leaflet-popup-content-wrapper) { border-radius: 10px; }
+  @media (max-width: 700px) {
+    .map-shell { min-height: 680px; }
+    .map-copy { top: 14px; left: 14px; width: calc(100% - 28px); padding: 21px; }
+    .map-copy h2 { font-size: 2rem; }
+    #casino-map { top: 310px; }
+  }
+</style>

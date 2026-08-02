@@ -1,0 +1,43 @@
+---
+import type { Casino } from '@/lib/types';
+const { casino } = Astro.props as { casino: Casino };
+const url = `/${casino.country_slug}/${casino.city_slug}/${casino.slug}`;
+const games = [
+  casino.has_slots && 'Slots',
+  casino.has_table_games && 'Table games',
+  casino.has_sportsbook && 'Sportsbook',
+  casino.has_bingo && 'Bingo',
+].filter(Boolean).slice(0, 3);
+---
+
+<article class="casino-card card">
+  <a href={url} class="card-top">
+    <div class="monogram" aria-hidden="true">{casino.name.trim().charAt(0)}</div>
+    <div class="location"><span>{casino.country_name}</span><strong>{casino.city_name}</strong></div>
+  </a>
+  <div class="card-body">
+    <p class="kicker">{casino.short_description || 'Land-based casino'}</p>
+    <h3><a href={url}>{casino.name.trim()}</a></h3>
+    <p>{casino.description || `Discover practical information about ${casino.name.trim()} in ${casino.city_name}.`}</p>
+    {games.length > 0 && <div class="tags">{games.map((game) => <span>{game}</span>)}</div>}
+    <a class="card-link" href={url}>View casino <span aria-hidden="true">→</span></a>
+  </div>
+</article>
+
+<style>
+  .casino-card { overflow: hidden; min-height: 100%; transition: transform .2s ease, box-shadow .2s ease; }
+  .casino-card:hover { transform: translateY(-5px); box-shadow: var(--shadow); }
+  .card-top { min-height: 130px; padding: 20px; display: flex; align-items: end; justify-content: space-between; gap: 20px; background: linear-gradient(135deg, var(--forest), #285d51); color: #fff; }
+  .monogram { width: 64px; height: 64px; display: grid; place-items: center; border-radius: 50%; background: var(--lime); color: var(--forest); font: 800 1.8rem/1 'Manrope', sans-serif; }
+  .location { display: flex; flex-direction: column; align-items: end; text-align: right; }
+  .location span { color: #bfd0cb; font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
+  .location strong { margin-top: 4px; }
+  .card-body { padding: 24px; }
+  .kicker { margin: 0 0 8px; color: var(--brand-dark); font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; }
+  h3 { margin-bottom: 10px; font-size: 1.28rem; }
+  .card-body > p:not(.kicker) { min-height: 52px; margin: 0 0 18px; color: var(--muted); font-size: .92rem; line-height: 1.5; }
+  .tags { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tags span { padding: 6px 9px; border-radius: 999px; background: #f0efe8; color: #53615d; font-size: .72rem; }
+  .card-link { display: flex; justify-content: space-between; margin-top: 23px; padding-top: 16px; border-top: 1px solid var(--line); font-weight: 700; }
+  .card-link span { color: var(--brand-dark); font-size: 1.25rem; }
+</style>
