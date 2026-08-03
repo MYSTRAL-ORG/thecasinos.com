@@ -100,6 +100,7 @@ const hasInitialLocation = Number.isFinite(initialLocation?.latitude) && Number.
     let userMarker: L.CircleMarker | null = null;
     let userLocation: L.LatLng | null = approximateLocation;
     let locationLabel = approximateLocation ? (initialCity || 'your city') : '';
+    let locationNotice = '';
     let requestId = 0;
     let debounceTimer = 0;
 
@@ -129,8 +130,13 @@ const hasInitialLocation = Number.isFinite(initialLocation?.latitude) && Number.
         for (const { casino } of ordered) addCasinoMarker(casino);
         renderNearby(ordered.slice(0, 6));
         if (status) {
-          const area = locationLabel ? ` near ${locationLabel}` : ' in view';
-          status.textContent = `${ordered.length} place${ordered.length === 1 ? '' : 's'}${area}`;
+          if (locationNotice) {
+            status.textContent = locationNotice;
+            locationNotice = '';
+          } else {
+            const area = locationLabel ? ` near ${locationLabel}` : ' in view';
+            status.textContent = `${ordered.length} place${ordered.length === 1 ? '' : 's'}${area}`;
+          }
         }
       } catch {
         if (status) status.textContent = 'Map data is temporarily unavailable.';
@@ -207,8 +213,9 @@ const hasInitialLocation = Number.isFinite(initialLocation?.latitude) && Number.
       userLocation = approximateLocation;
       locationLabel = initialCity || 'your city';
       setUserMarker(approximateLocation, `Approximate location${initialCity ? `: ${initialCity}` : ''}`, true);
+      locationNotice = `${reason} Showing ${initialCity || 'your city'} instead.`;
       map.flyTo(approximateLocation, 11, { duration: 0.75 });
-      if (status) status.textContent = `${reason} Showing ${initialCity || 'your city'} instead.`;
+      if (status) status.textContent = locationNotice;
     }
 
     function setUserMarker(location: L.LatLng, tooltip: string, approximate: boolean) {
