@@ -345,8 +345,15 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
     async function openOperation() {
       if (!client) return;
+      const { data: { session } } = await client.auth.getSession();
+      if (!session) {
+        if (loginView) loginView.hidden = false;
+        if (app) app.hidden = true;
+        return;
+      }
       const { data: { user }, error } = await client.auth.getUser();
       if (error) {
+        await client.auth.signOut();
         setStatus(loginStatus, 'Votre session a expiré. Reconnectez-vous.', true);
         return;
       }
