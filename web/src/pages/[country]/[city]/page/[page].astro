@@ -5,6 +5,9 @@ const country = Astro.params.country ?? '';
 const city = Astro.params.city ?? '';
 const page = Number.parseInt(Astro.params.page ?? '', 10);
 
+Astro.response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
+Astro.response.headers.set('Netlify-CDN-Cache-Control', 'public, durable, max-age=3600, stale-while-revalidate=43200');
+
 if (!Number.isInteger(page) || page <= 1) {
   return Astro.redirect(`/${country}/${city}`, 301);
 }
