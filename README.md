@@ -15,6 +15,13 @@ Land-based profiles are enriched automatically; editors do not have to complete 
 
 The first source currently covers roughly 941 Wikidata casino entities. The schema is source-neutral so OpenStreetMap, official registers and operator sites can be added in later phases without replacing the evidence trail.
 
+## Visitor tools and training room
+
+- Every land-based casino profile includes a browser-only journey planner. It can use the visitor's current position, show an orientation estimate and hand the exact live route to Google Maps, Apple Maps or Waze. The position is not stored or sent to TheCasinos.com.
+- `/training` contains the full European roulette trainer, while casino profiles embed a compact version that uses the same wallet.
+- The fictional chip wallet, daily bonus, statistics and recent rounds live in `localStorage`; there is no account, cash-out or server-side balance.
+- Roulette settlement logic is isolated in `web/src/lib/roulette.ts` so blackjack, video poker and slots can join the same training economy later without coupling game rules to page markup.
+
 ## SEO architecture
 
 - `/casinos` links every country guide.

@@ -1,0 +1,123 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import RouletteGame from '@/components/RouletteGame.astro';
+import { breadcrumbSchema } from '@/lib/seo';
+
+const structuredData = [
+  breadcrumbSchema([
+    { name: 'Home', path: '/' },
+    { name: 'Training room', path: '/training' },
+  ], Astro.site?.toString()),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'TheCasinos.com Training Room',
+    url: new URL('/training', Astro.site).toString(),
+    applicationCategory: 'GameApplication',
+    operatingSystem: 'Any modern web browser',
+    isAccessibleForFree: true,
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    description: 'A free casino game training room using fictional practice chips with no monetary value.',
+  },
+];
+---
+
+<BaseLayout
+  title="Free casino training room"
+  description="Learn European roulette with free fictional chips. Practice bets, understand payouts and track your results without registration or real money."
+  canonicalPath="/training"
+  structuredData={structuredData}
+  cacheSeconds={3600}
+>
+  <section class="training-hero">
+    <div class="container training-hero-grid">
+      <div>
+        <p class="eyebrow">Free · no registration · no real money</p>
+        <h1>Learn the game<br />before the casino.</h1>
+      </div>
+      <div class="training-intro">
+        <p>Start with 2,000 fictional chips, test roulette bets and learn how payouts behave. Your wallet and results stay on this device.</p>
+        <div class="hero-points">
+          <span>European 0–36 wheel</span><span>Correct bet payouts</span><span>Daily chip bonus</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="container roulette-section">
+    <RouletteGame title="European roulette" />
+  </section>
+
+  <section class="container learn-section">
+    <div class="learn-heading">
+      <p class="eyebrow">Understand the table</p>
+      <h2>What your bets really mean.</h2>
+      <p>Every spin is independent. Systems and previous results cannot change the probability of the next number.</p>
+    </div>
+    <div class="lesson-grid">
+      <article><span>35:1</span><h3>Single number</h3><p>A straight-up bet covers one number. A winning 10-chip stake returns 360 chips including the original stake.</p></article>
+      <article><span>2:1 return</span><h3>Even-money bets</h3><p>Red/black, odd/even and low/high return twice the stake. Zero loses for all of these bets.</p></article>
+      <article><span>2.70%</span><h3>House advantage</h3><p>A European wheel has one green zero. Over a very large sample, that creates a theoretical 2.70% house edge.</p></article>
+    </div>
+  </section>
+
+  <section class="future-games">
+    <div class="container">
+      <div class="section-heading">
+        <div><p class="eyebrow">Next in the room</p><h2>More practice tables<br />are being prepared.</h2></div>
+        <p>They will use the same local chip wallet and the same no-account approach.</p>
+      </div>
+      <div class="future-grid">
+        <article><div class="game-symbol cards" aria-hidden="true"><span>J</span><span>A</span></div><p>Strategy trainer</p><h3>Blackjack</h3><span class="coming-soon">Coming next</span></article>
+        <article><div class="game-symbol poker" aria-hidden="true"><span>10</span><span>J</span><span>Q</span></div><p>Hand decisions</p><h3>Video poker</h3><span class="coming-soon">Planned</span></article>
+        <article><div class="game-symbol slots" aria-hidden="true"><span>7</span><span>●</span><span>★</span></div><p>Probability lab</p><h3>Slot machine</h3><span class="coming-soon">Planned</span></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="container safety-section">
+    <div><p class="eyebrow">Practice, not prediction</p><h2>Training cannot remove gambling risk.</h2></div>
+    <p>The games here use fictional chips with no cash value. They explain rules and probability; they do not promise winnings or reproduce every rule found at a particular casino. If gambling stops being entertainment, stop and seek support in your country.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .training-hero { padding: 70px 0 100px; background: var(--forest); color: #fff; }
+  .training-hero .eyebrow { color: var(--lime); }
+  .training-hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); align-items: end; gap: 70px; }
+  .training-hero h1 { margin: 0; font-size: clamp(3.2rem, 7vw, 6.3rem); }
+  .training-intro > p { margin: 0; color: #bfd1cb; font-size: 1.05rem; }
+  .hero-points { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 25px; }
+  .hero-points span { padding: 8px 10px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; color: #d8e5e1; font-size: .73rem; }
+  .roulette-section { position: relative; z-index: 2; margin-top: -54px; padding-bottom: 95px; }
+  .learn-section { display: grid; grid-template-columns: minmax(280px, .65fr) minmax(0, 1.35fr); gap: 70px; padding-bottom: 105px; }
+  .learn-heading > p:last-child { max-width: 480px; color: var(--muted); }
+  .lesson-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .lesson-grid article { min-height: 290px; display: flex; flex-direction: column; padding: 26px; border: 1px solid var(--line); border-radius: 19px; background: var(--surface); }
+  .lesson-grid article > span { width: fit-content; padding: 7px 9px; border-radius: 999px; background: #e8efc2; color: #3f5841; font-size: .7rem; font-weight: 800; }
+  .lesson-grid h3 { margin: auto 0 12px; }
+  .lesson-grid p { margin: 0; color: var(--muted); font-size: .85rem; line-height: 1.65; }
+  .future-games { padding: 95px 0; background: #eceae1; }
+  .future-games .eyebrow { color: #9c2630; }
+  .future-games .section-heading > p { max-width: 430px; color: #45524e; }
+  .future-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .future-grid article { min-height: 330px; display: flex; flex-direction: column; padding: 26px; border-radius: 22px; background: #fffdf8; }
+  .future-grid article > p { margin: auto 0 4px; color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .09em; }
+  .future-grid h3 { margin: 0 0 18px; font-size: 1.55rem; }
+  .coming-soon { width: fit-content; padding: 7px 10px; border-radius: 999px; background: #eff1e4; color: #56635f; font-size: .7rem; font-weight: 750; }
+  .game-symbol { min-height: 135px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+  .game-symbol span { width: 70px; height: 98px; display: grid; place-items: center; border: 1px solid #cfd3ca; border-radius: 10px; background: #fff; color: var(--brand-dark); font: 800 1.3rem/1 'Manrope', sans-serif; box-shadow: 0 9px 18px rgba(20,40,35,.06); }
+  .game-symbol.cards span:first-child { transform: translate(13px, 8px) rotate(-8deg); }
+  .game-symbol.cards span:last-child { transform: translate(-13px, -2px) rotate(6deg); color: #1e2926; }
+  .game-symbol.poker span { width: 58px; height: 83px; }
+  .game-symbol.poker span:nth-child(1) { transform: translate(15px, 8px) rotate(-8deg); }
+  .game-symbol.poker span:nth-child(3) { transform: translate(-15px, 8px) rotate(8deg); color: #1e2926; }
+  .game-symbol.slots { overflow: hidden; gap: 0; border: 9px solid var(--forest); border-radius: 18px; background: var(--forest); }
+  .game-symbol.slots span { width: 76px; height: 93px; border-radius: 6px; box-shadow: none; }
+  .game-symbol.slots span:nth-child(2) { color: #1e2926; }
+  .safety-section { display: grid; grid-template-columns: minmax(270px, .8fr) minmax(0, 1.2fr); gap: 80px; padding-top: 95px; padding-bottom: 100px; }
+  .safety-section h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
+  .safety-section > p { margin: 28px 0 0; color: var(--muted); font-size: 1rem; }
+  @media (max-width: 900px) { .training-hero-grid, .learn-section, .safety-section { grid-template-columns: 1fr; gap: 35px; }.lesson-grid { grid-template-columns: 1fr; }.lesson-grid article { min-height: 210px; }.future-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 620px) { .training-hero { padding: 48px 0 82px; }.training-hero h1 { font-size: clamp(2.9rem, 15vw, 4.4rem); }.roulette-section { width: 100%; margin-top: -42px; padding-bottom: 72px; }.future-grid { grid-template-columns: 1fr; }.safety-section { padding-block: 70px; } }
+</style>

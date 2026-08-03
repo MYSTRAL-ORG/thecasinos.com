@@ -1,0 +1,300 @@
+---
+interface Props {
+  casinoName: string;
+  city: string;
+  country: string;
+  latitude?: number | null;
+  longitude?: number | null;
+  address?: string | null;
+}
+
+const { casinoName, city, country, latitude, longitude, address } = Astro.props;
+const hasCoordinates = latitude != null && longitude != null && Number.isFinite(latitude) && Number.isFinite(longitude);
+const destinationLabel = [address, city, country].filter(Boolean).join(', ');
+const fallbackQuery = [casinoName, destinationLabel].filter(Boolean).join(', ');
+---
+
+<section
+  class="journey-section container"
+  data-journey-planner
+  data-name={casinoName}
+  data-latitude={hasCoordinates ? String(latitude) : ''}
+  data-longitude={hasCoordinates ? String(longitude) : ''}
+  data-destination={fallbackQuery}
+>
+  <div class="journey-intro">
+    <p class="eyebrow">Live itinerary</p>
+    <h2>Get to {casinoName}.</h2>
+    <p>Calculate from your current position, compare travel modes, then launch the live route in your preferred navigation app.</p>
+    <div class="destination-card">
+      <span aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      </span>
+      <div><small>Destination</small><strong>{destinationLabel || `${city}, ${country}`}</strong></div>
+    </div>
+    <p class="privacy-note"><span aria-hidden="true">●</span> Your position stays in this browser and is never saved by TheCasinos.com.</p>
+  </div>
+
+  <div class="route-tool">
+    <div class="mode-selector" aria-label="Travel mode">
+      <button type="button" class="selected" data-route-mode="driving" aria-pressed="true">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 17h14l1-6-2-4H6l-2 4 1 6Z"/><path d="M7 17v2m10-2v2M4 12h16M8 7l1-3h6l1 3"/></svg>
+        Drive
+      </button>
+      <button type="button" data-route-mode="walking" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="13" cy="4" r="2"/><path d="m10 21 2-7-3-3 2-4 4 2 2 4m-5 1 4 2 2 5M9 11l-3 4"/></svg>
+        Walk
+      </button>
+      <button type="button" data-route-mode="transit" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="15" rx="3"/><path d="M8 21l2-3m6 3-2-3M5 11h14M9 7h6"/></svg>
+        Transit
+      </button>
+    </div>
+
+    <div class="route-summary" data-route-summary>
+      <div class="route-empty">
+        <span class="route-mark" aria-hidden="true"></span>
+        <div><strong>Start from your exact position</strong><p>Location permission is requested only when you click the button.</p></div>
+      </div>
+      <div class="route-metrics" hidden>
+        <div><small>Direct distance</small><strong data-direct-distance>–</strong></div>
+        <div><small data-estimate-label>Driving estimate</small><strong data-travel-estimate>–</strong></div>
+        <div><small>Position accuracy</small><strong data-position-accuracy>–</strong></div>
+      </div>
+    </div>
+
+    <button type="button" class="locate-button" data-locate>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="6"/><path d="M12 2v3m0 14v3M2 12h3m14 0h3"/></svg>
+      Use my current position
+    </button>
+    <p class="route-status" data-route-status aria-live="polite">Ready to calculate your route.</p>
+
+    <div class="navigation-links">
+      <a data-navigation="google" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(hasCoordinates ? `${latitude},${longitude}` : fallbackQuery)}`} target="_blank" rel="noopener nofollow">
+        <span>G</span><div><small>Open route in</small><strong>Google Maps</strong></div><b aria-hidden="true">↗</b>
+      </a>
+      <a data-navigation="apple" href={`https://maps.apple.com/?daddr=${encodeURIComponent(hasCoordinates ? `${latitude},${longitude}` : fallbackQuery)}`} target="_blank" rel="noopener nofollow">
+        <span>⌖</span><div><small>Open route in</small><strong>Apple Maps</strong></div><b aria-hidden="true">↗</b>
+      </a>
+      <a data-navigation="waze" href={hasCoordinates ? `https://www.waze.com/ul?ll=${latitude}%2C${longitude}&navigate=yes` : `https://www.waze.com/ul?q=${encodeURIComponent(fallbackQuery)}&navigate=yes`} target="_blank" rel="noopener nofollow">
+        <span>W</span><div><small>Open route in</small><strong>Waze</strong></div><b aria-hidden="true">↗</b>
+      </a>
+    </div>
+    <p class="estimate-disclaimer">On-page distances and times are orientation estimates. The navigation app calculates the actual road route, traffic and closures.</p>
+  </div>
+</section>
+
+<script>
+  type TravelMode = 'driving' | 'walking' | 'transit';
+  type Coordinates = { latitude: number; longitude: number; accuracy?: number };
+
+  const radians = (degrees: number) => degrees * Math.PI / 180;
+  const formatDistance = (kilometres: number) => kilometres < 1
+    ? `${Math.max(10, Math.round(kilometres * 1_000 / 10) * 10)} m`
+    : `${kilometres < 10 ? kilometres.toFixed(1) : Math.round(kilometres)} km`;
+  const formatDuration = (minutes: number) => {
+    const rounded = Math.max(1, Math.round(minutes / 5) * 5);
+    if (rounded < 60) return `≈ ${rounded} min`;
+    const hours = Math.floor(rounded / 60);
+    const rest = rounded % 60;
+    return `≈ ${hours}h${rest ? ` ${rest}m` : ''}`;
+  };
+  const directDistance = (origin: Coordinates, destination: Coordinates) => {
+    const earthRadiusKm = 6_371;
+    const latitudeDelta = radians(destination.latitude - origin.latitude);
+    const longitudeDelta = radians(destination.longitude - origin.longitude);
+    const originLatitude = radians(origin.latitude);
+    const destinationLatitude = radians(destination.latitude);
+    const haversine = Math.sin(latitudeDelta / 2) ** 2
+      + Math.cos(originLatitude) * Math.cos(destinationLatitude) * Math.sin(longitudeDelta / 2) ** 2;
+    return 2 * earthRadiusKm * Math.asin(Math.sqrt(haversine));
+  };
+
+  document.querySelectorAll<HTMLElement>('[data-journey-planner]').forEach((root) => {
+    if (root.dataset.ready === 'true') return;
+    root.dataset.ready = 'true';
+    const latitude = Number(root.dataset.latitude);
+    const longitude = Number(root.dataset.longitude);
+    const hasCoordinates = Number.isFinite(latitude) && Number.isFinite(longitude) && root.dataset.latitude !== '' && root.dataset.longitude !== '';
+    const destination: Coordinates | null = hasCoordinates ? { latitude, longitude } : null;
+    const destinationQuery = root.dataset.destination || root.dataset.name || '';
+    const locateButton = root.querySelector<HTMLButtonElement>('[data-locate]');
+    const status = root.querySelector<HTMLElement>('[data-route-status]');
+    const empty = root.querySelector<HTMLElement>('.route-empty');
+    const metrics = root.querySelector<HTMLElement>('.route-metrics');
+    const directDistanceValue = root.querySelector<HTMLElement>('[data-direct-distance]');
+    const estimateLabel = root.querySelector<HTMLElement>('[data-estimate-label]');
+    const estimateValue = root.querySelector<HTMLElement>('[data-travel-estimate]');
+    const accuracyValue = root.querySelector<HTMLElement>('[data-position-accuracy]');
+    const modeButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-route-mode]')];
+    let mode: TravelMode = 'driving';
+    let origin: Coordinates | null = null;
+
+    function setStatus(message: string, tone: 'neutral' | 'error' | 'success' = 'neutral') {
+      if (!status) return;
+      status.textContent = message;
+      status.dataset.tone = tone;
+    }
+
+    function estimates(kilometres: number, selectedMode: TravelMode) {
+      if (selectedMode === 'walking') {
+        const routed = kilometres * 1.14;
+        return { label: 'Walking estimate', duration: routed / 4.8 * 60 };
+      }
+      if (selectedMode === 'transit') {
+        const routed = kilometres * 1.28;
+        return { label: 'Transit estimate', duration: routed / 28 * 60 + 10 };
+      }
+      const routed = kilometres * 1.24;
+      const averageSpeed = routed < 6 ? 24 : routed < 60 ? 48 : 78;
+      return { label: 'Driving estimate', duration: routed / averageSpeed * 60 };
+    }
+
+    function updateNavigationLinks() {
+      const destinationValue = destination ? `${destination.latitude},${destination.longitude}` : destinationQuery;
+      const originValue = origin ? `${origin.latitude},${origin.longitude}` : '';
+      const google = new URL('https://www.google.com/maps/dir/');
+      google.searchParams.set('api', '1');
+      google.searchParams.set('destination', destinationValue);
+      google.searchParams.set('travelmode', mode);
+      if (originValue) google.searchParams.set('origin', originValue);
+      const apple = new URL('https://maps.apple.com/');
+      apple.searchParams.set('daddr', destinationValue);
+      apple.searchParams.set('dirflg', mode === 'driving' ? 'd' : mode === 'walking' ? 'w' : 'r');
+      if (originValue) apple.searchParams.set('saddr', originValue);
+      const waze = destination
+        ? `https://www.waze.com/ul?ll=${encodeURIComponent(`${destination.latitude},${destination.longitude}`)}&navigate=yes`
+        : `https://www.waze.com/ul?q=${encodeURIComponent(destinationQuery)}&navigate=yes`;
+      const googleLink = root.querySelector<HTMLAnchorElement>('[data-navigation="google"]');
+      const appleLink = root.querySelector<HTMLAnchorElement>('[data-navigation="apple"]');
+      const wazeLink = root.querySelector<HTMLAnchorElement>('[data-navigation="waze"]');
+      if (googleLink) googleLink.href = google.toString();
+      if (appleLink) appleLink.href = apple.toString();
+      if (wazeLink) wazeLink.href = waze;
+    }
+
+    function renderRoute() {
+      updateNavigationLinks();
+      if (!origin || !destination) return;
+      const kilometres = directDistance(origin, destination);
+      const estimate = estimates(kilometres, mode);
+      if (directDistanceValue) directDistanceValue.textContent = formatDistance(kilometres);
+      if (estimateLabel) estimateLabel.textContent = estimate.label;
+      if (estimateValue) estimateValue.textContent = formatDuration(estimate.duration);
+      if (accuracyValue) accuracyValue.textContent = origin.accuracy ? `± ${Math.round(origin.accuracy)} m` : 'Available';
+      if (empty) empty.hidden = true;
+      if (metrics) metrics.hidden = false;
+      setStatus('Position found. Choose an app for the exact live route.', 'success');
+    }
+
+    modeButtons.forEach((button) => button.addEventListener('click', () => {
+      mode = (button.dataset.routeMode || 'driving') as TravelMode;
+      modeButtons.forEach((candidate) => {
+        const selected = candidate === button;
+        candidate.classList.toggle('selected', selected);
+        candidate.setAttribute('aria-pressed', String(selected));
+      });
+      renderRoute();
+    }));
+
+    locateButton?.addEventListener('click', () => {
+      if (!destination) {
+        setStatus('This listing does not yet have verified coordinates. Open a navigation app to search by name and address.', 'error');
+        return;
+      }
+      if (!navigator.geolocation) {
+        setStatus('Location is unavailable in this browser. Your navigation app can still use its own position.', 'error');
+        return;
+      }
+      locateButton.disabled = true;
+      locateButton.classList.add('loading');
+      setStatus('Finding your current position…');
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          origin = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            accuracy: position.coords.accuracy,
+          };
+          locateButton.disabled = false;
+          locateButton.classList.remove('loading');
+          locateButton.lastChild && (locateButton.lastChild.textContent = ' Update my position');
+          renderRoute();
+        },
+        (error) => {
+          locateButton.disabled = false;
+          locateButton.classList.remove('loading');
+          const message = error.code === error.PERMISSION_DENIED
+            ? 'Location permission was declined. Enable it in your browser or open the route directly in a navigation app.'
+            : 'Your position could not be determined. Open a navigation app to continue.';
+          setStatus(message, 'error');
+        },
+        { enableHighAccuracy: true, timeout: 12_000, maximumAge: 300_000 },
+      );
+    });
+
+    updateNavigationLinks();
+    if (!destination) setStatus('Coordinates are still being verified. Navigation apps will search by venue name and address.');
+  });
+</script>
+
+<style>
+  .journey-section { display: grid; grid-template-columns: minmax(0, .8fr) minmax(520px, 1.2fr); gap: 70px; margin-bottom: 90px; padding: 55px; border-radius: 30px; background: #e8efc2; }
+  .journey-intro .eyebrow { color: #9c2630; }
+  .journey-intro h2 { margin-bottom: 18px; font-size: clamp(2rem, 4vw, 3.2rem); }
+  .journey-intro > p:not(.eyebrow):not(.privacy-note) { max-width: 500px; color: #53615c; }
+  .destination-card { display: flex; align-items: center; gap: 14px; margin-top: 30px; padding: 16px; border: 1px solid rgba(23,63,55,.15); border-radius: 16px; background: rgba(255,255,255,.52); }
+  .destination-card > span { flex: 0 0 42px; height: 42px; display: grid; place-items: center; border-radius: 50%; background: var(--forest); color: var(--lime); }
+  .destination-card svg { width: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; }
+  .destination-card div { min-width: 0; display: grid; gap: 4px; }
+  .destination-card small { color: #4c5c56; font-size: .7rem; text-transform: uppercase; letter-spacing: .09em; }
+  .destination-card strong { overflow: hidden; text-overflow: ellipsis; color: var(--ink); font-size: .87rem; }
+  .privacy-note { display: flex; align-items: start; gap: 8px; margin: 18px 0 0; color: #435a52; font-size: .75rem; line-height: 1.5; }
+  .privacy-note span { color: #4c9c70; font-size: .65rem; }
+  .route-tool { padding: 26px; border-radius: 22px; background: #fffdf8; box-shadow: 0 17px 40px rgba(27,60,51,.09); }
+  .mode-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; padding: 5px; border-radius: 14px; background: #f0efe8; }
+  .mode-selector button { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 8px; border: 0; border-radius: 10px; background: transparent; color: #4f5d58; cursor: pointer; font-size: .8rem; font-weight: 750; }
+  .mode-selector button.selected { background: #fff; color: var(--forest); box-shadow: 0 5px 13px rgba(19,42,36,.08); }
+  .mode-selector svg { width: 19px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .route-summary { min-height: 103px; display: grid; place-items: center; margin: 14px 0; border: 1px solid var(--line); border-radius: 15px; }
+  .route-empty { display: flex; align-items: center; gap: 13px; padding: 16px; }
+  .route-empty p { margin: 3px 0 0; color: var(--muted); font-size: .76rem; line-height: 1.45; }
+  .route-mark { flex: 0 0 14px; height: 14px; border: 4px solid var(--brand); border-radius: 50%; box-shadow: 0 0 0 5px #fae5e5; }
+  .route-metrics { width: 100%; display: grid; grid-template-columns: repeat(3, 1fr); }
+  .route-metrics > div { min-width: 0; display: grid; gap: 6px; padding: 20px; border-right: 1px solid var(--line); }
+  .route-metrics > div:last-child { border-right: 0; }
+  .route-metrics small { color: var(--muted); font-size: .68rem; }
+  .route-metrics strong { font: 800 1.15rem/1 'Manrope', sans-serif; }
+  .locate-button { width: 100%; min-height: 51px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 13px; background: #b9323c; color: #fff; cursor: pointer; font-weight: 800; }
+  .locate-button:hover:not(:disabled) { background: #982832; }
+  .locate-button:disabled { cursor: wait; opacity: .68; }
+  .locate-button svg { width: 20px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; }
+  .locate-button.loading svg { animation: locate-pulse .9s ease infinite; }
+  .route-status { min-height: 18px; margin: 9px 0 15px; color: var(--muted); font-size: .72rem; line-height: 1.45; }
+  .route-status[data-tone='error'] { color: var(--brand-dark); }
+  .route-status[data-tone='success'] { color: #357957; }
+  .navigation-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 7px; }
+  .navigation-links a { min-width: 0; display: grid; grid-template-columns: 30px 1fr auto; align-items: center; gap: 7px; padding: 11px; border: 1px solid var(--line); border-radius: 12px; transition: border-color .16s ease, transform .16s ease; }
+  .navigation-links a:hover { border-color: #87978f; transform: translateY(-1px); }
+  .navigation-links a > span { width: 28px; aspect-ratio: 1; display: grid; place-items: center; border-radius: 8px; background: #f0efe8; font-weight: 800; }
+  .navigation-links a div { min-width: 0; display: grid; gap: 2px; }
+  .navigation-links small { overflow: hidden; color: var(--muted); font-size: .58rem; white-space: nowrap; text-overflow: ellipsis; }
+  .navigation-links strong { overflow: hidden; font-size: .7rem; white-space: nowrap; text-overflow: ellipsis; }
+  .navigation-links b { color: var(--muted); font-size: .7rem; }
+  .estimate-disclaimer { margin: 13px 0 0; color: #5d6b66; font-size: .65rem; line-height: 1.45; }
+  @keyframes locate-pulse { 50% { transform: scale(.75); opacity: .45; } }
+  @media (max-width: 980px) { .journey-section { grid-template-columns: 1fr; gap: 35px; } }
+  @media (max-width: 620px) {
+    .journey-section { width: 100%; margin-bottom: 68px; padding: 42px 14px; border-radius: 0; }
+    .journey-intro { padding-inline: 4px; }
+    .route-tool { padding: 16px; }
+    .route-metrics { grid-template-columns: 1fr 1fr; }
+    .route-metrics > div { padding: 14px; }
+    .route-metrics > div:nth-child(2) { border-right: 0; }
+    .route-metrics > div:last-child { grid-column: 1 / -1; border-top: 1px solid var(--line); }
+    .navigation-links { grid-template-columns: 1fr; }
+    .navigation-links a { padding: 12px; }
+    .navigation-links small { font-size: .64rem; }
+    .navigation-links strong { font-size: .76rem; }
+  }
+</style>
