@@ -2,72 +2,259 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import OnlineRanking from '@/components/OnlineRanking.astro';
 import { getOnlineCasino, getOnlineCasinos } from '@/lib/data';
+import type { OnlineCasino } from '@/lib/types';
 
 const slug = Astro.params.slug ?? '';
 const [casino, ranking] = await Promise.all([getOnlineCasino(slug), getOnlineCasinos()]);
 if (!casino) Astro.response.status = 404;
+
+const typeLabel = (type?: OnlineCasino['casino_type']) => type === 'sweepstakes' ? 'Sweepstakes casino' : type === 'social' ? 'Social casino' : 'Real-money casino';
+const statusLabel = (status?: OnlineCasino['operator_status']) => status === 'restricted' ? 'Regional restrictions' : status === 'unavailable' ? 'Currently unavailable' : status === 'monitoring' ? 'Under monitoring' : 'Available where permitted';
+const formatDate = (value?: string | null) => value ? new Intl.DateTimeFormat('en', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }).format(new Date(value)) : null;
+const targetUrl = casino?.affiliate_url || casino?.website_url || '';
+const unavailable = casino?.operator_status === 'unavailable';
+const sponsored = Boolean(casino?.affiliate_url && casino.affiliate_url !== casino.website_url);
+const reviewDate = formatDate(casino?.reviewed_at || casino?.last_verified_at);
+const scores = casino ? [
+  ['Games', casino.rating_games], ['Payments', casino.rating_payments], ['Withdrawals', casino.rating_withdrawals],
+  ['Support', casino.rating_support], ['Safety', casino.rating_safety], ['Mobile', casino.rating_mobile],
+].filter((item): item is [string, number] => typeof item[1] === 'number') : [];
+const quickFacts = casino ? [
+  ['Type', typeLabel(casino.casino_type)],
+  ['Operator', casino.operator_name],
+  ['Established', casino.established_year ? String(casino.established_year) : null],
+  ['Licence / legal model', casino.license_authority],
+  ['Games', casino.game_count ? `${casino.game_count.toLocaleString('en')}+` : casino.game_types?.join(', ')],
+  ['Minimum deposit / purchase', casino.minimum_deposit],
+  ['Minimum withdrawal / redemption', casino.minimum_withdrawal],
+  ['Withdrawal time', casino.withdrawal_time],
+  ['KYC', casino.kyc_requirements],
+  ['Mobile', casino.mobile_support],
+  ['Support', casino.support_hours],
+].filter((item): item is [string, string] => Boolean(item[1])) : [];
+
 const structuredData = casino ? {
   '@context': 'https://schema.org',
   '@type': 'Review',
   name: `${casino.name} review`,
-  itemReviewed: { '@type': 'Organization', name: casino.name },
-  reviewRating: { '@type': 'Rating', ratingValue: casino.rating, bestRating: 5 },
+  itemReviewed: { '@type': 'Organization', name: casino.name, url: casino.website_url || casino.affiliate_url },
+  author: { '@type': 'Organization', name: 'TheCasinos.com editorial team' },
+  datePublished: casino.reviewed_at,
+  dateModified: casino.last_verified_at || casino.reviewed_at,
+  reviewRating: { '@type': 'Rating', ratingValue: casino.rating, bestRating: 5, worstRating: 0 },
   reviewBody: casino.summary,
 } : undefined;
 ---
 
-<BaseLayout title={casino ? `${casino.name} review` : 'Online casino not found'} description={casino?.summary ?? 'Online casino review not found.'} noindex={!casino} structuredData={structuredData}>
+<BaseLayout
+  title={casino?.seo_title || (casino ? `${casino.name} review` : 'Online casino not found')}
+  description={casino?.seo_description || casino?.summary || 'Online casino review not found.'}
+  noindex={!casino}
+  image={casino?.screenshots?.[0]?.url || casino?.logo_url || undefined}
+  structuredData={structuredData}
+>
   {casino ? <>
-    <section class="review-hero"><div class="container"><div class="breadcrumbs"><a href="/">The Casinos</a><span>/</span><a href="/online">Online</a><span>/</span><span>{casino.name}</span></div><div class="review-grid"><div><p class="eyebrow">Rank #{casino.position ?? '—'} · Online review</p><h1>{casino.name}</h1><p class="lede">{casino.subtitle}</p><div class="score"><strong>{Number(casino.rating).toFixed(1)}</strong><span>★★★★★</span><small>Editorial rating / 5</small></div></div><aside><small>Current offer</small><strong>{casino.bonus}</strong><a class="button" href={casino.affiliate_url} target="_blank" rel="nofollow sponsored noopener">Visit {casino.name}</a><p>18+ · Terms apply</p></aside></div></div></section>
-    <section class="section container review-body">
-      <article>
-        <p class="eyebrow">Overview</p><h2>{casino.subtitle || `${casino.name} at a glance`}</h2><p class="intro">{casino.description || casino.summary}</p>
-        <div class="content-block"><h3>To sum up</h3><p>{casino.summary}</p></div>
-        {casino.bonus_description && <div class="content-block"><h3>Bonus and promotions</h3><p>{casino.bonus_description}</p><div class="offer-inline">{casino.bonus}</div></div>}
-        {casino.deposit_description && <div class="content-block"><h3>Deposit methods</h3><p>{casino.deposit_description}</p><div class="chips">{casino.deposit_methods.map((method) => <span>{method}</span>)}</div></div>}
-        {casino.contact_description && <div class="content-block"><h3>Customer support</h3><p>{casino.contact_description}</p><div class="chips">{casino.contact_methods.map((method) => <span>{method}</span>)}</div></div>}
+    <section class="review-hero">
+      <div class="container">
+        <div class="breadcrumbs"><a href="/">The Casinos</a><span>/</span><a href="/online">Online</a><span>/</span><span>{casino.name}</span></div>
+        <div class="hero-grid">
+          <div class="hero-main">
+            <div class="brand-line">
+              {casino.logo_url ? <img src={casino.logo_url} width="82" height="82" alt={`${casino.name} logo`} /> : <span class="brand-mark">{casino.name.charAt(0)}</span>}
+              <div><div class="badges"><span>{typeLabel(casino.casino_type)}</span><span class:list={['status-badge', casino.operator_status]}>{statusLabel(casino.operator_status)}</span></div><h1>{casino.name}</h1></div>
+            </div>
+            <p class="lede">{casino.subtitle || casino.summary}</p>
+            <div class="score-line">
+              <div class="score"><strong>{Number(casino.rating).toFixed(1)}</strong><div><span>★★★★★</span><small>Editorial score / 5</small></div></div>
+              {reviewDate && <div class="verified"><small>Last verified</small><strong>{reviewDate}</strong></div>}
+            </div>
+          </div>
+          <aside class:list={['offer-card', { unavailable }]}>
+            <small>{unavailable ? 'Operator status' : 'Current offer'}</small>
+            <strong>{casino.bonus}</strong>
+            {unavailable
+              ? <span class="button disabled">Website unavailable</span>
+              : <a class="button" href={targetUrl} target="_blank" rel={sponsored ? 'nofollow sponsored noopener' : 'noopener'}>{casino.cta_label || `Visit ${casino.name}`}</a>}
+            <p>18+ / 21+ where applicable · Terms and location restrictions apply.</p>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    {unavailable && <section class="availability-alert"><div class="container"><strong>Not currently recommended.</strong><p>The official service was unavailable during our latest verification. This review is retained for transparency and historical reference.</p></div></section>}
+
+    {casino.screenshots?.length ? <section class="gallery-section">
+      <div class="container">
+        <div class="gallery-heading"><div><p class="eyebrow">Product tour</p><h2>Inside {casino.name}</h2></div><p>Interface and product screenshots selected by the editorial team.</p></div>
+        <div class="review-gallery">
+          {casino.screenshots.map((screen, index) => <figure class:list={{ featured: index === 0 }}><img src={screen.url} alt={screen.alt || `${casino.name} screenshot ${index + 1}`} loading={index === 0 ? 'eager' : 'lazy'} /><figcaption>{screen.caption || screen.alt}</figcaption></figure>)}
+        </div>
+      </div>
+    </section> : null}
+
+    <section class="section container overview-grid">
+      <article class="review-copy">
+        <p class="eyebrow">Independent review</p>
+        <h2>{casino.subtitle || `${casino.name} at a glance`}</h2>
+        <div class="intro-copy">{(casino.description || casino.summary).split(/\n\n+/).map((paragraph) => <p>{paragraph}</p>)}</div>
+
+        {scores.length ? <div class="scorecards">
+          {scores.map(([label, value]) => <div><span>{label}</span><strong>{Number(value).toFixed(1)}</strong><div class="scorebar"><i style={`width:${Number(value) * 20}%`}></i></div></div>)}
+        </div> : null}
+
+        <section class="content-block"><p class="section-number">01</p><div><h3>Games and software</h3><p>{casino.games_description || `${casino.name} offers ${casino.game_types?.join(', ').toLocaleLowerCase() || 'a varied online casino catalogue'}.`}</p>{casino.game_types?.length ? <div class="chips">{casino.game_types.map((item) => <span>{item}</span>)}</div> : null}{casino.software_providers?.length ? <p class="supporting"><strong>Providers:</strong> {casino.software_providers.join(', ')}</p> : null}</div></section>
+
+        <section class="content-block"><p class="section-number">02</p><div><h3>Bonus and promotions</h3><p>{casino.bonus_description || 'Offer terms vary. Verify the complete eligibility, playthrough and cashout rules on the operator website.'}</p><div class="offer-inline">{casino.bonus}</div>{casino.wagering_requirement && <p class="supporting"><strong>Wagering:</strong> {casino.wagering_requirement}</p>}</div></section>
+
+        <section class="content-block"><p class="section-number">03</p><div><h3>Deposits and payments</h3><p>{casino.deposit_description || 'Available payment methods depend on the player’s country and verified account.'}</p>{casino.deposit_methods?.length ? <div class="chips">{casino.deposit_methods.map((method) => <span>{method}</span>)}</div> : null}{casino.currencies?.length ? <p class="supporting"><strong>Currencies:</strong> {casino.currencies.join(', ')}</p> : null}</div></section>
+
+        <section class="content-block"><p class="section-number">04</p><div><h3>Withdrawals and verification</h3><p>{casino.withdrawal_description || 'Withdrawal availability, limits and processing times depend on method, location and account verification.'}</p>{casino.withdrawal_methods?.length ? <div class="chips">{casino.withdrawal_methods.map((method) => <span>{method}</span>)}</div> : null}<div class="fact-callouts">{casino.minimum_withdrawal && <div><small>Minimum</small><strong>{casino.minimum_withdrawal}</strong></div>}{casino.withdrawal_time && <div><small>Typical timing</small><strong>{casino.withdrawal_time}</strong></div>}</div></div></section>
+
+        <section class="content-block"><p class="section-number">05</p><div><h3>Licence, safety and responsible play</h3><p>{casino.security_description || casino.license_authority || 'Verify the operator’s current licensing and legal status for your location before registering.'}</p>{casino.license_authority && <div class="licence-card"><div><small>Licence / legal model</small><strong>{casino.license_authority}</strong>{casino.license_number && <span>{casino.license_number}</span>}</div>{casino.license_url && <a href={casino.license_url} target="_blank" rel="noopener nofollow">Verify source ↗</a>}</div>}{casino.security_features?.length ? <div class="chips">{casino.security_features.map((item) => <span>{item}</span>)}</div> : null}{casino.responsible_gambling_tools?.length ? <div class="responsible-list"><h4>Player controls</h4><ul>{casino.responsible_gambling_tools.map((item) => <li>✓ {item}</li>)}</ul></div> : null}</div></section>
+
+        <section class="content-block"><p class="section-number">06</p><div><h3>Mobile experience</h3><p>{casino.mobile_description || casino.mobile_support || 'Mobile availability depends on the operator and jurisdiction.'}</p>{(casino.ios_url || casino.android_url) && <div class="app-links">{casino.ios_url && <a href={casino.ios_url} target="_blank" rel="noopener nofollow">iOS availability ↗</a>}{casino.android_url && <a href={casino.android_url} target="_blank" rel="noopener nofollow">Android availability ↗</a>}</div>}</div></section>
+
+        <section class="content-block"><p class="section-number">07</p><div><h3>Customer support</h3><p>{casino.contact_description || 'Contact options and hours may vary by account and location.'}</p>{casino.contact_methods?.length ? <div class="chips">{casino.contact_methods.map((method) => <span>{method}</span>)}</div> : null}{casino.support_email && <p class="supporting"><strong>Email:</strong> {casino.support_email}</p>}</div></section>
+
+        <section class="verdict-block"><p class="eyebrow">Editorial verdict</p><h2>Our view on {casino.name}</h2><p>{casino.verdict || casino.summary}</p><div class="final-score"><span>Final score</span><strong>{Number(casino.rating).toFixed(1)}<small>/5</small></strong></div></section>
+
+        {casino.faqs?.length ? <section class="faq-block"><p class="eyebrow">Player questions</p><h2>{casino.name} FAQ</h2>{casino.faqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</section> : null}
+
+        {casino.source_urls?.length ? <section class="sources"><h3>Sources checked</h3><p>Information was verified on {reviewDate || 'the latest review date'}. Offers, payment methods and availability can change.</p><ol>{casino.source_urls.map((url, index) => <li><a href={url} target="_blank" rel="noopener nofollow">Source {index + 1}: {new URL(url).hostname.replace(/^www\./, '')} ↗</a></li>)}</ol></section> : null}
       </article>
-      <aside class="summary-card card">
-        <h2>Key features</h2><ul>{casino.key_features.map((feature) => <li>✓ {feature}</li>)}</ul>
-        <div class="pros-cons"><div><h3>Pros</h3>{casino.pros.map((pro) => <p>+ {pro}</p>)}</div><div><h3>Cons</h3>{casino.cons.map((con) => <p>− {con}</p>)}</div></div>
-        <a class="button" href={casino.affiliate_url} target="_blank" rel="nofollow sponsored noopener">Register &amp; play</a>
+
+      <aside class="summary-column">
+        <div class="summary-card card">
+          <h2>At a glance</h2>
+          <dl>{quickFacts.map(([label, value]) => <div><dt>{label}</dt><dd>{value}</dd></div>)}</dl>
+          {!unavailable && <a class="button" href={targetUrl} target="_blank" rel={sponsored ? 'nofollow sponsored noopener' : 'noopener'}>{casino.cta_label || 'Visit official site'}</a>}
+        </div>
+        <div class="pros-cons card">
+          <div><h3>What we like</h3>{casino.pros.map((pro) => <p><span>+</span>{pro}</p>)}</div>
+          <div><h3>What to consider</h3>{casino.cons.map((con) => <p><span>−</span>{con}</p>)}</div>
+        </div>
+        {(casino.supported_regions?.length || casino.restricted_regions?.length) ? <div class="regions-card card"><h3>Availability</h3>{casino.supported_regions?.length ? <div><small>Supported / intended markets</small><p>{casino.supported_regions.join(' · ')}</p></div> : null}{casino.restricted_regions?.length ? <div><small>Restrictions</small><p>{casino.restricted_regions.join(' · ')}</p></div> : null}<p class="legal-note">Always check local law and the operator’s current terms.</p></div> : null}
       </aside>
     </section>
+
+    <section class="affiliate-note"><div class="container"><strong>How we fund this guide</strong><p>{casino.affiliate_disclosure || 'Some outbound links may become affiliate links and generate a commission at no extra cost to the player. Commercial relationships do not remove the risks, limits or negative findings from our reviews.'}</p></div></section>
+
     <section class="more-online"><div class="container"><div class="section-heading"><div><p class="eyebrow">Compare</p><h2>Other ranked casinos</h2></div><a href="/online" class="button secondary">Full Top 10</a></div><OnlineRanking casinos={ranking.filter((item) => item.id !== casino.id)} compact /></div></section>
   </> : <section class="section container"><div class="empty-state"><h1>Review not found</h1><a class="button" href="/online">Return to the ranking</a></div></section>}
 </BaseLayout>
 
 <style>
-  .review-hero { padding: 32px 0 78px; background: var(--forest); color: #fff; }
-  .review-hero .breadcrumbs, .review-hero .eyebrow { color: var(--lime); }
-  .review-grid { display: grid; grid-template-columns: 1fr 360px; gap: 80px; align-items: end; }
-  .review-hero h1 { margin-bottom: 15px; }
-  .review-hero .lede { color: #c3d3ce; }
-  .score { display: grid; grid-template-columns: auto auto; width: fit-content; align-items: center; gap: 0 12px; margin-top: 30px; }
-  .score strong { grid-row: span 2; font: 800 3.6rem/1 'Manrope', sans-serif; color: var(--lime); }
+  .review-hero { padding: 30px 0 78px; background: var(--forest); color: #fff; }
+  .review-hero .breadcrumbs { color: #a7bcb5; }
+  .review-hero .breadcrumbs a:hover { color: var(--lime); }
+  .hero-grid { display: grid; grid-template-columns: minmax(0,1fr) 380px; gap: 72px; align-items: end; }
+  .brand-line { display: flex; align-items: center; gap: 20px; }
+  .brand-line img, .brand-mark { width: 82px; height: 82px; object-fit: contain; border-radius: 20px; background: #fff; }
+  .brand-mark { display: grid; place-items: center; background: var(--lime); color: var(--forest); font: 800 2rem/1 'Manrope', sans-serif; }
+  .brand-line h1 { margin: 8px 0 0; font-size: clamp(3rem,7vw,5.8rem); }
+  .badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badges span { padding: 6px 9px; border: 1px solid rgba(255,255,255,.16); border-radius: 999px; color: #d8e2df; font-size: .65rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+  .badges .status-badge.active { border-color: rgba(215,232,118,.35); color: var(--lime); }
+  .badges .status-badge.unavailable { border-color: rgba(255,140,148,.4); color: #ffb6bb; }
+  .badges .status-badge.restricted, .badges .status-badge.monitoring { color: var(--gold); }
+  .hero-main .lede { margin-top: 20px; color: #c3d3ce; }
+  .score-line { margin-top: 30px; display: flex; align-items: center; gap: 35px; }
+  .score { display: flex; align-items: center; gap: 13px; }
+  .score > strong { font: 800 3.5rem/1 'Manrope', sans-serif; color: var(--lime); }
+  .score > div, .verified { display: flex; flex-direction: column; }
   .score span { color: var(--gold); letter-spacing: .08em; }
-  .score small { color: #96aca5; }
-  .review-grid > aside { padding: 28px; display: flex; flex-direction: column; align-items: start; border-radius: 20px; background: #fff; color: var(--ink); }
-  .review-grid > aside small { color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
-  .review-grid > aside strong { margin: 8px 0 22px; font: 700 1.25rem/1.3 'Manrope', sans-serif; }
-  .review-grid > aside p { margin: 10px 0 0; color: var(--muted); font-size: .72rem; }
-  .review-body { display: grid; grid-template-columns: 1fr 380px; gap: 70px; align-items: start; }
-  .review-body article h2 { margin-bottom: 20px; }
-  .review-body .intro { color: var(--muted); font-size: 1.08rem; }
-  .content-block { margin-top: 52px; padding-top: 34px; border-top: 1px solid var(--line); }
-  .content-block h3 { font-size: 1.45rem; }
+  .score small, .verified small { color: #8fa8a0; }
+  .verified { padding-left: 35px; border-left: 1px solid rgba(255,255,255,.15); }
+  .verified strong { margin-top: 4px; font-size: .9rem; }
+  .offer-card { padding: 29px; display: flex; flex-direction: column; align-items: start; border-radius: 22px; background: #fff; color: var(--ink); }
+  .offer-card.unavailable { background: #fff1f1; }
+  .offer-card > small { color: var(--muted); font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+  .offer-card > strong { margin: 9px 0 22px; font: 700 1.3rem/1.35 'Manrope', sans-serif; }
+  .offer-card .button { width: 100%; }
+  .button.disabled { background: #7f8985; cursor: not-allowed; }
+  .offer-card p { margin: 11px 0 0; color: var(--muted); font-size: .7rem; }
+  .availability-alert { padding: 22px 0; background: #fee7e7; color: #6b2026; }
+  .availability-alert .container { display: flex; gap: 16px; align-items: center; }
+  .availability-alert p { margin: 0; font-size: .86rem; }
+  .gallery-section { padding: 76px 0; background: #eceae1; }
+  .gallery-heading { margin-bottom: 28px; display: grid; grid-template-columns: 1fr 360px; gap: 45px; align-items: end; }
+  .gallery-heading h2, .gallery-heading p { margin-bottom: 0; }
+  .gallery-heading > p { color: var(--muted); }
+  .review-gallery { display: grid; grid-template-columns: 1.5fr 1fr 1fr; grid-auto-rows: 230px; gap: 12px; }
+  .review-gallery figure { position: relative; margin: 0; overflow: hidden; border-radius: 18px; background: #d9d8d1; }
+  .review-gallery figure.featured { grid-row: span 2; }
+  .review-gallery img { width: 100%; height: 100%; object-fit: cover; }
+  .review-gallery figcaption { position: absolute; inset: auto 10px 10px; padding: 7px 9px; border-radius: 8px; background: rgba(15,28,24,.78); color: #fff; font-size: .7rem; backdrop-filter: blur(8px); }
+  .overview-grid { display: grid; grid-template-columns: minmax(0,1fr) 370px; gap: 70px; align-items: start; }
+  .review-copy > h2 { margin-bottom: 22px; }
+  .intro-copy p { color: #4f5e59; font-size: 1.04rem; }
+  .scorecards { margin-top: 38px; display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+  .scorecards > div { padding: 15px; border: 1px solid var(--line); border-radius: 12px; background: #fff; }
+  .scorecards span { color: var(--muted); font-size: .74rem; }
+  .scorecards strong { float: right; }
+  .scorebar { height: 4px; margin-top: 11px; overflow: hidden; border-radius: 4px; background: #e5e4dd; }
+  .scorebar i { display: block; height: 100%; border-radius: inherit; background: var(--brand); }
+  .content-block { margin-top: 54px; padding-top: 34px; display: grid; grid-template-columns: 38px 1fr; gap: 16px; border-top: 1px solid var(--line); }
+  .section-number { margin: 3px 0 0; color: #a1aaa6; font: 800 .7rem/1 'Manrope', sans-serif; }
+  .content-block h3 { margin-bottom: 14px; font-size: 1.55rem; }
   .content-block p { color: var(--muted); }
-  .offer-inline { width: fit-content; margin-top: 18px; padding: 13px 16px; border-radius: 12px; background: #e8edd2; font-weight: 700; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chips span { padding: 8px 11px; border-radius: 999px; background: #efede5; font-size: .8rem; }
-  .summary-card { position: sticky; top: 25px; padding: 28px; }
-  .summary-card h2 { font-size: 1.4rem; }
-  .summary-card ul { margin: 0 0 24px; padding: 0; list-style: none; }
-  .summary-card li { padding: 9px 0; border-bottom: 1px solid var(--line); font-size: .87rem; }
-  .pros-cons { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 24px; }
-  .pros-cons h3 { margin-bottom: 10px; font-size: 1rem; }
-  .pros-cons p { margin: 0 0 7px; color: var(--muted); font-size: .8rem; line-height: 1.4; }
+  .chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .chips span { padding: 8px 10px; border-radius: 999px; background: #efede5; color: #40514b; font-size: .76rem; }
+  .supporting { margin-top: 18px; font-size: .82rem; }
+  .supporting strong { color: var(--ink); }
+  .offer-inline { width: fit-content; margin-top: 17px; padding: 13px 16px; border-radius: 12px; background: #e8edd2; font-weight: 800; }
+  .fact-callouts { margin-top: 18px; display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+  .fact-callouts > div { padding: 13px; display: flex; flex-direction: column; border-radius: 11px; background: #f0eee7; }
+  .fact-callouts small { color: var(--muted); }
+  .fact-callouts strong { margin-top: 4px; font-size: .82rem; }
+  .licence-card { margin: 18px 0; padding: 17px; display: flex; justify-content: space-between; gap: 20px; align-items: center; border: 1px solid #cdd8b0; border-radius: 13px; background: #f2f5e4; }
+  .licence-card > div { display: flex; flex-direction: column; gap: 3px; }
+  .licence-card small, .licence-card span { color: var(--muted); font-size: .72rem; }
+  .licence-card a { color: var(--brand-dark); font-size: .77rem; font-weight: 800; white-space: nowrap; }
+  .responsible-list { margin-top: 24px; }
+  .responsible-list h4 { font-family: 'Manrope', sans-serif; }
+  .responsible-list ul { padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 7px 14px; list-style: none; }
+  .responsible-list li { color: var(--muted); font-size: .8rem; }
+  .app-links { display: flex; flex-wrap: wrap; gap: 8px; }
+  .app-links a { padding: 9px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: .78rem; font-weight: 800; }
+  .verdict-block { margin-top: 60px; padding: 34px; position: relative; overflow: hidden; border-radius: 22px; background: var(--forest); color: #fff; }
+  .verdict-block .eyebrow { color: var(--lime); }
+  .verdict-block h2 { max-width: 580px; margin-bottom: 16px; }
+  .verdict-block > p:not(.eyebrow) { max-width: 630px; color: #c4d3ce; }
+  .final-score { margin-top: 25px; display: flex; align-items: end; justify-content: space-between; border-top: 1px solid rgba(255,255,255,.15); padding-top: 20px; }
+  .final-score span { color: #9eb1ab; }
+  .final-score strong { color: var(--lime); font: 800 2.7rem/1 'Manrope', sans-serif; }
+  .final-score small { font-size: .9rem; }
+  .faq-block { margin-top: 65px; }
+  .faq-block details { border-top: 1px solid var(--line); }
+  .faq-block details:last-child { border-bottom: 1px solid var(--line); }
+  .faq-block summary { padding: 18px 0; font-weight: 800; cursor: pointer; }
+  .faq-block details p { margin-top: 0; padding-right: 30px; color: var(--muted); }
+  .sources { margin-top: 55px; padding: 22px; border-radius: 15px; background: #f0eee7; }
+  .sources h3 { margin-bottom: 6px; font-size: 1rem; }
+  .sources p, .sources li { color: var(--muted); font-size: .75rem; }
+  .sources ol { margin-bottom: 0; padding-left: 20px; }
+  .sources a { color: var(--brand-dark); text-decoration: underline; }
+  .summary-column { position: sticky; top: 20px; display: grid; gap: 14px; }
+  .summary-card, .pros-cons, .regions-card { padding: 25px; }
+  .summary-card h2 { font-size: 1.35rem; }
+  .summary-card dl { margin: 0 0 22px; }
+  .summary-card dl div { padding: 11px 0; display: grid; grid-template-columns: 1fr 1.25fr; gap: 12px; border-bottom: 1px solid var(--line); }
+  .summary-card dt { color: var(--muted); font-size: .72rem; }
+  .summary-card dd { margin: 0; font-size: .78rem; font-weight: 700; text-align: right; }
   .summary-card .button { width: 100%; }
-  .more-online { padding: 82px 0; background: #eceae1; }
-  @media (max-width: 800px) { .review-grid, .review-body { grid-template-columns: 1fr; gap: 35px; } .summary-card { position: static; } }
+  .pros-cons { display: grid; gap: 20px; }
+  .pros-cons h3, .regions-card h3 { margin-bottom: 12px; font-size: 1rem; }
+  .pros-cons p { margin: 0 0 8px; display: grid; grid-template-columns: 20px 1fr; color: var(--muted); font-size: .78rem; line-height: 1.45; }
+  .pros-cons p span { color: var(--brand-dark); font-weight: 900; }
+  .regions-card > div { padding: 12px 0; border-top: 1px solid var(--line); }
+  .regions-card small { color: var(--muted); font-weight: 800; }
+  .regions-card p { margin: 5px 0 0; color: #475650; font-size: .78rem; line-height: 1.5; }
+  .regions-card .legal-note { color: var(--muted); font-size: .7rem; }
+  .affiliate-note { padding: 26px 0; border-top: 1px solid var(--line); background: #eceae1; }
+  .affiliate-note .container { display: grid; grid-template-columns: 210px 1fr; gap: 30px; align-items: start; }
+  .affiliate-note p { margin: 0; color: var(--muted); font-size: .78rem; }
+  .more-online { padding: 82px 0; background: #e8eadc; }
+  @media (max-width: 900px) { .hero-grid, .overview-grid, .gallery-heading { grid-template-columns: 1fr; gap: 35px; } .summary-column { position: static; } .review-gallery { grid-template-columns: 1fr 1fr; } .review-gallery figure.featured { grid-column: span 2; grid-row: auto; } }
+  @media (max-width: 620px) { .brand-line { align-items: start; } .brand-line img, .brand-mark { width: 62px; height: 62px; border-radius: 15px; } .score-line, .availability-alert .container { align-items: start; flex-direction: column; } .verified { padding: 15px 0 0; border: 0; border-top: 1px solid rgba(255,255,255,.15); } .review-gallery { grid-template-columns: 1fr; grid-auto-rows: 220px; } .review-gallery figure.featured { grid-column: auto; } .scorecards { grid-template-columns: 1fr 1fr; } .content-block { grid-template-columns: 1fr; } .fact-callouts, .responsible-list ul { grid-template-columns: 1fr; } .licence-card, .affiliate-note .container { grid-template-columns: 1fr; display: grid; } }
 </style>

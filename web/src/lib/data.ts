@@ -38,11 +38,14 @@ export async function getPopularDestinations(limit = 6): Promise<Destination[]> 
 }
 
 export async function getOnlineCasinos(options: { admin?: boolean } = {}): Promise<OnlineCasino[]> {
-  if (!supabase) return fallbackOnlineCasinos;
+  const fallback = options.admin
+    ? fallbackOnlineCasinos
+    : fallbackOnlineCasinos.filter((casino) => casino.active && casino.published).sort((a, b) => Number(a.position ?? 99) - Number(b.position ?? 99)).slice(0, 10);
+  if (!supabase) return fallback;
   let query = supabase.from('online_casinos').select('*').order('position', { ascending: true, nullsFirst: false });
   if (!options.admin) query = query.eq('active', true).eq('published', true).not('position', 'is', null).limit(10);
   const { data, error } = await query;
-  return error || !data?.length ? fallbackOnlineCasinos : (data as OnlineCasino[]);
+  return error || !data?.length ? fallback : (data as OnlineCasino[]);
 }
 
 export async function getOnlineCasino(slug: string): Promise<OnlineCasino | null> {
@@ -50,7 +53,7 @@ export async function getOnlineCasino(slug: string): Promise<OnlineCasino | null
     const { data, error } = await supabase.from('online_casinos').select('*').eq('slug', slug).eq('published', true).maybeSingle();
     if (!error && data) return data as OnlineCasino;
   }
-  return fallbackOnlineCasinos.find((casino) => casino.slug.toLowerCase() === slug.toLowerCase()) ?? null;
+  return fallbackOnlineCasinos.find((casino) => casino.published && casino.slug.toLowerCase() === slug.toLowerCase()) ?? null;
 }
 
 export async function getCasinoByPath(country: string, city: string, slug: string): Promise<Casino | null> {
@@ -104,7 +107,7 @@ export async function getAllPublicUrls(): Promise<string[]> {
   if (!supabase || !hasSupabase) {
     return [
       ...fallbackCasinos.map((casino) => `/${casino.country_slug}/${casino.city_slug}/${casino.slug}`),
-      ...fallbackOnlineCasinos.map((casino) => `/online/${casino.slug}`),
+      ...fallbackOnlineCasinos.filter((casino) => casino.published).map((casino) => `/online/${casino.slug}`),
     ];
   }
   const urls: string[] = [];

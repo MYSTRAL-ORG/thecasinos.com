@@ -12,7 +12,7 @@ major_version = 17
 [auth]
 enabled = true
 site_url = "http://localhost:4321"
-additional_redirect_urls = ["https://www.thecasinos.com/admin", "https://*.netlify.app/admin"]
+additional_redirect_urls = ["https://www.thecasinos.com/operation", "https://*.netlify.app/operation"]
 
 [studio]
 enabled = true

@@ -52,7 +52,7 @@ The import batches upserts by legacy ID and merges 34 duplicate records that pre
 
 ## Netlify
 
-The root `netlify.toml` sets `web` as the base directory, builds the Astro SSR output, configures security headers and excludes `/admin` from caching and indexing.
+The root `netlify.toml` sets `web` as the base directory, builds the Astro SSR output, configures security headers and excludes `/operation` from caching and indexing.
 
 Configure only these public variables for the web application:
 
