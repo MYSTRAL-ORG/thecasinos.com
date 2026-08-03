@@ -1,3 +1,40 @@
+export type CasinoKeyFact = {
+  label: string;
+  value: string;
+  note?: string;
+};
+
+export type CasinoEditorialHighlight = {
+  title: string;
+  text: string;
+};
+
+export type CasinoVisitDetails = {
+  hours?: string;
+  access?: string;
+  getting_there?: string;
+  parking?: string;
+};
+
+export type CasinoAmenity = {
+  category: 'hotel' | 'dining' | 'entertainment' | 'wellness' | 'shopping' | 'other';
+  name: string;
+  description: string;
+};
+
+export type CasinoFaq = {
+  question: string;
+  answer: string;
+};
+
+export type CasinoGalleryImage = {
+  url: string;
+  alt: string;
+  caption?: string;
+  credit?: string;
+  source_url?: string;
+};
+
 export type Casino = {
   id: string | number;
   legacy_id?: number | null;
@@ -36,6 +73,15 @@ export type Casino = {
   verification_source_urls?: string[];
   verified_fields?: Record<string, { value?: unknown; source?: string; source_url?: string; verified_at?: string }>;
   last_verified_at?: string | null;
+  profile_version?: number;
+  key_facts?: CasinoKeyFact[];
+  editorial_highlights?: CasinoEditorialHighlight[];
+  visit_details?: CasinoVisitDetails;
+  amenities?: CasinoAmenity[];
+  faqs?: CasinoFaq[];
+  gallery_images?: CasinoGalleryImage[];
+  editorial_source_urls?: string[];
+  editorial_verified_at?: string | null;
   always_open?: boolean | null;
   has_sportsbook?: boolean;
   has_bingo?: boolean;

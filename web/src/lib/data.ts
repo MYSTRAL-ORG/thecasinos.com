@@ -10,7 +10,7 @@ import type {
   PublicUrl,
 } from './types';
 
-const casinoFields = 'id,legacy_id,name,slug,country_name,country_slug,city_name,city_slug,state_name,short_description,description,editorial_title,editorial_paragraphs,summary,games_description,fun_facts,seo_title,seo_description,seo_keywords,opened_on,gaming_machines,poker_tables,table_games,square_footage,hotel_name,owner_name,official_website_url,street_address,phone,wikidata_id,verified_opened_on,verified_operator_name,enrichment_status,data_confidence,verification_source_urls,verified_fields,last_verified_at,always_open,has_sportsbook,has_bingo,has_slots,has_table_games,longitude,latitude,legacy_image_name,has_original_image,published,updated_at';
+const casinoFields = 'id,legacy_id,name,slug,country_name,country_slug,city_name,city_slug,state_name,short_description,description,editorial_title,editorial_paragraphs,summary,games_description,fun_facts,seo_title,seo_description,seo_keywords,opened_on,gaming_machines,poker_tables,table_games,square_footage,hotel_name,owner_name,official_website_url,street_address,phone,wikidata_id,verified_opened_on,verified_operator_name,enrichment_status,data_confidence,verification_source_urls,verified_fields,last_verified_at,profile_version,key_facts,editorial_highlights,visit_details,amenities,faqs,gallery_images,editorial_source_urls,editorial_verified_at,always_open,has_sportsbook,has_bingo,has_slots,has_table_games,longitude,latitude,legacy_image_name,has_original_image,published,updated_at';
 export const CITY_PAGE_SIZE = 48;
 
 function dataError(context: string, error: { message?: string } | null | undefined): Error {
