@@ -2,7 +2,7 @@ import { fallbackCasinos, fallbackDestinations, fallbackOnlineCasinos } from './
 import { hasSupabase, supabase } from './supabase';
 import type { Casino, Destination, OnlineCasino } from './types';
 
-const casinoFields = 'id,legacy_id,name,slug,country_name,country_slug,city_name,city_slug,state_name,short_description,description,opened_on,gaming_machines,poker_tables,table_games,square_footage,hotel_name,owner_name,always_open,has_sportsbook,has_bingo,has_slots,has_table_games,longitude,latitude,published';
+const casinoFields = 'id,legacy_id,name,slug,country_name,country_slug,city_name,city_slug,state_name,short_description,description,editorial_title,editorial_paragraphs,summary,games_description,fun_facts,seo_title,seo_description,seo_keywords,opened_on,gaming_machines,poker_tables,table_games,square_footage,hotel_name,owner_name,always_open,has_sportsbook,has_bingo,has_slots,has_table_games,longitude,latitude,legacy_image_name,has_original_image,published';
 
 export async function getSiteStats() {
   if (!supabase) return { casinos: 7527, countries: 157, cities: 3145 };

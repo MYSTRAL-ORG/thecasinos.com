@@ -58,6 +58,7 @@ const candidates = source.features.map((feature) => {
     longitude,
     latitude,
     legacy_image_name: properties.imgurl || null,
+    has_original_image: Boolean(properties.originalimg),
     published: true,
   };
 }).filter((row) => row.legacy_id && row.name && row.slug && row.country_name && row.country_slug && row.city_name && row.city_slug);

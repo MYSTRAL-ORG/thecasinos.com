@@ -10,6 +10,14 @@ export type Casino = {
   state_name?: string | null;
   short_description?: string | null;
   description?: string | null;
+  editorial_title?: string | null;
+  editorial_paragraphs?: string[];
+  summary?: string | null;
+  games_description?: string | null;
+  fun_facts?: string | null;
+  seo_title?: string | null;
+  seo_description?: string | null;
+  seo_keywords?: string | null;
   opened_on?: string | null;
   gaming_machines?: number | null;
   poker_tables?: number | null;
@@ -24,6 +32,8 @@ export type Casino = {
   has_table_games?: boolean;
   longitude?: number | null;
   latitude?: number | null;
+  legacy_image_name?: string | null;
+  has_original_image?: boolean;
   published?: boolean;
 };
 

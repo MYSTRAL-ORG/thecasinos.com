@@ -1,12 +1,14 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getCasinoByPath } from '@/lib/data';
+import { getCasinoImageUrl } from '@/lib/media';
 
 const country = Astro.params.country ?? '';
 const city = Astro.params.city ?? '';
 const slug = Astro.params.slug ?? '';
 const casino = await getCasinoByPath(country, city, slug);
 if (!casino) Astro.response.status = 404;
+
 const facts = casino ? [
   casino.opened_on && { label: 'Opened', value: new Date(`${casino.opened_on}T00:00:00`).getFullYear().toString() },
   casino.gaming_machines != null && casino.gaming_machines > 0 && { label: 'Gaming machines', value: casino.gaming_machines.toLocaleString('en-US') },
@@ -14,63 +16,106 @@ const facts = casino ? [
   casino.poker_tables != null && casino.poker_tables > 0 && { label: 'Poker tables', value: casino.poker_tables.toLocaleString('en-US') },
   casino.square_footage != null && casino.square_footage > 0 && { label: 'Gaming floor', value: `${casino.square_footage.toLocaleString('en-US')} sq ft` },
 ].filter(Boolean) as { label: string; value: string }[] : [];
+
+const image = casino ? getCasinoImageUrl(casino, { width: 1200, height: 800, quality: 82 }) : null;
+const imageMedium = casino ? getCasinoImageUrl(casino, { width: 760, height: 520, quality: 80 }) : null;
+const paragraphs = casino?.editorial_paragraphs?.filter(Boolean).length
+  ? casino.editorial_paragraphs.filter(Boolean)
+  : [casino?.description].filter(Boolean) as string[];
+const pageDescription = casino?.seo_description || casino?.description || `Casino information for ${casino?.city_name ?? city}.`;
 const structuredData = casino ? {
   '@context': 'https://schema.org',
   '@type': 'Casino',
   name: casino.name.trim(),
-  description: casino.description || casino.short_description,
+  description: pageDescription,
+  image: image ? new URL(image, Astro.site).toString() : undefined,
   address: { '@type': 'PostalAddress', addressLocality: casino.city_name, addressRegion: casino.state_name, addressCountry: casino.country_name },
   geo: casino.latitude != null && casino.longitude != null ? { '@type': 'GeoCoordinates', latitude: casino.latitude, longitude: casino.longitude } : undefined,
 } : undefined;
 ---
 
-<BaseLayout title={casino?.name.trim() ?? 'Casino not found'} description={casino?.description || `Casino information for ${casino?.city_name ?? city}.`} noindex={!casino} structuredData={structuredData}>
+<BaseLayout title={casino?.seo_title || casino?.name.trim() || 'Casino not found'} description={pageDescription} image={image ? new URL(image, Astro.site).toString() : undefined} noindex={!casino} structuredData={structuredData}>
   {casino ? <>
     <section class="detail-hero">
       <div class="container">
         <div class="breadcrumbs"><a href="/">World</a><span>/</span><a href={`/${casino.country_slug}`}>{casino.country_name}</a><span>/</span><a href={`/${casino.country_slug}/${casino.city_slug}`}>{casino.city_name}</a></div>
-        <div class="hero-grid"><div><p class="eyebrow">{casino.short_description || 'Land-based casino'}</p><h1>{casino.name.trim()}</h1><p class="intro">{casino.description}</p><div class="place"><span>{casino.city_name}</span><span>{casino.state_name}</span><strong>{casino.country_name}</strong></div></div><div class="place-mark" aria-hidden="true"><span>{casino.name.trim().charAt(0)}</span><small>{casino.latitude?.toFixed(3)} · {casino.longitude?.toFixed(3)}</small></div></div>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">{casino.short_description || 'Land-based casino'}</p>
+            <h1>{casino.name.trim()}</h1>
+            <p class="intro">{casino.summary || casino.description}</p>
+            <div class="place"><span>{casino.city_name}</span>{casino.state_name && <span>{casino.state_name}</span>}<strong>{casino.country_name}</strong></div>
+          </div>
+          <figure class="hero-image">
+            {image ? <img src={image} srcset={`${imageMedium} 760w, ${image} 1200w`} sizes="(max-width: 760px) 100vw, 46vw" width="1200" height="800" alt={`${casino.name.trim()} in ${casino.city_name}`} /> : <div class="place-mark" aria-hidden="true">{casino.name.trim().charAt(0)}</div>}
+            <figcaption>{casino.city_name} · {casino.country_name}</figcaption>
+          </figure>
+        </div>
       </div>
     </section>
+
     <section class="section container detail-grid">
-      <article>
-        <p class="eyebrow">At a glance</p><h2>Know the place<br />before you go.</h2>
-        <p class="lede">This listing is built from the existing TheCasinos.com directory. Operational details can change, so confirm opening hours and access conditions with the venue before travelling.</p>
-        <div class="feature-list">
-          {[casino.has_slots && 'Slot machines', casino.has_table_games && 'Table games', casino.has_sportsbook && 'Sportsbook', casino.has_bingo && 'Bingo', casino.always_open && 'Listed as always open'].filter(Boolean).map((item) => <span>✓ {item}</span>)}
-        </div>
+      <article class="editorial-copy">
+        <p class="eyebrow">The full story</p>
+        <h2>{casino.editorial_title || `Discover ${casino.name.trim()}`}</h2>
+        {paragraphs.length ? paragraphs.map((paragraph) => <p>{paragraph}</p>) : <p class="lede">The complete editorial profile is being restored.</p>}
+
+        {(casino.games_description || casino.fun_facts) && <div class="story-highlights">
+          {casino.games_description && <section><span>01</span><div><h3>Games</h3><p>{casino.games_description}</p></div></section>}
+          {casino.fun_facts && <section><span>02</span><div><h3>Fun facts</h3><p>{casino.fun_facts}</p></div></section>}
+        </div>}
       </article>
-      <aside class="facts card">
-        <h2>Key facts</h2>
-        {facts.length ? facts.map((fact) => <div><span>{fact.label}</span><strong>{fact.value}</strong></div>) : <p class="muted">Detailed facts are being verified.</p>}
-        {casino.hotel_name && <div><span>Hotel</span><strong>{casino.hotel_name}</strong></div>}
-        {casino.owner_name && <div><span>Operator</span><strong>{casino.owner_name}</strong></div>}
+
+      <aside class="detail-aside">
+        <div class="facts card">
+          <h2>Key facts</h2>
+          {facts.length ? facts.map((fact) => <div><span>{fact.label}</span><strong>{fact.value}</strong></div>) : <p class="muted">Detailed facts are being verified.</p>}
+          {casino.hotel_name && <div><span>Hotel</span><strong>{casino.hotel_name}</strong></div>}
+          {casino.owner_name && <div><span>Operator</span><strong>{casino.owner_name}</strong></div>}
+        </div>
+        <div class="features card">
+          <h2>Available here</h2>
+          <div>{[casino.has_slots && 'Slot machines', casino.has_table_games && 'Table games', casino.has_sportsbook && 'Sportsbook', casino.has_bingo && 'Bingo', casino.always_open && 'Listed as always open'].filter(Boolean).map((item) => <span>✓ {item}</span>)}</div>
+        </div>
       </aside>
     </section>
-    {casino.latitude != null && casino.longitude != null && <section class="container location-panel"><div><p class="eyebrow">Location</p><h2>{casino.city_name}, {casino.country_name}</h2><p>Coordinates from the existing directory dataset.</p></div><a class="button dark" href={`https://www.openstreetmap.org/?mlat=${casino.latitude}&mlon=${casino.longitude}#map=15/${casino.latitude}/${casino.longitude}`} target="_blank" rel="noopener">Open map</a></section>}
+
+    {casino.latitude != null && casino.longitude != null && <section class="container location-panel"><div><p class="eyebrow">Location</p><h2>{casino.city_name}, {casino.country_name}</h2><p>Open the exact position in OpenStreetMap before planning your visit.</p></div><a class="button dark" href={`https://www.openstreetmap.org/?mlat=${casino.latitude}&mlon=${casino.longitude}#map=15/${casino.latitude}/${casino.longitude}`} target="_blank" rel="noopener">Open map</a></section>}
   </> : <section class="section container"><div class="empty-state"><h1>Casino not found</h1><p>The requested listing is unavailable or has moved.</p><a href="/search" class="button">Search the directory</a></div></section>}
 </BaseLayout>
 
 <style>
-  .detail-hero { padding: 34px 0 82px; overflow: hidden; background: var(--forest); color: #fff; }
+  .detail-hero { padding: 24px 0 72px; overflow: hidden; background: var(--forest); color: #fff; }
   .detail-hero .breadcrumbs, .detail-hero .eyebrow { color: var(--lime); }
-  .hero-grid { display: grid; grid-template-columns: 1.3fr .7fr; align-items: center; gap: 70px; }
-  .detail-hero h1 { max-width: 850px; margin-bottom: 23px; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(380px, .86fr); align-items: center; gap: 62px; }
+  .detail-hero h1 { max-width: 760px; margin-bottom: 23px; }
   .intro { max-width: 710px; color: #c3d3ce; font-size: 1.12rem; }
   .place { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
   .place span, .place strong { padding: 8px 11px; border-radius: 999px; background: rgba(255,255,255,.09); font-size: .8rem; }
-  .place-mark { width: min(330px, 28vw); aspect-ratio: 1; display: grid; place-items: center; align-content: center; gap: 20px; border: 1px solid rgba(215,232,118,.35); border-radius: 50%; background: radial-gradient(circle, rgba(215,232,118,.2), transparent 60%); box-shadow: 0 0 0 35px rgba(255,255,255,.025); }
-  .place-mark span { font: 800 8rem/1 'Manrope', sans-serif; color: var(--lime); }
-  .place-mark small { color: #9eb5ae; }
-  .detail-grid { display: grid; grid-template-columns: 1fr minmax(330px, .58fr); gap: 70px; }
-  .feature-list { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 27px; }
-  .feature-list span { padding: 9px 12px; border-radius: 999px; background: #e7edd0; color: #354b37; font-size: .82rem; font-weight: 600; }
-  .facts { padding: 28px; }
-  .facts h2 { margin-bottom: 18px; font-size: 1.35rem; }
-  .facts div { display: flex; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid var(--line); }
+  .hero-image { position: relative; overflow: hidden; aspect-ratio: 3 / 2; margin: 0; border-radius: 24px; background: #285d51; box-shadow: 0 28px 70px rgba(0,0,0,.3); }
+  .hero-image img { width: 100%; height: 100%; object-fit: cover; }
+  .hero-image::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(6,27,22,.55), transparent 50%); pointer-events: none; }
+  .hero-image figcaption { position: absolute; z-index: 1; right: 18px; bottom: 16px; color: #fff; font-size: .75rem; }
+  .place-mark { width: 100%; height: 100%; display: grid; place-items: center; color: var(--lime); font: 800 8rem/1 'Manrope', sans-serif; }
+  .detail-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(310px, .42fr); align-items: start; gap: 70px; }
+  .editorial-copy h2 { margin-bottom: 32px; }
+  .editorial-copy > p:not(.eyebrow) { max-width: 790px; color: #35413e; font-size: 1.05rem; line-height: 1.82; }
+  .editorial-copy > p + p { margin-top: 22px; }
+  .detail-aside { position: sticky; top: 95px; display: grid; gap: 18px; }
+  .facts, .features { padding: 28px; }
+  .facts h2, .features h2 { margin-bottom: 18px; font-size: 1.35rem; }
+  .facts > div { display: flex; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid var(--line); }
   .facts span { color: var(--muted); font-size: .84rem; }
   .facts strong { max-width: 190px; text-align: right; font-size: .9rem; }
+  .features > div { display: flex; flex-wrap: wrap; gap: 8px; }
+  .features span { padding: 8px 10px; border-radius: 999px; background: #e7edd0; color: #354b37; font-size: .78rem; font-weight: 600; }
+  .story-highlights { margin-top: 52px; border-top: 1px solid var(--line); }
+  .story-highlights section { padding: 28px 0; display: grid; grid-template-columns: 42px 1fr; gap: 18px; border-bottom: 1px solid var(--line); }
+  .story-highlights section > span { color: var(--brand-dark); font-size: .75rem; font-weight: 800; }
+  .story-highlights h3 { margin-bottom: 8px; }
+  .story-highlights p { margin: 0; color: var(--muted); }
   .location-panel { margin-bottom: 90px; padding: 36px; display: flex; align-items: center; justify-content: space-between; gap: 30px; border-radius: var(--radius-lg); background: var(--lime); }
   .location-panel h2, .location-panel p { margin-bottom: 0; }
-  @media (max-width: 760px) { .hero-grid { grid-template-columns: 1fr; }.place-mark { display: none; }.detail-grid { grid-template-columns: 1fr; gap: 36px; }.location-panel { align-items: start; flex-direction: column; } }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; }.hero-image { max-width: 720px; }.detail-grid { grid-template-columns: 1fr; gap: 42px; }.detail-aside { position: static; grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .detail-hero { padding-bottom: 45px; }.hero-image { border-radius: 18px; }.detail-aside { grid-template-columns: 1fr; }.location-panel { align-items: start; flex-direction: column; } }
 </style>

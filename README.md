@@ -9,7 +9,7 @@ A complete rebuild of TheCasinos.com around its data: 7,493 unique land-based ca
 - Netlify SSR adapter and CDN configuration
 - Leaflet for viewport-based geographic exploration
 
-The former Laravel runtime is intentionally removed. The legacy GeoJSON remains in `data/legacy/casinos.geojson` as a non-public migration source, and the original brand logo is retained in `web/public/logo.png`.
+The former Laravel runtime is intentionally removed. The legacy GeoJSON remains in `data/legacy/casinos.geojson`, the 7,493 recovered editorial profiles are preserved in the ordered `data/legacy/casino-details.jsonl.gz.part-*` archive chunks, and the original brand logo is retained in `web/public/logo.png`.
 
 ## Local setup
 
@@ -27,7 +27,7 @@ For a public-data fallback preview, the site also runs without Supabase variable
 ## Supabase setup
 
 1. Link the repository to the intended Supabase project.
-2. Apply `supabase/migrations/20260802120000_initial_schema.sql`.
+2. Apply the SQL files in `supabase/migrations` in timestamp order.
 3. Create the first editor in Supabase Auth.
 4. Give that user the admin role in `app_metadata`:
 
@@ -41,11 +41,14 @@ For a public-data fallback preview, the site also runs without Supabase variable
 cd web
 npm run audit:legacy
 npm run import:legacy
+npm run import:legacy-details -- --batch-count
 ```
 
 `SUPABASE_SERVICE_ROLE_KEY` is used only by the local import script. It must never be prefixed with `PUBLIC_`, committed, or exposed in browser/Netlify public configuration.
 
 The import batches upserts by legacy ID and merges 34 duplicate records that previously shared the same public URL. The resulting public directory has 7,493 unique casino routes.
+
+`import:legacy-details` can emit idempotent SQL batches from the compressed editorial snapshot. It matches by legacy ID and public path so records collapsed from duplicate legacy URLs still receive their complete content.
 
 ## Netlify
 
@@ -59,6 +62,8 @@ PUBLIC_SUPABASE_ANON_KEY
 ```
 
 Do not configure a service-role key in Netlify. All browser-side administration uses the authenticated user token and is enforced by RLS.
+
+The 2,020 recoverable original casino photos and the eight historical fallback visuals live under `web/public/media`. Netlify Image CDN resizes these local sources on demand, so the rebuilt site does not depend on the legacy domain or on anonymous Storage access.
 
 ## Quality checks
 
