@@ -852,15 +852,17 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   .review-sidebar { position: sticky; top: 18px; max-height: calc(100vh - 36px); overflow: hidden; }
   .search-label { padding: 16px; border-bottom: 1px solid var(--line); }
   .operator-list { max-height: calc(100vh - 120px); overflow: auto; }
-  .operator-item { width: 100%; min-height: 72px; padding: 12px 13px; display: grid; grid-template-columns: 42px minmax(0,1fr) auto; align-items: center; gap: 11px; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
-  .operator-item:hover, .operator-item.selected { background: #edf1e0; }
-  .operator-item.selected { box-shadow: inset 3px 0 var(--forest); }
-  .operator-item img, .operator-initial { width: 42px; height: 42px; border-radius: 10px; object-fit: contain; background: #fff; }
-  .operator-initial { display: grid; place-items: center; background: var(--forest); color: var(--lime); font-weight: 800; }
-  .operator-copy { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
-  .operator-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .86rem; }
-  .operator-copy small { color: var(--muted); font-size: .68rem; text-transform: capitalize; }
-  .operator-score { font-weight: 800; }
+  /* These controls are created at runtime, so their selectors must remain global. */
+  :global(.operator-item) { width: 100%; min-height: 72px; padding: 12px 13px; display: grid; grid-template-columns: 42px minmax(0,1fr) auto; align-items: center; gap: 11px; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); font: inherit; text-align: left; cursor: pointer; transition: background .16s ease, box-shadow .16s ease; }
+  :global(.operator-item:hover), :global(.operator-item.selected) { background: #edf1e0; }
+  :global(.operator-item:focus-visible) { position: relative; z-index: 1; outline: 3px solid rgba(23,63,55,.2); outline-offset: -3px; }
+  :global(.operator-item.selected) { box-shadow: inset 3px 0 var(--forest); }
+  :global(.operator-item img), :global(.operator-initial) { width: 42px; height: 42px; border-radius: 10px; object-fit: contain; background: #fff; }
+  :global(.operator-initial) { display: grid; place-items: center; background: var(--forest); color: var(--lime); font-weight: 800; }
+  :global(.operator-copy) { min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  :global(.operator-copy strong) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .86rem; }
+  :global(.operator-copy small) { overflow: hidden; color: var(--muted); font-size: .68rem; line-height: 1.3; text-overflow: ellipsis; text-transform: capitalize; white-space: nowrap; }
+  :global(.operator-score) { min-width: 42px; padding: 7px 8px; border-radius: 9px; background: #f5f3ed; color: var(--forest); font-size: .76rem; font-weight: 800; text-align: center; }
   .review-editor { overflow: hidden; }
   .editor-sticky { padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; gap: 20px; background: var(--forest); color: #fff; }
   .editor-sticky .eyebrow { margin-bottom: 8px; color: var(--lime); }
@@ -892,7 +894,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   .logo-manager { padding: 18px; display: grid; grid-template-columns: 140px 1fr; gap: 18px; border: 1px solid var(--line); border-radius: 14px; background: #f3f1eb; }
   .logo-manager > div:last-child { display: grid; gap: 12px; align-content: center; }
   .logo-preview { min-height: 120px; display: grid; place-items: center; border: 1px dashed #b9bdb7; border-radius: 12px; background: #fff; color: var(--muted); font-size: .75rem; }
-  .logo-preview img { width: 100px; height: 100px; object-fit: contain; }
+  .logo-preview :global(img) { width: 100px; height: 100px; object-fit: contain; }
   .upload-button { width: fit-content; min-height: 38px; padding: 0 15px; display: inline-flex; align-items: center; border-radius: 999px; background: var(--forest); color: #fff; cursor: pointer; }
   .upload-button input { display: none; }
   .screens-manager { margin-top: 24px; }
@@ -900,11 +902,14 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   .screens-heading h4 { margin: 0; font-family: 'Manrope', sans-serif; }
   .screens-heading p { margin: 3px 0 0; color: var(--muted); font-size: .75rem; }
   .screens-editor { display: grid; gap: 10px; }
-  .screen-edit { padding: 10px; display: grid; grid-template-columns: 150px 1fr 30px; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 12px; }
-  .screen-edit img { width: 150px; height: 88px; object-fit: cover; border-radius: 8px; background: #eee; }
-  .screen-edit > div { display: grid; gap: 8px; }
-  .screen-edit button { width: 30px; height: 30px; border: 0; border-radius: 50%; background: #f6dfe0; color: #9a1f29; cursor: pointer; }
-  .media-empty { padding: 25px; border: 1px dashed #b9bdb7; border-radius: 12px; color: var(--muted); text-align: center; }
+  :global(.screen-edit) { padding: 10px; display: grid; grid-template-columns: 150px 1fr 30px; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 12px; }
+  :global(.screen-edit img) { width: 150px; height: 88px; object-fit: cover; border-radius: 8px; background: #eee; }
+  :global(.screen-edit > div) { display: grid; gap: 8px; }
+  :global(.screen-edit label) { display: flex; flex-direction: column; gap: 7px; color: var(--muted); font-size: .78rem; font-weight: 700; }
+  :global(.screen-edit input) { width: 100%; padding: 11px 12px; border: 1px solid #c9cdc7; border-radius: 10px; outline: 0; background: #fff; color: var(--ink); font-weight: 400; }
+  :global(.screen-edit input:focus) { border-color: var(--forest); box-shadow: 0 0 0 3px rgba(23,63,55,.1); }
+  :global(.screen-edit button) { width: 30px; height: 30px; border: 0; border-radius: 50%; background: #f6dfe0; color: #9a1f29; cursor: pointer; }
+  :global(.media-empty) { margin: 0; padding: 25px; border: 1px dashed #b9bdb7; border-radius: 12px; color: var(--muted); text-align: center; }
   @media (max-width: 1100px) { .score-grid { grid-template-columns: repeat(4,1fr); } .field-grid.four { grid-template-columns: repeat(2,1fr); } }
   @media (max-width: 960px) {
     .login-stage { width: min(720px, calc(100% - 48px)); padding-top: 120px; grid-template-columns: 1fr; gap: 48px; }
@@ -936,7 +941,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     .checks { align-items: start; flex-direction: column; }
     .editor-content { padding-inline: 17px; }
     .logo-manager { grid-template-columns: 1fr; }
-    .screen-edit { grid-template-columns: 1fr 30px; }
-    .screen-edit img { grid-column: 1 / -1; width: 100%; height: 180px; }
+    :global(.screen-edit) { grid-template-columns: 1fr 30px; }
+    :global(.screen-edit img) { grid-column: 1 / -1; width: 100%; height: 180px; }
   }
 </style>
