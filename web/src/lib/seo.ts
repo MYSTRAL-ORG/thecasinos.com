@@ -16,12 +16,12 @@ export function truncateMeta(value: string, limit = 160) {
 }
 
 export function casinoPageTitle(casino: Casino) {
-  const legacyTitle = normalize(casino.seo_title || '');
-  if (legacyTitle.length >= 24 && legacyTitle.length <= 68) return legacyTitle;
-
   const name = normalize(casino.name);
   const contextual = `${name} casino in ${casino.city_name}, ${casino.country_name}`;
   if (contextual.length <= 70) return contextual;
+
+  const localWithCountry = `${name} – ${casino.city_name}, ${casino.country_name}`;
+  if (localWithCountry.length <= 70) return localWithCountry;
 
   const local = `${name} – ${casino.city_name}`;
   return local.length <= 70 ? local : name;
