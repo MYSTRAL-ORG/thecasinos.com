@@ -105,6 +105,26 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           <article class="summary-tile card"><small>Media</small><strong id="media-count">0</strong><span>logos and screenshots</span></article>
         </div>
 
+        <section class="enrichment-overview card" aria-labelledby="enrichment-title">
+          <div class="enrichment-copy">
+            <p class="eyebrow">Physical casino profiles</p>
+            <div class="enrichment-title-row">
+              <h2 id="enrichment-title">Automatic data enrichment</h2>
+              <span id="enrichment-status" class="enrichment-badge">Loading</span>
+            </div>
+            <p>Wikidata records are matched by venue name, country and coordinates. Only unique high-confidence matches are applied automatically.</p>
+            <div class="enrichment-progress" aria-label="Enrichment progress"><span id="enrichment-progress-bar"></span></div>
+            <small id="enrichment-progress-label">Loading source progress…</small>
+          </div>
+          <div class="enrichment-metrics">
+            <div><span>Source records</span><strong id="enrichment-fetched">—</strong></div>
+            <div><span>Matched</span><strong id="enrichment-matched">—</strong></div>
+            <div><span>Auto-applied</span><strong id="enrichment-applied">—</strong></div>
+            <div><span>Next refresh</span><strong id="enrichment-next">—</strong></div>
+          </div>
+          <p id="enrichment-error" class="enrichment-error" hidden></p>
+        </section>
+
         <div class="operation-toolbar card">
           <div>
             <strong>Online casino reviews</strong>
@@ -283,6 +303,25 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
           Update: Record<string, unknown>;
           Relationships: [];
         };
+        casino_enrichment_jobs: {
+          Row: {
+            id: number;
+            source_name: string;
+            status: string;
+            cursor: number;
+            batch_size: number;
+            expected_records: number;
+            records_fetched: number;
+            records_matched: number;
+            records_auto_applied: number;
+            last_error: string | null;
+            last_run_at: string | null;
+            next_refresh_at: string | null;
+          };
+          Insert: Record<string, unknown>;
+          Update: Record<string, unknown>;
+          Relationships: [];
+        };
       };
       Views: Record<string, never>;
       Functions: { save_online_ranking: { Args: { ranking: unknown }; Returns: undefined } };
@@ -369,7 +408,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       }
       if (loginView) loginView.hidden = true;
       if (app) app.hidden = false;
-      await loadOperators();
+      await Promise.all([loadOperators(), loadEnrichment()]);
     }
 
     async function loadOperators() {
@@ -381,6 +420,46 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       selectedKey = operators.find((item) => item.active)?._key ?? operators[0]?._key ?? '';
       renderWorkspace();
       setStatus(operationStatus, `${operators.length} reviews loaded.`);
+    }
+
+    async function loadEnrichment() {
+      if (!client) return;
+      const { data, error } = await client
+        .from('casino_enrichment_jobs')
+        .select('*')
+        .eq('source_name', 'wikidata')
+        .maybeSingle();
+      const errorElement = document.querySelector<HTMLElement>('#enrichment-error');
+      if (error || !data) {
+        setText('#enrichment-status', 'Unavailable');
+        if (errorElement) {
+          errorElement.hidden = false;
+          errorElement.textContent = error?.message || 'No enrichment job is configured.';
+        }
+        return;
+      }
+
+      const expected = Math.max(1, Number(data.expected_records || 941));
+      const fetched = Number(data.records_fetched || 0);
+      const cursor = Number(data.cursor || 0);
+      const completed = data.status === 'complete';
+      const percentage = completed ? 100 : Math.min(99, Math.round((cursor / expected) * 100));
+      const progressBar = document.querySelector<HTMLElement>('#enrichment-progress-bar');
+      const badge = document.querySelector<HTMLElement>('#enrichment-status');
+      if (progressBar) progressBar.style.width = `${percentage}%`;
+      if (badge) {
+        badge.textContent = String(data.status).replace('_', ' ');
+        badge.dataset.status = String(data.status);
+      }
+      setText('#enrichment-progress-label', `${percentage}% · ${cursor.toLocaleString('en-US')} of about ${expected.toLocaleString('en-US')} Wikidata records processed`);
+      setText('#enrichment-fetched', fetched.toLocaleString('en-US'));
+      setText('#enrichment-matched', Number(data.records_matched || 0).toLocaleString('en-US'));
+      setText('#enrichment-applied', Number(data.records_auto_applied || 0).toLocaleString('en-US'));
+      setText('#enrichment-next', data.next_refresh_at ? new Intl.DateTimeFormat('en', { day: 'numeric', month: 'short' }).format(new Date(data.next_refresh_at)) : 'After first pass');
+      if (errorElement) {
+        errorElement.hidden = !data.last_error;
+        errorElement.textContent = data.last_error || '';
+      }
     }
 
     loginForm?.addEventListener('submit', async (event) => {
@@ -844,6 +923,23 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   .summary-tile small { grid-column: 1 / -1; color: var(--muted); font-weight: 700; }
   .summary-tile strong { font: 800 2.2rem/1 'Manrope', sans-serif; }
   .summary-tile span { padding-bottom: 3px; color: #8a928f; font-size: .72rem; }
+  .enrichment-overview { margin-bottom: 16px; padding: 24px; display: grid; grid-template-columns: minmax(0,1.25fr) minmax(420px,.75fr); gap: 28px; align-items: center; }
+  .enrichment-copy .eyebrow { margin-bottom: 8px; }
+  .enrichment-title-row { display: flex; align-items: center; gap: 12px; }
+  .enrichment-title-row h2 { margin: 0; font-size: 1.45rem; }
+  .enrichment-copy > p:not(.eyebrow) { max-width: 710px; margin: 9px 0 16px; color: var(--muted); font-size: .82rem; }
+  .enrichment-badge { padding: 6px 9px; border-radius: 999px; background: #e9ece7; color: var(--muted); font-size: .66rem; font-weight: 800; text-transform: capitalize; }
+  .enrichment-badge[data-status='complete'] { background: #dfefcf; color: #315b2d; }
+  .enrichment-badge[data-status='running'], .enrichment-badge[data-status='queued'] { background: #fff0ca; color: #674d0b; }
+  .enrichment-badge[data-status='error'] { background: #fbe1e3; color: #9a1f29; }
+  .enrichment-progress { height: 8px; overflow: hidden; border-radius: 999px; background: #dedfd9; }
+  .enrichment-progress span { width: 0; height: 100%; display: block; border-radius: inherit; background: var(--forest); transition: width .4s ease; }
+  .enrichment-copy small { display: block; margin-top: 8px; color: #78827e; font-size: .68rem; }
+  .enrichment-metrics { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+  .enrichment-metrics div { min-height: 74px; padding: 13px 15px; display: flex; flex-direction: column; justify-content: space-between; border-radius: 12px; background: #f2f1eb; }
+  .enrichment-metrics span { color: var(--muted); font-size: .68rem; }
+  .enrichment-metrics strong { font-size: 1rem; }
+  .enrichment-error { grid-column: 1 / -1; margin: -12px 0 0; padding: 11px 13px; border-radius: 10px; background: #fbe1e3; color: #9a1f29; font-size: .76rem; }
   .operation-toolbar { margin-bottom: 12px; padding: 19px 22px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
   .operation-toolbar > div:first-child { display: flex; flex-direction: column; gap: 3px; }
   .operation-toolbar span { color: var(--muted); font-size: .8rem; }
@@ -917,7 +1013,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     .login-intro h1 { max-width: 720px; font-size: clamp(3.2rem, 9vw, 5.4rem); }
     .login-panel-wrap { max-width: 560px; justify-self: center; }
   }
-  @media (max-width: 850px) { .summary-grid { grid-template-columns: repeat(2,1fr); } .workspace { grid-template-columns: 1fr; } .review-sidebar { position: static; max-height: 360px; } .operator-list { max-height: 285px; } }
+  @media (max-width: 850px) { .summary-grid { grid-template-columns: repeat(2,1fr); } .enrichment-overview { grid-template-columns: 1fr; } .workspace { grid-template-columns: 1fr; } .review-sidebar { position: static; max-height: 360px; } .operator-list { max-height: 285px; } }
   @media (max-width: 720px) {
     .login-brand { top: 25px; left: 24px; }
     .login-brand img { width: 150px; }
@@ -936,7 +1032,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     .operation-heading, .operation-toolbar, .screens-heading, .editor-sticky { align-items: start; flex-direction: column; }
     .toolbar-actions, .editor-actions { width: 100%; }
     .toolbar-actions .button, .editor-actions .button, .danger-button { flex: 1; }
-    .summary-grid, .field-grid, .field-grid.four, .score-grid { grid-template-columns: 1fr; }
+    .summary-grid, .enrichment-metrics, .field-grid, .field-grid.four, .score-grid { grid-template-columns: 1fr; }
     .field-span-2 { grid-column: auto; }
     .checks { align-items: start; flex-direction: column; }
     .editor-content { padding-inline: 17px; }

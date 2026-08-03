@@ -17,12 +17,13 @@ const relatedCasinos = casino
   ? cityCasinos.filter((item) => item.id !== casino.id).slice(0, 3)
   : [];
 
+const openedOn = casino?.verified_opened_on || casino?.opened_on;
 const facts = casino ? [
-  casino.opened_on && { label: 'Opened', value: new Date(`${casino.opened_on}T00:00:00`).getFullYear().toString() },
-  casino.gaming_machines != null && casino.gaming_machines > 0 && { label: 'Gaming machines', value: casino.gaming_machines.toLocaleString('en-US') },
-  casino.table_games != null && casino.table_games > 0 && { label: 'Table games', value: casino.table_games.toLocaleString('en-US') },
-  casino.poker_tables != null && casino.poker_tables > 0 && { label: 'Poker tables', value: casino.poker_tables.toLocaleString('en-US') },
-  casino.square_footage != null && casino.square_footage > 0 && { label: 'Gaming floor', value: `${casino.square_footage.toLocaleString('en-US')} sq ft` },
+  openedOn && { label: casino.verified_opened_on ? 'Opened · cross-checked' : 'Opened · listing data', value: new Date(`${openedOn}T00:00:00`).getFullYear().toString() },
+  casino.gaming_machines != null && casino.gaming_machines > 0 && { label: 'Gaming machines · listed', value: casino.gaming_machines.toLocaleString('en-US') },
+  casino.table_games != null && casino.table_games > 0 && { label: 'Table games · listed', value: casino.table_games.toLocaleString('en-US') },
+  casino.poker_tables != null && casino.poker_tables > 0 && { label: 'Poker tables · listed', value: casino.poker_tables.toLocaleString('en-US') },
+  casino.square_footage != null && casino.square_footage > 0 && { label: 'Gaming floor · listed', value: `${casino.square_footage.toLocaleString('en-US')} sq ft` },
 ].filter(Boolean) as { label: string; value: string }[] : [];
 
 const image = casino ? getCasinoImageUrl(casino, { width: 1200, height: 800, quality: 82 }) : null;
@@ -33,6 +34,14 @@ const paragraphs = casino?.editorial_paragraphs?.filter(Boolean).length
 const pageTitle = casino ? casinoPageTitle(casino) : 'Casino not found';
 const pageDescription = casino ? casinoPageDescription(casino) : `Casino information for ${city}.`;
 const canonicalPath = casino ? `/${casino.country_slug}/${casino.city_slug}/${casino.slug}` : Astro.url.pathname;
+const sourceUrls = casino?.verification_source_urls?.filter((source) => /^https:\/\//.test(source)) ?? [];
+const officialWebsiteUrl = /^https?:\/\//i.test(casino?.official_website_url ?? '')
+  ? casino?.official_website_url
+  : null;
+const sameAs = [officialWebsiteUrl, casino?.wikidata_id ? `https://www.wikidata.org/wiki/${casino.wikidata_id}` : null].filter(Boolean);
+const lastVerifiedLabel = casino?.last_verified_at
+  ? new Intl.DateTimeFormat('en', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(casino.last_verified_at))
+  : null;
 const structuredData = casino ? [
   breadcrumbSchema([
     { name: 'Casino directory', path: '/casinos' },
@@ -48,9 +57,12 @@ const structuredData = casino ? [
     name: casino.name.trim(),
     description: pageDescription,
     image: image ? new URL(image, Astro.site).toString() : undefined,
-    address: { '@type': 'PostalAddress', addressLocality: casino.city_name, addressRegion: casino.state_name, addressCountry: casino.country_name },
+    address: { '@type': 'PostalAddress', streetAddress: casino.street_address, addressLocality: casino.city_name, addressRegion: casino.state_name, addressCountry: casino.country_name },
     geo: casino.latitude != null && casino.longitude != null ? { '@type': 'GeoCoordinates', latitude: casino.latitude, longitude: casino.longitude } : undefined,
+    telephone: casino.phone || undefined,
+    foundingDate: casino.verified_opened_on || undefined,
     openingHours: casino.always_open ? 'Mo-Su 00:00-23:59' : undefined,
+    sameAs: sameAs.length ? sameAs : undefined,
     mainEntityOfPage: new URL(canonicalPath, Astro.site).toString(),
   },
 ] : undefined;
@@ -101,13 +113,26 @@ const structuredData = casino ? [
         <div class="facts card">
           <h2>Key facts</h2>
           {facts.length ? facts.map((fact) => <div><span>{fact.label}</span><strong>{fact.value}</strong></div>) : <p class="muted">Detailed facts are being verified.</p>}
-          {casino.hotel_name && <div><span>Hotel</span><strong>{casino.hotel_name}</strong></div>}
-          {casino.owner_name && <div><span>Operator</span><strong>{casino.owner_name}</strong></div>}
+          {casino.verified_operator_name && <div><span>Operator · cross-checked</span><strong>{casino.verified_operator_name}</strong></div>}
         </div>
         <div class="features card">
           <h2>Available here</h2>
           <div>{[casino.has_slots && 'Slot machines', casino.has_table_games && 'Table games', casino.has_sportsbook && 'Sportsbook', casino.has_bingo && 'Bingo', casino.always_open && 'Listed as always open'].filter(Boolean).map((item) => <span>✓ {item}</span>)}</div>
         </div>
+        {(casino.street_address || casino.phone || officialWebsiteUrl) && <div class="planning card">
+          <h2>Plan your visit</h2>
+          {casino.street_address && <p>{casino.street_address}<br />{casino.city_name}, {casino.country_name}</p>}
+          <div class="planning-links">
+            {casino.phone && <a href={`tel:${casino.phone.replace(/[^+0-9,;]/g, '')}`}>{casino.phone}</a>}
+            {officialWebsiteUrl && <a href={officialWebsiteUrl} target="_blank" rel="noopener nofollow">Official website ↗</a>}
+          </div>
+        </div>}
+        {lastVerifiedLabel && sourceUrls.length > 0 && <div class="verification card">
+          <p class="eyebrow">Data trail</p>
+          <h2>Cross-checked {lastVerifiedLabel}</h2>
+          <p>Open-data matches are accepted only when the venue name and coordinates meet strict confidence thresholds.</p>
+          <div>{sourceUrls.map((source, index) => <a href={source} target="_blank" rel="noopener">Source {index + 1} ↗</a>)}</div>
+        </div>}
       </aside>
     </section>
 
@@ -139,13 +164,18 @@ const structuredData = casino ? [
   .editorial-copy > p:not(.eyebrow) { max-width: 790px; color: #35413e; font-size: 1.05rem; line-height: 1.82; }
   .editorial-copy > p + p { margin-top: 22px; }
   .detail-aside { position: sticky; top: 95px; display: grid; gap: 18px; }
-  .facts, .features { padding: 28px; }
-  .facts h2, .features h2 { margin-bottom: 18px; font-size: 1.35rem; }
+  .facts, .features, .planning, .verification { padding: 28px; }
+  .facts h2, .features h2, .planning h2, .verification h2 { margin-bottom: 18px; font-size: 1.35rem; }
   .facts > div { display: flex; justify-content: space-between; gap: 20px; padding: 15px 0; border-top: 1px solid var(--line); }
   .facts span { color: var(--muted); font-size: .84rem; }
   .facts strong { max-width: 190px; text-align: right; font-size: .9rem; }
   .features > div { display: flex; flex-wrap: wrap; gap: 8px; }
   .features span { padding: 8px 10px; border-radius: 999px; background: #e7edd0; color: #354b37; font-size: .78rem; font-weight: 600; }
+  .planning p, .verification p { color: var(--muted); font-size: .88rem; line-height: 1.65; }
+  .planning-links, .verification > div { display: grid; gap: 8px; margin-top: 16px; }
+  .planning a, .verification a { width: fit-content; color: var(--brand-dark); font-size: .84rem; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; }
+  .verification { border-color: #bfd0b7; background: #f4f7e9; }
+  .verification .eyebrow { margin-bottom: 8px; }
   .story-highlights { margin-top: 52px; border-top: 1px solid var(--line); }
   .story-highlights section { padding: 28px 0; display: grid; grid-template-columns: 42px 1fr; gap: 18px; border-bottom: 1px solid var(--line); }
   .story-highlights section > span { color: var(--brand-dark); font-size: .75rem; font-weight: 800; }
