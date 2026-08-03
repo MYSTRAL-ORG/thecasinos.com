@@ -33,10 +33,28 @@ for = "/logo.png"
   Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
 
 [[headers]]
+for = "/operation"
+  [headers.values]
+  Cache-Control = "private, no-store"
+  Netlify-CDN-Cache-Control = "private, no-store"
+  X-Robots-Tag = "noindex, nofollow"
+
+[[headers]]
 for = "/operation/*"
   [headers.values]
   Cache-Control = "private, no-store"
   Netlify-CDN-Cache-Control = "private, no-store"
+  X-Robots-Tag = "noindex, nofollow"
+
+[[redirects]]
+from = "https://thecasinos.com/*"
+to = "https://www.thecasinos.com/:splat"
+status = 301
+force = true
+
+[[headers]]
+for = "/api/*"
+  [headers.values]
   X-Robots-Tag = "noindex, nofollow"
 
 [[redirects]]

@@ -2,6 +2,14 @@
 
 A complete rebuild of TheCasinos.com around its data: 7,493 unique land-based casino URLs, geographic exploration and a manageable online casino Top 10.
 
+## SEO architecture
+
+- `/casinos` links every country guide.
+- Country guides link every indexed city.
+- City guides expose all venues through crawlable `/page/:number` routes.
+- `sitemap.xml` includes static pages, country/city guides, pagination, casino profiles and review dates.
+- Run `SEO_BASE_URL=https://deploy-preview-url npm run audit:seo` from `web/` to validate a deployed build.
+
 ## Stack
 
 - Astro 7 with server-rendered routes and selective client-side JavaScript

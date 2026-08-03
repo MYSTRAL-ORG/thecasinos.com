@@ -35,6 +35,7 @@ export type Casino = {
   legacy_image_name?: string | null;
   has_original_image?: boolean;
   published?: boolean;
+  updated_at?: string | null;
 };
 
 export type OnlineCasino = {
@@ -113,4 +114,30 @@ export type Destination = {
   country_name: string;
   country_slug: string;
   casino_count: number;
+};
+
+export type CountryDirectoryEntry = Destination & {
+  city_count: number;
+  last_updated_at?: string | null;
+};
+
+export type CityDirectoryEntry = {
+  country_name: string;
+  country_slug: string;
+  city_name: string;
+  city_slug: string;
+  casino_count: number;
+  last_updated_at?: string | null;
+};
+
+export type CasinoDirectoryPage = {
+  casinos: Casino[];
+  total: number;
+  page: number;
+  pageSize: number;
+};
+
+export type PublicUrl = {
+  path: string;
+  lastModified?: string | null;
 };

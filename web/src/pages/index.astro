@@ -4,6 +4,7 @@ import CasinoCard from '@/components/CasinoCard.astro';
 import OnlineRanking from '@/components/OnlineRanking.astro';
 import WorldMap from '@/components/WorldMap.astro';
 import { getFeaturedCasinos, getOnlineCasinos, getPopularDestinations, getSiteStats } from '@/lib/data';
+import { getCasinoImageUrl } from '@/lib/media';
 
 const [stats, casinos, destinations, onlineCasinos] = await Promise.all([
   getSiteStats(),
@@ -22,6 +23,7 @@ const initialLocation = Number.isFinite(geoLatitude) && Number.isFinite(geoLongi
       city: netlifyGeo?.city || undefined,
     }
   : undefined;
+const homeImage = casinos[0] ? getCasinoImageUrl(casinos[0], { width: 1200, height: 630, quality: 82 }) : undefined;
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -37,7 +39,7 @@ const structuredData = {
 };
 ---
 
-<BaseLayout title="TheCasinos.com — Casinos around the world" description="Find casinos around your current location, explore 7,500+ land-based venues by map, and compare our curated online casino Top 10." structuredData={structuredData}>
+<BaseLayout title="TheCasinos.com — Casinos around the world" description="Find casinos around your current location, explore 7,500+ land-based venues by map, and compare our curated online casino Top 10." image={homeImage || undefined} imageAlt="Explore casinos around the world with TheCasinos.com" structuredData={structuredData}>
   <section class="map-hero">
     <div class="container"><WorldMap stats={stats} initialLocation={initialLocation} /></div>
   </section>
@@ -45,7 +47,7 @@ const structuredData = {
   <section class="section container">
     <div class="section-heading">
       <div><p class="eyebrow">Places worth knowing</p><h2>Photos, facts and<br />the full story.</h2></div>
-      <a href="/search" class="button secondary">Browse the directory</a>
+      <a href="/casinos" class="button secondary">Browse the directory</a>
     </div>
     <div class="casino-grid">
       {casinos.map((casino) => <CasinoCard casino={casino} />)}

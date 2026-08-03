@@ -7,7 +7,7 @@ const query = Astro.url.searchParams.get('q')?.trim() ?? '';
 const casinos = query ? await searchCasinos(query) : [];
 ---
 
-<BaseLayout title={query ? `Search results for “${query}”` : 'Search casinos'} description="Search TheCasinos.com by casino name, city or country." noindex={Boolean(query)}>
+<BaseLayout title={query ? `Search results for “${query}”` : 'Search casinos'} description="Search TheCasinos.com by casino name, city or country." noindex>
   <section class="search-hero">
     <div class="container">
       <p class="eyebrow">7,500+ places</p>

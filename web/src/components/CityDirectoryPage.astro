@@ -1,0 +1,111 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import CasinoCard from '@/components/CasinoCard.astro';
+import { getCasinoDirectoryPage } from '@/lib/data';
+import { breadcrumbSchema } from '@/lib/seo';
+
+interface Props {
+  country: string;
+  city: string;
+  page: number;
+}
+
+const { country, city, page } = Astro.props;
+const result = await getCasinoDirectoryPage(country, city, page);
+const totalPages = Math.max(1, Math.ceil(result.total / result.pageSize));
+const pageIsValid = result.total > 0 && page <= totalPages;
+if (!pageIsValid) Astro.response.status = 404;
+
+const countryName = result.casinos[0]?.country_name ?? country.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+const cityName = result.casinos[0]?.city_name ?? city.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+const canonicalPath = page <= 1 ? `/${country}/${city}` : `/${country}/${city}/page/${page}`;
+const previousPage = page > 2 ? `/${country}/${city}/page/${page - 1}` : page === 2 ? `/${country}/${city}` : undefined;
+const nextPage = pageIsValid && page < totalPages ? `/${country}/${city}/page/${page + 1}` : undefined;
+const pageLabel = page > 1 ? ` – Page ${page}` : '';
+const firstListing = (page - 1) * result.pageSize + 1;
+const lastListing = Math.min(page * result.pageSize, result.total);
+const structuredData = pageIsValid ? [
+  breadcrumbSchema([
+    { name: 'Casino directory', path: '/casinos' },
+    { name: countryName, path: `/${country}` },
+    { name: cityName, path: `/${country}/${city}` },
+    ...(page > 1 ? [{ name: `Page ${page}`, path: canonicalPath }] : []),
+  ], Astro.site?.toString()),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Casinos in ${cityName}, ${countryName}${pageLabel}`,
+    numberOfItems: result.total,
+    itemListElement: result.casinos.map((casino, index) => ({
+      '@type': 'ListItem',
+      position: firstListing + index,
+      name: casino.name.trim(),
+      url: new URL(`/${casino.country_slug}/${casino.city_slug}/${casino.slug}`, Astro.site).toString(),
+    })),
+  },
+] : undefined;
+---
+
+<BaseLayout
+  title={`Casinos in ${cityName}, ${countryName}${pageLabel}`}
+  description={page > 1
+    ? `Browse casino listings ${firstListing}–${lastListing} of ${result.total.toLocaleString('en-US')} in ${cityName}, ${countryName}. Continue through the complete city casino directory.`
+    : `Explore ${result.total.toLocaleString('en-US')} land-based casinos in ${cityName}, ${countryName}, with venue profiles, photos, games, practical facts and map links.`}
+  canonicalPath={canonicalPath}
+  previousPage={previousPage}
+  nextPage={nextPage}
+  noindex={!pageIsValid}
+  structuredData={structuredData}
+  cacheSeconds={3600}
+>
+  {pageIsValid ? <>
+    <section class="city-hero">
+      <div class="container">
+        <div class="breadcrumbs"><a href="/casinos">Casino directory</a><span>/</span><a href={`/${country}`}>{countryName}</a><span>/</span><span>{cityName}</span></div>
+        <p class="eyebrow">City casino guide</p>
+        <h1>Casinos in {cityName}</h1>
+        <p>{result.total.toLocaleString('en-US')} casino{result.total === 1 ? '' : 's'} listed in {cityName}, {countryName}.{page > 1 ? ` Showing ${firstListing}–${lastListing}.` : ''}</p>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="directory-copy">
+        <div><p class="eyebrow">Complete local directory</p><h2>{page > 1 ? `More casinos in ${cityName}` : `Explore casino venues in ${cityName}.`}</h2></div>
+        <p>Open a venue profile for editorial information, available games, photos and its mapped position. Verify current opening hours and access rules directly before visiting.</p>
+      </div>
+      <div class="casino-list">{result.casinos.map((casino) => <CasinoCard casino={casino} />)}</div>
+
+      {totalPages > 1 && <nav class="pagination" aria-label={`${cityName} casino directory pages`}>
+        {previousPage ? <a class="pagination-direction" href={previousPage} rel="prev">← Previous</a> : <span></span>}
+        <div>
+          {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+            <a
+              href={pageNumber === 1 ? `/${country}/${city}` : `/${country}/${city}/page/${pageNumber}`}
+              aria-current={pageNumber === page ? 'page' : undefined}
+            >{pageNumber}</a>
+          ))}
+        </div>
+        {nextPage ? <a class="pagination-direction" href={nextPage} rel="next">Next →</a> : <span></span>}
+      </nav>}
+    </section>
+  </> : <section class="section container"><div class="empty-state"><h1>City page not found</h1><p>This city or page number is not available in the directory.</p><a class="button" href="/casinos">Browse all countries</a></div></section>}
+</BaseLayout>
+
+<style>
+  .city-hero { padding: 42px 0 78px; background: linear-gradient(135deg, var(--forest), #285d51); color: #fff; }
+  .city-hero .breadcrumbs, .city-hero .eyebrow { color: var(--lime); }
+  .city-hero h1 { margin-bottom: 18px; }
+  .city-hero p:last-child { margin-bottom: 0; color: #c2d1cc; }
+  .directory-copy { margin-bottom: 38px; display: grid; grid-template-columns: 1fr 470px; gap: 70px; align-items: end; }
+  .directory-copy h2, .directory-copy p { margin-bottom: 0; }
+  .directory-copy > p { color: var(--muted); }
+  .casino-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  .pagination { margin-top: 52px; padding-top: 26px; display: grid; grid-template-columns: 1fr auto 1fr; gap: 20px; align-items: center; border-top: 1px solid var(--line); }
+  .pagination > div { display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; }
+  .pagination > div a { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 50%; font-size: .8rem; font-weight: 800; }
+  .pagination > div a[aria-current='page'] { border-color: var(--brand); background: var(--brand); color: #fff; }
+  .pagination-direction { color: var(--brand-dark); font-size: .84rem; font-weight: 800; }
+  .pagination > .pagination-direction:last-child { text-align: right; }
+  @media (max-width: 900px) { .directory-copy { grid-template-columns: 1fr; gap: 25px; } .casino-list { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .casino-list { grid-template-columns: 1fr; } .pagination { grid-template-columns: 1fr 1fr; } .pagination > div { grid-column: 1 / -1; grid-row: 1; } }
+</style>

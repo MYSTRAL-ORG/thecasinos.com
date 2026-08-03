@@ -1,0 +1,13 @@
+---
+import CityDirectoryPage from '@/components/CityDirectoryPage.astro';
+
+const country = Astro.params.country ?? '';
+const city = Astro.params.city ?? '';
+const page = Number.parseInt(Astro.params.page ?? '', 10);
+
+if (!Number.isInteger(page) || page <= 1) {
+  return Astro.redirect(`/${country}/${city}`, 301);
+}
+---
+
+<CityDirectoryPage country={country} city={city} page={page} />

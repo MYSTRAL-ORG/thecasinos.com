@@ -1,38 +1,101 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CasinoCard from '@/components/CasinoCard.astro';
-import { getCasinosByLocation } from '@/lib/data';
+import { getCasinosByLocation, getCitiesDirectory } from '@/lib/data';
+import { breadcrumbSchema } from '@/lib/seo';
 
 const country = Astro.params.country ?? '';
-const casinos = await getCasinosByLocation(country);
-const countryName = casinos[0]?.country_name ?? country.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
-if (!casinos.length) Astro.response.status = 404;
-const cities = new Map<string, { name: string; count: number }>();
-for (const casino of casinos) {
-  const current = cities.get(casino.city_slug);
-  cities.set(casino.city_slug, { name: casino.city_name, count: (current?.count ?? 0) + 1 });
-}
+const [cities, casinos] = await Promise.all([
+  getCitiesDirectory(country),
+  getCasinosByLocation(country, undefined, 12),
+]);
+const countryName = cities[0]?.country_name ?? country.split('-').map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(' ');
+const casinoCount = cities.reduce((total, city) => total + city.casino_count, 0);
+if (!cities.length) Astro.response.status = 404;
+
+const structuredData = cities.length ? breadcrumbSchema([
+  { name: 'Casino directory', path: '/casinos' },
+  { name: countryName, path: `/${country}` },
+], Astro.site?.toString()) : undefined;
 ---
 
-<BaseLayout title={`Casinos in ${countryName}`} description={`Explore land-based casinos, destinations and practical information for ${countryName}.`} noindex={!casinos.length}>
-  <section class="location-hero"><div class="container"><div class="breadcrumbs"><a href="/">World</a><span>/</span><span>{countryName}</span></div><p class="eyebrow">Country guide</p><h1>Casinos in<br />{countryName}</h1><p>{casinos.length} listed place{casinos.length === 1 ? '' : 's'} across {cities.size} cit{cities.size === 1 ? 'y' : 'ies'}.</p></div></section>
-  <section class="section container">
-    {casinos.length ? <>
-      <div class="city-links">{[...cities.entries()].slice(0, 24).map(([slug, city]) => <a href={`/${country}/${slug}`}>{city.name}<span>{city.count}</span></a>)}</div>
-      <div class="casino-list">{casinos.map((casino) => <CasinoCard casino={casino} />)}</div>
-    </> : <div class="empty-state"><h2>Destination not found</h2><p>This country is not available in the current directory.</p><a class="button" href="/">Return to the map</a></div>}
-  </section>
+<BaseLayout
+  title={`Casinos in ${countryName}`}
+  description={`Explore ${casinoCount.toLocaleString('en-US')} land-based casinos across ${cities.length.toLocaleString('en-US')} cities in ${countryName}. Browse every city guide, venue profile, photo and practical casino detail.`}
+  noindex={!cities.length}
+  structuredData={structuredData}
+  cacheSeconds={3600}
+>
+  {cities.length ? <>
+    <section class="location-hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="breadcrumbs"><a href="/casinos">Casino directory</a><span>/</span><span>{countryName}</span></div>
+          <p class="eyebrow">Country casino guide</p>
+          <h1>Casinos in<br />{countryName}</h1>
+          <p>{casinoCount.toLocaleString('en-US')} listed casino{casinoCount === 1 ? '' : 's'} across {cities.length.toLocaleString('en-US')} cit{cities.length === 1 ? 'y' : 'ies'}.</p>
+        </div>
+        <dl>
+          <div><dt>Casinos</dt><dd>{casinoCount.toLocaleString('en-US')}</dd></div>
+          <div><dt>Cities</dt><dd>{cities.length.toLocaleString('en-US')}</dd></div>
+        </dl>
+      </div>
+    </section>
+
+    <section class="section container">
+      <div class="section-heading city-heading">
+        <div><p class="eyebrow">Complete city index</p><h2>Find casinos by city.</h2></div>
+        <p>Every city currently stored in the directory is linked below. Open a city guide to browse all its venues through crawlable numbered pages.</p>
+      </div>
+      <div class="city-index">
+        {cities.map((city) => (
+          <a href={`/${country}/${city.city_slug}`}>
+            <strong>{city.city_name}</strong>
+            <span>{city.casino_count.toLocaleString('en-US')}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    {casinos.length ? <section class="section featured-section">
+      <div class="container">
+        <div class="section-heading">
+          <div><p class="eyebrow">Directory highlights</p><h2>Start exploring<br />{countryName}.</h2></div>
+          <p>These profiles are a starting point. The city index above links to the complete collection.</p>
+        </div>
+        <div class="casino-list">{casinos.map((casino) => <CasinoCard casino={casino} />)}</div>
+      </div>
+    </section> : null}
+
+    <section class="container planning-note">
+      <div><p class="eyebrow">Before visiting</p><h2>Check current local information.</h2></div>
+      <p>Opening hours, legal access, age limits, dress codes and game availability can change. Confirm practical details with the venue before travelling and gamble only within a fixed entertainment budget.</p>
+    </section>
+  </> : <section class="section container"><div class="empty-state"><h1>Destination not found</h1><p>This country is not available in the current directory.</p><a class="button" href="/casinos">Browse all countries</a></div></section>}
 </BaseLayout>
 
 <style>
-  .location-hero { padding: 35px 0 75px; background: var(--forest); color: #fff; }
+  .location-hero { padding: 42px 0 78px; background: var(--forest); color: #fff; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 310px; gap: 70px; align-items: end; }
   .location-hero .breadcrumbs, .location-hero .eyebrow { color: var(--lime); }
   .location-hero h1 { margin-bottom: 18px; }
-  .location-hero p:last-child { color: #c2d1cc; }
-  .city-links { margin-bottom: 45px; display: flex; flex-wrap: wrap; gap: 9px; }
-  .city-links a { display: flex; gap: 10px; padding: 9px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: .88rem; }
-  .city-links span { color: var(--brand-dark); font-weight: 700; }
+  .location-hero p:last-child { margin-bottom: 0; color: #c2d1cc; }
+  dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; }
+  dl div { padding: 22px 15px; display: flex; flex-direction: column; gap: 7px; text-align: center; }
+  dl div + div { border-left: 1px solid rgba(255,255,255,.16); }
+  dt { color: #96aca5; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+  dd { margin: 0; color: var(--lime); font: 800 1.45rem/1 'Manrope', sans-serif; }
+  .city-heading > p, .section-heading > p { max-width: 510px; margin-bottom: 0; color: var(--muted); }
+  .city-index { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); }
+  .city-index a { min-height: 62px; padding: 13px 12px; display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); }
+  .city-index a:not(:nth-child(4n)) { border-right: 1px solid var(--line); }
+  .city-index strong { font-size: .84rem; }
+  .city-index span { min-width: 30px; height: 30px; padding: 0 8px; display: grid; place-items: center; border-radius: 999px; background: #e8edd2; color: var(--brand-dark); font-size: .68rem; font-weight: 800; }
+  .city-index a:hover { background: #fff; }
+  .featured-section { background: #eceae1; }
   .casino-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  @media (max-width: 900px) { .casino-list { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 620px) { .casino-list { grid-template-columns: 1fr; } }
+  .planning-note { margin-block: 72px 90px; padding: 34px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 55px; border-radius: var(--radius-lg); background: var(--lime); }
+  .planning-note h2, .planning-note p { margin-bottom: 0; }
+  @media (max-width: 900px) { .hero-grid, .planning-note { grid-template-columns: 1fr; gap: 35px; } .city-index { grid-template-columns: repeat(3, 1fr); } .city-index a:not(:nth-child(4n)) { border-right: 0; } .city-index a:not(:nth-child(3n)) { border-right: 1px solid var(--line); } .casino-list { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .city-index, .casino-list { grid-template-columns: 1fr; } .city-index a:not(:nth-child(3n)) { border-right: 0; } dl { grid-template-columns: 1fr; } dl div + div { border: 0; border-top: 1px solid rgba(255,255,255,.16); } }
 </style>

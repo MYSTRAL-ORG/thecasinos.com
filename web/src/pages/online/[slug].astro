@@ -3,6 +3,7 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 import OnlineRanking from '@/components/OnlineRanking.astro';
 import { getOnlineCasino, getOnlineCasinos } from '@/lib/data';
 import type { OnlineCasino } from '@/lib/types';
+import { breadcrumbSchema } from '@/lib/seo';
 
 const slug = Astro.params.slug ?? '';
 const [casino, ranking] = await Promise.all([getOnlineCasino(slug), getOnlineCasinos()]);
@@ -33,24 +34,50 @@ const quickFacts = casino ? [
   ['Support', casino.support_hours],
 ].filter((item): item is [string, string] => Boolean(item[1])) : [];
 
-const structuredData = casino ? {
-  '@context': 'https://schema.org',
-  '@type': 'Review',
-  name: `${casino.name} review`,
-  itemReviewed: { '@type': 'Organization', name: casino.name, url: casino.website_url || casino.affiliate_url },
-  author: { '@type': 'Organization', name: 'TheCasinos.com editorial team' },
-  datePublished: casino.reviewed_at,
-  dateModified: casino.last_verified_at || casino.reviewed_at,
-  reviewRating: { '@type': 'Rating', ratingValue: casino.rating, bestRating: 5, worstRating: 0 },
-  reviewBody: casino.summary,
-} : undefined;
+const canonicalPath = casino ? `/online/${casino.slug}` : Astro.url.pathname;
+const structuredData = casino ? [
+  breadcrumbSchema([
+    { name: 'TheCasinos.com', path: '/' },
+    { name: 'Online casino reviews', path: '/online' },
+    { name: casino.name, path: canonicalPath },
+  ], Astro.site?.toString()),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Review',
+    '@id': new URL(`${canonicalPath}#review`, Astro.site).toString(),
+    url: new URL(canonicalPath, Astro.site).toString(),
+    name: `${casino.name} review`,
+    itemReviewed: { '@type': 'Organization', name: casino.name, url: casino.website_url || casino.affiliate_url },
+    author: { '@type': 'Organization', name: 'TheCasinos.com editorial team' },
+    publisher: { '@type': 'Organization', '@id': new URL('/#organization', Astro.site).toString(), name: 'TheCasinos.com' },
+    datePublished: casino.reviewed_at,
+    dateModified: casino.last_verified_at || casino.reviewed_at,
+    reviewRating: { '@type': 'Rating', ratingValue: casino.rating, bestRating: 5, worstRating: 0 },
+    reviewBody: casino.summary,
+  },
+  ...(casino.faqs?.length ? [{
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: casino.faqs.map((faq) => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: { '@type': 'Answer', text: faq.answer },
+    })),
+  }] : []),
+] : undefined;
 ---
 
 <BaseLayout
   title={casino?.seo_title || (casino ? `${casino.name} review` : 'Online casino not found')}
   description={casino?.seo_description || casino?.summary || 'Online casino review not found.'}
+  canonicalPath={canonicalPath}
   noindex={!casino}
   image={casino?.screenshots?.[0]?.url || casino?.logo_url || undefined}
+  imageAlt={casino ? `${casino.name} online casino review` : undefined}
+  pageType="article"
+  publishedTime={casino?.reviewed_at}
+  modifiedTime={casino?.last_verified_at || casino?.reviewed_at}
+  cacheSeconds={300}
   structuredData={structuredData}
 >
   {casino ? <>
