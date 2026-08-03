@@ -63,7 +63,7 @@ PUBLIC_SUPABASE_ANON_KEY
 
 Do not configure a service-role key in Netlify. All browser-side administration uses the authenticated user token and is enforced by RLS.
 
-Casino photos are served through Netlify Image CDN from `PUBLIC_LEGACY_MEDIA_ORIGIN` (default: `https://www.thecasinos.com`). Keep the legacy origin reachable when changing DNS, or mirror the assets through an authenticated server-side process before the cutover. Never enable anonymous Storage uploads for the migration.
+The 2,020 recoverable original casino photos and the eight historical fallback visuals live under `web/public/media`. Netlify Image CDN resizes these local sources on demand, so the rebuilt site does not depend on the legacy domain or on anonymous Storage access.
 
 ## Quality checks
 

@@ -1,13 +1,16 @@
 import type { Casino } from './types';
 
-const legacyMediaOrigin = (import.meta.env.PUBLIC_LEGACY_MEDIA_ORIGIN || 'https://www.thecasinos.com').replace(/\/$/, '');
-
 export function getCasinoImageSource(casino: Pick<Casino, 'legacy_image_name' | 'has_original_image'>): string | null {
   const imageName = casino.legacy_image_name?.trim();
   if (!imageName) return null;
-  const placeholder = casino.has_original_image === false || /^casino-no-pic-[1-8]\.webp$/i.test(imageName);
-  const directory = placeholder ? '/img/casinos/randomCasinos/' : '/img/casino/';
-  return `${legacyMediaOrigin}${directory}${encodeURIComponent(imageName)}`;
+
+  const placeholderMatch = imageName.match(/^casino-no-pic-([1-8])\.webp$/i);
+  const originalIsAvailable = casino.has_original_image !== false && imageName.toLowerCase().endsWith('.webp');
+  const resolvedName = originalIsAvailable
+    ? imageName
+    : placeholderMatch?.[0].toLowerCase() ?? getFallbackImageName(imageName);
+  const directory = originalIsAvailable ? '/media/casinos/' : '/media/casino-placeholders/';
+  return `${directory}${encodeURIComponent(resolvedName)}`;
 }
 
 export function getCasinoImageUrl(
@@ -25,4 +28,10 @@ export function getCasinoImageUrl(
   });
   if (options.height) parameters.set('h', String(options.height));
   return `/.netlify/images?${parameters}`;
+}
+
+function getFallbackImageName(seed: string): string {
+  let hash = 0;
+  for (const character of seed) hash = ((hash * 31) + character.charCodeAt(0)) >>> 0;
+  return `casino-no-pic-${(hash % 8) + 1}.webp`;
 }
