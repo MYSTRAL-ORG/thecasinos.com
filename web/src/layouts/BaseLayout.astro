@@ -7,15 +7,62 @@ interface Props {
   title: string;
   description: string;
   image?: string;
+  imageAlt?: string;
   noindex?: boolean;
+  nofollow?: boolean;
   chrome?: boolean;
+  canonicalPath?: string;
+  previousPage?: string;
+  nextPage?: string;
+  pageType?: 'website' | 'article';
+  publishedTime?: string | null;
+  modifiedTime?: string | null;
+  cacheSeconds?: number;
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, image, noindex = false, chrome = true, structuredData } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
-const fullTitle = title.includes('TheCasinos') ? title : `${title} | TheCasinos.com`;
+const {
+  title,
+  description,
+  image,
+  imageAlt,
+  noindex = false,
+  nofollow = false,
+  chrome = true,
+  canonicalPath,
+  previousPage,
+  nextPage,
+  pageType = 'website',
+  publishedTime,
+  modifiedTime,
+  cacheSeconds,
+  structuredData,
+} = Astro.props;
+const requestedCanonicalPath = canonicalPath || Astro.url.pathname;
+const normalizedCanonicalPath = requestedCanonicalPath === '/' ? '/' : requestedCanonicalPath.replace(/\/+$/, '');
+const canonical = new URL(normalizedCanonicalPath, Astro.site ?? Astro.url.origin);
+const cleanTitle = title.replace(/\s+/g, ' ').trim();
+const fullTitle = cleanTitle.includes('TheCasinos') || cleanTitle.length > 52 ? cleanTitle : `${cleanTitle} | TheCasinos.com`;
 const socialImage = image ? new URL(image, canonical).toString() : new URL('/logo.png', canonical).toString();
+const socialImageAlt = imageAlt || `${cleanTitle} on TheCasinos.com`;
+const robots = noindex
+  ? `noindex,${nofollow ? 'nofollow' : 'follow'}`
+  : 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1';
+const pageSchemas = structuredData ? (Array.isArray(structuredData) ? structuredData : [structuredData]) : [];
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': new URL('/#organization', canonical).toString(),
+  name: 'TheCasinos.com',
+  url: new URL('/', canonical).toString(),
+  logo: new URL('/logo.png', canonical).toString(),
+};
+
+if (noindex) Astro.response.headers.set('X-Robots-Tag', robots);
+if (!noindex && cacheSeconds && cacheSeconds > 0) {
+  Astro.response.headers.set('Cache-Control', 'public, max-age=0, must-revalidate');
+  Astro.response.headers.set('Netlify-CDN-Cache-Control', `public, durable, max-age=${Math.floor(cacheSeconds)}, stale-while-revalidate=${Math.floor(cacheSeconds * 12)}`);
+}
 ---
 
 <!doctype html>
@@ -25,20 +72,28 @@ const socialImage = image ? new URL(image, canonical).toString() : new URL('/log
     <meta name="viewport" content="width=device-width" />
     <meta name="theme-color" content="#173f37" />
     <meta name="description" content={description} />
-    <meta name="robots" content={noindex ? 'noindex,nofollow' : 'index,follow,max-image-preview:large'} />
+    <meta name="robots" content={robots} />
     <link rel="canonical" href={canonical} />
+    {previousPage && <link rel="prev" href={new URL(previousPage, canonical)} />}
+    {nextPage && <link rel="next" href={new URL(nextPage, canonical)} />}
     <link rel="icon" href="/logo.png" type="image/png" />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={pageType} />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="TheCasinos.com" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={socialImage} />
+    <meta property="og:image:alt" content={socialImageAlt} />
+    {pageType === 'article' && publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {pageType === 'article' && modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={fullTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <meta name="twitter:image:alt" content={socialImageAlt} />
     <title>{fullTitle}</title>
-    {structuredData && <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
+    {[organizationSchema, ...pageSchemas].map((schema) => <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />)}
   </head>
   <body>
     {chrome && <Header />}

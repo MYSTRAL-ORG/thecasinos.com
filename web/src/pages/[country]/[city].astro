@@ -1,29 +1,8 @@
 ---
-import BaseLayout from '@/layouts/BaseLayout.astro';
-import CasinoCard from '@/components/CasinoCard.astro';
-import { getCasinosByLocation } from '@/lib/data';
+import CityDirectoryPage from '@/components/CityDirectoryPage.astro';
 
 const country = Astro.params.country ?? '';
 const city = Astro.params.city ?? '';
-const casinos = await getCasinosByLocation(country, city);
-const countryName = casinos[0]?.country_name ?? country;
-const cityName = casinos[0]?.city_name ?? city;
-if (!casinos.length) Astro.response.status = 404;
 ---
 
-<BaseLayout title={`Casinos in ${cityName}, ${countryName}`} description={`Find land-based casinos and gaming information for ${cityName}, ${countryName}.`} noindex={!casinos.length}>
-  <section class="city-hero"><div class="container"><div class="breadcrumbs"><a href="/">World</a><span>/</span><a href={`/${country}`}>{countryName}</a><span>/</span><span>{cityName}</span></div><p class="eyebrow">City guide</p><h1>{cityName}</h1><p>{casinos.length} casino{casinos.length === 1 ? '' : 's'} listed in {cityName}, {countryName}.</p></div></section>
-  <section class="section container">
-    {casinos.length ? <div class="casino-list">{casinos.map((casino) => <CasinoCard casino={casino} />)}</div> : <div class="empty-state"><h2>City not found</h2><a class="button" href="/">Return to the map</a></div>}
-  </section>
-</BaseLayout>
-
-<style>
-  .city-hero { padding: 35px 0 75px; background: linear-gradient(135deg, var(--forest), #285d51); color: #fff; }
-  .city-hero .breadcrumbs, .city-hero .eyebrow { color: var(--lime); }
-  .city-hero h1 { margin-bottom: 18px; }
-  .city-hero p:last-child { color: #c2d1cc; }
-  .casino-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-  @media (max-width: 900px) { .casino-list { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 620px) { .casino-list { grid-template-columns: 1fr; } }
-</style>
+<CityDirectoryPage country={country} city={city} page={1} />

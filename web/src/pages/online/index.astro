@@ -2,18 +2,25 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import OnlineRanking from '@/components/OnlineRanking.astro';
 import { getOnlineCasinos } from '@/lib/data';
+import { breadcrumbSchema } from '@/lib/seo';
 
 const casinos = await getOnlineCasinos();
-const structuredData = {
-  '@context': 'https://schema.org',
-  '@type': 'ItemList',
-  name: 'TheCasinos.com online casino ranking',
-  numberOfItems: casinos.length,
-  itemListElement: casinos.map((casino) => ({ '@type': 'ListItem', position: casino.position, name: casino.name, url: new URL(`/online/${casino.slug}`, Astro.site).toString() })),
-};
+const structuredData = [
+  breadcrumbSchema([
+    { name: 'TheCasinos.com', path: '/' },
+    { name: 'Online casino reviews', path: '/online' },
+  ], Astro.site?.toString()),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: 'TheCasinos.com online casino ranking',
+    numberOfItems: casinos.length,
+    itemListElement: casinos.map((casino) => ({ '@type': 'ListItem', position: casino.position, name: casino.name, url: new URL(`/online/${casino.slug}`, Astro.site).toString() })),
+  },
+];
 ---
 
-<BaseLayout title="Online casino Top 10" description="Compare the current TheCasinos.com online casino ranking, offers, ratings and detailed editorial reviews." structuredData={structuredData}>
+<BaseLayout title="Online casino Top 10" description="Compare the current TheCasinos.com online casino ranking, offers, ratings and detailed editorial reviews." structuredData={structuredData} cacheSeconds={300}>
   <section class="online-hero">
     <div class="container hero-grid">
       <div><p class="eyebrow">The online edit</p><h1>Ten places.<br /><span>One clear view.</span></h1><p class="lede">An editorial shortlist designed to make offers, strengths and limits easy to compare.</p></div>

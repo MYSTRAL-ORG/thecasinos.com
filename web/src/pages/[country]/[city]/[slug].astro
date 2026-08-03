@@ -1,13 +1,21 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { getCasinoByPath } from '@/lib/data';
+import CasinoCard from '@/components/CasinoCard.astro';
+import { getCasinoByPath, getCasinosByLocation } from '@/lib/data';
 import { getCasinoImageUrl } from '@/lib/media';
+import { breadcrumbSchema, casinoPageDescription, casinoPageTitle } from '@/lib/seo';
 
 const country = Astro.params.country ?? '';
 const city = Astro.params.city ?? '';
 const slug = Astro.params.slug ?? '';
-const casino = await getCasinoByPath(country, city, slug);
+const [casino, cityCasinos] = await Promise.all([
+  getCasinoByPath(country, city, slug),
+  getCasinosByLocation(country, city, 7),
+]);
 if (!casino) Astro.response.status = 404;
+const relatedCasinos = casino
+  ? cityCasinos.filter((item) => item.id !== casino.id).slice(0, 3)
+  : [];
 
 const facts = casino ? [
   casino.opened_on && { label: 'Opened', value: new Date(`${casino.opened_on}T00:00:00`).getFullYear().toString() },
@@ -22,23 +30,46 @@ const imageMedium = casino ? getCasinoImageUrl(casino, { width: 760, height: 520
 const paragraphs = casino?.editorial_paragraphs?.filter(Boolean).length
   ? casino.editorial_paragraphs.filter(Boolean)
   : [casino?.description].filter(Boolean) as string[];
-const pageDescription = casino?.seo_description || casino?.description || `Casino information for ${casino?.city_name ?? city}.`;
-const structuredData = casino ? {
-  '@context': 'https://schema.org',
-  '@type': 'Casino',
-  name: casino.name.trim(),
-  description: pageDescription,
-  image: image ? new URL(image, Astro.site).toString() : undefined,
-  address: { '@type': 'PostalAddress', addressLocality: casino.city_name, addressRegion: casino.state_name, addressCountry: casino.country_name },
-  geo: casino.latitude != null && casino.longitude != null ? { '@type': 'GeoCoordinates', latitude: casino.latitude, longitude: casino.longitude } : undefined,
-} : undefined;
+const pageTitle = casino ? casinoPageTitle(casino) : 'Casino not found';
+const pageDescription = casino ? casinoPageDescription(casino) : `Casino information for ${city}.`;
+const canonicalPath = casino ? `/${casino.country_slug}/${casino.city_slug}/${casino.slug}` : Astro.url.pathname;
+const structuredData = casino ? [
+  breadcrumbSchema([
+    { name: 'Casino directory', path: '/casinos' },
+    { name: casino.country_name, path: `/${casino.country_slug}` },
+    { name: casino.city_name, path: `/${casino.country_slug}/${casino.city_slug}` },
+    { name: casino.name.trim(), path: canonicalPath },
+  ], Astro.site?.toString()),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Casino',
+    '@id': new URL(`${canonicalPath}#casino`, Astro.site).toString(),
+    url: new URL(canonicalPath, Astro.site).toString(),
+    name: casino.name.trim(),
+    description: pageDescription,
+    image: image ? new URL(image, Astro.site).toString() : undefined,
+    address: { '@type': 'PostalAddress', addressLocality: casino.city_name, addressRegion: casino.state_name, addressCountry: casino.country_name },
+    geo: casino.latitude != null && casino.longitude != null ? { '@type': 'GeoCoordinates', latitude: casino.latitude, longitude: casino.longitude } : undefined,
+    openingHours: casino.always_open ? 'Mo-Su 00:00-23:59' : undefined,
+    mainEntityOfPage: new URL(canonicalPath, Astro.site).toString(),
+  },
+] : undefined;
 ---
 
-<BaseLayout title={casino?.seo_title || casino?.name.trim() || 'Casino not found'} description={pageDescription} image={image ? new URL(image, Astro.site).toString() : undefined} noindex={!casino} structuredData={structuredData}>
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalPath={canonicalPath}
+  image={image ? new URL(image, Astro.site).toString() : undefined}
+  imageAlt={casino ? `${casino.name.trim()} in ${casino.city_name}, ${casino.country_name}` : undefined}
+  noindex={!casino}
+  structuredData={structuredData}
+  cacheSeconds={3600}
+>
   {casino ? <>
     <section class="detail-hero">
       <div class="container">
-        <div class="breadcrumbs"><a href="/">World</a><span>/</span><a href={`/${casino.country_slug}`}>{casino.country_name}</a><span>/</span><a href={`/${casino.country_slug}/${casino.city_slug}`}>{casino.city_name}</a></div>
+        <div class="breadcrumbs"><a href="/casinos">Casino directory</a><span>/</span><a href={`/${casino.country_slug}`}>{casino.country_name}</a><span>/</span><a href={`/${casino.country_slug}/${casino.city_slug}`}>{casino.city_name}</a><span>/</span><span>{casino.name.trim()}</span></div>
         <div class="hero-grid">
           <div class="hero-copy">
             <p class="eyebrow">{casino.short_description || 'Land-based casino'}</p>
@@ -81,6 +112,12 @@ const structuredData = casino ? {
     </section>
 
     {casino.latitude != null && casino.longitude != null && <section class="container location-panel"><div><p class="eyebrow">Location</p><h2>{casino.city_name}, {casino.country_name}</h2><p>Open the exact position in OpenStreetMap before planning your visit.</p></div><a class="button dark" href={`https://www.openstreetmap.org/?mlat=${casino.latitude}&mlon=${casino.longitude}#map=15/${casino.latitude}/${casino.longitude}`} target="_blank" rel="noopener">Open map</a></section>}
+    {relatedCasinos.length ? <section class="related-section">
+      <div class="container">
+        <div class="section-heading"><div><p class="eyebrow">Continue exploring</p><h2>More casinos in<br />{casino.city_name}.</h2></div><a class="button secondary" href={`/${casino.country_slug}/${casino.city_slug}`}>View the complete city guide</a></div>
+        <div class="related-grid">{relatedCasinos.map((related) => <CasinoCard casino={related} />)}</div>
+      </div>
+    </section> : null}
   </> : <section class="section container"><div class="empty-state"><h1>Casino not found</h1><p>The requested listing is unavailable or has moved.</p><a href="/search" class="button">Search the directory</a></div></section>}
 </BaseLayout>
 
@@ -116,6 +153,8 @@ const structuredData = casino ? {
   .story-highlights p { margin: 0; color: var(--muted); }
   .location-panel { margin-bottom: 90px; padding: 36px; display: flex; align-items: center; justify-content: space-between; gap: 30px; border-radius: var(--radius-lg); background: var(--lime); }
   .location-panel h2, .location-panel p { margin-bottom: 0; }
-  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; }.hero-image { max-width: 720px; }.detail-grid { grid-template-columns: 1fr; gap: 42px; }.detail-aside { position: static; grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 620px) { .detail-hero { padding-bottom: 45px; }.hero-image { border-radius: 18px; }.detail-aside { grid-template-columns: 1fr; }.location-panel { align-items: start; flex-direction: column; } }
+  .related-section { padding: 88px 0; background: #eceae1; }
+  .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; }.hero-image { max-width: 720px; }.detail-grid { grid-template-columns: 1fr; gap: 42px; }.detail-aside { position: static; grid-template-columns: repeat(2, 1fr); }.related-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 620px) { .detail-hero { padding-bottom: 45px; }.hero-image { border-radius: 18px; }.detail-aside, .related-grid { grid-template-columns: 1fr; }.location-panel { align-items: start; flex-direction: column; } }
 </style>

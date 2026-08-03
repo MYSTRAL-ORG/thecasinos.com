@@ -1,0 +1,104 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { getCountriesDirectory, getSiteStats } from '@/lib/data';
+
+const [countries, stats] = await Promise.all([getCountriesDirectory(), getSiteStats()]);
+const groups = new Map<string, typeof countries>();
+for (const country of countries) {
+  const initial = country.country_name.charAt(0).toUpperCase();
+  groups.set(initial, [...(groups.get(initial) ?? []), country]);
+}
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Casino directory by country',
+  numberOfItems: countries.length,
+  itemListElement: countries.map((country, index) => ({
+    '@type': 'ListItem',
+    position: index + 1,
+    name: `Casinos in ${country.country_name}`,
+    url: new URL(`/${country.country_slug}`, Astro.site).toString(),
+  })),
+};
+---
+
+<BaseLayout
+  title="World casino directory by country"
+  description={`Browse ${stats.casinos.toLocaleString('en-US')} land-based casinos across ${stats.countries} countries and ${stats.cities.toLocaleString('en-US')} cities. Open a country guide, then explore every listed city and venue.`}
+  structuredData={structuredData}
+  cacheSeconds={3600}
+>
+  <section class="directory-hero">
+    <div class="container hero-grid">
+      <div>
+        <p class="eyebrow">Land-based casino directory</p>
+        <h1>Every country.<br /><span>Every listed city.</span></h1>
+        <p class="lede">A crawlable route through the complete TheCasinos.com directory—from country guides to city lists and individual casino profiles.</p>
+      </div>
+      <dl>
+        <div><dt>Casinos</dt><dd>{stats.casinos.toLocaleString('en-US')}</dd></div>
+        <div><dt>Countries</dt><dd>{stats.countries}</dd></div>
+        <div><dt>Cities</dt><dd>{stats.cities.toLocaleString('en-US')}</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="section container">
+    <div class="directory-intro">
+      <div><p class="eyebrow">Browse alphabetically</p><h2>Casino destinations<br />around the world.</h2></div>
+      <p>Choose a country to see its complete city index. Each city guide links to every casino listing through numbered pages, so no venue is hidden behind the map or search form.</p>
+    </div>
+
+    <nav class="alphabet" aria-label="Country initials">
+      {[...groups.keys()].map((initial) => <a href={`#countries-${initial}`}>{initial}</a>)}
+    </nav>
+
+    <div class="country-groups">
+      {[...groups.entries()].map(([initial, entries]) => (
+        <section id={`countries-${initial}`} class="country-group">
+          <h2>{initial}</h2>
+          <div class="country-grid">
+            {entries.map((country) => (
+              <a href={`/${country.country_slug}`}>
+                <strong>{country.country_name}</strong>
+                <span>{country.casino_count.toLocaleString('en-US')} casino{country.casino_count === 1 ? '' : 's'} · {country.city_count.toLocaleString('en-US')} cit{country.city_count === 1 ? 'y' : 'ies'}</span>
+                <b aria-hidden="true">→</b>
+              </a>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .directory-hero { padding: 86px 0; background: var(--forest); color: #fff; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 80px; align-items: end; }
+  .directory-hero .eyebrow, .directory-hero h1 span { color: var(--lime); }
+  .directory-hero .lede { max-width: 740px; color: #bfd0ca; }
+  dl { margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid rgba(255,255,255,.16); border-radius: 18px; }
+  dl div { padding: 20px 14px; display: flex; flex-direction: column; gap: 6px; text-align: center; }
+  dl div + div { border-left: 1px solid rgba(255,255,255,.16); }
+  dt { color: #9db3ac; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
+  dd { margin: 0; color: var(--lime); font: 800 1.45rem/1 'Manrope', sans-serif; }
+  .directory-intro { margin-bottom: 32px; display: grid; grid-template-columns: 1fr 470px; gap: 70px; align-items: end; }
+  .directory-intro h2, .directory-intro p { margin-bottom: 0; }
+  .directory-intro > p { color: var(--muted); }
+  .alphabet { position: sticky; top: 10px; z-index: 10; padding: 10px; display: flex; flex-wrap: wrap; gap: 6px; border: 1px solid var(--line); border-radius: 16px; background: rgba(247,245,239,.94); backdrop-filter: blur(12px); }
+  .alphabet a { width: 34px; height: 34px; display: grid; place-items: center; border-radius: 50%; color: var(--brand-dark); font-size: .78rem; font-weight: 800; }
+  .alphabet a:hover { background: var(--brand); color: #fff; }
+  .country-groups { margin-top: 46px; display: grid; gap: 52px; }
+  .country-group { scroll-margin-top: 80px; display: grid; grid-template-columns: 70px 1fr; gap: 28px; }
+  .country-group > h2 { margin: 4px 0 0; color: var(--brand-dark); font-size: 2.3rem; }
+  .country-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); }
+  .country-grid a { min-height: 105px; padding: 20px 16px; position: relative; display: flex; flex-direction: column; justify-content: center; border-bottom: 1px solid var(--line); }
+  .country-grid a:not(:nth-child(3n)) { border-right: 1px solid var(--line); }
+  .country-grid strong { padding-right: 28px; font: 700 1rem/1.3 'Manrope', sans-serif; }
+  .country-grid span { margin-top: 7px; color: var(--muted); font-size: .74rem; }
+  .country-grid b { position: absolute; top: 22px; right: 16px; color: var(--brand-dark); }
+  .country-grid a:hover { background: #fff; }
+  @media (max-width: 900px) { .hero-grid, .directory-intro { grid-template-columns: 1fr; gap: 35px; } .country-grid { grid-template-columns: repeat(2, 1fr); } .country-grid a:not(:nth-child(3n)) { border-right: 0; } .country-grid a:nth-child(odd) { border-right: 1px solid var(--line); } }
+  @media (max-width: 620px) { .directory-hero { padding: 58px 0; } dl { grid-template-columns: 1fr; } dl div + div { border: 0; border-top: 1px solid rgba(255,255,255,.16); } .country-group { grid-template-columns: 1fr; gap: 8px; } .country-grid { grid-template-columns: 1fr; } .country-grid a:nth-child(odd) { border-right: 0; } }
+</style>
