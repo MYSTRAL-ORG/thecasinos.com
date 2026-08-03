@@ -1,6 +1,7 @@
 ---
 import type { OnlineCasino } from '@/lib/types';
 const { casinos, compact = false } = Astro.props as { casinos: OnlineCasino[]; compact?: boolean };
+const typeLabel = (type?: OnlineCasino['casino_type']) => type === 'sweepstakes' ? 'Sweepstakes' : type === 'social' ? 'Social casino' : 'Real money';
 ---
 
 <div class:list={["online-ranking", { compact }]}>
@@ -9,13 +10,13 @@ const { casinos, compact = false } = Astro.props as { casinos: OnlineCasino[]; c
       <div class="rank">{String(casino.position ?? '—').padStart(2, '0')}</div>
       <div class="operator">
         {casino.logo_url ? <img src={casino.logo_url} width="48" height="48" alt={`${casino.name} logo`} loading="lazy" /> : <span class="operator-mark">{casino.name.charAt(0)}</span>}
-        <div><h3>{casino.name}</h3><span>{casino.subtitle || casino.key_features?.[0]}</span></div>
+        <div><div class="operator-heading"><h3>{casino.name}</h3><small>{typeLabel(casino.casino_type)}</small></div><span>{casino.subtitle || casino.key_features?.[0]}</span></div>
       </div>
       {!compact && <div class="bonus"><small>Current offer</small><strong>{casino.bonus}</strong></div>}
       <div class="rating" aria-label={`${casino.rating} out of 5`}><strong>{Number(casino.rating).toFixed(1)}</strong><span>★</span></div>
       <div class="actions">
         <a href={`/online/${casino.slug}`} class="review">Review</a>
-        <a href={casino.affiliate_url} class="button small" target="_blank" rel="nofollow sponsored noopener">Visit site</a>
+        <a href={casino.affiliate_url || casino.website_url || '#'} class="button small" target="_blank" rel="nofollow sponsored noopener">{casino.cta_label || 'Visit site'}</a>
       </div>
     </article>
   ))}
@@ -30,6 +31,9 @@ const { casinos, compact = false } = Astro.props as { casinos: OnlineCasino[]; c
   .operator img, .operator-mark { width: 48px; height: 48px; object-fit: contain; border-radius: 13px; background: #f0eee7; }
   .operator-mark { display: grid; place-items: center; background: var(--forest); color: var(--lime); font: 800 1.2rem/1 'Manrope', sans-serif; }
   .operator h3 { margin: 0 0 3px; font-size: 1rem; }
+  .operator-heading { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+  .operator-heading h3 { margin: 0; }
+  .operator-heading small { padding: 3px 6px; border-radius: 999px; background: #e8edd2; color: #43564f; font-size: .58rem; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
   .operator span, .bonus small { color: var(--muted); font-size: .77rem; }
   .bonus { display: flex; flex-direction: column; gap: 4px; }
   .bonus strong { font-size: .9rem; }

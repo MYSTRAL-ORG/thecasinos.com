@@ -1,0 +1,745 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Operation" description="Private editorial operations for TheCasinos.com." noindex>
+  <section class="operation-shell">
+    <div class="container operation-heading">
+      <div>
+        <p class="eyebrow">Private workspace</p>
+        <h1>Casino operations.</h1>
+        <p>Manage the online Top 10, full reviews, verification data, official and affiliate links, logos and review screenshots.</p>
+      </div>
+      <button id="logout" class="button secondary" type="button" hidden>Sign out</button>
+    </div>
+
+    <div class="container">
+      <div id="config-warning" class="notice warning" hidden>
+        <strong>Supabase is not configured.</strong>
+        <span>Add the public project URL and publishable key. Never expose a secret or service-role key in the browser.</span>
+      </div>
+
+      <form id="login-form" class="login-card card">
+        <p class="eyebrow">Secure access</p>
+        <h2>Sign in to operations</h2>
+        <label>Email<input name="email" type="email" autocomplete="username" required /></label>
+        <label>Password<input name="password" type="password" autocomplete="current-password" required /></label>
+        <button class="button" type="submit">Sign in</button>
+        <p id="login-status" class="form-status" aria-live="polite"></p>
+      </form>
+
+      <div id="operation-app" hidden>
+        <div class="summary-grid">
+          <article class="summary-tile card"><small>Active ranking</small><strong id="active-count">0</strong><span>maximum 10</span></article>
+          <article class="summary-tile card"><small>Published reviews</small><strong id="published-count">0</strong><span>including archives</span></article>
+          <article class="summary-tile card"><small>Needs review</small><strong id="review-count">0</strong><span>not verified in 90 days</span></article>
+          <article class="summary-tile card"><small>Media</small><strong id="media-count">0</strong><span>logos and screenshots</span></article>
+        </div>
+
+        <div class="operation-toolbar card">
+          <div>
+            <strong>Online casino reviews</strong>
+            <span>Ranking positions are assigned automatically to active entries.</span>
+          </div>
+          <div class="toolbar-actions">
+            <button id="add-casino" class="button secondary small" type="button">New review</button>
+            <button id="save-all" class="button small" type="button">Save and publish</button>
+          </div>
+        </div>
+        <p id="operation-status" class="form-status global-status" aria-live="polite"></p>
+
+        <div class="workspace">
+          <aside class="review-sidebar card">
+            <label class="search-label">Find a review<input id="review-search" type="search" placeholder="Casino name…" /></label>
+            <div id="operator-list" class="operator-list"></div>
+          </aside>
+
+          <form id="review-editor" class="review-editor card" hidden>
+            <div class="editor-sticky">
+              <div>
+                <p class="eyebrow">Review editor</p>
+                <h2 id="editor-title">Casino review</h2>
+                <span id="editor-meta">Unsaved review</span>
+              </div>
+              <div class="editor-actions">
+                <a id="preview-review" class="button secondary small" href="#" target="_blank" rel="noopener">Preview</a>
+                <button id="delete-review" class="danger-button" type="button">Delete</button>
+              </div>
+            </div>
+
+            <nav class="section-nav" aria-label="Review sections">
+              <a href="#identity">Identity</a><a href="#offer">Offer</a><a href="#scores">Scores</a><a href="#facts">Facts</a><a href="#content">Content</a><a href="#media">Media</a><a href="#seo">SEO</a>
+            </nav>
+
+            <div class="editor-content">
+              <section id="identity" class="editor-section">
+                <div class="section-title"><span>01</span><div><h3>Identity and ranking</h3><p>Control visibility, position and operator status.</p></div></div>
+                <div class="field-grid four">
+                  <label class="short">Rank order<input data-field="position" type="number" min="1" max="10" /></label>
+                  <label>Name<input data-field="name" type="text" required /></label>
+                  <label>URL slug<input data-field="slug" type="text" pattern="[A-Za-z0-9_-]+" required /></label>
+                  <label>Review type<select data-field="casino_type"><option value="real-money">Real money</option><option value="sweepstakes">Sweepstakes</option><option value="social">Social casino</option></select></label>
+                  <label>Operator status<select data-field="operator_status"><option value="active">Active</option><option value="restricted">Region restricted</option><option value="monitoring">Monitoring</option><option value="unavailable">Unavailable</option></select></label>
+                  <label>Operator / company<input data-field="operator_name" type="text" /></label>
+                  <label>Established year<input data-field="established_year" type="number" min="1900" max="2100" /></label>
+                  <div class="checks field-span-2">
+                    <label><input data-field="active" type="checkbox" /> Active in Top 10</label>
+                    <label><input data-field="published" type="checkbox" /> Public review</label>
+                  </div>
+                </div>
+              </section>
+
+              <section id="offer" class="editor-section">
+                <div class="section-title"><span>02</span><div><h3>Positioning and links</h3><p>Keep the official URL separate from the future affiliate destination.</p></div></div>
+                <div class="field-grid">
+                  <label>Official website URL<input data-field="website_url" type="url" placeholder="https://official-site.com/" /></label>
+                  <label>Affiliate URL<input data-field="affiliate_url" type="url" placeholder="Use the official URL until your link is ready" /></label>
+                  <label>CTA label<input data-field="cta_label" type="text" /></label>
+                  <label>Bonus headline<input data-field="bonus" type="text" /></label>
+                  <label class="field-span-2">Subtitle<input data-field="subtitle" type="text" /></label>
+                  <label class="field-span-2">Review summary<textarea data-field="summary" rows="3"></textarea></label>
+                  <label class="field-span-2">Bonus analysis<textarea data-field="bonus_description" rows="5"></textarea></label>
+                  <label>Wagering requirement<input data-field="wagering_requirement" type="text" /></label>
+                  <label>Affiliate disclosure<input data-field="affiliate_disclosure" type="text" /></label>
+                </div>
+              </section>
+
+              <section id="scores" class="editor-section">
+                <div class="section-title"><span>03</span><div><h3>Editorial scoring</h3><p>The overall score appears in the ranking; category scores explain it.</p></div></div>
+                <div class="score-grid">
+                  <label>Overall<input data-field="rating" type="number" min="0" max="5" step="0.1" /></label>
+                  <label>Games<input data-field="rating_games" type="number" min="0" max="5" step="0.1" /></label>
+                  <label>Payments<input data-field="rating_payments" type="number" min="0" max="5" step="0.1" /></label>
+                  <label>Withdrawals<input data-field="rating_withdrawals" type="number" min="0" max="5" step="0.1" /></label>
+                  <label>Support<input data-field="rating_support" type="number" min="0" max="5" step="0.1" /></label>
+                  <label>Safety<input data-field="rating_safety" type="number" min="0" max="5" step="0.1" /></label>
+                  <label>Mobile<input data-field="rating_mobile" type="number" min="0" max="5" step="0.1" /></label>
+                </div>
+              </section>
+
+              <section id="facts" class="editor-section">
+                <div class="section-title"><span>04</span><div><h3>Player facts</h3><p>Concrete information players expect before registering or depositing.</p></div></div>
+                <div class="field-grid">
+                  <label>Licence / legal model<input data-field="license_authority" type="text" /></label>
+                  <label>Licence number<input data-field="license_number" type="text" /></label>
+                  <label class="field-span-2">Licence verification URL<input data-field="license_url" type="url" /></label>
+                  <label>Game count<input data-field="game_count" type="number" min="0" /></label>
+                  <label>Minimum deposit / purchase<input data-field="minimum_deposit" type="text" /></label>
+                  <label>Minimum withdrawal / redemption<input data-field="minimum_withdrawal" type="text" /></label>
+                  <label>Withdrawal time<input data-field="withdrawal_time" type="text" /></label>
+                  <label>KYC requirements<input data-field="kyc_requirements" type="text" /></label>
+                  <label>Support hours<input data-field="support_hours" type="text" /></label>
+                  <label>Support email<input data-field="support_email" type="email" /></label>
+                  <label>Mobile support<input data-field="mobile_support" type="text" /></label>
+                  <label>iOS URL<input data-field="ios_url" type="url" /></label>
+                  <label>Android URL<input data-field="android_url" type="url" /></label>
+                  <label class="list-field">Supported regions <small>one per line</small><textarea data-field="supported_regions" rows="4"></textarea></label>
+                  <label class="list-field">Restricted regions <small>one per line</small><textarea data-field="restricted_regions" rows="4"></textarea></label>
+                  <label class="list-field">Currencies <small>one per line</small><textarea data-field="currencies" rows="4"></textarea></label>
+                  <label class="list-field">Deposit methods <small>one per line</small><textarea data-field="deposit_methods" rows="4"></textarea></label>
+                  <label class="list-field">Withdrawal methods <small>one per line</small><textarea data-field="withdrawal_methods" rows="4"></textarea></label>
+                  <label class="list-field">Game types <small>one per line</small><textarea data-field="game_types" rows="4"></textarea></label>
+                  <label class="list-field">Software providers <small>one per line</small><textarea data-field="software_providers" rows="4"></textarea></label>
+                  <label class="list-field">Languages <small>one per line</small><textarea data-field="languages" rows="4"></textarea></label>
+                  <label class="list-field">Security features <small>one per line</small><textarea data-field="security_features" rows="4"></textarea></label>
+                  <label class="list-field">Responsible-play tools <small>one per line</small><textarea data-field="responsible_gambling_tools" rows="4"></textarea></label>
+                  <label class="list-field">Key features <small>one per line</small><textarea data-field="key_features" rows="4"></textarea></label>
+                  <label class="list-field">Pros <small>one per line</small><textarea data-field="pros" rows="4"></textarea></label>
+                  <label class="list-field">Cons <small>one per line</small><textarea data-field="cons" rows="4"></textarea></label>
+                  <label class="list-field">Contact methods <small>one per line</small><textarea data-field="contact_methods" rows="4"></textarea></label>
+                </div>
+              </section>
+
+              <section id="content" class="editor-section">
+                <div class="section-title"><span>05</span><div><h3>Full review</h3><p>Each section is rendered independently on the public review.</p></div></div>
+                <div class="content-fields">
+                  <label>Introduction and overview<textarea data-field="description" rows="8"></textarea></label>
+                  <label>Games and software<textarea data-field="games_description" rows="6"></textarea></label>
+                  <label>Deposits and payments<textarea data-field="deposit_description" rows="6"></textarea></label>
+                  <label>Withdrawals<textarea data-field="withdrawal_description" rows="6"></textarea></label>
+                  <label>Licence, safety and KYC<textarea data-field="security_description" rows="6"></textarea></label>
+                  <label>Mobile experience<textarea data-field="mobile_description" rows="5"></textarea></label>
+                  <label>Customer support<textarea data-field="contact_description" rows="5"></textarea></label>
+                  <label>Editorial verdict<textarea data-field="verdict" rows="6"></textarea></label>
+                  <label>FAQ <small>one line per item: Question || Answer</small><textarea data-field="faqs" rows="8"></textarea></label>
+                </div>
+              </section>
+
+              <section id="media" class="editor-section">
+                <div class="section-title"><span>06</span><div><h3>Logo and screenshots</h3><p>Images are uploaded to the public review-media bucket; write access remains admin-only.</p></div></div>
+                <div class="logo-manager">
+                  <div id="logo-preview" class="logo-preview">No logo</div>
+                  <div>
+                    <label>Logo or game icon URL<input data-field="logo_url" type="url" /></label>
+                    <label class="upload-button">Upload logo<input id="logo-upload" type="file" accept="image/png,image/jpeg,image/webp,image/avif" /></label>
+                  </div>
+                </div>
+                <div class="screens-manager">
+                  <div class="screens-heading"><div><h4>Review gallery</h4><p>Add interface, lobby, cashier or mobile screenshots.</p></div><label class="upload-button">Add screenshots<input id="screens-upload" type="file" accept="image/png,image/jpeg,image/webp,image/avif" multiple /></label></div>
+                  <div id="screens-editor" class="screens-editor"></div>
+                </div>
+              </section>
+
+              <section id="seo" class="editor-section">
+                <div class="section-title"><span>07</span><div><h3>SEO and verification</h3><p>Date the review and keep the research trail editable.</p></div></div>
+                <div class="field-grid">
+                  <label>SEO title<input data-field="seo_title" type="text" /></label>
+                  <label>SEO description<input data-field="seo_description" type="text" /></label>
+                  <label>Reviewed on<input data-field="reviewed_at" type="date" /></label>
+                  <label>Last verified at<input data-field="last_verified_at" type="datetime-local" /></label>
+                  <label class="field-span-2">Sources <small>one URL per line; official sources first</small><textarea data-field="source_urls" rows="7"></textarea></label>
+                </div>
+              </section>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+
+  type Screenshot = { url: string; alt?: string; caption?: string };
+  type FAQ = { question: string; answer: string };
+  type RecordValue = string | number | boolean | string[] | Screenshot[] | FAQ[] | null;
+  type Operator = Record<string, RecordValue> & { id?: number; _key: string };
+  type Database = {
+    public: {
+      Tables: {
+        online_casinos: {
+          Row: Record<string, unknown> & { id: number };
+          Insert: Record<string, unknown>;
+          Update: Record<string, unknown>;
+          Relationships: [];
+        };
+      };
+      Views: Record<string, never>;
+      Functions: { save_online_ranking: { Args: { ranking: unknown }; Returns: undefined } };
+      Enums: Record<string, never>;
+      CompositeTypes: Record<string, never>;
+    };
+  };
+
+  const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
+  const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
+  const warning = document.querySelector<HTMLElement>('#config-warning');
+  const loginForm = document.querySelector<HTMLFormElement>('#login-form');
+  const loginStatus = document.querySelector<HTMLElement>('#login-status');
+  const operationStatus = document.querySelector<HTMLElement>('#operation-status');
+  const app = document.querySelector<HTMLElement>('#operation-app');
+  const logout = document.querySelector<HTMLButtonElement>('#logout');
+  const saveButton = document.querySelector<HTMLButtonElement>('#save-all');
+  const addButton = document.querySelector<HTMLButtonElement>('#add-casino');
+  const reviewEditor = document.querySelector<HTMLFormElement>('#review-editor');
+  const operatorList = document.querySelector<HTMLElement>('#operator-list');
+  const searchInput = document.querySelector<HTMLInputElement>('#review-search');
+  const deleteButton = document.querySelector<HTMLButtonElement>('#delete-review');
+  const previewLink = document.querySelector<HTMLAnchorElement>('#preview-review');
+  const logoUpload = document.querySelector<HTMLInputElement>('#logo-upload');
+  const screensUpload = document.querySelector<HTMLInputElement>('#screens-upload');
+  const screensEditor = document.querySelector<HTMLElement>('#screens-editor');
+  const arrayFields = new Set([
+    'key_features', 'pros', 'cons', 'deposit_methods', 'withdrawal_methods', 'contact_methods',
+    'supported_regions', 'restricted_regions', 'currencies', 'game_types', 'software_providers',
+    'languages', 'security_features', 'responsible_gambling_tools', 'source_urls',
+  ]);
+  const numericFields = new Set([
+    'position', 'rating', 'rating_games', 'rating_payments', 'rating_withdrawals',
+    'rating_support', 'rating_safety', 'rating_mobile', 'established_year', 'game_count',
+  ]);
+  let operators: Operator[] = [];
+  let selectedKey = '';
+  let client: SupabaseClient<Database> | null = null;
+
+  if (!supabaseUrl || !supabaseKey) {
+    if (warning) warning.hidden = false;
+    loginForm?.querySelectorAll('input,button').forEach((control) => (control as HTMLInputElement).disabled = true);
+  } else {
+    client = createClient<Database>(supabaseUrl, supabaseKey, { auth: { persistSession: true, autoRefreshToken: true } });
+
+    async function openOperation() {
+      if (!client) return;
+      const { data: { user } } = await client.auth.getUser();
+      if (!user) return;
+      if (user.app_metadata?.role !== 'admin') {
+        await client.auth.signOut();
+        setStatus(loginStatus, 'This account does not have the admin role.', true);
+        return;
+      }
+      if (loginForm) loginForm.hidden = true;
+      if (app) app.hidden = false;
+      if (logout) logout.hidden = false;
+      await loadOperators();
+    }
+
+    async function loadOperators() {
+      if (!client) return;
+      setStatus(operationStatus, 'Loading reviews…');
+      const { data, error } = await client.from('online_casinos').select('*').order('position', { ascending: true, nullsFirst: false }).order('name');
+      if (error) return setStatus(operationStatus, error.message, true);
+      operators = (data ?? []).map((item) => ({ ...item, _key: String(item.id) })) as Operator[];
+      selectedKey = operators.find((item) => item.active)?._key ?? operators[0]?._key ?? '';
+      renderWorkspace();
+      setStatus(operationStatus, `${operators.length} reviews loaded.`);
+    }
+
+    loginForm?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      if (!client || !loginForm) return;
+      const formData = new FormData(loginForm);
+      setStatus(loginStatus, 'Signing in…');
+      const { error } = await client.auth.signInWithPassword({
+        email: String(formData.get('email')),
+        password: String(formData.get('password')),
+      });
+      if (error) return setStatus(loginStatus, error.message, true);
+      await openOperation();
+    });
+
+    logout?.addEventListener('click', async () => {
+      await client?.auth.signOut();
+      location.reload();
+    });
+
+    saveButton?.addEventListener('click', saveAll);
+    addButton?.addEventListener('click', addReview);
+    deleteButton?.addEventListener('click', deleteReview);
+    searchInput?.addEventListener('input', renderList);
+    logoUpload?.addEventListener('change', uploadLogo);
+    screensUpload?.addEventListener('change', uploadScreens);
+    reviewEditor?.addEventListener('input', () => {
+      collectSelected();
+      renderList();
+      updateSummary();
+      updateEditorHeader();
+    });
+    reviewEditor?.addEventListener('change', (event) => {
+      const target = event.target as HTMLInputElement;
+      if (target.dataset.field === 'active') {
+        collectSelected();
+        renumberRanking();
+        renderWorkspace();
+      }
+    });
+    openOperation();
+  }
+
+  function renderWorkspace(renderForm = true) {
+    updateSummary();
+    renderList();
+    if (renderForm) renderSelected();
+  }
+
+  function renderList() {
+    if (!operatorList) return;
+    const term = searchInput?.value.trim().toLocaleLowerCase() ?? '';
+    const sorted = [...operators].sort((a, b) => {
+      const activeDelta = Number(Boolean(b.active)) - Number(Boolean(a.active));
+      if (activeDelta) return activeDelta;
+      const positionA = typeof a.position === 'number' ? a.position : 99;
+      const positionB = typeof b.position === 'number' ? b.position : 99;
+      return positionA - positionB || String(a.name ?? '').localeCompare(String(b.name ?? ''));
+    }).filter((item) => !term || String(item.name ?? '').toLocaleLowerCase().includes(term));
+    operatorList.replaceChildren();
+    sorted.forEach((operator) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'operator-item';
+      button.classList.toggle('selected', operator._key === selectedKey);
+      const badge = operator.active ? `#${operator.position ?? '—'}` : 'Archive';
+      const status = String(operator.operator_status ?? 'monitoring');
+      const logo = operator.logo_url
+        ? `<img src="${escapeHtml(String(operator.logo_url))}" alt="" />`
+        : `<span class="operator-initial">${escapeHtml(String(operator.name ?? '?').charAt(0))}</span>`;
+      button.innerHTML = `${logo}<span class="operator-copy"><strong>${escapeHtml(String(operator.name ?? 'Untitled review'))}</strong><small>${escapeHtml(badge)} · ${escapeHtml(status)}</small></span><span class="operator-score">${Number(operator.rating ?? 0).toFixed(1)}</span>`;
+      button.addEventListener('click', () => {
+        collectSelected();
+        selectedKey = operator._key;
+        renderWorkspace();
+      });
+      operatorList.append(button);
+    });
+  }
+
+  function renderSelected() {
+    const operator = selectedOperator();
+    if (!reviewEditor) return;
+    reviewEditor.hidden = !operator;
+    if (!operator) return;
+    reviewEditor.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('[data-field]').forEach((control) => {
+      const field = control.dataset.field!;
+      const value = operator[field];
+      if (control instanceof HTMLInputElement && control.type === 'checkbox') control.checked = Boolean(value);
+      else if (field === 'faqs') control.value = formatFaqs(value);
+      else if (arrayFields.has(field)) control.value = Array.isArray(value) ? value.join('\n') : '';
+      else if (field === 'last_verified_at' && typeof value === 'string') control.value = value.slice(0, 16);
+      else control.value = value == null ? '' : String(value);
+    });
+    renderLogo(operator);
+    renderScreens(operator);
+    updateEditorHeader();
+  }
+
+  function collectSelected() {
+    const operator = selectedOperator();
+    if (!operator || !reviewEditor) return;
+    reviewEditor.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('[data-field]').forEach((control) => {
+      const field = control.dataset.field!;
+      if (control instanceof HTMLInputElement && control.type === 'checkbox') operator[field] = control.checked;
+      else if (field === 'faqs') operator[field] = parseFaqs(control.value);
+      else if (arrayFields.has(field)) operator[field] = splitLines(control.value);
+      else if (numericFields.has(field)) operator[field] = control.value === '' ? null : Number(control.value);
+      else operator[field] = control.value.trim() || null;
+    });
+    operator.screenshots = readScreens();
+  }
+
+  function updateEditorHeader() {
+    const operator = selectedOperator();
+    const title = document.querySelector<HTMLElement>('#editor-title');
+    const meta = document.querySelector<HTMLElement>('#editor-meta');
+    if (!operator) return;
+    if (title) title.textContent = String(operator.name ?? 'Untitled review');
+    if (meta) meta.textContent = operator.active ? `Top 10 position ${operator.position ?? '—'}` : `Archive · ${operator.operator_status ?? 'monitoring'}`;
+    if (previewLink) {
+      previewLink.href = `/online/${operator.slug ?? ''}`;
+      previewLink.hidden = !operator.slug || !operator.published;
+    }
+  }
+
+  function updateSummary() {
+    const active = operators.filter((item) => item.active).length;
+    const published = operators.filter((item) => item.published).length;
+    const cutoff = Date.now() - 90 * 24 * 60 * 60 * 1000;
+    const stale = operators.filter((item) => !item.last_verified_at || Date.parse(String(item.last_verified_at)) < cutoff).length;
+    const media = operators.reduce((count, item) => count + (item.logo_url ? 1 : 0) + (Array.isArray(item.screenshots) ? item.screenshots.length : 0), 0);
+    setText('#active-count', active);
+    setText('#published-count', published);
+    setText('#review-count', stale);
+    setText('#media-count', media);
+  }
+
+  function addReview() {
+    collectSelected();
+    const nextPosition = Math.min(10, operators.filter((item) => item.active).length + 1);
+    const operator: Operator = {
+      _key: `new-${crypto.randomUUID()}`,
+      name: 'New casino', slug: `new-casino-${Date.now()}`, position: nextPosition,
+      rating: 0, casino_type: 'real-money', operator_status: 'monitoring', active: false, published: false,
+      website_url: '', affiliate_url: '', bonus: '', summary: '', cta_label: 'Visit site',
+      key_features: [], pros: [], cons: [], deposit_methods: [], withdrawal_methods: [], contact_methods: [],
+      supported_regions: [], restricted_regions: [], currencies: [], game_types: [], software_providers: [],
+      languages: [], security_features: [], responsible_gambling_tools: [], source_urls: [], screenshots: [], faqs: [],
+      reviewed_at: new Date().toISOString().slice(0, 10), last_verified_at: new Date().toISOString(),
+    };
+    operators.push(operator);
+    selectedKey = operator._key;
+    renderWorkspace();
+    document.querySelector('#identity')?.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  async function deleteReview() {
+    const operator = selectedOperator();
+    if (!operator || !client) return;
+    if (!confirm(`Delete ${String(operator.name ?? 'this review')} permanently?`)) return;
+    if (operator.id != null) {
+      const { error } = await client.from('online_casinos').delete().eq('id', operator.id);
+      if (error) return setStatus(operationStatus, error.message, true);
+    }
+    operators = operators.filter((item) => item._key !== operator._key);
+    selectedKey = operators[0]?._key ?? '';
+    renumberRanking();
+    renderWorkspace();
+    setStatus(operationStatus, 'Review deleted.');
+  }
+
+  async function saveAll() {
+    if (!client) return;
+    collectSelected();
+    renumberRanking();
+    const validationError = validateOperators();
+    if (validationError) return setStatus(operationStatus, validationError, true);
+    if (saveButton) saveButton.disabled = true;
+    setStatus(operationStatus, 'Saving reviews and rebuilding the ranking…');
+    const saved: Operator[] = [];
+    for (const operator of operators) {
+      const { _key, ...values } = operator;
+      const position = values.position;
+      const payload = { ...values, position: null };
+      if (payload.id == null) delete payload.id;
+      const { data, error } = await client.from('online_casinos').upsert(payload).select().single();
+      if (error) {
+        if (saveButton) saveButton.disabled = false;
+        return setStatus(operationStatus, error.message, true);
+      }
+      saved.push({ ...data, position, _key: String(data.id) } as Operator);
+    }
+    const ranking = saved
+      .filter((operator) => operator.active && operator.id != null && typeof operator.position === 'number')
+      .map((operator) => ({ id: operator.id, position: operator.position }));
+    const { error } = await client.rpc('save_online_ranking', { ranking });
+    if (saveButton) saveButton.disabled = false;
+    if (error) return setStatus(operationStatus, error.message, true);
+    const oldSelected = selectedOperator();
+    const oldId = oldSelected?.id;
+    operators = saved;
+    selectedKey = oldId != null ? String(oldId) : saved.find((item) => item.name === oldSelected?.name)?._key ?? saved[0]?._key ?? '';
+    renderWorkspace();
+    setStatus(operationStatus, 'Reviews, media references and Top 10 published successfully.');
+  }
+
+  function validateOperators() {
+    const active = operators.filter((item) => item.active);
+    if (active.length > 10) return 'The ranking can contain no more than 10 active casinos.';
+    if (operators.some((item) => !item.name || !item.slug)) return 'Every review needs a name and URL slug.';
+    if (operators.some((item) => item.active && item.operator_status === 'unavailable')) return 'An unavailable operator cannot remain active in the Top 10.';
+    const slugs = operators.map((item) => String(item.slug).toLocaleLowerCase());
+    if (new Set(slugs).size !== slugs.length) return 'Every review needs a unique URL slug.';
+    return null;
+  }
+
+  function renumberRanking() {
+    const active = operators.filter((item) => item.active).sort((a, b) => Number(a.position ?? 99) - Number(b.position ?? 99));
+    active.forEach((item, index) => { item.position = index + 1; });
+    operators.filter((item) => !item.active).forEach((item) => { item.position = null; });
+  }
+
+  async function uploadLogo() {
+    const operator = selectedOperator();
+    const file = logoUpload?.files?.[0];
+    if (!operator || !file) return;
+    const url = await uploadMedia(file, operator, 'logo');
+    if (!url) return;
+    operator.logo_url = url;
+    const input = reviewEditor?.querySelector<HTMLInputElement>('[data-field="logo_url"]');
+    if (input) input.value = url;
+    renderLogo(operator);
+    renderList();
+    updateSummary();
+    if (logoUpload) logoUpload.value = '';
+  }
+
+  async function uploadScreens() {
+    const operator = selectedOperator();
+    const files = [...(screensUpload?.files ?? [])];
+    if (!operator || !files.length) return;
+    collectSelected();
+    const screenshots = Array.isArray(operator.screenshots) ? operator.screenshots as Screenshot[] : [];
+    for (const file of files) {
+      const url = await uploadMedia(file, operator, 'screen');
+      if (url) screenshots.push({ url, alt: `${String(operator.name ?? 'Casino')} screenshot`, caption: '' });
+    }
+    operator.screenshots = screenshots;
+    renderScreens(operator);
+    updateSummary();
+    if (screensUpload) screensUpload.value = '';
+  }
+
+  async function uploadMedia(file: File, operator: Operator, kind: 'logo' | 'screen') {
+    if (!client) return null;
+    if (!file.type.startsWith('image/')) {
+      setStatus(operationStatus, `${file.name} is not an image.`, true);
+      return null;
+    }
+    if (file.size > 8 * 1024 * 1024) {
+      setStatus(operationStatus, `${file.name} exceeds the 8 MB limit.`, true);
+      return null;
+    }
+    const slug = String(operator.slug ?? 'casino').toLocaleLowerCase().replace(/[^a-z0-9-]+/g, '-');
+    const safeName = file.name.toLocaleLowerCase().replace(/[^a-z0-9.]+/g, '-');
+    const path = `${slug}/${kind}-${Date.now()}-${safeName}`;
+    setStatus(operationStatus, `Uploading ${file.name}…`);
+    const { error } = await client.storage.from('review-media').upload(path, file, { cacheControl: '31536000', upsert: false, contentType: file.type });
+    if (error) {
+      setStatus(operationStatus, error.message, true);
+      return null;
+    }
+    const { data } = client.storage.from('review-media').getPublicUrl(path);
+    setStatus(operationStatus, `${file.name} uploaded. Save to publish the reference.`);
+    return data.publicUrl;
+  }
+
+  function renderLogo(operator: Operator) {
+    const target = document.querySelector<HTMLElement>('#logo-preview');
+    if (!target) return;
+    target.replaceChildren();
+    if (operator.logo_url) {
+      const img = document.createElement('img');
+      img.src = String(operator.logo_url);
+      img.alt = `${String(operator.name ?? 'Casino')} logo`;
+      target.append(img);
+    } else target.textContent = 'No logo';
+  }
+
+  function renderScreens(operator: Operator) {
+    if (!screensEditor) return;
+    screensEditor.replaceChildren();
+    const screenshots = Array.isArray(operator.screenshots) ? operator.screenshots as Screenshot[] : [];
+    screenshots.forEach((screen, index) => {
+      const card = document.createElement('article');
+      card.className = 'screen-edit';
+      card.dataset.url = screen.url;
+      card.innerHTML = `<img src="${escapeHtml(screen.url)}" alt="" /><div><label>Alt text<input class="screen-alt" type="text" value="${escapeHtml(screen.alt ?? '')}" /></label><label>Caption<input class="screen-caption" type="text" value="${escapeHtml(screen.caption ?? '')}" /></label></div><button type="button" aria-label="Remove screenshot">×</button>`;
+      card.querySelector('button')?.addEventListener('click', () => {
+        collectSelected();
+        const current = selectedOperator();
+        if (!current || !Array.isArray(current.screenshots)) return;
+        current.screenshots = (current.screenshots as Screenshot[]).filter((_, itemIndex) => itemIndex !== index);
+        renderScreens(current);
+        updateSummary();
+      });
+      screensEditor.append(card);
+    });
+    if (!screenshots.length) {
+      const empty = document.createElement('p');
+      empty.className = 'media-empty';
+      empty.textContent = 'No screenshots yet.';
+      screensEditor.append(empty);
+    }
+  }
+
+  function readScreens(): Screenshot[] {
+    return [...(screensEditor?.querySelectorAll<HTMLElement>('.screen-edit') ?? [])].map((card) => ({
+      url: card.dataset.url ?? '',
+      alt: card.querySelector<HTMLInputElement>('.screen-alt')?.value.trim() ?? '',
+      caption: card.querySelector<HTMLInputElement>('.screen-caption')?.value.trim() ?? '',
+    })).filter((item) => item.url);
+  }
+
+  function selectedOperator() {
+    return operators.find((item) => item._key === selectedKey) ?? null;
+  }
+
+  function splitLines(value: string) {
+    return value.split('\n').map((item) => item.trim()).filter(Boolean);
+  }
+
+  function parseFaqs(value: string): FAQ[] {
+    return value.split('\n').map((line) => {
+      const [question, ...answerParts] = line.split('||');
+      return { question: question?.trim() ?? '', answer: answerParts.join('||').trim() };
+    }).filter((item) => item.question && item.answer);
+  }
+
+  function formatFaqs(value: RecordValue) {
+    if (!Array.isArray(value)) return '';
+    return (value as FAQ[]).map((item) => `${item.question} || ${item.answer}`).join('\n');
+  }
+
+  function setStatus(target: HTMLElement | null, message: string, error = false) {
+    if (!target) return;
+    target.textContent = message;
+    target.classList.toggle('error', error);
+  }
+
+  function setText(selector: string, value: string | number) {
+    const target = document.querySelector<HTMLElement>(selector);
+    if (target) target.textContent = String(value);
+  }
+
+  function escapeHtml(value: string) {
+    return value.replace(/[&<>'"]/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[character] ?? character);
+  }
+</script>
+
+<style>
+  .operation-shell { min-height: 900px; padding: 70px 0 110px; background: #eceae1; }
+  .operation-heading { margin-bottom: 38px; display: flex; justify-content: space-between; align-items: end; gap: 30px; }
+  .operation-heading h1 { margin-bottom: 14px; font-size: clamp(2.7rem, 6vw, 5rem); }
+  .operation-heading p:last-child { max-width: 720px; color: var(--muted); }
+  .notice { margin-bottom: 25px; padding: 18px; display: flex; flex-direction: column; border-radius: 12px; }
+  .notice.warning { background: #fff0ca; color: #674d0b; }
+  .login-card { max-width: 480px; padding: 32px; }
+  .login-card h2 { font-size: 1.7rem; }
+  label { display: flex; flex-direction: column; gap: 7px; color: var(--muted); font-size: .78rem; font-weight: 700; }
+  input, textarea, select { width: 100%; padding: 11px 12px; border: 1px solid #c9cdc7; border-radius: 10px; outline: 0; background: #fff; color: var(--ink); font-weight: 400; }
+  textarea { resize: vertical; line-height: 1.5; }
+  input:focus, textarea:focus, select:focus { border-color: var(--forest); box-shadow: 0 0 0 3px rgba(23,63,55,.1); }
+  label small { font-weight: 400; }
+  .login-card .button { margin-top: 18px; }
+  .form-status { min-height: 20px; color: var(--forest); font-size: .82rem; }
+  .form-status.error { color: #b1232e; }
+  .global-status { margin: 0 4px 12px; }
+  .summary-grid { margin-bottom: 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+  .summary-tile { padding: 20px; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 3px 12px; }
+  .summary-tile small { grid-column: 1 / -1; color: var(--muted); font-weight: 700; }
+  .summary-tile strong { font: 800 2.2rem/1 'Manrope', sans-serif; }
+  .summary-tile span { padding-bottom: 3px; color: #8a928f; font-size: .72rem; }
+  .operation-toolbar { margin-bottom: 12px; padding: 19px 22px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+  .operation-toolbar > div:first-child { display: flex; flex-direction: column; gap: 3px; }
+  .operation-toolbar span { color: var(--muted); font-size: .8rem; }
+  .toolbar-actions { display: flex; gap: 8px; }
+  .workspace { display: grid; grid-template-columns: 290px minmax(0, 1fr); gap: 16px; align-items: start; }
+  .review-sidebar { position: sticky; top: 18px; max-height: calc(100vh - 36px); overflow: hidden; }
+  .search-label { padding: 16px; border-bottom: 1px solid var(--line); }
+  .operator-list { max-height: calc(100vh - 120px); overflow: auto; }
+  .operator-item { width: 100%; min-height: 72px; padding: 12px 13px; display: grid; grid-template-columns: 42px minmax(0,1fr) auto; align-items: center; gap: 11px; border: 0; border-bottom: 1px solid var(--line); background: transparent; color: var(--ink); text-align: left; cursor: pointer; }
+  .operator-item:hover, .operator-item.selected { background: #edf1e0; }
+  .operator-item.selected { box-shadow: inset 3px 0 var(--forest); }
+  .operator-item img, .operator-initial { width: 42px; height: 42px; border-radius: 10px; object-fit: contain; background: #fff; }
+  .operator-initial { display: grid; place-items: center; background: var(--forest); color: var(--lime); font-weight: 800; }
+  .operator-copy { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
+  .operator-copy strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: .86rem; }
+  .operator-copy small { color: var(--muted); font-size: .68rem; text-transform: capitalize; }
+  .operator-score { font-weight: 800; }
+  .review-editor { overflow: hidden; }
+  .editor-sticky { padding: 22px 24px; display: flex; justify-content: space-between; align-items: center; gap: 20px; background: var(--forest); color: #fff; }
+  .editor-sticky .eyebrow { margin-bottom: 8px; color: var(--lime); }
+  .editor-sticky h2 { margin: 0 0 3px; font-size: 1.65rem; }
+  .editor-sticky span { color: #a9bdb6; font-size: .78rem; }
+  .editor-actions { display: flex; gap: 8px; }
+  .editor-actions .button.secondary { border-color: rgba(255,255,255,.22); color: #fff; }
+  .editor-actions .button.secondary:hover { background: rgba(255,255,255,.08); }
+  .danger-button { padding: 0 12px; border: 1px solid rgba(255,167,174,.35); border-radius: 999px; background: transparent; color: #ffb6bb; cursor: pointer; }
+  .section-nav { position: sticky; top: 0; z-index: 5; padding: 0 22px; display: flex; gap: 18px; overflow-x: auto; border-bottom: 1px solid var(--line); background: rgba(255,253,248,.96); backdrop-filter: blur(12px); }
+  .section-nav a { padding: 14px 0; color: var(--muted); font-size: .75rem; font-weight: 700; white-space: nowrap; }
+  .section-nav a:hover { color: var(--ink); }
+  .editor-content { padding: 0 26px 30px; }
+  .editor-section { scroll-margin-top: 55px; padding: 34px 0 40px; border-bottom: 1px solid var(--line); }
+  .editor-section:last-child { border-bottom: 0; }
+  .section-title { margin-bottom: 24px; display: flex; gap: 14px; align-items: start; }
+  .section-title > span { width: 32px; height: 32px; display: grid; place-items: center; flex: 0 0 auto; border-radius: 50%; background: var(--forest); color: var(--lime); font: 800 .7rem/1 'Manrope', sans-serif; }
+  .section-title h3 { margin-bottom: 4px; font-size: 1.2rem; }
+  .section-title p { margin: 0; color: var(--muted); font-size: .78rem; }
+  .field-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 16px; }
+  .field-grid.four { grid-template-columns: 100px repeat(3, minmax(0,1fr)); }
+  .field-span-2 { grid-column: span 2; }
+  .checks { display: flex; flex-direction: row; gap: 20px; align-items: center; }
+  .checks label { flex-direction: row; align-items: center; }
+  .checks input { width: 18px; height: 18px; }
+  .score-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; }
+  .score-grid label:first-child input { border-color: var(--brand); font-weight: 800; }
+  .content-fields { display: grid; gap: 18px; }
+  .logo-manager { padding: 18px; display: grid; grid-template-columns: 140px 1fr; gap: 18px; border: 1px solid var(--line); border-radius: 14px; background: #f3f1eb; }
+  .logo-manager > div:last-child { display: grid; gap: 12px; align-content: center; }
+  .logo-preview { min-height: 120px; display: grid; place-items: center; border: 1px dashed #b9bdb7; border-radius: 12px; background: #fff; color: var(--muted); font-size: .75rem; }
+  .logo-preview img { width: 100px; height: 100px; object-fit: contain; }
+  .upload-button { width: fit-content; min-height: 38px; padding: 0 15px; display: inline-flex; align-items: center; border-radius: 999px; background: var(--forest); color: #fff; cursor: pointer; }
+  .upload-button input { display: none; }
+  .screens-manager { margin-top: 24px; }
+  .screens-heading { margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+  .screens-heading h4 { margin: 0; font-family: 'Manrope', sans-serif; }
+  .screens-heading p { margin: 3px 0 0; color: var(--muted); font-size: .75rem; }
+  .screens-editor { display: grid; gap: 10px; }
+  .screen-edit { padding: 10px; display: grid; grid-template-columns: 150px 1fr 30px; gap: 12px; align-items: center; border: 1px solid var(--line); border-radius: 12px; }
+  .screen-edit img { width: 150px; height: 88px; object-fit: cover; border-radius: 8px; background: #eee; }
+  .screen-edit > div { display: grid; gap: 8px; }
+  .screen-edit button { width: 30px; height: 30px; border: 0; border-radius: 50%; background: #f6dfe0; color: #9a1f29; cursor: pointer; }
+  .media-empty { padding: 25px; border: 1px dashed #b9bdb7; border-radius: 12px; color: var(--muted); text-align: center; }
+  @media (max-width: 1100px) { .score-grid { grid-template-columns: repeat(4,1fr); } .field-grid.four { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 850px) { .summary-grid { grid-template-columns: repeat(2,1fr); } .workspace { grid-template-columns: 1fr; } .review-sidebar { position: static; max-height: 360px; } .operator-list { max-height: 285px; } }
+  @media (max-width: 620px) {
+    .operation-heading, .operation-toolbar, .screens-heading, .editor-sticky { align-items: start; flex-direction: column; }
+    .toolbar-actions, .editor-actions { width: 100%; }
+    .toolbar-actions .button, .editor-actions .button, .danger-button { flex: 1; }
+    .summary-grid, .field-grid, .field-grid.four, .score-grid { grid-template-columns: 1fr; }
+    .field-span-2 { grid-column: auto; }
+    .checks { align-items: start; flex-direction: column; }
+    .editor-content { padding-inline: 17px; }
+    .logo-manager { grid-template-columns: 1fr; }
+    .screen-edit { grid-template-columns: 1fr 30px; }
+    .screen-edit img { grid-column: 1 / -1; width: 100%; height: 180px; }
+  }
+</style>
