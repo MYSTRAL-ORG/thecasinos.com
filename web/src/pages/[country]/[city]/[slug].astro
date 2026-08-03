@@ -28,11 +28,30 @@ const facts = casino ? [
 
 const image = casino ? getCasinoImageUrl(casino, { width: 1200, height: 800, quality: 82 }) : null;
 const imageMedium = casino ? getCasinoImageUrl(casino, { width: 760, height: 520, quality: 80 }) : null;
-const paragraphs = casino?.editorial_paragraphs?.filter(Boolean).length
+const unverifiedLegacyEntities = [casino?.owner_name, casino?.hotel_name]
+  .filter((value): value is string => Boolean(value?.trim()))
+  .map((value) => value.toLocaleLowerCase('en').replace(/\s+/g, ' ').trim())
+  .filter((value) => value.length >= 3 && !['n/a', 'none', 'unknown'].includes(value));
+const mentionsUnverifiedLegacyEntity = (value?: string | null) => {
+  const normalized = value?.toLocaleLowerCase('en').replace(/\s+/g, ' ').trim();
+  return Boolean(normalized && unverifiedLegacyEntities.some((entity) => normalized.includes(entity)));
+};
+const neutralIntro = casino
+  ? `${casino.name.trim()} is a land-based casino in ${casino.city_name}, ${casino.country_name}. ${casino.wikidata_id ? 'Its venue identity and location have been cross-checked against an open-data source.' : 'Historical listing details are being cross-checked before publication as verified facts.'}`
+  : '';
+const introCandidate = casino?.summary || casino?.description;
+const heroIntro = mentionsUnverifiedLegacyEntity(introCandidate) ? neutralIntro : introCandidate;
+const rawParagraphs = casino?.editorial_paragraphs?.filter(Boolean).length
   ? casino.editorial_paragraphs.filter(Boolean)
   : [casino?.description].filter(Boolean) as string[];
+const paragraphs = rawParagraphs.filter((paragraph) => !mentionsUnverifiedLegacyEntity(paragraph));
+const gamesDescription = mentionsUnverifiedLegacyEntity(casino?.games_description) ? null : casino?.games_description;
+const funFacts = mentionsUnverifiedLegacyEntity(casino?.fun_facts) ? null : casino?.fun_facts;
 const pageTitle = casino ? casinoPageTitle(casino) : 'Casino not found';
-const pageDescription = casino ? casinoPageDescription(casino) : `Casino information for ${city}.`;
+const pageDescriptionCandidate = casino ? casinoPageDescription(casino) : `Casino information for ${city}.`;
+const pageDescription = mentionsUnverifiedLegacyEntity(pageDescriptionCandidate)
+  ? neutralIntro
+  : pageDescriptionCandidate;
 const canonicalPath = casino ? `/${casino.country_slug}/${casino.city_slug}/${casino.slug}` : Astro.url.pathname;
 const sourceUrls = casino?.verification_source_urls?.filter((source) => /^https:\/\//.test(source)) ?? [];
 const officialWebsiteUrl = /^https?:\/\//i.test(casino?.official_website_url ?? '')
@@ -86,7 +105,7 @@ const structuredData = casino ? [
           <div class="hero-copy">
             <p class="eyebrow">{casino.short_description || 'Land-based casino'}</p>
             <h1>{casino.name.trim()}</h1>
-            <p class="intro">{casino.summary || casino.description}</p>
+            <p class="intro">{heroIntro || neutralIntro}</p>
             <div class="place"><span>{casino.city_name}</span>{casino.state_name && <span>{casino.state_name}</span>}<strong>{casino.country_name}</strong></div>
           </div>
           <figure class="hero-image">
@@ -103,9 +122,9 @@ const structuredData = casino ? [
         <h2>{casino.editorial_title || `Discover ${casino.name.trim()}`}</h2>
         {paragraphs.length ? paragraphs.map((paragraph) => <p>{paragraph}</p>) : <p class="lede">The complete editorial profile is being restored.</p>}
 
-        {(casino.games_description || casino.fun_facts) && <div class="story-highlights">
-          {casino.games_description && <section><span>01</span><div><h3>Games</h3><p>{casino.games_description}</p></div></section>}
-          {casino.fun_facts && <section><span>02</span><div><h3>Fun facts</h3><p>{casino.fun_facts}</p></div></section>}
+        {(gamesDescription || funFacts) && <div class="story-highlights">
+          {gamesDescription && <section><span>01</span><div><h3>Games</h3><p>{gamesDescription}</p></div></section>}
+          {funFacts && <section><span>02</span><div><h3>Fun facts</h3><p>{funFacts}</p></div></section>}
         </div>}
       </article>
 
