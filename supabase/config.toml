@@ -17,3 +17,6 @@ additional_redirect_urls = ["https://www.thecasinos.com/operation", "https://*.n
 [studio]
 enabled = true
 port = 54323
+
+[functions.enrich-casinos]
+verify_jwt = false

@@ -25,6 +25,17 @@ export type Casino = {
   square_footage?: number | null;
   hotel_name?: string | null;
   owner_name?: string | null;
+  official_website_url?: string | null;
+  street_address?: string | null;
+  phone?: string | null;
+  wikidata_id?: string | null;
+  verified_opened_on?: string | null;
+  verified_operator_name?: string | null;
+  enrichment_status?: 'queued' | 'candidate' | 'verified_open_data' | 'verified_official' | 'unmatched' | 'manual_review';
+  data_confidence?: number | null;
+  verification_source_urls?: string[];
+  verified_fields?: Record<string, { value?: unknown; source?: string; source_url?: string; verified_at?: string }>;
+  last_verified_at?: string | null;
   always_open?: boolean | null;
   has_sportsbook?: boolean;
   has_bingo?: boolean;

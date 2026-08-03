@@ -2,6 +2,19 @@
 
 A complete rebuild of TheCasinos.com around its data: 7,493 unique land-based casino URLs, geographic exploration and a manageable online casino Top 10.
 
+## Casino profile enrichment
+
+Land-based profiles are enriched automatically; editors do not have to complete 7,493 records by hand.
+
+- The scheduled `enrich-casinos` Edge Function imports casino entities from Wikidata in restartable batches.
+- PostGIS distance and normalized name similarity produce a transparent match score.
+- Only unique high-confidence matches are applied automatically. Ambiguous records stay as candidates and never overwrite a profile silently.
+- Every accepted field stores its source URL, verification date and confidence trail.
+- Verified website, address, phone, opening date and operator data appear on the public profile; known-unreliable legacy operator/hotel fields are no longer presented as facts.
+- `/operation` shows source progress, matched records, automatic applications, failures and the next refresh date.
+
+The first source currently covers roughly 941 Wikidata casino entities. The schema is source-neutral so OpenStreetMap, official registers and operator sites can be added in later phases without replacing the evidence trail.
+
 ## SEO architecture
 
 - `/casinos` links every country guide.
@@ -36,14 +49,16 @@ For a public-data fallback preview, the site also runs without Supabase variable
 
 1. Link the repository to the intended Supabase project.
 2. Apply the SQL files in `supabase/migrations` in timestamp order.
-3. Create the first editor in Supabase Auth.
-4. Give that user the admin role in `app_metadata`:
+3. Deploy `supabase/functions/enrich-casinos` with JWT verification disabled as declared in `supabase/config.toml`. The function authenticates scheduled calls with a separate hashed cron token.
+4. Store the project URL and a generated cron token in Supabase Vault, write only its SHA-256 hash to `private.casino_enrichment_settings`, then run `private.schedule_casino_enrichment()`.
+5. Create the first editor in Supabase Auth.
+6. Give that user the admin role in `app_metadata`:
 
 ```json
 { "role": "admin" }
 ```
 
-5. Set the import variables in a trusted local terminal and run:
+7. Set the import variables in a trusted local terminal and run:
 
 ```bash
 cd web
