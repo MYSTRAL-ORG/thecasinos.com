@@ -8,10 +8,11 @@ interface Props {
   description: string;
   image?: string;
   noindex?: boolean;
+  chrome?: boolean;
   structuredData?: Record<string, unknown> | Record<string, unknown>[];
 }
 
-const { title, description, image, noindex = false, structuredData } = Astro.props;
+const { title, description, image, noindex = false, chrome = true, structuredData } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin);
 const fullTitle = title.includes('TheCasinos') ? title : `${title} | TheCasinos.com`;
 const socialImage = image ? new URL(image, canonical).toString() : new URL('/logo.png', canonical).toString();
@@ -40,10 +41,10 @@ const socialImage = image ? new URL(image, canonical).toString() : new URL('/log
     {structuredData && <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />}
   </head>
   <body>
-    <Header />
+    {chrome && <Header />}
     <main>
       <slot />
     </main>
-    <Footer />
+    {chrome && <Footer />}
   </body>
 </html>
