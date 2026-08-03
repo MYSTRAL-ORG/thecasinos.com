@@ -2,33 +2,102 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Operation" description="Private editorial operations for TheCasinos.com." noindex>
+<BaseLayout title="Operations" description="Private editorial operations for TheCasinos.com." noindex chrome={false}>
   <section class="operation-shell">
-    <div class="container operation-heading">
-      <div>
-        <p class="eyebrow">Private workspace</p>
-        <h1>Casino operations.</h1>
-        <p>Manage the online Top 10, full reviews, verification data, official and affiliate links, logos and review screenshots.</p>
+    <div id="login-view" class="login-view">
+      <a class="login-brand" href="/" aria-label="Retour à TheCasinos.com">
+        <img src="/logo.png" width="185" height="62" alt="TheCasinos.com" />
+        <span>Operations</span>
+      </a>
+
+      <div class="login-stage">
+        <aside class="login-intro">
+          <div>
+            <p class="login-kicker"><span></span>Espace éditorial privé</p>
+            <h1>Pilotez vos casinos depuis un seul endroit.</h1>
+            <p class="login-lede">Classement, reviews, paiements, captures, logos et liens sont réunis dans un back-office conçu pour aller vite.</p>
+          </div>
+          <ul class="login-features">
+            <li><span>01</span><div><strong>Top 10</strong><small>Classez et publiez vos opérateurs.</small></div></li>
+            <li><span>02</span><div><strong>Reviews complètes</strong><small>Modifiez contenu, notes et informations joueur.</small></div></li>
+            <li><span>03</span><div><strong>Médias et affiliation</strong><small>Centralisez logos, écrans et destinations.</small></div></li>
+          </ul>
+        </aside>
+
+        <div class="login-panel-wrap">
+          <div class="login-panel">
+            <div class="login-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24"><path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10m-10 0h11A1.5 1.5 0 0 1 19 11.5v7A1.5 1.5 0 0 1 17.5 20h-11A1.5 1.5 0 0 1 5 18.5v-7A1.5 1.5 0 0 1 6.5 10Z" /></svg>
+            </div>
+            <p class="eyebrow">Accès sécurisé</p>
+            <h2>Connexion</h2>
+            <p class="login-copy">Utilisez votre compte administrateur pour accéder aux opérations.</p>
+
+            <div id="config-warning" class="notice warning" hidden>
+              <strong>Connexion indisponible.</strong>
+              <span>La configuration Supabase publique est absente.</span>
+            </div>
+
+            <form id="login-form" class="login-form">
+              <label>
+                <span>Adresse e-mail</span>
+                <div class="input-shell">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 6.5h17v11h-17zM4 7l8 6 8-6" /></svg>
+                  <input name="email" type="email" value="admin@wcgf.com" autocomplete="username" spellcheck="false" required />
+                </div>
+              </label>
+              <label>
+                <span>Mot de passe</span>
+                <div class="input-shell password-shell">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 10V7.5a4.5 4.5 0 0 1 9 0V10m-10 0h11A1.5 1.5 0 0 1 19 11.5v7A1.5 1.5 0 0 1 17.5 20h-11A1.5 1.5 0 0 1 5 18.5v-7A1.5 1.5 0 0 1 6.5 10Z" /></svg>
+                  <input id="operation-password" name="password" type="password" autocomplete="current-password" required />
+                  <button id="toggle-password" type="button" aria-label="Afficher le mot de passe" aria-pressed="false">Afficher</button>
+                </div>
+              </label>
+              <button id="login-submit" class="login-submit" type="submit">
+                <span>Accéder au back-office</span>
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-5-5 5 5-5 5" /></svg>
+              </button>
+              <p id="login-status" class="form-status login-status" aria-live="polite"></p>
+            </form>
+
+            <p class="login-security">
+              <span aria-hidden="true"></span>
+              Session chiffrée et accès limité au rôle administrateur.
+            </p>
+          </div>
+          <a class="back-link" href="/">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5m5-5-5 5 5 5" /></svg>
+            Retour au site
+          </a>
+        </div>
       </div>
-      <button id="logout" class="button secondary" type="button" hidden>Sign out</button>
     </div>
 
-    <div class="container">
-      <div id="config-warning" class="notice warning" hidden>
-        <strong>Supabase is not configured.</strong>
-        <span>Add the public project URL and publishable key. Never expose a secret or service-role key in the browser.</span>
+    <div id="operation-app" class="operation-app" hidden>
+      <header class="operation-bar">
+        <div class="container operation-bar-inner">
+          <a class="operation-brand" href="/" aria-label="TheCasinos.com">
+            <img src="/logo.png" width="185" height="62" alt="TheCasinos.com" />
+            <span>Operations</span>
+          </a>
+          <div class="operation-account">
+            <span class="account-dot" aria-hidden="true"></span>
+            <div><strong>Administrateur</strong><small>admin@wcgf.com</small></div>
+            <button id="logout" class="button secondary small" type="button">Déconnexion</button>
+          </div>
+        </div>
+      </header>
+
+      <div class="container operation-heading">
+        <div>
+          <p class="eyebrow">Private workspace</p>
+          <h1>Casino operations.</h1>
+          <p>Manage the online Top 10, full reviews, verification data, official and affiliate links, logos and review screenshots.</p>
+        </div>
       </div>
 
-      <form id="login-form" class="login-card card">
-        <p class="eyebrow">Secure access</p>
-        <h2>Sign in to operations</h2>
-        <label>Email<input name="email" type="email" autocomplete="username" required /></label>
-        <label>Password<input name="password" type="password" autocomplete="current-password" required /></label>
-        <button class="button" type="submit">Sign in</button>
-        <p id="login-status" class="form-status" aria-live="polite"></p>
-      </form>
-
-      <div id="operation-app" hidden>
+      <div class="container">
         <div class="summary-grid">
           <article class="summary-tile card"><small>Active ranking</small><strong id="active-count">0</strong><span>maximum 10</span></article>
           <article class="summary-tile card"><small>Published reviews</small><strong id="published-count">0</strong><span>including archives</span></article>
@@ -225,8 +294,13 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   const supabaseUrl = import.meta.env.PUBLIC_SUPABASE_URL;
   const supabaseKey = import.meta.env.PUBLIC_SUPABASE_ANON_KEY;
   const warning = document.querySelector<HTMLElement>('#config-warning');
+  const loginView = document.querySelector<HTMLElement>('#login-view');
   const loginForm = document.querySelector<HTMLFormElement>('#login-form');
   const loginStatus = document.querySelector<HTMLElement>('#login-status');
+  const loginSubmit = document.querySelector<HTMLButtonElement>('#login-submit');
+  const loginSubmitLabel = loginSubmit?.querySelector<HTMLElement>('span');
+  const passwordInput = document.querySelector<HTMLInputElement>('#operation-password');
+  const passwordToggle = document.querySelector<HTMLButtonElement>('#toggle-password');
   const operationStatus = document.querySelector<HTMLElement>('#operation-status');
   const app = document.querySelector<HTMLElement>('#operation-app');
   const logout = document.querySelector<HTMLButtonElement>('#logout');
@@ -253,6 +327,16 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   let selectedKey = '';
   let client: SupabaseClient<Database> | null = null;
 
+  passwordToggle?.addEventListener('click', () => {
+    if (!passwordInput) return;
+    const reveal = passwordInput.type === 'password';
+    passwordInput.type = reveal ? 'text' : 'password';
+    passwordToggle.textContent = reveal ? 'Masquer' : 'Afficher';
+    passwordToggle.setAttribute('aria-label', reveal ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+    passwordToggle.setAttribute('aria-pressed', String(reveal));
+    passwordInput.focus();
+  });
+
   if (!supabaseUrl || !supabaseKey) {
     if (warning) warning.hidden = false;
     loginForm?.querySelectorAll('input,button').forEach((control) => (control as HTMLInputElement).disabled = true);
@@ -261,16 +345,23 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 
     async function openOperation() {
       if (!client) return;
-      const { data: { user } } = await client.auth.getUser();
-      if (!user) return;
-      if (user.app_metadata?.role !== 'admin') {
-        await client.auth.signOut();
-        setStatus(loginStatus, 'This account does not have the admin role.', true);
+      const { data: { user }, error } = await client.auth.getUser();
+      if (error) {
+        setStatus(loginStatus, 'Votre session a expiré. Reconnectez-vous.', true);
         return;
       }
-      if (loginForm) loginForm.hidden = true;
+      if (!user) {
+        if (loginView) loginView.hidden = false;
+        if (app) app.hidden = true;
+        return;
+      }
+      if (user.app_metadata?.role !== 'admin') {
+        await client.auth.signOut();
+        setStatus(loginStatus, 'Ce compte ne possède pas les droits administrateur.', true);
+        return;
+      }
+      if (loginView) loginView.hidden = true;
       if (app) app.hidden = false;
-      if (logout) logout.hidden = false;
       await loadOperators();
     }
 
@@ -289,13 +380,27 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
       event.preventDefault();
       if (!client || !loginForm) return;
       const formData = new FormData(loginForm);
-      setStatus(loginStatus, 'Signing in…');
+      const email = String(formData.get('email') ?? '').trim().toLocaleLowerCase();
+      const password = String(formData.get('password') ?? '');
+      if (!email || !password) {
+        setStatus(loginStatus, 'Renseignez votre adresse e-mail et votre mot de passe.', true);
+        return;
+      }
+      setLoginPending(true);
+      setStatus(loginStatus, 'Vérification de vos accès…');
       const { error } = await client.auth.signInWithPassword({
-        email: String(formData.get('email')),
-        password: String(formData.get('password')),
+        email,
+        password,
       });
-      if (error) return setStatus(loginStatus, error.message, true);
+      if (error) {
+        setLoginPending(false);
+        setStatus(loginStatus, authErrorMessage(error), true);
+        passwordInput?.focus();
+        passwordInput?.select();
+        return;
+      }
       await openOperation();
+      setLoginPending(false);
     });
 
     logout?.addEventListener('click', async () => {
@@ -634,6 +739,18 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
     target.classList.toggle('error', error);
   }
 
+  function setLoginPending(pending: boolean) {
+    if (loginSubmit) loginSubmit.disabled = pending;
+    if (loginForm) loginForm.setAttribute('aria-busy', String(pending));
+    if (loginSubmitLabel) loginSubmitLabel.textContent = pending ? 'Connexion en cours…' : 'Accéder au back-office';
+  }
+
+  function authErrorMessage(error: { code?: string; message?: string; status?: number }) {
+    if (error.code === 'invalid_credentials' || error.status === 400) return 'Adresse e-mail ou mot de passe incorrect.';
+    if (error.status && error.status >= 500) return 'Le service de connexion est momentanément indisponible. Réessayez dans quelques instants.';
+    return error.message || 'Connexion impossible. Vérifiez vos identifiants et réessayez.';
+  }
+
   function setText(selector: string, value: string | number) {
     const target = document.querySelector<HTMLElement>(selector);
     if (target) target.textContent = String(value);
@@ -645,22 +762,75 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
 </script>
 
 <style>
-  .operation-shell { min-height: 900px; padding: 70px 0 110px; background: #eceae1; }
-  .operation-heading { margin-bottom: 38px; display: flex; justify-content: space-between; align-items: end; gap: 30px; }
+  .operation-shell { min-height: 100svh; background: #eceae1; }
+  .login-view { position: relative; min-height: 100svh; overflow: hidden; background: radial-gradient(circle at 12% 18%, rgba(215,232,118,.12), transparent 28%), radial-gradient(circle at 88% 84%, rgba(233,84,91,.13), transparent 32%), #11372f; color: #fff; }
+  .login-view::before { content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .16; background-image: linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.08) 1px, transparent 1px); background-size: 64px 64px; mask-image: linear-gradient(to right, #000, transparent 72%); }
+  .login-brand { position: absolute; z-index: 2; top: 34px; left: clamp(28px, 5vw, 76px); display: flex; align-items: center; gap: 14px; }
+  .login-brand img { width: 172px; height: auto; filter: brightness(0) invert(1); }
+  .login-brand span, .operation-brand span { padding: 7px 10px; border: 1px solid rgba(255,255,255,.23); border-radius: 999px; color: var(--lime); font: 700 .66rem/1 'Manrope', sans-serif; letter-spacing: .09em; text-transform: uppercase; }
+  .login-stage { position: relative; z-index: 1; width: min(1180px, calc(100% - 56px)); min-height: 100svh; margin-inline: auto; padding: 125px 0 70px; display: grid; grid-template-columns: minmax(0,1.08fr) minmax(400px,.82fr); gap: clamp(56px, 8vw, 120px); align-items: center; }
+  .login-intro { min-height: 600px; display: flex; flex-direction: column; justify-content: space-between; }
+  .login-kicker { display: flex; align-items: center; gap: 12px; margin: 0 0 27px; color: var(--lime); font: 700 .72rem/1 'Manrope', sans-serif; letter-spacing: .14em; text-transform: uppercase; }
+  .login-kicker span { width: 34px; height: 2px; background: currentColor; }
+  .login-intro h1 { max-width: 680px; margin-bottom: 26px; color: #fff; font-size: clamp(3.4rem, 6.2vw, 6rem); line-height: .95; }
+  .login-lede { max-width: 620px; margin: 0; color: #b8cac4; font-size: clamp(1rem, 1.5vw, 1.16rem); line-height: 1.75; }
+  .login-features { max-width: 670px; margin: 60px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; list-style: none; }
+  .login-features li { padding: 18px 16px; display: flex; gap: 12px; border-top: 1px solid rgba(255,255,255,.2); }
+  .login-features li > span { color: var(--lime); font: 700 .65rem/1.3 'Manrope', sans-serif; }
+  .login-features div { display: flex; flex-direction: column; gap: 6px; }
+  .login-features strong { font: 700 .83rem/1.2 'Manrope', sans-serif; }
+  .login-features small { color: #8fa7a0; font-size: .7rem; line-height: 1.45; }
+  .login-panel-wrap { width: 100%; max-width: 500px; justify-self: end; }
+  .login-panel { padding: clamp(34px, 4.2vw, 52px); border: 1px solid rgba(255,255,255,.65); border-radius: 30px; background: rgba(255,253,248,.98); box-shadow: 0 36px 90px rgba(0,0,0,.28); color: var(--ink); }
+  .login-icon { width: 52px; height: 52px; margin-bottom: 28px; display: grid; place-items: center; border-radius: 16px; background: var(--forest); color: var(--lime); box-shadow: 0 12px 28px rgba(23,63,55,.2); }
+  .login-icon svg { width: 25px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+  .login-panel .eyebrow { margin-bottom: 12px; font-size: .67rem; }
+  .login-panel h2 { margin-bottom: 11px; font-size: clamp(2.1rem, 4vw, 2.8rem); }
+  .login-copy { margin: 0 0 31px; color: var(--muted); font-size: .94rem; line-height: 1.6; }
+  .notice { margin-bottom: 20px; padding: 14px 16px; display: flex; flex-direction: column; gap: 4px; border-radius: 12px; font-size: .8rem; }
+  .notice.warning { background: #fff0ca; color: #674d0b; }
+  .login-form { display: grid; gap: 19px; }
+  .login-form label { gap: 9px; color: #43524e; font-size: .78rem; }
+  .input-shell { position: relative; display: flex; align-items: center; }
+  .input-shell > svg { position: absolute; z-index: 1; left: 15px; width: 20px; fill: none; stroke: #788682; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+  .input-shell input { min-height: 54px; padding: 0 15px 0 47px; border: 1px solid #cfd5d1; border-radius: 13px; background: #fff; font-size: .94rem; transition: border-color .18s ease, box-shadow .18s ease; }
+  .input-shell input:focus { border-color: var(--forest); box-shadow: 0 0 0 4px rgba(23,63,55,.09); }
+  .password-shell input { padding-right: 88px; }
+  .password-shell button { position: absolute; z-index: 2; right: 8px; min-width: 72px; height: 38px; border: 0; border-radius: 9px; background: transparent; color: var(--forest); font-size: .7rem; font-weight: 700; cursor: pointer; }
+  .password-shell button:hover { background: #edf1e9; }
+  .login-submit { min-height: 56px; margin-top: 5px; padding: 0 18px 0 22px; display: flex; align-items: center; justify-content: space-between; gap: 16px; border: 0; border-radius: 13px; background: var(--brand); color: #fff; font-weight: 700; cursor: pointer; box-shadow: 0 14px 30px rgba(199,60,70,.22); transition: transform .18s ease, background .18s ease, box-shadow .18s ease; }
+  .login-submit svg, .back-link svg { width: 21px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .login-submit:hover { transform: translateY(-2px); background: var(--brand-dark); box-shadow: 0 18px 34px rgba(199,60,70,.28); }
+  .login-submit:disabled { transform: none; opacity: .68; cursor: wait; }
+  .login-security { margin: 19px 0 0; display: flex; align-items: center; gap: 8px; color: #788682; font-size: .7rem; line-height: 1.4; }
+  .login-security span { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #69a858; box-shadow: 0 0 0 4px rgba(105,168,88,.12); }
+  .back-link { width: fit-content; margin: 24px auto 0; display: flex; align-items: center; gap: 9px; color: #aac0b9; font-size: .78rem; font-weight: 600; }
+  .back-link:hover { color: #fff; }
+  .operation-app { min-height: 100svh; padding-bottom: 110px; background: #eceae1; }
+  .operation-bar { border-bottom: 1px solid rgba(18,33,30,.1); background: rgba(255,253,248,.95); backdrop-filter: blur(16px); }
+  .operation-bar-inner { min-height: 82px; display: flex; align-items: center; justify-content: space-between; gap: 30px; }
+  .operation-brand { display: flex; align-items: center; gap: 13px; }
+  .operation-brand img { width: 166px; height: auto; }
+  .operation-brand span { border-color: var(--line); color: var(--forest); }
+  .operation-account { display: flex; align-items: center; gap: 11px; }
+  .operation-account > div { display: flex; flex-direction: column; }
+  .operation-account strong { font-size: .76rem; }
+  .operation-account small { color: var(--muted); font-size: .68rem; }
+  .operation-account .button { margin-left: 8px; }
+  .account-dot { width: 9px; height: 9px; border-radius: 50%; background: #69a858; box-shadow: 0 0 0 4px rgba(105,168,88,.14); }
+  .operation-heading { margin-bottom: 38px; padding-top: 70px; display: flex; justify-content: space-between; align-items: end; gap: 30px; }
   .operation-heading h1 { margin-bottom: 14px; font-size: clamp(2.7rem, 6vw, 5rem); }
   .operation-heading p:last-child { max-width: 720px; color: var(--muted); }
-  .notice { margin-bottom: 25px; padding: 18px; display: flex; flex-direction: column; border-radius: 12px; }
-  .notice.warning { background: #fff0ca; color: #674d0b; }
-  .login-card { max-width: 480px; padding: 32px; }
-  .login-card h2 { font-size: 1.7rem; }
   label { display: flex; flex-direction: column; gap: 7px; color: var(--muted); font-size: .78rem; font-weight: 700; }
   input, textarea, select { width: 100%; padding: 11px 12px; border: 1px solid #c9cdc7; border-radius: 10px; outline: 0; background: #fff; color: var(--ink); font-weight: 400; }
   textarea { resize: vertical; line-height: 1.5; }
   input:focus, textarea:focus, select:focus { border-color: var(--forest); box-shadow: 0 0 0 3px rgba(23,63,55,.1); }
   label small { font-weight: 400; }
-  .login-card .button { margin-top: 18px; }
   .form-status { min-height: 20px; color: var(--forest); font-size: .82rem; }
   .form-status.error { color: #b1232e; }
+  .login-status { min-height: 0; margin: -4px 0 0; padding: 0; border-radius: 10px; line-height: 1.45; }
+  .login-status:not(:empty) { min-height: auto; padding: 11px 13px; background: #edf3ef; }
+  .login-status.error:not(:empty) { background: #fbe8e9; }
   .global-status { margin: 0 4px 12px; }
   .summary-grid { margin-bottom: 16px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
   .summary-tile { padding: 20px; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 3px 12px; }
@@ -729,7 +899,27 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   .screen-edit button { width: 30px; height: 30px; border: 0; border-radius: 50%; background: #f6dfe0; color: #9a1f29; cursor: pointer; }
   .media-empty { padding: 25px; border: 1px dashed #b9bdb7; border-radius: 12px; color: var(--muted); text-align: center; }
   @media (max-width: 1100px) { .score-grid { grid-template-columns: repeat(4,1fr); } .field-grid.four { grid-template-columns: repeat(2,1fr); } }
+  @media (max-width: 960px) {
+    .login-stage { width: min(720px, calc(100% - 48px)); padding-top: 120px; grid-template-columns: 1fr; gap: 48px; }
+    .login-intro { min-height: auto; }
+    .login-intro h1 { max-width: 720px; font-size: clamp(3.2rem, 9vw, 5.4rem); }
+    .login-panel-wrap { max-width: 560px; justify-self: center; }
+  }
   @media (max-width: 850px) { .summary-grid { grid-template-columns: repeat(2,1fr); } .workspace { grid-template-columns: 1fr; } .review-sidebar { position: static; max-height: 360px; } .operator-list { max-height: 285px; } }
+  @media (max-width: 720px) {
+    .login-brand { top: 25px; left: 24px; }
+    .login-brand img { width: 150px; }
+    .login-brand span { font-size: .58rem; }
+    .login-stage { width: min(100% - 28px, 540px); padding: 105px 0 38px; display: block; }
+    .login-intro { display: none; }
+    .login-panel { padding: 31px 24px; border-radius: 24px; }
+    .login-icon { margin-bottom: 24px; }
+    .operation-bar-inner { min-height: 72px; gap: 12px; }
+    .operation-brand img { width: 142px; }
+    .operation-brand span { display: none; }
+    .operation-account > div, .account-dot { display: none; }
+    .operation-account .button { margin-left: 0; }
+  }
   @media (max-width: 620px) {
     .operation-heading, .operation-toolbar, .screens-heading, .editor-sticky { align-items: start; flex-direction: column; }
     .toolbar-actions, .editor-actions { width: 100%; }
