@@ -1,15 +1,35 @@
 ---
 import 'leaflet/dist/leaflet.css';
 
-const { stats = { casinos: 7493, countries: 157, cities: 3224 } } = Astro.props;
+type InitialLocation = {
+  latitude: number;
+  longitude: number;
+  city?: string;
+};
+
+const {
+  stats = { casinos: 7493, countries: 157, cities: 3224 },
+  initialLocation,
+} = Astro.props as {
+  stats?: { casinos: number; countries: number; cities: number };
+  initialLocation?: InitialLocation;
+};
+
+const hasInitialLocation = Number.isFinite(initialLocation?.latitude) && Number.isFinite(initialLocation?.longitude);
 ---
 
 <section class="map-shell" aria-labelledby="map-title">
-  <div id="casino-map" aria-label="Interactive map of casinos around the visitor"></div>
+  <div
+    id="casino-map"
+    aria-label="Interactive map of casinos around the visitor"
+    data-initial-latitude={hasInitialLocation ? String(initialLocation?.latitude) : undefined}
+    data-initial-longitude={hasInitialLocation ? String(initialLocation?.longitude) : undefined}
+    data-initial-city={hasInitialLocation ? initialLocation?.city : undefined}
+  ></div>
   <div class="map-copy">
     <p class="eyebrow">Casinos around you</p>
     <h1 id="map-title">Find a casino.<br /><span>Start with the map.</span></h1>
-    <p>Allow your location to discover nearby venues, then move the map to explore anywhere in the world.</p>
+    <p>Start with casinos around your city, use your precise location if needed, then move the map to explore anywhere.</p>
     <form class="map-search" action="/search" method="get">
       <label class="sr-only" for="map-query">Search by casino, city or country</label>
       <input id="map-query" type="search" name="q" placeholder="Casino, city or country…" autocomplete="off" />
@@ -54,8 +74,21 @@ const { stats = { casinos: 7493, countries: 157, cities: 3224 } } = Astro.props;
   const locateButton = document.querySelector<HTMLButtonElement>('.locate-button');
 
   if (mapElement) {
+    const initialLatitude = Number(mapElement.dataset.initialLatitude);
+    const initialLongitude = Number(mapElement.dataset.initialLongitude);
+    const initialCity = mapElement.dataset.initialCity?.trim() || '';
+    const approximateLocation = Number.isFinite(initialLatitude) && Number.isFinite(initialLongitude)
+      ? L.latLng(initialLatitude, initialLongitude)
+      : null;
+    const initialCenter = approximateLocation ?? L.latLng(27, 2);
+
     const map = L.map(mapElement, {
-      center: [27, 2], zoom: 2, minZoom: 2, maxZoom: 17, zoomControl: false, worldCopyJump: true,
+      center: initialCenter,
+      zoom: approximateLocation ? 11 : 2,
+      minZoom: 2,
+      maxZoom: 17,
+      zoomControl: false,
+      worldCopyJump: true,
     });
     L.control.zoom({ position: 'topright' }).addTo(map);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -65,9 +98,14 @@ const { stats = { casinos: 7493, countries: 157, cities: 3224 } } = Astro.props;
 
     const markers: L.Marker[] = [];
     let userMarker: L.CircleMarker | null = null;
-    let userLocation: L.LatLng | null = null;
+    let userLocation: L.LatLng | null = approximateLocation;
+    let locationLabel = approximateLocation ? (initialCity || 'your city') : '';
     let requestId = 0;
     let debounceTimer = 0;
+
+    if (approximateLocation) {
+      setUserMarker(approximateLocation, `Approximate location${initialCity ? `: ${initialCity}` : ''}`, true);
+    }
 
     async function refresh() {
       const currentRequest = ++requestId;
@@ -90,7 +128,10 @@ const { stats = { casinos: 7493, countries: 157, cities: 3224 } } = Astro.props;
 
         for (const { casino } of ordered) addCasinoMarker(casino);
         renderNearby(ordered.slice(0, 6));
-        if (status) status.textContent = `${ordered.length} place${ordered.length === 1 ? '' : 's'} in view`;
+        if (status) {
+          const area = locationLabel ? ` near ${locationLabel}` : ' in view';
+          status.textContent = `${ordered.length} place${ordered.length === 1 ? '' : 's'}${area}`;
+        }
       } catch {
         if (status) status.textContent = 'Map data is temporarily unavailable.';
         if (nearbyList) nearbyList.innerHTML = '<p class="nearby-empty">Unable to load nearby casinos.</p>';
@@ -125,23 +166,61 @@ const { stats = { casinos: 7493, countries: 157, cities: 3224 } } = Astro.props;
     }
 
     function locateVisitor() {
+      if (locateButton?.disabled) return;
+
       if (!navigator.geolocation) {
-        if (status) status.textContent = 'Geolocation is not supported by this browser.';
+        useApproximateLocation('Precise geolocation is not supported by this browser.');
         return;
       }
-      if (status) status.textContent = 'Finding your location…';
+      if (!window.isSecureContext) {
+        useApproximateLocation('Precise geolocation requires a secure connection.');
+        return;
+      }
+      if (status) status.textContent = 'Finding your precise location…';
       if (locateButton) locateButton.disabled = true;
       navigator.geolocation.getCurrentPosition(({ coords }) => {
         userLocation = L.latLng(coords.latitude, coords.longitude);
-        userMarker?.remove();
-        userMarker = L.circleMarker(userLocation, { radius: 9, weight: 4, color: '#fff', fillColor: '#2879d0', fillOpacity: 1 }).addTo(map).bindTooltip('Your location');
-        map.setView(userLocation, 10);
+        locationLabel = 'your location';
+        setUserMarker(userLocation, 'Your precise location', false);
+        map.flyTo(userLocation, 12, { duration: 0.75 });
         if (status) status.textContent = 'Showing casinos around you';
         if (locateButton) locateButton.disabled = false;
-      }, () => {
-        if (status) status.textContent = 'Location unavailable. You can still move the map.';
+      }, (error) => {
         if (locateButton) locateButton.disabled = false;
-      }, { enableHighAccuracy: false, timeout: 10_000, maximumAge: 600_000 });
+        if (error.code === error.PERMISSION_DENIED) {
+          useApproximateLocation('Precise location is blocked in your browser.');
+          return;
+        }
+        if (error.code === error.TIMEOUT) {
+          useApproximateLocation('Precise location took too long to respond.');
+          return;
+        }
+        useApproximateLocation('Precise location is temporarily unavailable.');
+      }, { enableHighAccuracy: false, timeout: 15_000, maximumAge: 300_000 });
+    }
+
+    function useApproximateLocation(reason: string) {
+      if (!approximateLocation) {
+        if (status) status.textContent = `${reason} You can still move the map.`;
+        return;
+      }
+      userLocation = approximateLocation;
+      locationLabel = initialCity || 'your city';
+      setUserMarker(approximateLocation, `Approximate location${initialCity ? `: ${initialCity}` : ''}`, true);
+      map.flyTo(approximateLocation, 11, { duration: 0.75 });
+      if (status) status.textContent = `${reason} Showing ${initialCity || 'your city'} instead.`;
+    }
+
+    function setUserMarker(location: L.LatLng, tooltip: string, approximate: boolean) {
+      userMarker?.remove();
+      userMarker = L.circleMarker(location, {
+        radius: approximate ? 11 : 9,
+        weight: approximate ? 3 : 4,
+        color: '#fff',
+        dashArray: approximate ? '4 4' : undefined,
+        fillColor: '#2879d0',
+        fillOpacity: approximate ? 0.68 : 1,
+      }).addTo(map).bindTooltip(tooltip);
     }
 
     function casinoUrl(casino: MapCasino) {
@@ -167,7 +246,6 @@ const { stats = { casinos: 7493, countries: 157, cities: 3224 } } = Astro.props;
     });
     locateButton?.addEventListener('click', locateVisitor);
     refresh();
-    window.setTimeout(locateVisitor, 450);
   }
 </script>
 
