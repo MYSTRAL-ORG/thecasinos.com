@@ -13,6 +13,10 @@ const {
   casinoName,
 } = Astro.props;
 const numbers = Array.from({ length: 37 }, (_, index) => index);
+const wheelNumbers = [
+  0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10,
+  5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26,
+];
 const outsideBets = [
   { key: 'range:low', kind: 'range', value: 'low', label: '1–18', className: '' },
   { key: 'parity:even', kind: 'parity', value: 'even', label: 'Even', className: '' },
@@ -51,7 +55,15 @@ const columns = [
     <div class="roulette-layout">
       <div class="wheel-column">
         <div class="wheel-stage" data-wheel-stage>
-          <div class="wheel-disc" data-wheel aria-hidden="true"></div>
+          <div class="wheel-disc" data-wheel data-wheel-order={wheelNumbers.join(',')} aria-hidden="true">
+            {wheelNumbers.map((number, index) => (
+              <span
+                class="wheel-pocket-number"
+                data-pocket-color={number === 0 ? 'green' : ROULETTE_RED_NUMBERS.has(number) ? 'red' : 'black'}
+                style={`--slot-index: ${index}`}
+              >{number}</span>
+            ))}
+          </div>
           <span class="roulette-ball" aria-hidden="true"></span>
           <div class="wheel-result" data-result-number>–</div>
         </div>
@@ -168,6 +180,7 @@ const columns = [
     const bonusButton = root.querySelector<HTMLButtonElement>('[data-claim-bonus]');
     const resetButton = root.querySelector<HTMLButtonElement>('[data-reset-wallet]');
     const wheel = root.querySelector<HTMLElement>('[data-wheel]');
+    const wheelOrder = (wheel?.dataset.wheelOrder || '').split(',').map(Number).filter(Number.isFinite);
     const wheelStage = root.querySelector<HTMLElement>('[data-wheel-stage]');
     const resultNumber = root.querySelector<HTMLElement>('[data-result-number]');
     const resultTitle = root.querySelector<HTMLElement>('[data-result-title]');
@@ -323,7 +336,12 @@ const columns = [
       spinning = true;
       updateBetControls(settlement.wallet);
       wheelStage?.classList.add('is-spinning');
-      rotation += 1_440 + (37 - result) * (360 / 37);
+      const resultIndex = Math.max(0, wheelOrder.indexOf(result));
+      const slotAngle = 360 / 37;
+      const targetAngle = (360 - resultIndex * slotAngle) % 360;
+      const currentAngle = ((rotation % 360) + 360) % 360;
+      const alignmentDelta = (targetAngle - currentAngle + 360) % 360;
+      rotation += 1_440 + alignmentDelta;
       if (wheel) wheel.style.transform = `rotate(${rotation}deg)`;
       if (resultTitle) resultTitle.textContent = 'Wheel spinning…';
       if (resultDetail) resultDetail.textContent = `${numberFormat.format(wagered)} chips in play`;
@@ -366,10 +384,11 @@ const columns = [
   .chip-icon { grid-row: 1 / 3; width: 23px; aspect-ratio: 1; border: 4px dotted #4d615b; border-radius: 50%; background: var(--lime); }
   .roulette-layout { display: grid; grid-template-columns: minmax(245px, .62fr) minmax(0, 1.5fr); gap: 36px; align-items: start; }
   .wheel-column { display: grid; justify-items: center; }
-  .wheel-stage { position: relative; width: min(100%, 280px); aspect-ratio: 1; display: grid; place-items: center; }
-  .wheel-disc { position: absolute; inset: 0; border: 14px solid #0b2b25; border-radius: 50%; background: repeating-conic-gradient(from -4.86deg, #d94c55 0 9.72deg, #18201e 9.72deg 19.44deg); box-shadow: inset 0 0 0 3px rgba(255,255,255,.18), 0 20px 35px rgba(0,0,0,.2); transition: transform 1.6s cubic-bezier(.12,.69,.12,1); }
-  .wheel-disc::before { content: ''; position: absolute; inset: -6px; border-radius: inherit; background: conic-gradient(#4c9c70 0 9.72deg, transparent 9.72deg 360deg); }
-  .wheel-disc::after { content: ''; position: absolute; inset: 27%; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; background: #173f37; box-shadow: 0 0 0 11px rgba(10,32,27,.52); }
+  .wheel-stage { --pocket-radius: 101px; position: relative; width: min(100%, 280px); aspect-ratio: 1; display: grid; place-items: center; }
+  .wheel-disc { position: absolute; inset: 0; overflow: hidden; border: 14px solid #0b2b25; border-radius: 50%; background: repeating-conic-gradient(from -4.8649deg, rgba(255,255,255,.16) 0 .48deg, transparent .48deg 9.7297deg), repeating-conic-gradient(from -4.8649deg, #18201e 0 9.7297deg, #d94c55 9.7297deg 19.4594deg); box-shadow: inset 0 0 0 3px rgba(255,255,255,.18), 0 20px 35px rgba(0,0,0,.2); transition: transform 1.6s cubic-bezier(.12,.69,.12,1); }
+  .wheel-disc::before { content: ''; position: absolute; z-index: 1; inset: 0; border-radius: inherit; background: conic-gradient(from -4.8649deg, #4c9c70 0 9.7297deg, transparent 9.7297deg 360deg); }
+  .wheel-disc::after { content: ''; position: absolute; z-index: 1; inset: 27%; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; background: #173f37; box-shadow: 0 0 0 11px rgba(10,32,27,.52); }
+  .wheel-pocket-number { position: absolute; z-index: 2; top: 50%; left: 50%; width: 19px; height: 16px; display: grid; place-items: center; color: #fff; font: 900 .55rem/1 'Manrope', sans-serif; letter-spacing: -.04em; pointer-events: none; text-shadow: 0 1px 2px rgba(0,0,0,.72); transform: translate(-50%, -50%) rotate(calc(var(--slot-index) * 9.7297deg)) translateY(calc(var(--pocket-radius) * -1)) rotate(calc(var(--slot-index) * -9.7297deg)); }
   .roulette-ball { position: absolute; z-index: 2; top: 18px; left: 50%; width: 13px; height: 13px; border: 2px solid rgba(0,0,0,.14); border-radius: 50%; background: #fff8df; box-shadow: 0 4px 7px rgba(0,0,0,.32); transform: translateX(-50%); }
   .is-spinning .roulette-ball { animation: ball-orbit .52s linear infinite; transform-origin: 0 calc(140px - 18px); }
   .wheel-result { position: relative; z-index: 3; width: 66px; aspect-ratio: 1; display: grid; place-items: center; border: 5px solid #0d3029; border-radius: 50%; background: #e8f39c; color: #173f37; font: 800 1.65rem/1 'Manrope', sans-serif; }
@@ -434,7 +453,8 @@ const columns = [
   .compact .roulette-header { margin-bottom: 24px; }
   .compact .roulette-header h2 { font-size: clamp(1.65rem, 3vw, 2.3rem); }
   .compact .roulette-layout { grid-template-columns: minmax(205px, .58fr) minmax(0, 1.4fr); gap: 28px; }
-  .compact .wheel-stage { max-width: 218px; }
+  .compact .wheel-stage { --pocket-radius: 76px; max-width: 218px; }
+  .compact .wheel-pocket-number { font-size: .47rem; }
   .compact .is-spinning .roulette-ball { transform-origin: 0 calc(109px - 18px); }
   .compact .compact-bets { grid-template-columns: repeat(3, 1fr); }
   .compact .roulette-footer { margin-top: 20px; }
@@ -442,7 +462,7 @@ const columns = [
   @media (max-width: 900px) {
     .roulette-layout, .compact .roulette-layout { grid-template-columns: 1fr; }
     .wheel-column { grid-template-columns: 220px 1fr; justify-items: start; align-items: center; gap: 24px; }
-    .wheel-stage, .compact .wheel-stage { grid-row: 1 / 3; max-width: 220px; }
+    .wheel-stage, .compact .wheel-stage { --pocket-radius: 77px; grid-row: 1 / 3; max-width: 220px; }
     .wallet-actions { justify-content: start; }
     .training-dashboard { grid-template-columns: repeat(3, 1fr); }
     .recent-rounds { grid-column: 1 / -1; }
@@ -452,7 +472,7 @@ const columns = [
     .roulette-header { align-items: stretch; flex-direction: column; gap: 17px; }
     .wallet-pill { width: fit-content; }
     .wheel-column { grid-template-columns: 1fr; justify-items: center; text-align: center; }
-    .wheel-stage, .compact .wheel-stage { grid-row: auto; width: min(76vw, 245px); max-width: none; }
+    .wheel-stage, .compact .wheel-stage { --pocket-radius: 88px; grid-row: auto; width: min(76vw, 245px); max-width: none; }
     .wallet-actions { justify-content: center; }
     .number-grid { grid-template-columns: repeat(6, 1fr); }
     .outside-grid { grid-template-columns: repeat(3, 1fr); }

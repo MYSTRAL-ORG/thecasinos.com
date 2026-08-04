@@ -45,6 +45,7 @@ const structuredData = [
   </section>
 
   <section class="container roulette-section">
+    <div class="room-break" aria-hidden="true"><span></span><p>Practice table</p><span></span></div>
     <RouletteGame title="European roulette" />
   </section>
 
@@ -82,14 +83,17 @@ const structuredData = [
 </BaseLayout>
 
 <style>
-  .training-hero { padding: 70px 0 100px; background: var(--forest); color: #fff; }
+  .training-hero { padding: 46px 0 52px; background: var(--forest); color: #fff; }
   .training-hero .eyebrow { color: var(--lime); }
-  .training-hero-grid { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr); align-items: end; gap: 70px; }
-  .training-hero h1 { margin: 0; font-size: clamp(3.2rem, 7vw, 6.3rem); }
-  .training-intro > p { margin: 0; color: #bfd1cb; font-size: 1.05rem; }
-  .hero-points { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 25px; }
+  .training-hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(360px, .85fr); align-items: center; gap: 64px; }
+  .training-hero h1 { max-width: 760px; margin: 0; font-size: clamp(2.9rem, 5vw, 4.55rem); line-height: .98; }
+  .training-intro > p { margin: 0; color: #c7d7d2; font-size: .98rem; line-height: 1.65; }
+  .hero-points { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 20px; }
   .hero-points span { padding: 8px 10px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; color: #d8e5e1; font-size: .73rem; }
-  .roulette-section { position: relative; z-index: 2; margin-top: -54px; padding-bottom: 95px; }
+  .roulette-section { position: relative; z-index: 2; padding-top: 46px; padding-bottom: 95px; }
+  .room-break { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 18px; margin-bottom: 24px; }
+  .room-break span { height: 1px; background: var(--line); }
+  .room-break p { margin: 0; color: #69746f; font: 800 .68rem/1 'Manrope', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
   .learn-section { display: grid; grid-template-columns: minmax(280px, .65fr) minmax(0, 1.35fr); gap: 70px; padding-bottom: 105px; }
   .learn-heading > p:last-child { max-width: 480px; color: var(--muted); }
   .lesson-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -119,5 +123,5 @@ const structuredData = [
   .safety-section h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
   .safety-section > p { margin: 28px 0 0; color: var(--muted); font-size: 1rem; }
   @media (max-width: 900px) { .training-hero-grid, .learn-section, .safety-section { grid-template-columns: 1fr; gap: 35px; }.lesson-grid { grid-template-columns: 1fr; }.lesson-grid article { min-height: 210px; }.future-grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 620px) { .training-hero { padding: 48px 0 82px; }.training-hero h1 { font-size: clamp(2.9rem, 15vw, 4.4rem); }.roulette-section { width: 100%; margin-top: -42px; padding-bottom: 72px; }.future-grid { grid-template-columns: 1fr; }.safety-section { padding-block: 70px; } }
+  @media (max-width: 620px) { .training-hero { padding: 36px 0 42px; }.training-hero-grid { gap: 25px; }.training-hero h1 { font-size: clamp(2.55rem, 12vw, 3.6rem); }.training-intro > p { font-size: .92rem; }.hero-points { margin-top: 16px; }.roulette-section { width: 100%; padding-top: 32px; padding-bottom: 72px; }.room-break { gap: 12px; margin-inline: 16px; margin-bottom: 20px; }.future-grid { grid-template-columns: 1fr; }.safety-section { padding-block: 70px; } }
 </style>
