@@ -229,9 +229,24 @@ const columns = [
             const item = document.createElement('li');
             const result = document.createElement('span');
             const net = document.createElement('strong');
-            result.textContent = entry.result;
+            const resultValue = Number.parseInt(entry.result, 10);
+            const hasRouletteNumber = Number.isInteger(resultValue) && resultValue >= 0 && resultValue <= 36;
+            const resultColor = hasRouletteNumber ? rouletteColor(resultValue) : 'black';
+            item.className = 'recent-result';
+            result.className = 'recent-number';
+            net.className = 'recent-net';
+            result.textContent = hasRouletteNumber ? String(resultValue) : '–';
+            result.dataset.color = resultColor;
             net.textContent = `${entry.net >= 0 ? '+' : ''}${numberFormat.format(entry.net)}`;
-            net.dataset.positive = String(entry.net >= 0);
+            net.dataset.tone = entry.net > 0 ? 'positive' : entry.net < 0 ? 'negative' : 'neutral';
+            item.setAttribute(
+              'aria-label',
+              hasRouletteNumber
+                ? `${resultValue} ${resultColor}. ${entry.net >= 0 ? 'Gain' : 'Loss'}: ${numberFormat.format(Math.abs(entry.net))} chips.`
+                : `Result unavailable. Net: ${numberFormat.format(entry.net)} chips.`,
+            );
+            result.setAttribute('aria-hidden', 'true');
+            net.setAttribute('aria-hidden', 'true');
             item.append(result, net);
             history.append(item);
           });
@@ -441,11 +456,7 @@ const columns = [
   .training-dashboard > div { min-height: 98px; padding: 18px; display: grid; align-content: space-between; background: #173f37; }
   .training-dashboard span { color: #9eb9b1; font-size: .72rem; }
   .training-dashboard strong { color: #fff; font: 800 1.25rem/1 'Manrope', sans-serif; }
-  .recent-rounds ol { display: flex; gap: 7px; margin: 12px 0 0; padding: 0; list-style: none; }
-  .recent-rounds li { min-width: 67px; display: grid; gap: 3px; padding: 7px 9px; border-radius: 8px; background: rgba(255,255,255,.07); }
-  .recent-rounds li span { white-space: nowrap; font-size: .64rem; }
-  .recent-rounds li strong { font-size: .7rem; }
-  .recent-rounds li strong[data-positive='true'] { color: var(--lime); }
+  .recent-rounds ol { display: flex; gap: 13px; margin: 12px 0 0; padding: 0; list-style: none; }
   .roulette-footer { display: flex; align-items: center; justify-content: space-between; gap: 25px; margin-top: 25px; padding-top: 19px; border-top: 1px solid var(--game-line); color: #91afa6; font-size: .74rem; }
   .roulette-footer p { margin: 0; }
   .roulette-footer a { color: var(--lime); font-weight: 800; }
@@ -486,4 +497,37 @@ const columns = [
     .recent-rounds { grid-column: 1 / -1; overflow-x: auto; }
     .roulette-footer { align-items: start; flex-direction: column; gap: 10px; }
   }
+</style>
+
+<!-- History entries are rendered client-side, so their styles must remain global. -->
+<style is:global>
+  .roulette-game .recent-rounds [data-history] > .recent-result {
+    min-width: 44px;
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    padding: 0;
+    background: none;
+  }
+  .roulette-game .recent-rounds .recent-number {
+    width: 42px;
+    aspect-ratio: 1;
+    display: grid;
+    place-items: center;
+    border: 2px solid rgba(255, 255, 255, .24);
+    border-radius: 50%;
+    color: #fff;
+    font: 850 .9rem/1 'Manrope', sans-serif;
+    box-shadow: 0 5px 12px rgba(4, 24, 19, .24);
+  }
+  .roulette-game .recent-rounds .recent-number[data-color='red'] { background: #c5454e; }
+  .roulette-game .recent-rounds .recent-number[data-color='black'] { background: #1d2523; }
+  .roulette-game .recent-rounds .recent-number[data-color='green'] { background: #397f5b; }
+  .roulette-game .recent-rounds .recent-net {
+    color: #bcd0ca;
+    font: 800 .7rem/1 'Manrope', sans-serif;
+    white-space: nowrap;
+  }
+  .roulette-game .recent-rounds .recent-net[data-tone='positive'] { color: var(--lime); }
+  .roulette-game .recent-rounds .recent-net[data-tone='negative'] { color: #ff9ca1; }
 </style>
