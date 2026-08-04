@@ -26,15 +26,15 @@ const casinos = query ? await searchCasinos(query) : [];
 </BaseLayout>
 
 <style>
-  .search-hero { padding: 80px 0; background: var(--forest); color: #fff; }
+  .search-hero { padding: 30px 0 36px; background: var(--forest); color: #fff; }
   .search-hero .eyebrow { color: var(--lime); }
-  .search-hero h1 { margin-bottom: 35px; }
+  .search-hero h1 { margin-bottom: 18px; font-size: clamp(2.2rem, 4.2vw, 3.7rem); }
   form { max-width: 760px; }
   label { display: block; margin-bottom: 9px; color: #c5d4cf; font-size: .85rem; }
   form > div { display: flex; gap: 10px; }
-  input { width: 100%; min-height: 56px; padding: 0 18px; border: 0; border-radius: 12px; outline: 0; background: #fff; }
+  input { width: 100%; min-height: 50px; padding: 0 18px; border: 0; border-radius: 12px; outline: 0; background: #fff; }
   .result-count { margin: 0 0 28px; color: var(--muted); }
   .results { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   @media (max-width: 900px) { .results { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 620px) { .results { grid-template-columns: 1fr; } form > div { flex-direction: column; } }
+  @media (max-width: 620px) { .search-hero { padding: 22px 0 27px; } .results { grid-template-columns: 1fr; } form > div { flex-direction: column; } }
 </style>

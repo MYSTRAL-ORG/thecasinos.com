@@ -74,12 +74,13 @@ const structuredData = {
 </BaseLayout>
 
 <style>
-  .directory-hero { padding: 86px 0; background: var(--forest); color: #fff; }
-  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 390px; gap: 80px; align-items: end; }
+  .directory-hero { padding: 32px 0 36px; background: var(--forest); color: #fff; }
+  .hero-grid { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 48px; align-items: center; }
+  .directory-hero h1 { margin-bottom: 12px; font-size: clamp(2.2rem, 4.2vw, 3.7rem); }
   .directory-hero .eyebrow, .directory-hero h1 span { color: var(--lime); }
-  .directory-hero .lede { max-width: 740px; color: #bfd0ca; }
+  .directory-hero .lede { max-width: 740px; margin-bottom: 0; color: #bfd0ca; font-size: .9rem; }
   dl { margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid rgba(255,255,255,.16); border-radius: 18px; }
-  dl div { padding: 20px 14px; display: flex; flex-direction: column; gap: 6px; text-align: center; }
+  dl div { padding: 15px 12px; display: flex; flex-direction: column; gap: 5px; text-align: center; }
   dl div + div { border-left: 1px solid rgba(255,255,255,.16); }
   dt { color: #9db3ac; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
   dd { margin: 0; color: var(--lime); font: 800 1.45rem/1 'Manrope', sans-serif; }
@@ -100,5 +101,5 @@ const structuredData = {
   .country-grid b { position: absolute; top: 22px; right: 16px; color: var(--brand-dark); }
   .country-grid a:hover { background: #fff; }
   @media (max-width: 900px) { .hero-grid, .directory-intro { grid-template-columns: 1fr; gap: 35px; } .country-grid { grid-template-columns: repeat(2, 1fr); } .country-grid a:not(:nth-child(3n)) { border-right: 0; } .country-grid a:nth-child(odd) { border-right: 1px solid var(--line); } }
-  @media (max-width: 620px) { .directory-hero { padding: 58px 0; } dl { grid-template-columns: 1fr; } dl div + div { border: 0; border-top: 1px solid rgba(255,255,255,.16); } .country-group { grid-template-columns: 1fr; gap: 8px; } .country-grid { grid-template-columns: 1fr; } .country-grid a:nth-child(odd) { border-right: 0; } }
+  @media (max-width: 620px) { .directory-hero { padding: 24px 0 27px; } .hero-grid { gap: 20px; } dl { grid-template-columns: repeat(3, 1fr); } dl div + div { border-left: 1px solid rgba(255,255,255,.16); } .country-group { grid-template-columns: 1fr; gap: 8px; } .country-grid { grid-template-columns: 1fr; } .country-grid a:nth-child(odd) { border-right: 0; } }
 </style>
