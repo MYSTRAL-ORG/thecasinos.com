@@ -145,6 +145,7 @@
     let selectedStake = 20;
     let phase: Phase = 'betting';
     let revealDealer = false;
+    let animateDealerReveal = false;
     let locked = false;
 
     const drawCard = () => {
@@ -163,19 +164,28 @@
       status.dataset.tone = tone;
     }
 
-    function cardElement(card: BlackjackCard, hidden = false, index = 0) {
+    function cardElement(card: BlackjackCard, hidden = false, index = 0, revealed = false) {
       const wrapper = document.createElement('div');
-      wrapper.className = hidden ? 'playing-card card-back' : 'playing-card';
+      wrapper.className = 'playing-card';
+      wrapper.classList.toggle('card-back', hidden);
+      wrapper.classList.toggle('is-revealed', revealed);
       wrapper.style.setProperty('--deal-index', String(index));
+      wrapper.style.setProperty('--card-index', String(index));
+      const image = document.createElement('img');
       if (hidden) {
         wrapper.setAttribute('aria-label', 'Face-down dealer card');
+        image.src = '/cards/back-cards.png';
+        image.alt = '';
+        image.width = 292;
+        image.height = 424;
+        image.draggable = false;
+        wrapper.append(image);
         return wrapper;
       }
-      const image = document.createElement('img');
       image.src = blackjackCardPath(card);
       image.alt = blackjackCardLabel(card);
-      image.width = 140;
-      image.height = 196;
+      image.width = 292;
+      image.height = 424;
       image.draggable = false;
       wrapper.append(image);
       return wrapper;
@@ -192,7 +202,12 @@
         dealerScore.textContent = '–';
         return;
       }
-      dealerCards.forEach((card, index) => dealerCardsRoot.append(cardElement(card, index === 1 && !revealDealer, index)));
+      dealerCards.forEach((card, index) => dealerCardsRoot.append(cardElement(
+        card,
+        index === 1 && !revealDealer,
+        index,
+        index === 1 && animateDealerReveal,
+      )));
       dealerScore.textContent = revealDealer
         ? String(blackjackHandValue(dealerCards).total)
         : String(blackjackHandValue([dealerCards[0]]).total);
@@ -201,6 +216,7 @@
     function renderPlayerHands() {
       if (!playerHandsRoot) return;
       playerHandsRoot.replaceChildren();
+      playerHandsRoot.classList.toggle('is-split', playerHands.length > 1);
       if (!playerHands.length) {
         const zone = document.createElement('div');
         zone.className = 'hand-zone player-hand is-active';
@@ -342,8 +358,10 @@
     async function settleRound() {
       locked = true;
       revealDealer = true;
+      animateDealerReveal = true;
       phase = 'dealer';
       render();
+      animateDealerReveal = false;
       const hasLiveHand = playerHands.some((hand) => !blackjackHandValue(hand.cards).bust);
       while (hasLiveHand && dealerShouldHit(dealerCards)) {
         await wait(430);
@@ -556,5 +574,242 @@
   }
   @media (max-width: 680px) {
     .blackjack-shell { padding: 22px 14px; border-radius: 22px; }.blackjack-header { align-items: stretch; flex-direction: column; gap: 16px; }.blackjack-wallet { width: fit-content; }.blackjack-table { min-height: 525px; padding: 22px 12px; border-radius: 70px 70px 18px 18px; }.blackjack-table::before { inset: 10px; border-radius: 60px 60px 13px 13px; }.hand-heading { align-items: start; flex-direction: column; gap: 4px; }.card-row { min-height: 122px; gap: 6px; }.playing-card { width: clamp(64px, 20vw, 84px); border-radius: 6px; }.table-rule { gap: 8px; margin-block: 18px; font-size: .55rem; }.player-hands { grid-template-columns: 1fr; }.blackjack-controls { grid-template-columns: 1fr; }.coach-panel { grid-column: auto; grid-row: auto; }.blackjack-stakes { flex-wrap: wrap; }.play-actions { grid-template-columns: 1fr 1fr; }.blackjack-dashboard { grid-template-columns: 1fr 1fr; }.blackjack-dashboard > div:nth-child(3), .blackjack-history { grid-column: 1 / -1; }.blackjack-history { overflow-x: auto; }.blackjack-footer { align-items: start; flex-direction: column; gap: 10px; }
+  }
+</style>
+
+<!--
+  Hands and cards are rendered client-side. These selectors deliberately stay global below
+  the component root so dynamically-created nodes keep the intended table layout.
+-->
+<style is:global>
+  .blackjack-game .blackjack-table {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: 6px;
+    padding: 34px 44px 36px;
+    border-radius: 112px 112px 24px 24px;
+    background: radial-gradient(circle at 50% 46%, rgba(99, 166, 137, .3), transparent 48%), #155344;
+  }
+  .blackjack-game .blackjack-table::before {
+    inset: 14px;
+    border-radius: 98px 98px 17px 17px;
+  }
+  .blackjack-game .hand-zone {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+  }
+  .blackjack-game .dealer-zone {
+    width: 100%;
+    max-width: 720px;
+    margin-inline: auto;
+  }
+  .blackjack-game .hand-heading {
+    width: 100%;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin: 0 auto 8px;
+    text-align: center;
+  }
+  .blackjack-game .hand-heading > div {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 8px;
+  }
+  .blackjack-game .hand-heading span {
+    color: #d9e7e1;
+    font-size: .72rem;
+    font-weight: 800;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+  }
+  .blackjack-game .hand-heading strong {
+    color: var(--lime);
+    font-size: 1.2rem;
+    line-height: 1;
+  }
+  .blackjack-game .hand-heading small {
+    padding-left: 14px;
+    border-left: 1px solid rgba(255, 255, 255, .18);
+    color: #b4cec4;
+    font-size: .68rem;
+    line-height: 1.3;
+  }
+  .blackjack-game .card-row {
+    min-height: 138px;
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    padding: 3px 22px 7px;
+    overflow: visible;
+  }
+  .blackjack-game .empty-hand {
+    margin: 0;
+    color: rgba(222, 239, 232, .62);
+    font-size: .76rem;
+  }
+  .blackjack-game .playing-card {
+    position: relative;
+    z-index: calc(var(--card-index, 0) + 1);
+    width: clamp(78px, 7vw, 98px);
+    aspect-ratio: 292 / 424;
+    flex: 0 0 auto;
+    overflow: hidden;
+    border: 0;
+    border-radius: 9px;
+    background: #fff;
+    box-shadow: 0 10px 22px rgba(3, 22, 17, .3);
+    animation: blackjack-deal .3s ease both;
+    animation-delay: calc(var(--deal-index, 0) * 35ms);
+    transform-origin: center bottom;
+  }
+  .blackjack-game .playing-card + .playing-card {
+    margin-left: -18px;
+  }
+  .blackjack-game .playing-card img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+    user-select: none;
+  }
+  .blackjack-game .card-back {
+    background: #fff;
+    box-shadow: 0 10px 22px rgba(3, 22, 17, .3);
+  }
+  .blackjack-game .playing-card.is-revealed {
+    animation: blackjack-reveal .44s cubic-bezier(.2, .75, .25, 1) both;
+  }
+  .blackjack-game .table-rule {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 710px;
+    display: grid;
+    grid-template-columns: auto minmax(44px, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    margin: 4px auto 10px;
+    color: #a8c9bd;
+    font-size: .62rem;
+    font-weight: 800;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .blackjack-game .table-rule i {
+    height: 1px;
+    background: rgba(255, 255, 255, .18);
+  }
+  .blackjack-game .player-zone {
+    position: relative;
+    z-index: 1;
+  }
+  .blackjack-game .player-hands {
+    width: 100%;
+    max-width: 820px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    gap: 14px;
+    margin-inline: auto;
+  }
+  .blackjack-game .player-hand {
+    width: min(100%, 620px);
+    min-width: 0;
+    padding: 10px 20px 14px;
+    border: 1px solid transparent;
+    border-radius: 18px;
+    background: rgba(5, 40, 32, .16);
+    transition: border-color .2s ease, background-color .2s ease, opacity .2s ease;
+  }
+  .blackjack-game .player-hands.is-split .player-hand {
+    width: auto;
+    flex: 1 1 0;
+    padding-inline: 10px;
+  }
+  .blackjack-game .player-hand.is-active {
+    border-color: var(--lime);
+    background: rgba(215, 232, 118, .085);
+  }
+  .blackjack-game .player-hand.is-finished:not(.is-active) {
+    opacity: .74;
+  }
+
+  @keyframes blackjack-deal {
+    from { opacity: 0; transform: translateY(-16px) rotate(-2deg) scale(.95); }
+    to { opacity: 1; transform: none; }
+  }
+  @keyframes blackjack-reveal {
+    0% { opacity: .7; transform: rotateY(90deg) scale(.94); }
+    100% { opacity: 1; transform: rotateY(0) scale(1); }
+  }
+
+  @media (max-width: 680px) {
+    .blackjack-game .blackjack-table {
+      gap: 3px;
+      padding: 25px 10px 18px;
+      border-radius: 58px 58px 18px 18px;
+    }
+    .blackjack-game .blackjack-table::before {
+      inset: 8px;
+      border-radius: 50px 50px 13px 13px;
+    }
+    .blackjack-game .hand-heading {
+      min-height: 36px;
+      flex-wrap: wrap;
+      gap: 2px 9px;
+      margin-bottom: 4px;
+    }
+    .blackjack-game .hand-heading small {
+      width: 100%;
+      padding-left: 0;
+      border-left: 0;
+      font-size: .62rem;
+    }
+    .blackjack-game .card-row {
+      min-height: 108px;
+      padding: 2px 8px 5px;
+    }
+    .blackjack-game .playing-card {
+      width: clamp(64px, 20vw, 78px);
+      border-radius: 7px;
+    }
+    .blackjack-game .playing-card + .playing-card {
+      margin-left: -15px;
+    }
+    .blackjack-game .table-rule {
+      gap: 7px;
+      margin: 3px auto 8px;
+      padding-inline: 5px;
+      font-size: .5rem;
+      letter-spacing: .07em;
+    }
+    .blackjack-game .player-hands {
+      gap: 5px;
+    }
+    .blackjack-game .player-hand,
+    .blackjack-game .player-hands.is-split .player-hand {
+      padding: 7px 4px 10px;
+      border-radius: 14px;
+    }
+    .blackjack-game .player-hands.is-split .hand-heading span {
+      font-size: .6rem;
+    }
+    .blackjack-game .player-hands.is-split .hand-heading small {
+      font-size: .55rem;
+    }
+    .blackjack-game .player-hands.is-split .playing-card {
+      width: clamp(55px, 17vw, 68px);
+    }
+    .blackjack-game .player-hands.is-split .playing-card + .playing-card {
+      margin-left: -22px;
+    }
   }
 </style>
