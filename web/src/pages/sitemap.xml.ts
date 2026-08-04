@@ -11,6 +11,7 @@ export const GET: APIRoute = async ({ site }) => {
       { path: '/' },
       { path: '/casinos' },
       { path: '/online' },
+      { path: '/training' },
       { path: '/about' },
       { path: '/terms' },
       { path: '/policy' },

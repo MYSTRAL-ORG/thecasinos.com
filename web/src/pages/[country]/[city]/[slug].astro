@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CasinoCard from '@/components/CasinoCard.astro';
+import JourneyPlanner from '@/components/JourneyPlanner.astro';
+import RouletteGame from '@/components/RouletteGame.astro';
 import { getCasinoByPath, getCasinosByLocation } from '@/lib/data';
 import { getCasinoImageUrl } from '@/lib/media';
 import { breadcrumbSchema, casinoPageDescription, casinoPageTitle } from '@/lib/seo';
@@ -207,7 +209,19 @@ const structuredData = casino ? [
       <div class="faq-list">{faqs.map((faq) => <details><summary>{faq.question}</summary><p>{faq.answer}</p></details>)}</div>
     </section>}
 
-    {casino.latitude != null && casino.longitude != null && <section class="container location-panel"><div><p class="eyebrow">Location</p><h2>{casino.city_name}, {casino.country_name}</h2><p>Open the exact position in OpenStreetMap before planning your visit.</p></div><a class="button dark" href={`https://www.openstreetmap.org/?mlat=${casino.latitude}&mlon=${casino.longitude}#map=15/${casino.latitude}/${casino.longitude}`} target="_blank" rel="noopener">Open map</a></section>}
+    <JourneyPlanner
+      casinoName={casino.name.trim()}
+      city={casino.city_name}
+      country={casino.country_name}
+      latitude={casino.latitude}
+      longitude={casino.longitude}
+      address={casino.street_address}
+    />
+
+    <section class="container training-mini-section">
+      <RouletteGame compact casinoName={casino.name.trim()} title="Warm up with one roulette round." />
+    </section>
+
     {relatedCasinos.length ? <section class="related-section">
       <div class="container">
         <div class="section-heading"><div><p class="eyebrow">Continue exploring</p><h2>More casinos in<br />{casino.city_name}.</h2></div><a class="button secondary" href={`/${casino.country_slug}/${casino.city_slug}`}>View the complete city guide</a></div>
@@ -285,11 +299,10 @@ const structuredData = casino ? [
   .faq-list details { padding: 22px 0; border-bottom: 1px solid var(--line); }
   .faq-list summary { cursor: pointer; color: var(--ink); font-weight: 750; }
   .faq-list p { margin: 14px 28px 0 0; color: var(--muted); line-height: 1.7; }
-  .location-panel { margin-bottom: 90px; padding: 36px; display: flex; align-items: center; justify-content: space-between; gap: 30px; border-radius: var(--radius-lg); background: var(--lime); }
-  .location-panel h2, .location-panel p { margin-bottom: 0; }
+  .training-mini-section { margin-bottom: 90px; }
   .related-section { padding: 88px 0; background: #eceae1; }
   .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   @media (max-width: 1050px) { .visit-grid { grid-template-columns: repeat(2, 1fr); }.editorial-highlights { grid-template-columns: 1fr; }.editorial-highlights section { min-height: 0; }.editorial-highlights h3 { margin-top: 22px; } }
   @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; }.hero-image { max-width: 720px; }.detail-grid { grid-template-columns: 1fr; gap: 42px; }.detail-aside { position: static; grid-template-columns: repeat(2, 1fr); }.related-grid, .amenities-grid { grid-template-columns: repeat(2, 1fr); }.faq-section { grid-template-columns: 1fr; gap: 28px; } }
-  @media (max-width: 620px) { .detail-hero { padding-bottom: 45px; }.hero-image { border-radius: 18px; }.detail-aside, .related-grid, .visit-grid, .amenities-grid, .gallery-grid { grid-template-columns: 1fr; }.location-panel { align-items: start; flex-direction: column; }.visit-grid article, .amenities-grid article { min-height: 0; }.amenities-grid .amenity-type { margin-bottom: 34px; } }
+  @media (max-width: 620px) { .detail-hero { padding-bottom: 45px; }.hero-image { border-radius: 18px; }.detail-aside, .related-grid, .visit-grid, .amenities-grid, .gallery-grid { grid-template-columns: 1fr; }.visit-grid article, .amenities-grid article { min-height: 0; }.amenities-grid .amenity-type { margin-bottom: 34px; }.training-mini-section { width: 100%; margin-bottom: 68px; } }
 </style>

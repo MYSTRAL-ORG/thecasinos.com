@@ -1,0 +1,467 @@
+---
+import { ROULETTE_RED_NUMBERS } from '@/lib/roulette';
+
+interface Props {
+  compact?: boolean;
+  title?: string;
+  casinoName?: string;
+}
+
+const {
+  compact = false,
+  title = compact ? 'Try a roulette round.' : 'European roulette',
+  casinoName,
+} = Astro.props;
+const numbers = Array.from({ length: 37 }, (_, index) => index);
+const outsideBets = [
+  { key: 'range:low', kind: 'range', value: 'low', label: '1–18', className: '' },
+  { key: 'parity:even', kind: 'parity', value: 'even', label: 'Even', className: '' },
+  { key: 'color:red', kind: 'color', value: 'red', label: 'Red', className: 'red' },
+  { key: 'color:black', kind: 'color', value: 'black', label: 'Black', className: 'black' },
+  { key: 'parity:odd', kind: 'parity', value: 'odd', label: 'Odd', className: '' },
+  { key: 'range:high', kind: 'range', value: 'high', label: '19–36', className: '' },
+];
+const dozens = [
+  { key: 'dozen:1', value: '1', label: '1st 12' },
+  { key: 'dozen:2', value: '2', label: '2nd 12' },
+  { key: 'dozen:3', value: '3', label: '3rd 12' },
+];
+const columns = [
+  { key: 'column:1', value: '1', label: 'Column 1' },
+  { key: 'column:2', value: '2', label: 'Column 2' },
+  { key: 'column:3', value: '3', label: 'Column 3' },
+];
+---
+
+<section class:list={['roulette-game', { compact }]} data-roulette-game data-compact={String(compact)}>
+  <div class="roulette-shell">
+    <header class="roulette-header">
+      <div>
+        <p class="roulette-kicker">{compact ? 'Mini training room' : 'Training room · roulette'}</p>
+        <h2>{title}</h2>
+        {compact && <p>Use free practice chips. Your balance follows you into the full room.</p>}
+      </div>
+      <div class="wallet-pill" aria-label="Practice chip balance">
+        <span class="chip-icon" aria-hidden="true"></span>
+        <strong data-wallet-balance>2,000</strong>
+        <small>chips</small>
+      </div>
+    </header>
+
+    <div class="roulette-layout">
+      <div class="wheel-column">
+        <div class="wheel-stage" data-wheel-stage>
+          <div class="wheel-disc" data-wheel aria-hidden="true"></div>
+          <span class="roulette-ball" aria-hidden="true"></span>
+          <div class="wheel-result" data-result-number>–</div>
+        </div>
+        <div class="result-copy" aria-live="polite">
+          <strong data-result-title>Place your bets</strong>
+          <span data-result-detail>European wheel · one green zero</span>
+        </div>
+        <div class="wallet-actions">
+          <button type="button" class="bonus-button" data-claim-bonus>Claim +500 daily</button>
+          {!compact && <button type="button" class="reset-button" data-reset-wallet>Reset wallet</button>}
+        </div>
+      </div>
+
+      <div class="table-column">
+        <div class="chip-selector" aria-label="Select chip value">
+          <span>Chip</span>
+          {[10, 25, 100, 500].map((value) => (
+            <button type="button" class:list={['stake-chip', { selected: value === 25 }]} data-chip={value} aria-pressed={value === 25 ? 'true' : 'false'}>{value}</button>
+          ))}
+        </div>
+
+        {compact ? (
+          <div class="compact-bets" aria-label="Quick roulette bets">
+            {outsideBets.map((bet) => (
+              <button type="button" class:list={['bet-cell', bet.className]} data-bet-key={bet.key} data-bet-kind={bet.kind} data-bet-value={bet.value}>
+                <span>{bet.label}</span><em data-bet-amount></em>
+              </button>
+            ))}
+          </div>
+        ) : (
+          <div class="roulette-board" aria-label="Roulette betting table">
+            <button type="button" class="bet-cell number-cell zero" data-bet-key="number:0" data-bet-kind="number" data-bet-value="0"><span>0</span><em data-bet-amount></em></button>
+            <div class="number-grid">
+              {numbers.slice(1).map((number) => (
+                <button
+                  type="button"
+                  class:list={['bet-cell', 'number-cell', ROULETTE_RED_NUMBERS.has(number) ? 'red-number' : 'black-number']}
+                  data-bet-key={`number:${number}`}
+                  data-bet-kind="number"
+                  data-bet-value={number}
+                ><span>{number}</span><em data-bet-amount></em></button>
+              ))}
+            </div>
+            <div class="dozen-grid">
+              {dozens.map((bet) => <button type="button" class="bet-cell" data-bet-key={bet.key} data-bet-kind="dozen" data-bet-value={bet.value}><span>{bet.label}</span><em data-bet-amount></em></button>)}
+            </div>
+            <div class="outside-grid">
+              {outsideBets.map((bet) => <button type="button" class:list={['bet-cell', bet.className]} data-bet-key={bet.key} data-bet-kind={bet.kind} data-bet-value={bet.value}><span>{bet.label}</span><em data-bet-amount></em></button>)}
+            </div>
+            <div class="column-grid">
+              {columns.map((bet) => <button type="button" class="bet-cell" data-bet-key={bet.key} data-bet-kind="column" data-bet-value={bet.value}><span>{bet.label}</span><em data-bet-amount></em></button>)}
+            </div>
+          </div>
+        )}
+
+        <div class="bet-summary">
+          <div><span>Current bet</span><strong><span data-bet-total>0</span> chips</strong></div>
+          <div class="table-actions">
+            <button type="button" data-undo-bet disabled>Undo</button>
+            <button type="button" data-clear-bets disabled>Clear</button>
+            <button type="button" class="spin-button" data-spin disabled>Spin</button>
+          </div>
+        </div>
+        <p class="roulette-status" data-status aria-live="polite">Select a chip, then choose one or more bets.</p>
+      </div>
+    </div>
+
+    {!compact && <div class="training-dashboard">
+      <div><span>Rounds</span><strong data-stat-rounds>0</strong></div>
+      <div><span>Profitable rounds</span><strong data-stat-wins>0</strong></div>
+      <div><span>Return rate</span><strong data-stat-return>–</strong></div>
+      <div class="recent-rounds"><span>Recent results</span><ol data-history><li>No rounds played yet.</li></ol></div>
+    </div>}
+
+    <footer class="roulette-footer">
+      <p>Practice only · chips have no monetary value · results use independent random draws.</p>
+      {compact && <a href="/training">Enter the full training room <span aria-hidden="true">→</span></a>}
+      {casinoName && <span class="casino-context">Training from the {casinoName} guide</span>}
+    </footer>
+  </div>
+</section>
+
+<script>
+  import {
+    canClaimTrainingBonus,
+    claimTrainingBonus,
+    completeTrainingRound,
+    readTrainingWallet,
+    resetTrainingWallet,
+    TRAINING_DAILY_BONUS,
+    TRAINING_WALLET_EVENT,
+    type TrainingWallet,
+  } from '@/lib/training-wallet';
+  import {
+    rouletteColor,
+    rouletteRoundPayout,
+    secureRouletteResult,
+    type RouletteBet,
+  } from '@/lib/roulette';
+
+  const numberFormat = new Intl.NumberFormat('en-US');
+
+  document.querySelectorAll<HTMLElement>('[data-roulette-game]').forEach((root) => {
+    if (root.dataset.ready === 'true') return;
+    root.dataset.ready = 'true';
+
+    const bets = new Map<string, RouletteBet>();
+    const betActions: { key: string; amount: number }[] = [];
+    const betButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-bet-key]')];
+    const chipButtons = [...root.querySelectorAll<HTMLButtonElement>('[data-chip]')];
+    const spinButton = root.querySelector<HTMLButtonElement>('[data-spin]');
+    const undoButton = root.querySelector<HTMLButtonElement>('[data-undo-bet]');
+    const clearButton = root.querySelector<HTMLButtonElement>('[data-clear-bets]');
+    const bonusButton = root.querySelector<HTMLButtonElement>('[data-claim-bonus]');
+    const resetButton = root.querySelector<HTMLButtonElement>('[data-reset-wallet]');
+    const wheel = root.querySelector<HTMLElement>('[data-wheel]');
+    const wheelStage = root.querySelector<HTMLElement>('[data-wheel-stage]');
+    const resultNumber = root.querySelector<HTMLElement>('[data-result-number]');
+    const resultTitle = root.querySelector<HTMLElement>('[data-result-title]');
+    const resultDetail = root.querySelector<HTMLElement>('[data-result-detail]');
+    const status = root.querySelector<HTMLElement>('[data-status]');
+    const betTotal = root.querySelector<HTMLElement>('[data-bet-total]');
+    let selectedChip = 25;
+    let spinning = false;
+    let rotation = 0;
+
+    const totalWagered = () => [...bets.values()].reduce((total, bet) => total + bet.amount, 0);
+
+    function setStatus(message: string, tone: 'neutral' | 'error' | 'success' = 'neutral') {
+      if (!status) return;
+      status.textContent = message;
+      status.dataset.tone = tone;
+    }
+
+    function renderWallet(wallet: TrainingWallet = readTrainingWallet()) {
+      root.querySelectorAll<HTMLElement>('[data-wallet-balance]').forEach((element) => {
+        element.textContent = numberFormat.format(wallet.balance);
+      });
+      const rounds = root.querySelector<HTMLElement>('[data-stat-rounds]');
+      const wins = root.querySelector<HTMLElement>('[data-stat-wins]');
+      const returnRate = root.querySelector<HTMLElement>('[data-stat-return]');
+      if (rounds) rounds.textContent = numberFormat.format(wallet.rounds);
+      if (wins) wins.textContent = numberFormat.format(wallet.winningRounds);
+      if (returnRate) returnRate.textContent = wallet.totalWagered > 0 ? `${((wallet.totalReturned / wallet.totalWagered) * 100).toFixed(1)}%` : '–';
+      if (bonusButton) {
+        const canClaim = canClaimTrainingBonus(wallet);
+        bonusButton.disabled = !canClaim;
+        bonusButton.textContent = canClaim ? `Claim +${TRAINING_DAILY_BONUS} daily` : 'Daily bonus claimed';
+      }
+
+      const history = root.querySelector<HTMLOListElement>('[data-history]');
+      if (history) {
+        history.replaceChildren();
+        if (!wallet.history.length) {
+          const empty = document.createElement('li');
+          empty.textContent = 'No rounds played yet.';
+          history.append(empty);
+        } else {
+          wallet.history.slice(0, 6).forEach((entry) => {
+            const item = document.createElement('li');
+            const result = document.createElement('span');
+            const net = document.createElement('strong');
+            result.textContent = entry.result;
+            net.textContent = `${entry.net >= 0 ? '+' : ''}${numberFormat.format(entry.net)}`;
+            net.dataset.positive = String(entry.net >= 0);
+            item.append(result, net);
+            history.append(item);
+          });
+        }
+      }
+      updateBetControls(wallet);
+    }
+
+    function updateBetControls(wallet = readTrainingWallet()) {
+      const currentTotal = totalWagered();
+      if (betTotal) betTotal.textContent = numberFormat.format(currentTotal);
+      for (const button of betButtons) {
+        const key = button.dataset.betKey || '';
+        const amount = bets.get(key)?.amount ?? 0;
+        const badge = button.querySelector<HTMLElement>('[data-bet-amount]');
+        button.classList.toggle('has-bet', amount > 0);
+        if (badge) badge.textContent = amount > 0 ? numberFormat.format(amount) : '';
+        button.disabled = spinning;
+      }
+      chipButtons.forEach((button) => { button.disabled = spinning; });
+      if (spinButton) spinButton.disabled = spinning || currentTotal === 0 || currentTotal > wallet.balance;
+      if (undoButton) undoButton.disabled = spinning || betActions.length === 0;
+      if (clearButton) clearButton.disabled = spinning || currentTotal === 0;
+    }
+
+    function clearBets() {
+      bets.clear();
+      betActions.length = 0;
+      updateBetControls();
+    }
+
+    function placeBet(button: HTMLButtonElement) {
+      const wallet = readTrainingWallet();
+      if (spinning) return;
+      if (totalWagered() + selectedChip > wallet.balance) {
+        setStatus('Not enough practice chips for that bet.', 'error');
+        return;
+      }
+      const key = button.dataset.betKey || '';
+      const kind = button.dataset.betKind as RouletteBet['kind'];
+      const rawValue = button.dataset.betValue || '';
+      const value = kind === 'number' || kind === 'dozen' || kind === 'column' ? Number(rawValue) : rawValue;
+      const current = bets.get(key);
+      bets.set(key, { key, kind, value, amount: (current?.amount ?? 0) + selectedChip });
+      betActions.push({ key, amount: selectedChip });
+      setStatus(`${numberFormat.format(selectedChip)} chips added to ${button.querySelector('span')?.textContent || 'bet'}.`);
+      updateBetControls(wallet);
+    }
+
+    betButtons.forEach((button) => button.addEventListener('click', () => placeBet(button)));
+    chipButtons.forEach((button) => button.addEventListener('click', () => {
+      selectedChip = Number(button.dataset.chip || 25);
+      chipButtons.forEach((candidate) => {
+        const selected = candidate === button;
+        candidate.classList.toggle('selected', selected);
+        candidate.setAttribute('aria-pressed', String(selected));
+      });
+      setStatus(`${numberFormat.format(selectedChip)}-chip stake selected.`);
+    }));
+
+    undoButton?.addEventListener('click', () => {
+      const action = betActions.pop();
+      if (!action) return;
+      const bet = bets.get(action.key);
+      if (!bet) return;
+      bet.amount -= action.amount;
+      if (bet.amount <= 0) bets.delete(action.key);
+      else bets.set(action.key, bet);
+      setStatus('Last chip removed.');
+      updateBetControls();
+    });
+    clearButton?.addEventListener('click', () => {
+      clearBets();
+      setStatus('The table is clear.');
+    });
+
+    bonusButton?.addEventListener('click', () => {
+      const { claimed, wallet } = claimTrainingBonus();
+      renderWallet(wallet);
+      setStatus(claimed ? `Daily bonus: +${TRAINING_DAILY_BONUS} chips.` : 'Today’s bonus has already been claimed.', claimed ? 'success' : 'neutral');
+    });
+
+    resetButton?.addEventListener('click', () => {
+      if (!window.confirm('Reset the practice wallet and erase roulette statistics on this device?')) return;
+      clearBets();
+      renderWallet(resetTrainingWallet());
+      setStatus('Practice wallet reset to 2,000 chips.');
+    });
+
+    spinButton?.addEventListener('click', () => {
+      if (spinning) return;
+      const wagered = totalWagered();
+      if (wagered <= 0) return;
+      const result = secureRouletteResult();
+      const color = rouletteColor(result);
+      const payout = rouletteRoundPayout(bets.values(), result);
+      const settlement = completeTrainingRound({ result: `${result} · ${color}`, wagered, payout });
+      if (!settlement.completed) {
+        setStatus('Your balance changed. Adjust the bet and try again.', 'error');
+        renderWallet(settlement.wallet);
+        return;
+      }
+
+      spinning = true;
+      updateBetControls(settlement.wallet);
+      wheelStage?.classList.add('is-spinning');
+      rotation += 1_440 + (37 - result) * (360 / 37);
+      if (wheel) wheel.style.transform = `rotate(${rotation}deg)`;
+      if (resultTitle) resultTitle.textContent = 'Wheel spinning…';
+      if (resultDetail) resultDetail.textContent = `${numberFormat.format(wagered)} chips in play`;
+      setStatus('No more bets.');
+
+      window.setTimeout(() => {
+        spinning = false;
+        wheelStage?.classList.remove('is-spinning');
+        if (resultNumber) {
+          resultNumber.textContent = String(result);
+          resultNumber.dataset.color = color;
+        }
+        const net = payout - wagered;
+        if (resultTitle) resultTitle.textContent = `${result} · ${color}`;
+        if (resultDetail) resultDetail.textContent = payout > 0
+          ? `${numberFormat.format(payout)} returned · ${net >= 0 ? '+' : ''}${numberFormat.format(net)} net`
+          : `${numberFormat.format(wagered)} chips lost`;
+        clearBets();
+        renderWallet(settlement.wallet);
+        setStatus(payout > 0 ? `Winning bets returned ${numberFormat.format(payout)} chips.` : 'No winning bet this round.', payout > 0 ? 'success' : 'neutral');
+      }, 1_650);
+    });
+
+    window.addEventListener(TRAINING_WALLET_EVENT, (event) => renderWallet((event as CustomEvent<TrainingWallet>).detail));
+    window.addEventListener('storage', () => renderWallet());
+    renderWallet();
+  });
+</script>
+
+<style>
+  .roulette-game { --game-line: rgba(255,255,255,.15); --game-soft: rgba(255,255,255,.075); color: #fff; }
+  .roulette-shell { overflow: hidden; padding: 34px; border-radius: 30px; background: #133d35; box-shadow: 0 26px 70px rgba(13,48,41,.18); }
+  .roulette-header { display: flex; align-items: start; justify-content: space-between; gap: 32px; margin-bottom: 30px; }
+  .roulette-kicker { margin: 0 0 10px; color: var(--lime); font: 800 .72rem/1 'Manrope', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+  .roulette-header h2 { margin: 0; color: #fff; font-size: clamp(1.9rem, 4vw, 3rem); }
+  .roulette-header p:last-child { max-width: 530px; margin: 10px 0 0; color: #bcd0ca; }
+  .wallet-pill { min-width: 150px; display: grid; grid-template-columns: 24px auto; align-items: center; column-gap: 8px; padding: 13px 16px; border: 1px solid var(--game-line); border-radius: 18px; background: var(--game-soft); }
+  .wallet-pill strong { color: #fff; font: 800 1.15rem/1 'Manrope', sans-serif; }
+  .wallet-pill small { grid-column: 2; margin-top: 3px; color: #a9c2ba; font-size: .7rem; }
+  .chip-icon { grid-row: 1 / 3; width: 23px; aspect-ratio: 1; border: 4px dotted #4d615b; border-radius: 50%; background: var(--lime); }
+  .roulette-layout { display: grid; grid-template-columns: minmax(245px, .62fr) minmax(0, 1.5fr); gap: 36px; align-items: start; }
+  .wheel-column { display: grid; justify-items: center; }
+  .wheel-stage { position: relative; width: min(100%, 280px); aspect-ratio: 1; display: grid; place-items: center; }
+  .wheel-disc { position: absolute; inset: 0; border: 14px solid #0b2b25; border-radius: 50%; background: repeating-conic-gradient(from -4.86deg, #d94c55 0 9.72deg, #18201e 9.72deg 19.44deg); box-shadow: inset 0 0 0 3px rgba(255,255,255,.18), 0 20px 35px rgba(0,0,0,.2); transition: transform 1.6s cubic-bezier(.12,.69,.12,1); }
+  .wheel-disc::before { content: ''; position: absolute; inset: -6px; border-radius: inherit; background: conic-gradient(#4c9c70 0 9.72deg, transparent 9.72deg 360deg); }
+  .wheel-disc::after { content: ''; position: absolute; inset: 27%; border: 1px solid rgba(255,255,255,.22); border-radius: 50%; background: #173f37; box-shadow: 0 0 0 11px rgba(10,32,27,.52); }
+  .roulette-ball { position: absolute; z-index: 2; top: 18px; left: 50%; width: 13px; height: 13px; border: 2px solid rgba(0,0,0,.14); border-radius: 50%; background: #fff8df; box-shadow: 0 4px 7px rgba(0,0,0,.32); transform: translateX(-50%); }
+  .is-spinning .roulette-ball { animation: ball-orbit .52s linear infinite; transform-origin: 0 calc(140px - 18px); }
+  .wheel-result { position: relative; z-index: 3; width: 66px; aspect-ratio: 1; display: grid; place-items: center; border: 5px solid #0d3029; border-radius: 50%; background: #e8f39c; color: #173f37; font: 800 1.65rem/1 'Manrope', sans-serif; }
+  .wheel-result[data-color='red'] { background: #e9545b; color: #fff; }
+  .wheel-result[data-color='black'] { background: #1d2523; color: #fff; }
+  .wheel-result[data-color='green'] { background: #4c9c70; color: #fff; }
+  .result-copy { min-height: 55px; display: grid; gap: 4px; margin-top: 18px; text-align: center; }
+  .result-copy strong { color: #fff; }
+  .result-copy span { color: #9eb9b1; font-size: .82rem; }
+  .wallet-actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 16px; }
+  .bonus-button, .reset-button { min-height: 36px; padding: 0 13px; border: 1px solid var(--game-line); border-radius: 999px; background: transparent; color: #d9e6e2; cursor: pointer; font-size: .75rem; font-weight: 700; }
+  .bonus-button:not(:disabled):hover, .reset-button:hover { border-color: var(--lime); color: var(--lime); }
+  .bonus-button:disabled { cursor: default; opacity: .52; }
+  .table-column { min-width: 0; }
+  .chip-selector { display: flex; align-items: center; gap: 9px; margin-bottom: 17px; }
+  .chip-selector > span { margin-right: 5px; color: #a9c2ba; font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+  .stake-chip { width: 45px; aspect-ratio: 1; padding: 0; border: 4px dotted rgba(12,45,38,.55); border-radius: 50%; background: #f2c86d; color: #173f37; cursor: pointer; font-size: .72rem; font-weight: 800; transition: transform .18s ease, outline .18s ease; }
+  .stake-chip:nth-of-type(2) { background: #d7e876; }
+  .stake-chip:nth-of-type(3) { background: #f08a8f; }
+  .stake-chip:nth-of-type(4) { background: #8ecbb5; }
+  .stake-chip.selected { outline: 2px solid #fff; outline-offset: 3px; transform: translateY(-2px); }
+  .roulette-board { display: grid; gap: 8px; }
+  .number-grid { display: grid; grid-template-columns: repeat(12, minmax(32px, 1fr)); gap: 5px; }
+  .dozen-grid, .column-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
+  .outside-grid, .compact-bets { display: grid; grid-template-columns: repeat(6, 1fr); gap: 5px; }
+  .bet-cell { position: relative; min-height: 45px; padding: 6px 5px; border: 1px solid rgba(255,255,255,.21); border-radius: 8px; background: rgba(255,255,255,.06); color: #f5f9f7; cursor: pointer; font-size: .78rem; font-weight: 750; transition: background .16s ease, border-color .16s ease, transform .16s ease; }
+  .bet-cell:hover:not(:disabled) { border-color: var(--lime); background: rgba(215,232,118,.12); transform: translateY(-1px); }
+  .bet-cell.red, .number-cell.red-number { background: #c5454e; }
+  .bet-cell.black, .number-cell.black-number { background: #1d2523; }
+  .number-cell.zero { min-height: 48px; background: #397f5b; }
+  .number-cell { min-height: 42px; padding: 5px 2px; }
+  .bet-cell em { position: absolute; top: -7px; right: -5px; min-width: 24px; height: 24px; display: none; place-items: center; padding: 0 5px; border: 3px dotted #2e5047; border-radius: 999px; background: var(--lime); color: #173f37; font-size: .59rem; font-style: normal; font-weight: 900; box-shadow: 0 3px 8px rgba(0,0,0,.22); }
+  .bet-cell.has-bet { z-index: 2; border-color: var(--lime); }
+  .bet-cell.has-bet em { display: grid; }
+  .bet-summary { display: flex; align-items: center; justify-content: space-between; gap: 18px; margin-top: 18px; padding-top: 17px; border-top: 1px solid var(--game-line); }
+  .bet-summary > div:first-child { display: grid; gap: 2px; }
+  .bet-summary span { color: #9eb9b1; font-size: .7rem; text-transform: uppercase; letter-spacing: .07em; }
+  .bet-summary strong { color: #fff; font-size: .9rem; }
+  .table-actions { display: flex; gap: 7px; }
+  .table-actions button { min-height: 40px; padding: 0 14px; border: 1px solid var(--game-line); border-radius: 999px; background: transparent; color: #d8e5e1; cursor: pointer; font-size: .76rem; font-weight: 750; }
+  .table-actions button:disabled { cursor: default; opacity: .34; }
+  .table-actions .spin-button { min-width: 102px; border-color: var(--lime); background: var(--lime); color: #173f37; font-size: .88rem; }
+  .table-actions .spin-button:not(:disabled):hover { background: #e5f38d; transform: translateY(-1px); }
+  .roulette-status { min-height: 21px; margin: 11px 0 0; color: #9eb9b1; font-size: .76rem; }
+  .roulette-status[data-tone='error'] { color: #ff9ca1; }
+  .roulette-status[data-tone='success'] { color: var(--lime); }
+  .training-dashboard { display: grid; grid-template-columns: .7fr .8fr .7fr 2fr; gap: 1px; margin-top: 32px; overflow: hidden; border: 1px solid var(--game-line); border-radius: 17px; background: var(--game-line); }
+  .training-dashboard > div { min-height: 98px; padding: 18px; display: grid; align-content: space-between; background: #173f37; }
+  .training-dashboard span { color: #9eb9b1; font-size: .72rem; }
+  .training-dashboard strong { color: #fff; font: 800 1.25rem/1 'Manrope', sans-serif; }
+  .recent-rounds ol { display: flex; gap: 7px; margin: 12px 0 0; padding: 0; list-style: none; }
+  .recent-rounds li { min-width: 67px; display: grid; gap: 3px; padding: 7px 9px; border-radius: 8px; background: rgba(255,255,255,.07); }
+  .recent-rounds li span { white-space: nowrap; font-size: .64rem; }
+  .recent-rounds li strong { font-size: .7rem; }
+  .recent-rounds li strong[data-positive='true'] { color: var(--lime); }
+  .roulette-footer { display: flex; align-items: center; justify-content: space-between; gap: 25px; margin-top: 25px; padding-top: 19px; border-top: 1px solid var(--game-line); color: #91afa6; font-size: .74rem; }
+  .roulette-footer p { margin: 0; }
+  .roulette-footer a { color: var(--lime); font-weight: 800; }
+  .roulette-footer a:hover { color: #fff; }
+  .casino-context { color: #a9c2ba; }
+  .compact .roulette-shell { padding: 30px; }
+  .compact .roulette-header { margin-bottom: 24px; }
+  .compact .roulette-header h2 { font-size: clamp(1.65rem, 3vw, 2.3rem); }
+  .compact .roulette-layout { grid-template-columns: minmax(205px, .58fr) minmax(0, 1.4fr); gap: 28px; }
+  .compact .wheel-stage { max-width: 218px; }
+  .compact .is-spinning .roulette-ball { transform-origin: 0 calc(109px - 18px); }
+  .compact .compact-bets { grid-template-columns: repeat(3, 1fr); }
+  .compact .roulette-footer { margin-top: 20px; }
+  @keyframes ball-orbit { to { transform: translateX(-50%) rotate(-360deg); } }
+  @media (max-width: 900px) {
+    .roulette-layout, .compact .roulette-layout { grid-template-columns: 1fr; }
+    .wheel-column { grid-template-columns: 220px 1fr; justify-items: start; align-items: center; gap: 24px; }
+    .wheel-stage, .compact .wheel-stage { grid-row: 1 / 3; max-width: 220px; }
+    .wallet-actions { justify-content: start; }
+    .training-dashboard { grid-template-columns: repeat(3, 1fr); }
+    .recent-rounds { grid-column: 1 / -1; }
+  }
+  @media (max-width: 680px) {
+    .roulette-shell, .compact .roulette-shell { padding: 22px 16px; border-radius: 22px; }
+    .roulette-header { align-items: stretch; flex-direction: column; gap: 17px; }
+    .wallet-pill { width: fit-content; }
+    .wheel-column { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+    .wheel-stage, .compact .wheel-stage { grid-row: auto; width: min(76vw, 245px); max-width: none; }
+    .wallet-actions { justify-content: center; }
+    .number-grid { grid-template-columns: repeat(6, 1fr); }
+    .outside-grid { grid-template-columns: repeat(3, 1fr); }
+    .bet-summary { align-items: stretch; flex-direction: column; }
+    .table-actions { display: grid; grid-template-columns: 1fr 1fr 1.4fr; }
+    .table-actions button { padding-inline: 10px; }
+    .training-dashboard { grid-template-columns: 1fr 1fr; }
+    .training-dashboard > div:nth-child(3) { grid-column: 1 / -1; }
+    .recent-rounds { grid-column: 1 / -1; overflow-x: auto; }
+    .roulette-footer { align-items: start; flex-direction: column; gap: 10px; }
+  }
+</style>
