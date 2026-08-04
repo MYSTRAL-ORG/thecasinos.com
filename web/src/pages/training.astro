@@ -17,14 +17,14 @@ const structuredData = [
     operatingSystem: 'Any modern web browser',
     isAccessibleForFree: true,
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    description: 'A free roulette and blackjack training room using fictional practice chips with no monetary value.',
+    description: 'A free roulette, blackjack and Jacks or Better video poker training room using fictional practice chips with no monetary value.',
   },
 ];
 ---
 
 <BaseLayout
   title="Free casino training room"
-  description="Learn European roulette and blackjack with free fictional chips. Practice bets and basic strategy without registration or real money."
+  description="Learn European roulette, blackjack and Jacks or Better video poker with free fictional chips, without registration or real money."
   canonicalPath="/training"
   structuredData={structuredData}
   cacheSeconds={3600}
@@ -51,9 +51,21 @@ const structuredData = [
       <p>Every spin is independent. Systems and previous results cannot change the probability of the next number.</p>
     </div>
     <div class="lesson-grid">
-      <article><span>35:1</span><h3>Single number</h3><p>A straight-up bet covers one number. A winning 10-chip stake returns 360 chips including the original stake.</p></article>
-      <article><span>2:1 return</span><h3>Even-money bets</h3><p>Red/black, odd/even and low/high return twice the stake. Zero loses for all of these bets.</p></article>
-      <article><span>2.70%</span><h3>House advantage</h3><p>A European wheel has one green zero. Over a very large sample, that creates a theoretical 2.70% house edge.</p></article>
+      <article class="lesson-number">
+        <span class="lesson-badge">35:1</span>
+        <div class="lesson-visual" aria-hidden="true"><div class="number-chip"><i>17</i><small>one pocket</small></div><div class="number-grid">{Array.from({ length: 12 }, (_, index) => <i class={index === 7 ? 'active' : ''}></i>)}</div></div>
+        <div class="lesson-copy"><h3>Single number</h3><p>A straight-up bet covers one number. A winning 10-chip stake returns 360 chips including the original stake.</p></div>
+      </article>
+      <article class="lesson-even">
+        <span class="lesson-badge">2:1 return</span>
+        <div class="lesson-visual" aria-hidden="true"><div class="even-pair"><i>Red</i><i>Black</i></div><span>Equal payout</span></div>
+        <div class="lesson-copy"><h3>Even-money bets</h3><p>Red/black, odd/even and low/high return twice the stake. Zero loses for all of these bets.</p></div>
+      </article>
+      <article class="lesson-edge">
+        <span class="lesson-badge">2.70%</span>
+        <div class="lesson-visual" aria-hidden="true"><div class="edge-wheel"><i>0</i><strong>2.70%</strong><small>European edge</small></div></div>
+        <div class="lesson-copy"><h3>House advantage</h3><p>A European wheel has one green zero. Over a very large sample, that creates a theoretical 2.70% house edge.</p></div>
+      </article>
     </div>
   </section>
 
@@ -74,13 +86,20 @@ const structuredData = [
   .learn-section { display: grid; grid-template-columns: minmax(280px, .65fr) minmax(0, 1.35fr); gap: 70px; padding-bottom: 105px; }
   .learn-heading > p:last-child { max-width: 480px; color: var(--muted); }
   .lesson-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
-  .lesson-grid article { min-height: 290px; display: flex; flex-direction: column; padding: 26px; border: 1px solid var(--line); border-radius: 19px; background: var(--surface); }
-  .lesson-grid article > span { width: fit-content; padding: 7px 9px; border-radius: 999px; background: #e8efc2; color: #3f5841; font-size: .7rem; font-weight: 800; }
-  .lesson-grid h3 { margin: auto 0 12px; }
+  .lesson-grid article { position: relative; min-height: 320px; display: grid; grid-template-rows: 150px minmax(0,1fr); overflow: hidden; border: 1px solid var(--line); border-radius: 19px; background: var(--surface); }
+  .lesson-badge { position: absolute; z-index: 3; top: 18px; left: 18px; width: fit-content; padding: 7px 9px; border-radius: 999px; background: #e8efc2; color: #3f5841; font-size: .7rem; font-weight: 800; }
+  .lesson-visual { position: relative; display: grid; place-items: center; overflow: hidden; background: #edf0e5; }
+  .lesson-copy { display: flex; flex-direction: column; justify-content: flex-end; padding: 22px 26px 26px; }
+  .lesson-grid h3 { margin: 0 0 12px; }
   .lesson-grid p { margin: 0; color: var(--muted); font-size: .85rem; line-height: 1.65; }
+  .lesson-number .lesson-visual { grid-template-columns: .78fr 1.22fr; background: radial-gradient(circle at 25% 55%, rgba(215,232,118,.34), transparent 34%), linear-gradient(145deg,#174b40,#0d352d); }
+  .number-chip { position: relative; z-index: 2; display: grid; place-items: center; gap: 6px; margin-top: 18px; }.number-chip i { width: 62px; aspect-ratio: 1; display: grid; place-items: center; border: 6px dotted #4b211f; border-radius: 50%; background: #d64e57; color: #fff; font-style: normal; font-weight: 900; box-shadow: 0 12px 24px rgba(0,0,0,.25); }.number-chip small { color: #b7cbc4; font-size: .52rem; text-transform: uppercase; letter-spacing: .1em; }
+  .number-grid { width: 86%; display: grid; grid-template-columns: repeat(4,1fr); gap: 5px; transform: rotate(-6deg); }.number-grid i { aspect-ratio: 1; border: 1px solid rgba(255,255,255,.16); border-radius: 4px; background: rgba(255,255,255,.06); }.number-grid i:nth-child(odd) { background: #17211f; }.number-grid i:nth-child(even) { background: #b9444d; }.number-grid i.active { outline: 2px solid var(--lime); outline-offset: 2px; }
+  .lesson-even .lesson-visual { background: radial-gradient(circle at 50% 120%,rgba(215,232,118,.34),transparent 46%),linear-gradient(135deg,#f0ece3,#dfe5d7); }.even-pair { display: flex; align-items: center; margin-top: 20px; }.even-pair i { width: 76px; aspect-ratio: 1; display: grid; place-items: center; border: 7px dotted #6c292a; border-radius: 50%; background: #d64e57; color: #fff; font: 900 .62rem/1 Arial,sans-serif; font-style: normal; text-transform: uppercase; box-shadow: 0 12px 22px rgba(20,40,34,.18); }.even-pair i+ i { margin-left: -13px; border-color: #3b4945; background: #17211f; }.lesson-even .lesson-visual>span { position: absolute; bottom: 14px; color: #4f655e; font-size: .52rem; font-weight: 800; text-transform: uppercase; letter-spacing: .12em; }
+  .lesson-edge .lesson-visual { background: radial-gradient(circle at 50% 50%,rgba(215,232,118,.25),transparent 46%),linear-gradient(145deg,#174b40,#0b3029); }.edge-wheel { position: relative; width: 120px; aspect-ratio: 1; display: grid; place-items: center; margin-top: 17px; border: 10px solid #061d18; border-radius: 50%; background: conic-gradient(#3f9b6b 0 9.73deg,transparent 9.73deg),repeating-conic-gradient(from 9.73deg,#d64e57 0 9.73deg,#17211f 9.73deg 19.46deg); box-shadow: 0 16px 28px rgba(0,0,0,.3); }.edge-wheel::before { content: ''; position: absolute; width: 70%; aspect-ratio: 1; border-radius: 50%; background: #0d3c32; }.edge-wheel i { position: absolute; z-index: 2; top: -3px; color: #fff; font: 900 .48rem/1 Arial,sans-serif; font-style: normal; }.edge-wheel strong,.edge-wheel small { position: relative; z-index: 2; }.edge-wheel strong { color: var(--lime); font-size: 1rem; }.edge-wheel small { position: absolute; z-index: 2; bottom: 30px; color: #9eb8af; font-size: .42rem; text-transform: uppercase; letter-spacing: .08em; }
   .safety-section { display: grid; grid-template-columns: minmax(270px, .8fr) minmax(0, 1.2fr); gap: 80px; padding-top: 95px; padding-bottom: 100px; }
   .safety-section h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
   .safety-section > p { margin: 28px 0 0; color: var(--muted); font-size: 1rem; }
-  @media (max-width: 900px) { .training-hero-grid, .learn-section, .safety-section { grid-template-columns: 1fr; gap: 25px; }.lesson-grid { grid-template-columns: 1fr; }.lesson-grid article { min-height: 210px; } }
-  @media (max-width: 620px) { .training-hero { padding: 23px 0 26px; }.training-hero-grid { gap: 15px; }.training-hero .eyebrow { margin-bottom: 10px; font-size: .61rem; }.training-hero h1 { font-size: clamp(2rem, 10vw, 2.8rem); }.training-intro > p { margin: 0; font-size: .78rem; line-height: 1.45; }.training-intro a { min-height: 38px; margin-top: 11px; }.safety-section { padding-block: 70px; } }
+  @media (max-width: 900px) { .training-hero-grid, .learn-section, .safety-section { grid-template-columns: 1fr; gap: 25px; }.lesson-grid { grid-template-columns: 1fr; }.lesson-grid article { min-height: 220px; grid-template-columns: 170px 1fr; grid-template-rows: 1fr; }.lesson-copy { padding-top: 30px; } }
+  @media (max-width: 620px) { .training-hero { padding: 23px 0 26px; }.training-hero-grid { gap: 15px; }.training-hero .eyebrow { margin-bottom: 10px; font-size: .61rem; }.training-hero h1 { font-size: clamp(2rem, 10vw, 2.8rem); }.training-intro > p { margin: 0; font-size: .78rem; line-height: 1.45; }.training-intro a { min-height: 38px; margin-top: 11px; }.lesson-grid article { min-height: 320px; grid-template-columns: 1fr; grid-template-rows: 140px 1fr; }.lesson-copy { padding: 22px; }.safety-section { padding-block: 70px; } }
 </style>

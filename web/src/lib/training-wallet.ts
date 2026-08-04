@@ -8,7 +8,7 @@ export type TrainingHistoryEntry = {
   playedAt: string;
 };
 
-export type TrainingGame = 'roulette' | 'blackjack';
+export type TrainingGame = 'roulette' | 'blackjack' | 'video-poker';
 
 export type TrainingGameStats = {
   rounds: number;
@@ -49,6 +49,7 @@ function freshWallet(): TrainingWallet {
     gameStats: {
       roulette: emptyGameStats(),
       blackjack: emptyGameStats(),
+      'video-poker': emptyGameStats(),
     },
     lastDailyBonus: null,
     history: [],
@@ -89,12 +90,13 @@ function normalizeWallet(value: Partial<TrainingWallet> | null | undefined): Tra
     gameStats: {
       roulette: normalizedGameStats('roulette', legacyRouletteStats),
       blackjack: normalizedGameStats('blackjack', emptyGameStats()),
+      'video-poker': normalizedGameStats('video-poker', emptyGameStats()),
     },
     lastDailyBonus: typeof value.lastDailyBonus === 'string' ? value.lastDailyBonus : null,
     history: Array.isArray(value.history)
       ? value.history.slice(0, 12).filter((entry): entry is TrainingHistoryEntry => Boolean(
         entry
-        && (entry.game === 'roulette' || entry.game === 'blackjack')
+        && (entry.game === 'roulette' || entry.game === 'blackjack' || entry.game === 'video-poker')
         && typeof entry.result === 'string'
         && typeof entry.playedAt === 'string',
       ))

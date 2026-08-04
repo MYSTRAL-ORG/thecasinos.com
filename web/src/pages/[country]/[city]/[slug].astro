@@ -2,7 +2,6 @@
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import CasinoCard from '@/components/CasinoCard.astro';
 import JourneyPlanner from '@/components/JourneyPlanner.astro';
-import RouletteGame from '@/components/RouletteGame.astro';
 import { getCasinoByPath, getCasinosByLocation } from '@/lib/data';
 import { getCasinoImageUrl } from '@/lib/media';
 import { breadcrumbSchema, casinoPageDescription, casinoPageTitle } from '@/lib/seo';
@@ -218,8 +217,19 @@ const structuredData = casino ? [
       address={casino.street_address}
     />
 
-    <section class="container training-mini-section">
-      <RouletteGame compact casinoName={casino.name.trim()} title="Warm up with one roulette round." />
+    <section class="container training-link-section">
+      <a class="training-link" href="/training">
+        <div class="training-link-copy">
+          <p class="eyebrow">Free training room</p>
+          <h2>Learn the table before you play.</h2>
+          <p>Practise roulette, blackjack and Jacks or Better with fictional chips, real rules and no registration.</p>
+          <span>Enter the training room <i aria-hidden="true">→</i></span>
+        </div>
+        <div class="training-link-art" aria-hidden="true">
+          <div class="training-link-wheel"><i>0</i></div>
+          <div class="training-link-cards"><img src="/cards/spade/1.png" alt="" /><img src="/cards/heart/11.png" alt="" /></div>
+        </div>
+      </a>
     </section>
 
     {relatedCasinos.length ? <section class="related-section">
@@ -300,7 +310,20 @@ const structuredData = casino ? [
   .faq-list details { padding: 22px 0; border-bottom: 1px solid var(--line); }
   .faq-list summary { cursor: pointer; color: var(--ink); font-weight: 750; }
   .faq-list p { margin: 14px 28px 0 0; color: var(--muted); line-height: 1.7; }
-  .training-mini-section { margin-bottom: 90px; }
+  .training-link-section { margin-bottom: 90px; }
+  .training-link { min-height: 250px; display: grid; grid-template-columns: minmax(0,1.1fr) minmax(320px,.9fr); overflow: hidden; border-radius: var(--radius); background: var(--forest); color: #fff; text-decoration: none; box-shadow: 0 25px 60px rgba(13,52,44,.2); }
+  .training-link-copy { align-self: center; padding: 42px clamp(30px,5vw,70px); }
+  .training-link-copy .eyebrow { color: var(--lime); }
+  .training-link-copy h2 { max-width: 620px; margin-bottom: 12px; font-size: clamp(2rem,4vw,3.45rem); }
+  .training-link-copy > p:not(.eyebrow) { max-width: 610px; margin: 0; color: #c3d3ce; font-size: .92rem; line-height: 1.65; }
+  .training-link-copy > span { width: fit-content; min-height: 40px; display: flex; align-items: center; gap: 9px; margin-top: 22px; padding: 0 14px; border-radius: 11px; background: var(--lime); color: #173f37; font-size: .72rem; font-weight: 850; }
+  .training-link-copy > span i { font-style: normal; }
+  .training-link-art { position: relative; display: grid; place-items: center; overflow: hidden; background: radial-gradient(circle,rgba(215,232,118,.23),transparent 48%),linear-gradient(145deg,#115343,#082f28); }
+  .training-link-wheel { width: 150px; aspect-ratio: 1; display: grid; place-items: center; border: 13px solid #061d18; border-radius: 50%; background: conic-gradient(#3f9b6b 0 9.73deg,transparent 9.73deg),repeating-conic-gradient(from 9.73deg,#d64e57 0 9.73deg,#17211f 9.73deg 19.46deg); box-shadow: 0 20px 36px rgba(0,0,0,.32); }
+  .training-link-wheel::before { content: ''; position: absolute; width: 69px; aspect-ratio: 1; border: 8px solid #08261f; border-radius: 50%; background: var(--lime); }
+  .training-link-wheel i { position: relative; z-index: 1; color: #173f37; font: 900 1rem/1 Arial,sans-serif; font-style: normal; }
+  .training-link-cards img { position: absolute; right: 9%; bottom: -25px; width: 84px; filter: drop-shadow(0 14px 14px rgba(0,0,0,.3)); transform: rotate(11deg); }
+  .training-link-cards img:first-child { right: 22%; bottom: -32px; transform: rotate(-12deg); }
   .related-section { padding: 88px 0; background: #eceae1; }
   .related-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
   @media (max-width: 1050px) { .visit-grid { grid-template-columns: repeat(2, 1fr); }.editorial-highlights { grid-template-columns: 1fr; }.editorial-highlights section { min-height: 0; }.editorial-highlights h3 { margin-top: 22px; } }

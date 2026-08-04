@@ -1,6 +1,6 @@
 import type { TrainingWallet } from '@/lib/training-wallet';
 
-export type RoomView = 'lobby' | 'roulette' | 'blackjack';
+export type RoomView = 'lobby' | 'roulette' | 'blackjack' | 'video-poker';
 
 export type GameProps = {
   wallet: TrainingWallet;

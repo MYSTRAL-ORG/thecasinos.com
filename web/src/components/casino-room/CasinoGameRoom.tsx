@@ -11,10 +11,11 @@ import {
 import BlackjackTable from './BlackjackTable';
 import CasinoLobby from './CasinoLobby';
 import RouletteTable from './RouletteTable';
+import VideoPokerTable from './VideoPokerTable';
 import type { RoomView } from './types';
 import './casino-game-room.css';
 
-const viewTitles: Record<RoomView, string> = { lobby: 'Casino lobby', roulette: 'European roulette', blackjack: 'Blackjack' };
+const viewTitles: Record<RoomView, string> = { lobby: 'Casino lobby', roulette: 'European roulette', blackjack: 'Blackjack', 'video-poker': 'Jacks or Better' };
 const initialGameStats = () => ({ rounds: 0, winningRounds: 0, totalWagered: 0, totalReturned: 0 });
 const initialWallet = (): TrainingWallet => ({
   version: 1,
@@ -23,7 +24,7 @@ const initialWallet = (): TrainingWallet => ({
   winningRounds: 0,
   totalWagered: 0,
   totalReturned: 0,
-  gameStats: { roulette: initialGameStats(), blackjack: initialGameStats() },
+  gameStats: { roulette: initialGameStats(), blackjack: initialGameStats(), 'video-poker': initialGameStats() },
   lastDailyBonus: null,
   history: [],
 });
@@ -41,7 +42,7 @@ export default function CasinoGameRoom() {
     const syncStorage = () => refreshWallet();
     const requestedView = window.location.hash.slice(1);
     refreshWallet();
-    if (requestedView === 'roulette' || requestedView === 'blackjack') setActiveView(requestedView);
+    if (requestedView === 'roulette' || requestedView === 'blackjack' || requestedView === 'video-poker') setActiveView(requestedView);
     window.addEventListener(TRAINING_WALLET_EVENT, syncWallet);
     window.addEventListener('storage', syncStorage);
     return () => {
@@ -91,12 +92,16 @@ export default function CasinoGameRoom() {
           <motion.section className="cgr-panel" data-view="blackjack" aria-hidden={activeView !== 'blackjack'} animate={panelMotion('blackjack')} transition={{ duration: reduceMotion ? .01 : .3, ease: [0.22, 1, 0.36, 1] }} style={{ pointerEvents: activeView === 'blackjack' ? 'auto' : 'none', visibility: activeView === 'blackjack' ? 'visible' : 'hidden' }}>
             <BlackjackTable wallet={wallet} refreshWallet={refreshWallet} onBusyChange={gameBusyHandler('blackjack')} />
           </motion.section>
+          <motion.section className="cgr-panel" data-view="video-poker" aria-hidden={activeView !== 'video-poker'} animate={panelMotion('video-poker')} transition={{ duration: reduceMotion ? .01 : .3, ease: [0.22, 1, 0.36, 1] }} style={{ pointerEvents: activeView === 'video-poker' ? 'auto' : 'none', visibility: activeView === 'video-poker' ? 'visible' : 'hidden' }}>
+            <VideoPokerTable wallet={wallet} refreshWallet={refreshWallet} onBusyChange={gameBusyHandler('video-poker')} />
+          </motion.section>
         </main>
 
         <nav className="cgr-dock" aria-label="Training room games">
           <button type="button" data-room-nav="lobby" data-active={activeView === 'lobby'} disabled={Boolean(busyGame)} onClick={() => openView('lobby')}><span className="cgr-lobby-icon" aria-hidden="true"><i /><i /><i /><i /></span><b>Lobby</b></button>
           <button type="button" data-room-nav="roulette" data-active={activeView === 'roulette'} disabled={Boolean(busyGame && activeView !== 'roulette')} onClick={() => openView('roulette')}><span className="cgr-wheel-icon" aria-hidden="true" /><b>Roulette</b></button>
           <button type="button" data-room-nav="blackjack" data-active={activeView === 'blackjack'} disabled={Boolean(busyGame && activeView !== 'blackjack')} onClick={() => openView('blackjack')}><span className="cgr-cards-icon" aria-hidden="true"><i /><i /></span><b>Blackjack</b></button>
+          <button type="button" data-room-nav="video-poker" data-active={activeView === 'video-poker'} disabled={Boolean(busyGame && activeView !== 'video-poker')} onClick={() => openView('video-poker')}><span className="cgr-poker-icon" aria-hidden="true"><i /><i /><i /></span><b>Video poker</b></button>
         </nav>
       </motion.div>
     </section>
