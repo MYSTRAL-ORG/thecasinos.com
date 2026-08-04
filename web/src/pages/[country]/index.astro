@@ -75,13 +75,14 @@ const structuredData = cities.length ? breadcrumbSchema([
 </BaseLayout>
 
 <style>
-  .location-hero { padding: 42px 0 78px; background: var(--forest); color: #fff; }
-  .hero-grid { display: grid; grid-template-columns: 1fr 310px; gap: 70px; align-items: end; }
+  .location-hero { padding: 22px 0 34px; background: var(--forest); color: #fff; }
+  .hero-grid { display: grid; grid-template-columns: 1fr 280px; gap: 46px; align-items: center; }
+  .location-hero .breadcrumbs { margin: 0 0 14px; }
   .location-hero .breadcrumbs, .location-hero .eyebrow { color: var(--lime); }
-  .location-hero h1 { margin-bottom: 18px; }
-  .location-hero p:last-child { margin-bottom: 0; color: #c2d1cc; }
+  .location-hero h1 { margin-bottom: 10px; font-size: clamp(2.2rem, 4.2vw, 3.7rem); }
+  .location-hero p:last-child { margin-bottom: 0; color: #c2d1cc; font-size: .9rem; }
   dl { margin: 0; display: grid; grid-template-columns: 1fr 1fr; border: 1px solid rgba(255,255,255,.16); border-radius: 18px; }
-  dl div { padding: 22px 15px; display: flex; flex-direction: column; gap: 7px; text-align: center; }
+  dl div { padding: 15px 12px; display: flex; flex-direction: column; gap: 5px; text-align: center; }
   dl div + div { border-left: 1px solid rgba(255,255,255,.16); }
   dt { color: #96aca5; font-size: .7rem; text-transform: uppercase; letter-spacing: .08em; }
   dd { margin: 0; color: var(--lime); font: 800 1.45rem/1 'Manrope', sans-serif; }
@@ -97,5 +98,5 @@ const structuredData = cities.length ? breadcrumbSchema([
   .planning-note { margin-block: 72px 90px; padding: 34px; display: grid; grid-template-columns: .8fr 1.2fr; gap: 55px; border-radius: var(--radius-lg); background: var(--lime); }
   .planning-note h2, .planning-note p { margin-bottom: 0; }
   @media (max-width: 900px) { .hero-grid, .planning-note { grid-template-columns: 1fr; gap: 35px; } .city-index { grid-template-columns: repeat(3, 1fr); } .city-index a:not(:nth-child(4n)) { border-right: 0; } .city-index a:not(:nth-child(3n)) { border-right: 1px solid var(--line); } .casino-list { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 620px) { .city-index, .casino-list { grid-template-columns: 1fr; } .city-index a:not(:nth-child(3n)) { border-right: 0; } dl { grid-template-columns: 1fr; } dl div + div { border: 0; border-top: 1px solid rgba(255,255,255,.16); } }
+  @media (max-width: 620px) { .location-hero { padding: 18px 0 25px; } .hero-grid { gap: 18px; } .city-index, .casino-list { grid-template-columns: 1fr; } .city-index a:not(:nth-child(3n)) { border-right: 0; } dl { grid-template-columns: 1fr 1fr; } dl div + div { border-left: 1px solid rgba(255,255,255,.16); } }
 </style>

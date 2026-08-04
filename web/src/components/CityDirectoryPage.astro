@@ -92,10 +92,12 @@ const structuredData = pageIsValid ? [
 </BaseLayout>
 
 <style>
-  .city-hero { padding: 42px 0 78px; background: linear-gradient(135deg, var(--forest), #285d51); color: #fff; }
+  .city-hero { padding: 22px 0 34px; background: linear-gradient(135deg, var(--forest), #285d51); color: #fff; }
+  .city-hero .breadcrumbs { margin: 0 0 14px; }
   .city-hero .breadcrumbs, .city-hero .eyebrow { color: var(--lime); }
-  .city-hero h1 { margin-bottom: 18px; }
-  .city-hero p:last-child { margin-bottom: 0; color: #c2d1cc; }
+  .city-hero h1 { margin-bottom: 10px; font-size: clamp(2.2rem, 4.2vw, 3.7rem); }
+  .city-hero p:last-child { margin-bottom: 0; color: #c2d1cc; font-size: .9rem; }
+  @media (max-width: 620px) { .city-hero { padding: 18px 0 25px; } }
   .directory-copy { margin-bottom: 38px; display: grid; grid-template-columns: 1fr 470px; gap: 70px; align-items: end; }
   .directory-copy h2, .directory-copy p { margin-bottom: 0; }
   .directory-copy > p { color: var(--muted); }
