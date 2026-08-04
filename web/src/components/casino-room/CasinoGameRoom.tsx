@@ -66,14 +66,13 @@ export default function CasinoGameRoom() {
     setBusyGame((current) => busy ? game : current === game ? null : current);
   };
   const panelMotion = (view: RoomView) => ({
-    opacity: activeView === view ? 1 : 0,
     x: activeView === view ? 0 : view === 'lobby' ? -22 : 22,
     scale: activeView === view ? 1 : .992,
   });
 
   return (
     <section className="casino-game-room" id="training-room" data-casino-room data-active-view={activeView} aria-label="Casino training room">
-      <motion.div className="cgr-frame" initial={reduceMotion ? false : { opacity: 0, y: 18, scale: .99 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, amount: .1 }} transition={{ duration: .48, ease: [0.22, 1, 0.36, 1] }}>
+      <motion.div className="cgr-frame" initial={reduceMotion ? false : { y: 18, scale: .99 }} whileInView={{ y: 0, scale: 1 }} viewport={{ once: true, amount: .1 }} transition={{ duration: .48, ease: [0.22, 1, 0.36, 1] }}>
         <header className="cgr-topbar">
           <button type="button" className="cgr-back" data-room-lobby onClick={() => openView('lobby')} disabled={Boolean(busyGame)} aria-label="Return to the casino lobby" data-visible={activeView !== 'lobby'}>
             <span aria-hidden="true">‹</span><b>Games</b>
