@@ -31,7 +31,6 @@ function PokerCard({ card, index, held, interactive, onToggle }: {
   const reduceMotion = useReducedMotion();
   return (
     <motion.button
-      layout
       type="button"
       className="vp-card"
       data-held={held}
@@ -39,18 +38,25 @@ function PokerCard({ card, index, held, interactive, onToggle }: {
       aria-pressed={held}
       aria-label={`${videoPokerCardLabel(card)}${held ? ', held' : ', tap to hold'}`}
       onClick={onToggle}
-      initial={reduceMotion ? false : { x: 'var(--vp-deal-x)', y: 'var(--vp-deal-y)', rotate: 13, scale: .62 }}
-      animate={{ x: 0, y: held ? -9 : 0, rotate: 0, scale: 1 }}
-      exit={reduceMotion ? undefined : { y: 36, rotate: -7, scale: .76 }}
-      transition={{ type: 'spring', stiffness: 235, damping: 23, mass: .72, delay: reduceMotion ? 0 : index * .025 }}
+      style={{ '--vp-slot-index': index } as CSSProperties}
+      initial={reduceMotion ? false : { opacity: .94, x: 'var(--vp-deal-x)', y: 'var(--vp-deal-y)', rotate: 11 - index * 1.5, scale: .6 }}
+      animate={reduceMotion ? { opacity: 1 } : { opacity: [1, 1, 1], x: ['var(--vp-deal-x)', 'var(--vp-arc-x)', 0], y: ['var(--vp-deal-y)', 'var(--vp-arc-y)', 0], rotate: [11 - index * 1.5, 4, 0], scale: [.6, .86, 1] }}
+      exit={reduceMotion ? undefined : { opacity: 0, x: -34, y: 76, rotate: -10, scale: .72 }}
+      transition={{ duration: reduceMotion ? .01 : .78, times: [0, .56, 1], ease: [0.22, 1, 0.36, 1] }}
     >
-      <img src={videoPokerCardImage(card)} alt="" width="292" height="424" draggable="false" />
-      <span>{held ? 'Held' : 'Hold'}</span>
+      <motion.div className="vp-card-lift" animate={{ y: held ? -10 : 0 }} transition={{ type: 'spring', stiffness: 300, damping: 24 }}>
+        <motion.div className="vp-card-flipper" initial={{ rotateY: 0 }} animate={{ rotateY: 180 }} transition={{ duration: reduceMotion ? .01 : .5, delay: reduceMotion ? 0 : .36, ease: [0.22, 1, 0.36, 1] }}>
+          <div className="vp-card-face vp-card-back"><img src="/cards/back-cards.png" alt="" width="292" height="424" draggable="false" /></div>
+          <div className="vp-card-face vp-card-front"><img src={videoPokerCardImage(card)} alt="" width="292" height="424" draggable="false" /></div>
+        </motion.div>
+        <span>{held ? 'Held' : 'Hold'}</span>
+      </motion.div>
     </motion.button>
   );
 }
 
 export default function VideoPokerTable({ wallet, refreshWallet, onBusyChange }: GameProps) {
+  const reduceMotion = useReducedMotion();
   const [phase, setPhase] = useState<Phase>('betting');
   const [credits, setCredits] = useState(5);
   const [hand, setHand] = useState<TableCard[]>([]);
@@ -61,6 +67,7 @@ export default function VideoPokerTable({ wallet, refreshWallet, onBusyChange }:
   const deckRef = useRef<VideoPokerCard[]>([]);
   const sequence = useRef(0);
   const wager = credits * VIDEO_POKER_CREDIT_VALUE;
+  const wait = (milliseconds: number) => sleep(reduceMotion ? 20 : milliseconds);
 
   const drawCard = (): TableCard => {
     const card = deckRef.current.pop();
@@ -92,7 +99,7 @@ export default function VideoPokerTable({ wallet, refreshWallet, onBusyChange }:
     for (let index = 0; index < 5; index += 1) {
       nextHand.push(drawCard());
       setHand([...nextHand]);
-      await sleep(125);
+      await wait(470);
     }
     setPhase('holding');
     setStatus('Tap the cards you want to hold, then draw.');
@@ -114,7 +121,7 @@ export default function VideoPokerTable({ wallet, refreshWallet, onBusyChange }:
       if (held[index]) continue;
       nextHand[index] = drawCard();
       setHand([...nextHand]);
-      await sleep(155);
+      await wait(900);
     }
 
     const result = evaluateJacksOrBetter(nextHand);
@@ -147,12 +154,15 @@ export default function VideoPokerTable({ wallet, refreshWallet, onBusyChange }:
 
         <section className="vp-table" aria-label="Video poker hand">
           <div className="vp-machine-title"><span>Draw poker</span><strong>Jacks or Better</strong><small>Pair of jacks or higher to win</small></div>
-          <div className="vp-deck" aria-hidden="true">{[0, 1, 2, 3].map((card) => <img key={card} src="/cards/back-cards.png" alt="" style={{ '--vp-deck-card': card } as CSSProperties} />)}</div>
+          <div className="vp-deck" aria-hidden="true">{[0, 1, 2, 3].map((card) => <img key={card} src="/cards/back-cards.png" alt="" data-video-poker-deck-source={card === 3 ? 'true' : undefined} style={{ '--vp-deck-card': card } as CSSProperties} />)}</div>
           <div className="vp-hand">
-            <AnimatePresence mode="popLayout">
-              {hand.map((card, index) => <PokerCard key={card.id} card={card} index={index} held={held[index]} interactive={interactive} onToggle={() => toggleHold(index)} />)}
-            </AnimatePresence>
-            {!hand.length && <div className="vp-card-placeholders" aria-hidden="true">{CREDIT_OPTIONS.map((slot) => <i key={slot} />)}</div>}
+            {CREDIT_OPTIONS.map((slot, index) => (
+              <div className="vp-card-slot" data-empty={!hand[index]} key={slot}>
+                <AnimatePresence mode="wait" initial={false}>
+                  {hand[index] && <PokerCard key={hand[index].id} card={hand[index]} index={index} held={held[index]} interactive={interactive} onToggle={() => toggleHold(index)} />}
+                </AnimatePresence>
+              </div>
+            ))}
           </div>
           <motion.div className="vp-win-display" data-visible={phase === 'complete'} data-tone={tone} animate={{ scale: phase === 'complete' ? 1 : .92 }}>
             <span>Win</span><strong>{numberFormat.format(lastWin ?? 0)}</strong><small>chips</small>
