@@ -13,6 +13,7 @@ import {
 } from '@/lib/video-poker';
 import { completeTrainingRound } from '@/lib/training-wallet';
 import type { GameProps } from './types';
+import VictoryCelebration from './VictoryCelebration';
 
 type Phase = 'betting' | 'dealing' | 'holding' | 'drawing' | 'complete';
 type TableCard = VideoPokerCard & { id: string };
@@ -64,6 +65,7 @@ export default function VideoPokerTable({ wallet, refreshWallet, onBusyChange }:
   const [status, setStatus] = useState('Choose 1–5 credits, then deal. One credit equals 10 chips.');
   const [tone, setTone] = useState<'neutral' | 'success' | 'error'>('neutral');
   const [lastWin, setLastWin] = useState<number | null>(null);
+  const [celebration, setCelebration] = useState<{ label: string; payout: number; payoutCredits: number; profit: number } | null>(null);
   const deckRef = useRef<VideoPokerCard[]>([]);
   const sequence = useRef(0);
   const wager = credits * VIDEO_POKER_CREDIT_VALUE;
@@ -89,6 +91,7 @@ export default function VideoPokerTable({ wallet, refreshWallet, onBusyChange }:
     setPhase('dealing');
     setTone('neutral');
     setLastWin(null);
+    setCelebration(null);
     setHand([]);
     setHeld(Array(5).fill(false));
     setStatus('Dealing five cards.');
@@ -134,6 +137,10 @@ export default function VideoPokerTable({ wallet, refreshWallet, onBusyChange }:
     setStatus(payout > 0 ? `${result.label}. ${numberFormat.format(payout)} chips returned.` : 'No winning hand. Deal again when ready.');
     onBusyChange(false);
     refreshWallet(completion.wallet);
+    if (payout > 0) {
+      await wait(280);
+      setCelebration({ label: result.label, payout, payoutCredits, profit: payout - wager });
+    }
   };
 
   const interactive = phase === 'holding';
@@ -184,6 +191,24 @@ export default function VideoPokerTable({ wallet, refreshWallet, onBusyChange }:
             : <motion.button whileTap={{ scale: .96 }} type="button" className="vp-primary" data-deal disabled={phase === 'dealing' || phase === 'drawing'} onClick={() => deal(credits)}>Deal</motion.button>}
         </div>
       </div>
+
+      <VictoryCelebration
+        open={Boolean(celebration)}
+        game="video-poker"
+        accent="lime"
+        emblem={celebration?.label === 'Royal flush' ? 'ROYAL' : 'WIN'}
+        title={celebration?.label ?? 'Winning hand'}
+        detail={celebration ? `${numberFormat.format(celebration.payoutCredits)} credits paid on this hand.` : ''}
+        reward={celebration ? (celebration.profit > 0 ? celebration.profit : celebration.payout) : 0}
+        rewardLabel={celebration && celebration.profit > 0 ? 'chips profit' : 'chips returned'}
+        rewardPrefix={celebration && celebration.profit > 0 ? '+' : ''}
+        primaryLabel="Deal again"
+        onPrimary={() => {
+          setCelebration(null);
+          void deal(credits);
+        }}
+        onClose={() => setCelebration(null)}
+      />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
 } from '@/lib/roulette';
 import { completeTrainingRound } from '@/lib/training-wallet';
 import type { GameProps } from './types';
+import VictoryCelebration from './VictoryCelebration';
 
 const EUROPEAN_SEQUENCE = [0, 32, 15, 19, 4, 21, 2, 25, 17, 34, 6, 27, 13, 36, 11, 30, 8, 23, 10, 5, 24, 16, 33, 1, 20, 14, 31, 9, 22, 18, 29, 7, 28, 12, 35, 3, 26];
 const STAKES = [1, 5, 10, 25, 100];
@@ -79,6 +80,7 @@ export default function RouletteTable({ wallet, refreshWallet, onBusyChange }: G
   const [result, setResult] = useState<number | null>(null);
   const [status, setStatus] = useState('Choose a chip, then tap the layout to build your bet.');
   const [tone, setTone] = useState<'neutral' | 'success' | 'error'>('neutral');
+  const [celebration, setCelebration] = useState<{ outcome: number; payout: number; profit: number } | null>(null);
 
   const totalBet = useMemo(() => [...bets.values()].reduce((sum, bet) => sum + bet.amount, 0), [bets]);
   const recent = wallet.history.filter((entry) => entry.game === 'roulette').slice(0, 6);
@@ -122,6 +124,7 @@ export default function RouletteTable({ wallet, refreshWallet, onBusyChange }: G
       setTone('error'); setStatus('Your balance no longer covers this layout.'); return;
     }
     setSpinning(true); onBusyChange(true); setTone('neutral'); setStatus('No more bets. The wheel is live.');
+    setCelebration(null);
     const outcome = secureRouletteResult();
     const index = EUROPEAN_SEQUENCE.indexOf(outcome);
     const step = 360 / EUROPEAN_SEQUENCE.length;
@@ -142,6 +145,7 @@ export default function RouletteTable({ wallet, refreshWallet, onBusyChange }: G
     setTone(payout > totalBet ? 'success' : payout === totalBet ? 'neutral' : 'error');
     setStatus(payout > 0 ? `${outcome} ${rouletteColor(outcome)}. ${numberFormat.format(payout)} chips returned.` : `${outcome} ${rouletteColor(outcome)}. No winning bet.`);
     setBets(new Map()); setBetHistory([]); setSpinning(false); onBusyChange(false); refreshWallet(completion.wallet);
+    if (payout > totalBet) setCelebration({ outcome, payout, profit: payout - totalBet });
   };
 
   const betAmount = (kind: RouletteBet['kind'], value: RouletteBet['value']) => bets.get(`${kind}:${String(value)}`)?.amount;
@@ -201,6 +205,20 @@ export default function RouletteTable({ wallet, refreshWallet, onBusyChange }: G
           }) : <li className="is-empty">–</li>}</ol>
         </div>
       </div>
+
+      <VictoryCelebration
+        open={Boolean(celebration)}
+        game="roulette"
+        accent={celebration ? rouletteColor(celebration.outcome) : 'green'}
+        emblem={String(celebration?.outcome ?? result ?? 0)}
+        title="Your number came through"
+        detail={celebration ? `${celebration.outcome} ${rouletteColor(celebration.outcome)} paid ${numberFormat.format(celebration.payout)} chips.` : ''}
+        reward={celebration?.profit ?? 0}
+        rewardLabel="chips profit"
+        primaryLabel="Bet again"
+        onPrimary={() => setCelebration(null)}
+        onClose={() => setCelebration(null)}
+      />
     </div>
   );
 }
