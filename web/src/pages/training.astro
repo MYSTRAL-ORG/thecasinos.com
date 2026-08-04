@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import RouletteGame from '@/components/RouletteGame.astro';
-import BlackjackGame from '@/components/BlackjackGame.astro';
+import CasinoTrainingRoom from '@/components/CasinoTrainingRoom.astro';
 import { breadcrumbSchema } from '@/lib/seo';
 
 const structuredData = [
@@ -34,30 +33,16 @@ const structuredData = [
     <div class="container training-hero-grid">
       <div>
         <p class="eyebrow">Free · no registration · no real money</p>
-        <h1>Learn the game<br />before the casino.</h1>
+        <h1>Learn the game before the casino.</h1>
       </div>
       <div class="training-intro">
-        <p>Start with 2,000 fictional chips, practise roulette bets and learn blackjack decisions. Your shared wallet and results stay on this device.</p>
-        <div class="hero-points">
-          <span>European 0–36 wheel</span><span>Blackjack strategy coach</span><span>Daily chip bonus</span>
-        </div>
+        <p>Choose a table, start with 2,000 fictional chips and practise inside a mobile-style casino room. Your wallet and results stay on this device.</p>
+        <a href="#training-room">Enter the training room <span aria-hidden="true">↓</span></a>
       </div>
     </div>
   </section>
 
-  <section class="container roulette-section">
-    <nav class="table-switcher" aria-label="Training tables">
-      <a href="#roulette">Roulette <span>0–36</span></a>
-      <a href="#blackjack">Blackjack <span>New</span></a>
-    </nav>
-    <div class="room-break" id="roulette" aria-hidden="true"><span></span><p>Roulette table</p><span></span></div>
-    <RouletteGame title="European roulette" />
-  </section>
-
-  <section class="container blackjack-section">
-    <div class="room-break" aria-hidden="true"><span></span><p>Blackjack table</p><span></span></div>
-    <BlackjackGame />
-  </section>
+  <CasinoTrainingRoom />
 
   <section class="container learn-section">
     <div class="learn-heading">
@@ -72,19 +57,6 @@ const structuredData = [
     </div>
   </section>
 
-  <section class="future-games">
-    <div class="container">
-      <div class="section-heading">
-        <div><p class="eyebrow">Next in the room</p><h2>Two more practice tables<br />are being prepared.</h2></div>
-        <p>They will use the same local chip wallet and the same no-account approach.</p>
-      </div>
-      <div class="future-grid">
-        <article><div class="game-symbol poker" aria-hidden="true"><img src="/cards/heart/10.png" alt="" /><img src="/cards/heart/11.png" alt="" /><img src="/cards/heart/12.png" alt="" /></div><p>Hand decisions</p><h3>Video poker</h3><span class="coming-soon">Coming next</span></article>
-        <article><div class="game-symbol slots" aria-hidden="true"><span>7</span><span>●</span><span>★</span></div><p>Probability lab</p><h3>Slot machine</h3><span class="coming-soon">Planned</span></article>
-      </div>
-    </div>
-  </section>
-
   <section class="container safety-section">
     <div><p class="eyebrow">Practice, not prediction</p><h2>Training cannot remove gambling risk.</h2></div>
     <p>The games here use fictional chips with no cash value. They explain rules and probability; they do not promise winnings or reproduce every rule found at a particular casino. If gambling stops being entertainment, stop and seek support in your country.</p>
@@ -92,22 +64,13 @@ const structuredData = [
 </BaseLayout>
 
 <style>
-  .training-hero { padding: 46px 0 52px; background: var(--forest); color: #fff; }
+  .training-hero { padding: 32px 0 35px; background: var(--forest); color: #fff; }
   .training-hero .eyebrow { color: var(--lime); }
-  .training-hero-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(360px, .85fr); align-items: center; gap: 64px; }
-  .training-hero h1 { max-width: 760px; margin: 0; font-size: clamp(2.9rem, 5vw, 4.55rem); line-height: .98; }
+  .training-hero-grid { display: grid; grid-template-columns: minmax(0, 1.22fr) minmax(340px, .78fr); align-items: center; gap: 54px; }
+  .training-hero h1 { max-width: 760px; margin: 0; font-size: clamp(2.15rem, 4.2vw, 3.7rem); line-height: .98; }
   .training-intro > p { margin: 0; color: #c7d7d2; font-size: .98rem; line-height: 1.65; }
-  .hero-points { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 20px; }
-  .hero-points span { padding: 8px 10px; border: 1px solid rgba(255,255,255,.14); border-radius: 999px; color: #d8e5e1; font-size: .73rem; }
-  .roulette-section { position: relative; z-index: 2; padding-top: 32px; padding-bottom: 74px; }
-  .blackjack-section { padding-bottom: 105px; }
-  .table-switcher { width: fit-content; display: flex; gap: 6px; margin: 0 auto 28px; padding: 5px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
-  .table-switcher a { display: flex; align-items: center; gap: 8px; padding: 9px 14px; border-radius: 999px; color: var(--ink); font-size: .76rem; font-weight: 800; text-decoration: none; }
-  .table-switcher a:hover { background: #ecefe4; }
-  .table-switcher span { padding: 4px 6px; border-radius: 999px; background: #e8efc2; color: #4b5c4c; font-size: .58rem; letter-spacing: .04em; text-transform: uppercase; }
-  .room-break { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 18px; margin-bottom: 24px; }
-  .room-break span { height: 1px; background: var(--line); }
-  .room-break p { margin: 0; color: #69746f; font: 800 .68rem/1 'Manrope', sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+  .training-intro a { width: fit-content; min-height: 42px; display: inline-flex; align-items: center; gap: 9px; margin-top: 15px; padding: 0 15px; border: 1px solid rgba(255,255,255,.17); border-radius: 12px; color: #fff; font-size: .72rem; font-weight: 850; text-decoration: none; }
+  .training-intro a:hover { border-color: var(--lime); color: var(--lime); }
   .learn-section { display: grid; grid-template-columns: minmax(280px, .65fr) minmax(0, 1.35fr); gap: 70px; padding-bottom: 105px; }
   .learn-heading > p:last-child { max-width: 480px; color: var(--muted); }
   .lesson-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
@@ -115,25 +78,9 @@ const structuredData = [
   .lesson-grid article > span { width: fit-content; padding: 7px 9px; border-radius: 999px; background: #e8efc2; color: #3f5841; font-size: .7rem; font-weight: 800; }
   .lesson-grid h3 { margin: auto 0 12px; }
   .lesson-grid p { margin: 0; color: var(--muted); font-size: .85rem; line-height: 1.65; }
-  .future-games { padding: 95px 0; background: #eceae1; }
-  .future-games .eyebrow { color: #9c2630; }
-  .future-games .section-heading > p { max-width: 430px; color: #45524e; }
-  .future-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-  .future-grid article { min-height: 330px; display: flex; flex-direction: column; padding: 26px; border-radius: 22px; background: #fffdf8; }
-  .future-grid article > p { margin: auto 0 4px; color: var(--muted); font-size: .75rem; text-transform: uppercase; letter-spacing: .09em; }
-  .future-grid h3 { margin: 0 0 18px; font-size: 1.55rem; }
-  .coming-soon { width: fit-content; padding: 7px 10px; border-radius: 999px; background: #eff1e4; color: #56635f; font-size: .7rem; font-weight: 750; }
-  .game-symbol { min-height: 135px; display: flex; align-items: center; justify-content: center; gap: 5px; }
-  .game-symbol span { width: 70px; height: 98px; display: grid; place-items: center; border: 1px solid #cfd3ca; border-radius: 10px; background: #fff; color: var(--brand-dark); font: 800 1.3rem/1 'Manrope', sans-serif; box-shadow: 0 9px 18px rgba(20,40,35,.06); }
-  .game-symbol.poker img { width: 64px; height: 90px; object-fit: contain; border-radius: 8px; box-shadow: 0 9px 18px rgba(20,40,35,.09); }
-  .game-symbol.poker img:nth-child(1) { transform: translate(15px, 8px) rotate(-8deg); }
-  .game-symbol.poker img:nth-child(3) { transform: translate(-15px, 8px) rotate(8deg); }
-  .game-symbol.slots { overflow: hidden; gap: 0; border: 9px solid var(--forest); border-radius: 18px; background: var(--forest); }
-  .game-symbol.slots span { width: 76px; height: 93px; border-radius: 6px; box-shadow: none; }
-  .game-symbol.slots span:nth-child(2) { color: #1e2926; }
   .safety-section { display: grid; grid-template-columns: minmax(270px, .8fr) minmax(0, 1.2fr); gap: 80px; padding-top: 95px; padding-bottom: 100px; }
   .safety-section h2 { font-size: clamp(2rem, 4vw, 3.2rem); }
   .safety-section > p { margin: 28px 0 0; color: var(--muted); font-size: 1rem; }
-  @media (max-width: 900px) { .training-hero-grid, .learn-section, .safety-section { grid-template-columns: 1fr; gap: 35px; }.lesson-grid { grid-template-columns: 1fr; }.lesson-grid article { min-height: 210px; }.future-grid { grid-template-columns: 1fr 1fr; } }
-  @media (max-width: 620px) { .training-hero { padding: 36px 0 42px; }.training-hero-grid { gap: 25px; }.training-hero h1 { font-size: clamp(2.55rem, 12vw, 3.6rem); }.training-intro > p { font-size: .92rem; }.hero-points { margin-top: 16px; }.roulette-section, .blackjack-section { width: 100%; }.roulette-section { padding-top: 28px; padding-bottom: 60px; }.blackjack-section { padding-bottom: 78px; }.table-switcher { margin-bottom: 24px; }.room-break { gap: 12px; margin-inline: 16px; margin-bottom: 20px; }.future-grid { grid-template-columns: 1fr; }.safety-section { padding-block: 70px; } }
+  @media (max-width: 900px) { .training-hero-grid, .learn-section, .safety-section { grid-template-columns: 1fr; gap: 25px; }.lesson-grid { grid-template-columns: 1fr; }.lesson-grid article { min-height: 210px; } }
+  @media (max-width: 620px) { .training-hero { padding: 23px 0 26px; }.training-hero-grid { gap: 15px; }.training-hero .eyebrow { margin-bottom: 10px; font-size: .61rem; }.training-hero h1 { font-size: clamp(2rem, 10vw, 2.8rem); }.training-intro > p { margin: 0; font-size: .78rem; line-height: 1.45; }.training-intro a { min-height: 38px; margin-top: 11px; }.safety-section { padding-block: 70px; } }
 </style>
