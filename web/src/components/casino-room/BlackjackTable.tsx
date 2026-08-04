@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from 'motion/react';
-import { useMemo, useRef, useState, type CSSProperties } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState, type CSSProperties } from 'react';
 import {
   blackjackCardLabel,
   blackjackCardPath,
@@ -27,6 +27,7 @@ type PlayerHand = {
 };
 type BotHand = PlayerHand & { name: string; initial: string };
 type TableSeat = 'dealer' | 'bot-left' | 'bot-right' | 'player';
+type DealOrigin = { x: number; y: number; rotate: number };
 
 const STAKES = [10, 20, 50, 100, 500];
 const BOT_PROFILES = [
@@ -37,35 +38,59 @@ const actionLabels: Record<BlackjackAction, string> = { hit: 'Hit', stand: 'Stan
 const numberFormat = new Intl.NumberFormat('en-US');
 const sleep = (milliseconds: number) => new Promise((resolve) => window.setTimeout(resolve, milliseconds));
 
-function TablePlayingCard({ card, seat, faceDown = false, order = 0 }: { card: TableCard; seat: TableSeat; faceDown?: boolean; order?: number }) {
+function TablePlayingCard({ card, seat, faceDown = false }: { card: TableCard; seat: TableSeat; faceDown?: boolean }) {
   const reduceMotion = useReducedMotion();
+  const targetRef = useRef<HTMLSpanElement>(null);
+  const [origin, setOrigin] = useState<DealOrigin | null>(null);
+
+  useLayoutEffect(() => {
+    const target = targetRef.current?.getBoundingClientRect();
+    const source = document.querySelector<HTMLElement>('[data-blackjack-shoe-source]')?.getBoundingClientRect();
+    if (!target || !source || reduceMotion) {
+      setOrigin({ x: 0, y: 0, rotate: 0 });
+      return;
+    }
+    setOrigin({
+      x: source.left + source.width / 2 - (target.left + target.width / 2),
+      y: source.top + source.height / 2 - (target.top + target.height / 2),
+      rotate: seat === 'bot-left' ? 15 : seat === 'bot-right' ? 8 : seat === 'dealer' ? 6 : 12,
+    });
+  }, [card.id, reduceMotion, seat]);
+
   return (
-    <motion.div
-      layout
-      layoutId={card.id}
-      className="bj-card-wrap"
-      data-card-id={card.id}
-      data-seat={seat}
-      initial={reduceMotion ? false : { opacity: .9, x: 'var(--deal-x)', y: 'var(--deal-y)', rotate: 'var(--deal-rotate)', scale: .58 }}
-      animate={{ opacity: 1, x: 0, y: 0, rotate: 0, scale: 1 }}
-      transition={{ type: 'spring', stiffness: 210, damping: 23, mass: .72, delay: reduceMotion ? 0 : order * .028 }}
-    >
-      <motion.div
-        className="bj-card-flipper"
-        animate={{ rotateY: faceDown ? 0 : 180 }}
-        transition={{ duration: reduceMotion ? .01 : .52, ease: [0.22, 1, 0.36, 1] }}
+    <span ref={targetRef} className="bj-card-slot" data-seat={seat}>
+      {origin && <motion.div
+        layoutId={card.id}
+        className="bj-card-wrap"
+        data-card-id={card.id}
+        initial={reduceMotion ? false : { opacity: .94, x: origin.x, y: origin.y, rotate: origin.rotate, scale: .62 }}
+        animate={reduceMotion ? { opacity: 1 } : {
+          opacity: [1, 1, 1],
+          x: [origin.x, origin.x * .38, 0],
+          y: [origin.y, origin.y * .47 - 24, 0],
+          rotate: [origin.rotate, origin.rotate * .35, 0],
+          scale: [.62, .88, 1],
+        }}
+        transition={{ duration: reduceMotion ? .01 : .78, times: [0, .56, 1], ease: [0.22, 1, 0.36, 1] }}
       >
-        <div className="bj-card-face bj-card-back"><img src="/cards/back-cards.png" alt="Face-down card" width="292" height="424" draggable={false} /></div>
-        <div className="bj-card-face bj-card-front"><img src={blackjackCardPath(card)} alt={blackjackCardLabel(card)} width="292" height="424" draggable={false} /></div>
-      </motion.div>
-    </motion.div>
+        <motion.div
+          className="bj-card-flipper"
+          initial={{ rotateY: 0 }}
+          animate={{ rotateY: faceDown ? 0 : 180 }}
+          transition={{ duration: reduceMotion ? .01 : .48, delay: reduceMotion ? 0 : .38, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="bj-card-face bj-card-back"><img src="/cards/back-cards.png" alt="Face-down card" width="292" height="424" draggable={false} /></div>
+          <div className="bj-card-face bj-card-front"><img src={blackjackCardPath(card)} alt={blackjackCardLabel(card)} width="292" height="424" draggable={false} /></div>
+        </motion.div>
+      </motion.div>}
+    </span>
   );
 }
 
 function CardShoe() {
   return (
     <div className="bj-shoe" aria-label="Dealer shoe">
-      {[0, 1, 2, 3].map((card) => <img key={card} src="/cards/back-cards.png" alt="" width="292" height="424" style={{ '--shoe-card': card } as CSSProperties} />)}
+      {[0, 1, 2, 3].map((card) => <img key={card} src="/cards/back-cards.png" alt="" width="292" height="424" data-blackjack-shoe-source={card === 3 ? 'true' : undefined} style={{ '--shoe-card': card } as CSSProperties} />)}
       <span>Shoe</span>
     </div>
   );
@@ -131,14 +156,14 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
     setPhase('dealer');
     setDealerRevealed(true);
     setStatus('Dealer reveals the hole card.');
-    await wait(620);
+    await wait(860);
     const nextDealer = [...initialDealer];
     const allPlayersBust = [...currentHands, ...currentBots].every((hand) => blackjackHandValue(hand.cards).bust);
     while (!allPlayersBust && dealerShouldHit(nextDealer)) {
       nextDealer.push(drawCard());
       setDealerCards([...nextDealer]);
       setStatus(`Dealer draws to ${blackjackHandValue(nextDealer).total}.`);
-      await wait(520);
+      await wait(740);
     }
     await wait(220);
     await finishRound(nextDealer, currentHands, currentBots);
@@ -157,19 +182,19 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
       }
 
       setStatus(`${bot.name} is playing.`);
-      await wait(300);
+      await wait(420);
       while (recommendedBlackjackAction(bot.cards, currentDealer[0], { canDouble: false, canSplit: false }) === 'hit') {
         bot.cards.push(drawCard());
         setBots(nextBots.map((current) => ({ ...current, cards: [...current.cards] })));
         setStatus(`${bot.name} hits to ${blackjackHandValue(bot.cards).total}.`);
-        await wait(520);
+        await wait(740);
         const value = blackjackHandValue(bot.cards);
         if (value.bust || value.total === 21) break;
       }
       bot.done = true;
       setBots(nextBots.map((current) => ({ ...current, cards: [...current.cards] })));
       if (!blackjackHandValue(bot.cards).bust) setStatus(`${bot.name} stands on ${blackjackHandValue(bot.cards).total}.`);
-      await wait(360);
+      await wait(480);
     }
     await playDealer(currentDealer, currentHands, nextBots);
   };
@@ -203,16 +228,16 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
     const dealer: TableCard[] = [];
     setHands([hand]);
     setBots(tableBots);
-    await wait(120);
+    await wait(180);
     for (let round = 0; round < 2; round += 1) {
       tableBots[0].cards.push(drawCard()); setBots(tableBots.map((bot) => ({ ...bot, cards: [...bot.cards] })));
-      await wait(230);
+      await wait(480);
       hand.cards.push(drawCard()); setHands([{ ...hand, cards: [...hand.cards] }]);
-      await wait(230);
+      await wait(480);
       tableBots[1].cards.push(drawCard()); setBots(tableBots.map((bot) => ({ ...bot, cards: [...bot.cards] })));
-      await wait(230);
+      await wait(480);
       dealer.push(drawCard()); setDealerCards([...dealer]);
-      await wait(230);
+      await wait(480);
     }
     await wait(260);
 
@@ -257,7 +282,7 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
       hand.cards.push(drawCard());
       setHands(nextHands);
       setStatus('Card dealt.');
-      await wait(460);
+      await wait(820);
       const value = blackjackHandValue(hand.cards);
       if (value.bust || value.total === 21) {
         hand.done = true;
@@ -284,7 +309,7 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
       hand.done = true;
       setHands(nextHands);
       setStatus('Bet doubled. One final card.');
-      await wait(520);
+      await wait(820);
       await advanceHands(nextHands, activeHandIndex);
       return;
     }
@@ -333,7 +358,7 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
         <section className="bj-seat bj-dealer-seat" aria-label="Dealer hand">
           <header><span>Dealer</span><strong>{dealerScore ?? '–'}</strong><small>stands on 17</small></header>
           <div className="bj-hand-row">
-            {dealerCards.length ? dealerCards.map((card, index) => <TablePlayingCard key={card.id} card={card} seat="dealer" faceDown={!dealerRevealed && index === 1} order={index} />) : <span className="bj-empty">Cards will arrive from the shoe</span>}
+            {dealerCards.length ? dealerCards.map((card, index) => <TablePlayingCard key={card.id} card={card} seat="dealer" faceDown={!dealerRevealed && index === 1} />) : <span className="bj-empty">Cards will arrive from the shoe</span>}
           </div>
         </section>
 
@@ -345,7 +370,7 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
               <section className={`bj-bot-seat bj-bot-seat-${botIndex + 1}`} key={profile.name} aria-label={`${profile.name}, computer player`} data-playing={phase === 'bots' && Boolean(bot) && !bot.done}>
                 <header><b aria-hidden="true">{profile.initial}</b><div><span>{profile.name}</span><small>Bot · {numberFormat.format(bot?.stake ?? stake)} chips</small></div><strong>{value?.total ?? '–'}</strong></header>
                 <div className="bj-hand-row">
-                  {bot?.cards.length ? bot.cards.map((card, cardIndex) => <TablePlayingCard key={card.id} card={card} seat={botIndex === 0 ? 'bot-left' : 'bot-right'} order={cardIndex} />) : <span className="bj-empty">Ready</span>}
+                  {bot?.cards.length ? bot.cards.map((card) => <TablePlayingCard key={card.id} card={card} seat={botIndex === 0 ? 'bot-left' : 'bot-right'} />) : <span className="bj-empty">Ready</span>}
                   {bot?.result && <motion.span className={`bj-hand-result bj-result-${bot.result}`} initial={{ opacity: 0, scale: .8 }} animate={{ opacity: 1, scale: 1 }}>{bot.result}</motion.span>}
                 </div>
               </section>
@@ -362,7 +387,7 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
           <div className="bj-player-hands">
             {hands.length ? hands.map((hand, handIndex) => (
               <motion.div layout key={hand.id} className="bj-hand-row" data-active={phase === 'player' && handIndex === activeHandIndex}>
-                {hand.cards.map((card, cardIndex) => <TablePlayingCard key={card.id} card={card} seat="player" order={cardIndex} />)}
+                {hand.cards.map((card) => <TablePlayingCard key={card.id} card={card} seat="player" />)}
                 {hand.result && <motion.span className={`bj-hand-result bj-result-${hand.result}`} initial={{ opacity: 0, scale: .8 }} animate={{ opacity: 1, scale: 1 }}>{hand.result}</motion.span>}
               </motion.div>
             )) : <div className="bj-hand-row"><span className="bj-empty">Your cards appear here</span></div>}
