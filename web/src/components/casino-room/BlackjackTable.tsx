@@ -14,6 +14,7 @@ import {
 } from '@/lib/blackjack';
 import { completeTrainingRound } from '@/lib/training-wallet';
 import type { GameProps } from './types';
+import VictoryCelebration from './VictoryCelebration';
 
 type Phase = 'betting' | 'dealing' | 'player' | 'bots' | 'dealer' | 'complete';
 type TableCard = BlackjackCard & { id: string };
@@ -107,6 +108,7 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
   const [dealerRevealed, setDealerRevealed] = useState(false);
   const [status, setStatus] = useState('Choose a chip, place your bet and deal.');
   const [tone, setTone] = useState<'neutral' | 'success' | 'error'>('neutral');
+  const [celebration, setCelebration] = useState<{ result: string; profit: number; bestScore: number; natural: boolean } | null>(null);
   const shoe = useRef<TableCard[]>([]);
   const cardSequence = useRef(0);
   const handSequence = useRef(0);
@@ -150,6 +152,17 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
       : payout === wagered ? `${result}. Your stake is returned.` : `${result}. The dealer takes the bet.`);
     refreshWallet(completion.wallet);
     setBusy(false);
+    if (payout > wagered) {
+      const winningHands = settledHands.filter((hand) => hand.result === 'win' || hand.result === 'blackjack');
+      const bestScore = Math.max(...winningHands.map((hand) => blackjackHandValue(hand.cards).total));
+      await wait(300);
+      setCelebration({
+        result,
+        profit: payout - wagered,
+        bestScore,
+        natural: winningHands.some((hand) => hand.result === 'blackjack'),
+      });
+    }
   };
 
   const playDealer = async (initialDealer: TableCard[], currentHands: PlayerHand[], currentBots: BotHand[]) => {
@@ -206,6 +219,7 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
       return;
     }
     setBusy(true);
+    setCelebration(null);
     setPhase('dealing');
     setTone('neutral');
     setStatus('Dealing from the shoe…');
@@ -418,6 +432,23 @@ export default function BlackjackTable({ wallet, refreshWallet, onBusyChange }: 
           ))}
         </div>}
       </div>
+
+      <VictoryCelebration
+        open={Boolean(celebration)}
+        game="blackjack"
+        accent="gold"
+        emblem={String(celebration?.bestScore ?? 21)}
+        title={celebration?.natural ? 'Natural blackjack' : 'You beat the dealer'}
+        detail={celebration ? `${celebration.result}. The winning hands are settled.` : ''}
+        reward={celebration?.profit ?? 0}
+        rewardLabel="chips profit"
+        primaryLabel="Play next hand"
+        onPrimary={() => {
+          setCelebration(null);
+          void deal();
+        }}
+        onClose={() => setCelebration(null)}
+      />
     </div>
   );
 }
