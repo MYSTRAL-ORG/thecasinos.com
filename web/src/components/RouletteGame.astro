@@ -206,9 +206,10 @@ const columns = [
       const rounds = root.querySelector<HTMLElement>('[data-stat-rounds]');
       const wins = root.querySelector<HTMLElement>('[data-stat-wins]');
       const returnRate = root.querySelector<HTMLElement>('[data-stat-return]');
-      if (rounds) rounds.textContent = numberFormat.format(wallet.rounds);
-      if (wins) wins.textContent = numberFormat.format(wallet.winningRounds);
-      if (returnRate) returnRate.textContent = wallet.totalWagered > 0 ? `${((wallet.totalReturned / wallet.totalWagered) * 100).toFixed(1)}%` : '–';
+      const stats = wallet.gameStats.roulette;
+      if (rounds) rounds.textContent = numberFormat.format(stats.rounds);
+      if (wins) wins.textContent = numberFormat.format(stats.winningRounds);
+      if (returnRate) returnRate.textContent = stats.totalWagered > 0 ? `${((stats.totalReturned / stats.totalWagered) * 100).toFixed(1)}%` : '–';
       if (bonusButton) {
         const canClaim = canClaimTrainingBonus(wallet);
         bonusButton.disabled = !canClaim;
@@ -218,12 +219,13 @@ const columns = [
       const history = root.querySelector<HTMLOListElement>('[data-history]');
       if (history) {
         history.replaceChildren();
-        if (!wallet.history.length) {
+        const entries = wallet.history.filter((entry) => entry.game === 'roulette').slice(0, 6);
+        if (!entries.length) {
           const empty = document.createElement('li');
           empty.textContent = 'No rounds played yet.';
           history.append(empty);
         } else {
-          wallet.history.slice(0, 6).forEach((entry) => {
+          entries.forEach((entry) => {
             const item = document.createElement('li');
             const result = document.createElement('span');
             const net = document.createElement('strong');
@@ -313,7 +315,7 @@ const columns = [
     });
 
     resetButton?.addEventListener('click', () => {
-      if (!window.confirm('Reset the practice wallet and erase roulette statistics on this device?')) return;
+      if (!window.confirm('Reset the practice wallet and erase all training statistics on this device?')) return;
       clearBets();
       renderWallet(resetTrainingWallet());
       setStatus('Practice wallet reset to 2,000 chips.');

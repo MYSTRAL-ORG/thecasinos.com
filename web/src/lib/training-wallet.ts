@@ -1,11 +1,20 @@
 export type TrainingHistoryEntry = {
   id: string;
-  game: 'roulette';
+  game: TrainingGame;
   result: string;
   wagered: number;
   payout: number;
   net: number;
   playedAt: string;
+};
+
+export type TrainingGame = 'roulette' | 'blackjack';
+
+export type TrainingGameStats = {
+  rounds: number;
+  winningRounds: number;
+  totalWagered: number;
+  totalReturned: number;
 };
 
 export type TrainingWallet = {
@@ -15,6 +24,7 @@ export type TrainingWallet = {
   winningRounds: number;
   totalWagered: number;
   totalReturned: number;
+  gameStats: Record<TrainingGame, TrainingGameStats>;
   lastDailyBonus: string | null;
   history: TrainingHistoryEntry[];
 };
@@ -24,6 +34,10 @@ export const TRAINING_DAILY_BONUS = 500;
 export const TRAINING_WALLET_EVENT = 'thecasinos:training-wallet';
 const TRAINING_WALLET_KEY = 'thecasinos.training-wallet.v1';
 
+function emptyGameStats(): TrainingGameStats {
+  return { rounds: 0, winningRounds: 0, totalWagered: 0, totalReturned: 0 };
+}
+
 function freshWallet(): TrainingWallet {
   return {
     version: 1,
@@ -32,6 +46,10 @@ function freshWallet(): TrainingWallet {
     winningRounds: 0,
     totalWagered: 0,
     totalReturned: 0,
+    gameStats: {
+      roulette: emptyGameStats(),
+      blackjack: emptyGameStats(),
+    },
     lastDailyBonus: null,
     history: [],
   };
@@ -45,6 +63,22 @@ function safeInteger(value: unknown, fallback = 0, maximum = 999_999_999) {
 function normalizeWallet(value: Partial<TrainingWallet> | null | undefined): TrainingWallet {
   const fallback = freshWallet();
   if (!value || value.version !== 1) return fallback;
+  const legacyRouletteStats = {
+    rounds: safeInteger(value.rounds),
+    winningRounds: safeInteger(value.winningRounds),
+    totalWagered: safeInteger(value.totalWagered),
+    totalReturned: safeInteger(value.totalReturned),
+  };
+  const normalizedGameStats = (game: TrainingGame, legacy: TrainingGameStats): TrainingGameStats => {
+    const stats = value.gameStats?.[game];
+    if (!stats) return legacy;
+    return {
+      rounds: safeInteger(stats.rounds),
+      winningRounds: safeInteger(stats.winningRounds),
+      totalWagered: safeInteger(stats.totalWagered),
+      totalReturned: safeInteger(stats.totalReturned),
+    };
+  };
   return {
     version: 1,
     balance: safeInteger(value.balance, fallback.balance),
@@ -52,11 +86,15 @@ function normalizeWallet(value: Partial<TrainingWallet> | null | undefined): Tra
     winningRounds: safeInteger(value.winningRounds),
     totalWagered: safeInteger(value.totalWagered),
     totalReturned: safeInteger(value.totalReturned),
+    gameStats: {
+      roulette: normalizedGameStats('roulette', legacyRouletteStats),
+      blackjack: normalizedGameStats('blackjack', emptyGameStats()),
+    },
     lastDailyBonus: typeof value.lastDailyBonus === 'string' ? value.lastDailyBonus : null,
     history: Array.isArray(value.history)
       ? value.history.slice(0, 12).filter((entry): entry is TrainingHistoryEntry => Boolean(
         entry
-        && entry.game === 'roulette'
+        && (entry.game === 'roulette' || entry.game === 'blackjack')
         && typeof entry.result === 'string'
         && typeof entry.playedAt === 'string',
       ))
@@ -106,6 +144,7 @@ export function claimTrainingBonus() {
 }
 
 export function completeTrainingRound(input: {
+  game?: TrainingGame;
   result: string;
   wagered: number;
   payout: number;
@@ -121,9 +160,15 @@ export function completeTrainingRound(input: {
   if (net > 0) wallet.winningRounds += 1;
   wallet.totalWagered += wagered;
   wallet.totalReturned += payout;
+  const game = input.game ?? 'roulette';
+  const gameStats = wallet.gameStats[game];
+  gameStats.rounds += 1;
+  if (net > 0) gameStats.winningRounds += 1;
+  gameStats.totalWagered += wagered;
+  gameStats.totalReturned += payout;
   wallet.history.unshift({
     id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
-    game: 'roulette',
+    game,
     result: input.result,
     wagered,
     payout,
