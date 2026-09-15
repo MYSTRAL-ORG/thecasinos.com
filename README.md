@@ -104,6 +104,8 @@ npm run build
 npm run audit:legacy
 ```
 
+The dependency lockfile includes the September 2026 security fixes. Keep the `sharp` override at 0.35.4 or a newer compatible patched version. The `@netlify/vite-plugin` 3.0.1 override replaces the adapter's older development stack, which still includes vulnerable `extract-zip`; it supports Vite 8 and resolves to the corrected Netlify Functions development tooling. Recheck `npm audit` before removing either override.
+
 The main preserved URL shapes are:
 
 - `/{country}`
