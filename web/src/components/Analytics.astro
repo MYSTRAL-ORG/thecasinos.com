@@ -1,0 +1,113 @@
+<aside id="analytics-consent" class="analytics-consent" aria-labelledby="analytics-consent-title" hidden>
+  <div>
+    <h2 id="analytics-consent-title">Analytics cookies</h2>
+    <p>May we use Google Analytics to understand visits and improve the site? You can change your choice in Cookie settings. <a href="/policy">Privacy policy</a></p>
+  </div>
+  <div class="consent-actions">
+    <button class="button secondary small" type="button" data-consent="denied">Reject</button>
+    <button class="button secondary small" type="button" data-consent="granted">Accept</button>
+  </div>
+</aside>
+
+<script is:inline>
+  (() => {
+    // Keep development, deploy previews and private operations out of production reports.
+    if (!['thecasinos.com', 'www.thecasinos.com'].includes(window.location.hostname)
+      || /^\/operation(?:\/|$)/.test(window.location.pathname)) return;
+
+    const measurementId = 'G-BZTJV1TP3F';
+    const storageKey = 'thecasinos.analytics-consent.v1';
+    const consentLifetime = 180 * 24 * 60 * 60 * 1000;
+    const banner = document.getElementById('analytics-consent');
+    const settingsButtons = document.querySelectorAll('[data-cookie-settings]');
+    let started = false;
+    let returnFocus;
+
+    window.dataLayer = window.dataLayer || [];
+    window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
+    window['ga-disable-' + measurementId] = true;
+    window.gtag('consent', 'default', {
+      analytics_storage: 'denied',
+      ad_storage: 'denied',
+      ad_user_data: 'denied',
+      ad_personalization: 'denied',
+    });
+
+    function readChoice() {
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey) || 'null');
+        return saved && saved.expires > Date.now()
+          && ['granted', 'denied'].includes(saved.value) ? saved.value : null;
+      } catch { return null; }
+    }
+
+    function clearAnalyticsCookies() {
+      for (const cookie of document.cookie.split(';')) {
+        const name = cookie.split('=')[0].trim();
+        if (name !== '_ga' && !name.startsWith('_ga_')) continue;
+        for (const domain of ['', window.location.hostname, 'thecasinos.com']) {
+          document.cookie = name + '=; Max-Age=0; Path=/; SameSite=Lax'
+            + (domain ? '; Domain=' + domain : '');
+        }
+      }
+    }
+
+    function applyChoice(choice) {
+      const granted = choice === 'granted';
+      window['ga-disable-' + measurementId] = !granted;
+      window.gtag('consent', 'update', { analytics_storage: granted ? 'granted' : 'denied' });
+      banner.hidden = choice !== null;
+      if (!granted) {
+        clearAnalyticsCookies();
+        // Unload Analytics completely when an earlier acceptance is withdrawn.
+        if (started) window.location.reload();
+        return;
+      }
+      if (started) return;
+      started = true;
+      window.gtag('js', new Date());
+      window.gtag('config', measurementId, {
+        allow_google_signals: false,
+        allow_ad_personalization_signals: false,
+        cookie_expires: consentLifetime / 1000,
+        cookie_update: false,
+      });
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = 'https://www.googletagmanager.com/gtag/js?id=' + measurementId;
+      document.head.appendChild(script);
+    }
+
+    banner.querySelectorAll('[data-consent]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const choice = button.dataset.consent;
+        try {
+          localStorage.setItem(storageKey, JSON.stringify({ value: choice, expires: Date.now() + consentLifetime }));
+        } catch { /* The current visit can still honour the visitor's choice. */ }
+        applyChoice(choice);
+        returnFocus?.focus();
+      });
+    });
+    settingsButtons.forEach((button) => {
+      button.hidden = false;
+      button.addEventListener('click', () => {
+        returnFocus = button;
+        banner.hidden = false;
+        banner.querySelector('button').focus();
+      });
+    });
+    window.addEventListener('storage', (event) => {
+      if (event.key === storageKey || event.key === null) applyChoice(readChoice());
+    });
+    applyChoice(readChoice());
+  })();
+</script>
+
+<style>
+  .analytics-consent { position: fixed; inset: auto 20px 20px; z-index: 10000; display: flex; align-items: center; gap: 24px; max-width: 900px; margin-inline: auto; padding: 22px 24px; border: 1px solid var(--line); border-radius: var(--radius-md); background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+  h2 { margin: 0 0 6px; font-size: 1rem; }
+  p { margin: 0; font-size: .87rem; line-height: 1.5; }
+  a { text-decoration: underline; }
+  .consent-actions { display: flex; flex-shrink: 0; gap: 10px; }
+  @media (max-width: 620px) { .analytics-consent { inset: auto 12px 12px; padding: 18px; flex-direction: column; align-items: stretch; gap: 14px; } .consent-actions .button { flex: 1; } }
+</style>
