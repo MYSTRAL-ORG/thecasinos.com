@@ -1,6 +1,7 @@
 ---
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
+import Analytics from '@/components/Analytics.astro';
 import '@/styles/global.css';
 
 interface Props {
@@ -101,5 +102,6 @@ if (!noindex && cacheSeconds && cacheSeconds > 0) {
       <slot />
     </main>
     {chrome && <Footer />}
+    {!/^\/operation(?:\/|$)/.test(Astro.url.pathname) && <Analytics />}
   </body>
 </html>

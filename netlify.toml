@@ -20,7 +20,7 @@ for = "/*"
   Referrer-Policy = "strict-origin-when-cross-origin"
   Permissions-Policy = "camera=(), microphone=(), geolocation=(self)"
   Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
-  Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.supabase.co; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co"
+  Content-Security-Policy = "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'none'; form-action 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org https://*.supabase.co https://*.google-analytics.com https://www.googletagmanager.com; font-src 'self' https://fonts.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://*.google-analytics.com https://*.analytics.google.com https://www.googletagmanager.com"
 
 [[headers]]
 for = "/_astro/*"
